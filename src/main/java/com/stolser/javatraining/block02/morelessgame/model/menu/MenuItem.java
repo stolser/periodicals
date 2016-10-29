@@ -2,29 +2,53 @@ package com.stolser.javatraining.block02.morelessgame.model.menu;
 
 import java.util.List;
 
-public class MenuItem implements Menu {
-    private List<Menu> items;
+public class MenuItem {
+    private List<MenuItem> items;
     private String systemName;
     private int optionId;
+    private MenuCommand command;
 
-    public MenuItem(List<Menu> items, String systemName, int optionId) {
+    public MenuItem(List<MenuItem> items, String systemName, int optionId) {
         this.items = items;
         this.systemName = systemName;
         this.optionId = optionId;
     }
 
-    @Override
-    public List<Menu> getItems() {
+    public boolean isSubMenu() {
+        return (getItems() != null);
+    }
+
+    public List<MenuItem> getItems() {
         return items;
     }
 
-    @Override
     public String getSystemName() {
         return systemName;
     }
 
-    @Override
     public int getOptionId() {
         return optionId;
+    }
+
+    public void setCommand(MenuCommand command) {
+        this.command = command;
+    }
+
+    public void chooseMenu() {
+        command.execute();
+    }
+
+    public MenuItem getMenuItemByOptionId(int optionId) {
+
+        for(MenuItem item: items) {
+            if (item.isSubMenu()) {
+                MenuItem result = item.getMenuItemByOptionId(optionId);
+                if (result != null) return result;
+            } else {
+                if (item.getOptionId() == optionId) return item;
+            }
+        }
+
+        return null;
     }
 }

@@ -1,18 +1,21 @@
 package com.stolser.javatraining.block02.morelessgame.controller;
 
-import com.stolser.javatraining.block02.morelessgame.model.menu.Menu;
+import com.stolser.javatraining.block02.morelessgame.model.menu.MenuItem;
 import com.stolser.javatraining.block02.morelessgame.view.ViewFactory;
 import com.stolser.javatraining.block02.morelessgame.view.ViewGenerator;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
+import java.util.ResourceBundle;
+
 public class MenuController {
-    private Menu menu;
+    private MenuItem menu;
     private ViewFactory viewFactory;
     private InputReader input;
     private ViewPrinter output;
     private ViewGenerator viewGenerator;
+    private ResourceBundle generalMessages;
 
-    public MenuController(Menu menu, ViewFactory viewFactory, InputReader input) {
+    public MenuController(MenuItem menu, ViewFactory viewFactory, InputReader input) {
         this.menu = menu;
         this.viewFactory = viewFactory;
         this.input = input;
@@ -21,8 +24,18 @@ public class MenuController {
     }
 
     public void processUserInput() {
+        generalMessages = ResourceBundle.getBundle("generalMessages", output.getLocale());
+
         showMenu();
-        int userChoice = readUserChoice();
+        MenuItem chosenMenuItem;
+        do {
+            output.printString(generalMessages.getString("menu.makeachoice"));
+            int userChoice = readUserChoice();
+            chosenMenuItem = menu.getMenuItemByOptionId(userChoice);
+            if (chosenMenuItem == null) output.printlnMessageWithKey("generalMessages", "input.menuoption.error");
+        } while (chosenMenuItem == null);
+
+        chosenMenuItem.chooseMenu();
 
     }
 
@@ -31,7 +44,7 @@ public class MenuController {
     }
 
     private void showMenu() {
-        output.printMessage(viewGenerator.getMenuView(menu));
+        output.printlnString(viewGenerator.getMenuView(menu));
 
     }
 }
