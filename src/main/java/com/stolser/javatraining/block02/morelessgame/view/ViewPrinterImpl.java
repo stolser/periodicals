@@ -5,10 +5,10 @@ import java.util.Locale;
 
 class ViewPrinterImpl implements ViewPrinter {
     private Locale locale;
-    private PrintWriter output;
+    private PrintStream output;
 
-    public ViewPrinterImpl(OutputStream output) {
-        this.output = new PrintWriter(new BufferedWriter(new OutputStreamWriter(output)));
+    public ViewPrinterImpl(PrintStream output) {
+        this.output = output;
         this.locale = DEFAULT_LOCALE;
     }
 

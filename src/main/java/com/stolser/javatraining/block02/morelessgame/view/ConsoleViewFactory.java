@@ -4,8 +4,8 @@ public final class ConsoleViewFactory implements ViewFactory {
     private ConsoleViewFactory(){}
 
     @Override
-    public ViewGenerator getViewGenerator() {
-        return new ConsoleViewGenerator();
+    public ViewGenerator getViewGenerator(ViewPrinter output) {
+        return new ConsoleViewGenerator(output);
     }
 
     @Override
