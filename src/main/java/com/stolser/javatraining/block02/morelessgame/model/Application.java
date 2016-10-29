@@ -16,8 +16,8 @@ public class Application {
         ViewFactory viewFactory = ConsoleViewFactory.getInstance();
         InputReader inputReader = new ConsoleInputReader(viewFactory.getViewPrinter());
         Menu mainMenu = generateMainMenu();
-
         MenuController controller = new MenuController(mainMenu, viewFactory, inputReader);
+
         controller.processUserInput();
     }
 
@@ -26,7 +26,7 @@ public class Application {
 
         Menu setRandomMax = new MenuItem(null, "setRandomMax", 21);
         Menu setLanguage = new MenuItem(null, "setLanguage", 22);
-        Menu settings = new MenuItem(Arrays.asList(setRandomMax, setLanguage), "setLanguage", 2);
+        Menu settings = new MenuItem(Arrays.asList(setRandomMax, setLanguage), "settings", 2);
 
         Menu instructions = new MenuItem(null, "instructions", 3);
         Menu about = new MenuItem(null, "about", 4);
