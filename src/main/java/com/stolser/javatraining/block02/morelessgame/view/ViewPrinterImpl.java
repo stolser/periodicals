@@ -43,7 +43,7 @@ class ViewPrinterImpl implements ViewPrinter {
 
     @Override
     public String getMessageWithKey(String bundleName, String key) {
-        ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale);
+        ResourceBundle bundle = ResourceBundle.getBundle("i18n/"+ bundleName, locale);
         return bundle.getString(key);
     }
 }

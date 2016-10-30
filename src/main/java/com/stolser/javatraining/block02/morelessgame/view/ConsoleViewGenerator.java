@@ -18,7 +18,7 @@ class ConsoleViewGenerator implements ViewGenerator {
 
     @Override
     public String getMenuView(MenuItem menu) {
-        builder = new StringBuilder(String.format("------------ %s ------------\n",
+        builder = new StringBuilder(String.format("============ %s ============\n",
                 output.getMessageWithKey("generalMessages", "menu." + menu.getSystemName())));
 
         appendAllMenuItems(menu.getItems(), 0);
@@ -44,7 +44,7 @@ class ConsoleViewGenerator implements ViewGenerator {
     }
 
     private void appendMenuFooter() {
-        builder.append("==============================\n");
+        builder.append("==================================\t");
     }
 
     private void appendTabsBeforeMenuItem(int level) {
