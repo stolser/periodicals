@@ -2,6 +2,7 @@ package com.stolser.javatraining.block02.morelessgame.model;
 
 import com.google.common.collect.Range;
 import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
+import com.stolser.javatraining.block02.morelessgame.view.ViewGenerator;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ public class Game {
     public static final int RANDOM_MAX_HIGH_LIMIT = 1000;
     private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
     private ViewPrinter output;
+    private ViewGenerator viewGenerator;
     private InputReader input;
     private static int randomMinDefault = 0;
     private static int randomMaxDefault = 100;
@@ -27,6 +29,7 @@ public class Game {
 
     public Game(Environment environment) {
         output = environment.getViewPrinter();
+        viewGenerator = environment.getViewGenerator();
         input = environment.getInputReader();
         target = randomInt();
         userAttempts = new LinkedList<>();
@@ -76,10 +79,13 @@ public class Game {
             }
 
             LOGGER.debug("newAttempt: {}", newAttempt);
+            userAttempts.add(newAttempt);
 
         } while (targetIsNotHit);
 
         LOGGER.debug("...the target has been hit. The game is finished.");
+
+        output.printlnString(viewGenerator.getGameStatisticsView(userAttempts));
 
     }
 
