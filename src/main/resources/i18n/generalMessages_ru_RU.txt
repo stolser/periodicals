@@ -1,0 +1,18 @@
+input.integer.error=Ошибка! Повторите пожалуйста! Введите целое число:\u0020
+input.menuoption.error=Wrong menu item option! Choose another one.\u0020
+
+menu.makeachoice=Please, make a choice:\u0020
+menu.enterNewRandomMaxValue=Please, enter new Random Max value in the range [10, 1000]:\u0020
+input.randomMax.error=Error! Please, choose a correct value for Random Max.\u0020
+
+menu.mainMenu=Главное Меню
+menu.playGame=Играть
+menu.settings=Настройки
+menu.setRandomMax=Установить верхний предел чисел
+menu.setLanguage=Сменить Язык
+menu.instructions=Инструкции к Игре
+menu.about=О программе
+menu.exit=Выход
+
+menu.enterNewLocale=Пожалуйста, выберите новую локаль (Английский - 1; Русский - 2):\u0020
+input.newLocale.error=Error! Please, choose a correct value for a new locale.\u0020
