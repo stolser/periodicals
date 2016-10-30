@@ -33,10 +33,6 @@ class ViewPrinterImpl implements ViewPrinter {
         output.print(getMessageWithKey(bundleName, key));
     }
 
-    public Locale getLocale() {
-        return locale;
-    }
-
     public void setLocale(Locale locale) {
         this.locale = locale;
     }

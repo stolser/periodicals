@@ -2,16 +2,17 @@ package com.stolser.javatraining.block02.morelessgame.controller;
 
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
-import java.util.ResourceBundle;
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class ConsoleInputReader implements InputReader {
+    private static final InputStream INPUT_STREAM = System.in;
     private Scanner scanner;
     private ViewPrinter output;
 
     public ConsoleInputReader(ViewPrinter output) {
         this.output = output;
-        this.scanner = new Scanner(System.in);
+        this.scanner = new Scanner(INPUT_STREAM);
     }
 
     @Override

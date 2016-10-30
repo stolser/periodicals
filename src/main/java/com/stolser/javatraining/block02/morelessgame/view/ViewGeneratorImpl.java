@@ -1,6 +1,5 @@
 package com.stolser.javatraining.block02.morelessgame.view;
 
-import com.stolser.javatraining.block02.morelessgame.model.Game;
 import com.stolser.javatraining.block02.morelessgame.model.UserAttempt;
 import com.stolser.javatraining.block02.morelessgame.model.menu.MenuItem;
 import org.slf4j.Logger;
@@ -8,11 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-class ConsoleViewGenerator implements ViewGenerator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleViewGenerator.class);
+class ViewGeneratorImpl implements ViewGenerator {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ViewGeneratorImpl.class);
     private ViewPrinter output;
 
-    public ConsoleViewGenerator(ViewPrinter output) {
+    ViewGeneratorImpl(ViewPrinter output) {
         this.output = output;
     }
 

@@ -84,7 +84,7 @@ public class Game {
         } while (targetIsNotHit);
 
         LOGGER.debug("...the target has been hit. The game is finished.");
-
+        output.printMessageWithKey("generalMessages", "game.targetIsHit");
         output.printlnString(viewGenerator.getGameStatisticsView(userAttempts));
 
     }

@@ -1,7 +1,6 @@
 package com.stolser.javatraining.block02.morelessgame.model;
 
 import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
-import com.stolser.javatraining.block02.morelessgame.model.menu.MenuItem;
 import com.stolser.javatraining.block02.morelessgame.view.ViewGenerator;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 

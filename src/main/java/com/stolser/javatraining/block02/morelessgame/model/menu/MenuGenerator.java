@@ -4,14 +4,11 @@ import com.stolser.javatraining.block02.morelessgame.model.Environment;
 
 import java.util.Arrays;
 
-public class MenuGenerator {
-    private Environment environment;
-
-    public MenuGenerator(Environment environment) {
-        this.environment = environment;
+public final class MenuGenerator {
+    private MenuGenerator() {
     }
 
-    public MenuItem newMainMenu() {
+    static public MenuItem newMainMenu(Environment environment) {
         MenuItem playGame = new MenuItem(null, "playGame", 1);
         playGame.setCommand(new PlayGameCommand(environment));
 
@@ -31,10 +28,8 @@ public class MenuGenerator {
 
         MenuItem exit = new MenuItem(null, "exit", 5);
 
-        MenuItem mainMenu = new MenuItem(
+        return new MenuItem(
                 Arrays.asList(playGame, settings, instructions, about, exit),
                 "mainMenu", 1);
-
-        return mainMenu;
     }
 }
