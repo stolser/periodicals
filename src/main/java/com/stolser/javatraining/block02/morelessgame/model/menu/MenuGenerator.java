@@ -13,7 +13,7 @@ public class MenuGenerator {
 
     public MenuItem newMainMenu() {
         MenuItem playGame = new MenuItem(null, "playGame", 1);
-        playGame.setCommand(new PlayGameCommand());
+        playGame.setCommand(new PlayGameCommand(environment));
 
         MenuItem setRandomMax = new MenuItem(null, "setRandomMax", 21);
         setRandomMax.setCommand(new SetRandomMaxCommand(environment));

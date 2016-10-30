@@ -38,6 +38,8 @@ public class SetRandomMaxCommand implements MenuCommand {
     }
 
     private boolean userEnteredIncorrectValue(int value) {
-        return value < Game.RANDOM_MAX_LOW_LIMIT || value > Game.RANDOM_MAX_HIGH_LIMIT;
+        return (value < Game.RANDOM_MAX_LOW_LIMIT
+                || value > Game.RANDOM_MAX_HIGH_LIMIT
+                || value <= Game.getRandomMinDefault());
     }
 }
