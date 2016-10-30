@@ -25,18 +25,12 @@ class ViewPrinterImpl implements ViewPrinter {
 
     @Override
     public void printlnMessageWithKey(String bundleName, String key) {
-        ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale);
-        String message = bundle.getString(key);
-
-        output.println(message);
+        output.println(getMessageWithKey(bundleName, key));
     }
 
     @Override
     public void printMessageWithKey(String bundleName, String key) {
-        ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale);
-        String message = bundle.getString(key);
-
-        output.print(message);
+        output.print(getMessageWithKey(bundleName, key));
     }
 
     public Locale getLocale() {
@@ -45,5 +39,11 @@ class ViewPrinterImpl implements ViewPrinter {
 
     public void setLocale(Locale locale) {
         this.locale = locale;
+    }
+
+    @Override
+    public String getMessageWithKey(String bundleName, String key) {
+        ResourceBundle bundle = ResourceBundle.getBundle(bundleName, locale);
+        return bundle.getString(key);
     }
 }

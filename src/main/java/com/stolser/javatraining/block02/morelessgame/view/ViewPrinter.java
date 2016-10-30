@@ -11,4 +11,5 @@ public interface ViewPrinter {
     void printMessageWithKey(String bundleName, String key);
     Locale getLocale();
     void setLocale(Locale locale);
+    String getMessageWithKey(String bundleName, String key);
 }

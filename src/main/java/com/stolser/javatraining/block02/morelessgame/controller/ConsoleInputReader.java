@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 public class ConsoleInputReader implements InputReader {
     private Scanner scanner;
-    private ResourceBundle generalMessages;
     private ViewPrinter output;
 
     public ConsoleInputReader(ViewPrinter output) {
@@ -17,9 +16,8 @@ public class ConsoleInputReader implements InputReader {
 
     @Override
     public int readIntValue() {
-        generalMessages = ResourceBundle.getBundle("generalMessages", output.getLocale());
         while( ! scanner.hasNextInt()) {
-            output.printMessage(generalMessages.getString("input.integer.error"));
+            output.printMessageWithKey("generalMessages", "input.integer.error");
             scanner.next();
         }
 
