@@ -1,8 +1,7 @@
 package com.stolser.javatraining.block02.morelessgame.model;
 
-import com.google.common.base.Preconditions;
+import com.google.common.collect.Range;
 import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
-import com.stolser.javatraining.block02.morelessgame.model.menu.UserAttempt;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Game {
     public static final int RANDOM_MAX_LOW_LIMIT = 10;
@@ -24,7 +21,7 @@ public class Game {
     private static int randomMaxDefault = 100;
     private int nextAttemptSerialNo = 1;
     private List<UserAttempt> userAttempts;
-    private int[] currentRange;
+    private Range<Integer> currentRange;
     private int target;
     private boolean targetIsNotHit;
 
@@ -33,11 +30,11 @@ public class Game {
         input = environment.getInputReader();
         target = randomInt();
         userAttempts = new LinkedList<>();
-        currentRange = new int[]{randomMinDefault, randomMaxDefault};
+        currentRange = Range.closed(randomMinDefault, randomMaxDefault);
         targetIsNotHit = true;
     }
 
-    public enum AttemptResult {
+    enum AttemptResult {
         ATTEMPT_RESULT_TOO_SMALL("too small"),
         ATTEMPT_RESULT_TOO_LARGE("too large"),
         ATTEMPT_RESULT_SCORE("score!");
@@ -48,10 +45,6 @@ public class Game {
             this.description = description;
         }
 
-        public String description() {
-            return description;
-        }
-
         @Override
         public String toString() {
             return description;
@@ -59,13 +52,11 @@ public class Game {
     }
 
     public void start() {
-        LOGGER.debug("Starting a new Game. Default range: [{}, {}]...",
-                currentRange[0], currentRange[1]);
+        LOGGER.debug("Starting a new Game. Default range: {}...", currentRange);
 
         do {
             int userNumber = getNewNumberFromUser();
-            UserAttempt newAttempt = new UserAttempt(nextAttemptSerialNo,
-                    new int[]{currentRange[0],currentRange[1]});
+            UserAttempt newAttempt = new UserAttempt(nextAttemptSerialNo, currentRange);
             nextAttemptSerialNo++;
             newAttempt.setNumber(userNumber);
 
@@ -74,14 +65,14 @@ public class Game {
                 targetIsNotHit = false;
             } else {
                 if(userNumber < target) {
-                    currentRange[0] = userNumber + 1;
-                    newAttempt.setNewRange(new int[]{currentRange[0],currentRange[1]});
                     newAttempt.setResult(AttemptResult.ATTEMPT_RESULT_TOO_SMALL);
+                    currentRange = Range.closed(userNumber + 1, currentRange.upperEndpoint());
                 } else {
-                    currentRange[1] = userNumber - 1;
-                    newAttempt.setNewRange(new int[]{currentRange[0],currentRange[1]});
                     newAttempt.setResult(AttemptResult.ATTEMPT_RESULT_TOO_LARGE);
+                    currentRange = Range.closed(currentRange.lowerEndpoint(), userNumber - 1);
                 }
+
+                newAttempt.setNewRange(currentRange);
             }
 
             LOGGER.debug("newAttempt: {}", newAttempt);
@@ -95,8 +86,7 @@ public class Game {
     private int getNewNumberFromUser() {
         int userNumber;
         String enterNextNumberMessage = MessageFormat.format(
-                output.getMessageWithKey("generalMessages", "menu.enterNextNumber"),
-                currentRange[0], currentRange[1]);
+                output.getMessageWithKey("generalMessages", "menu.enterNextNumber"), currentRange);
 
         do {
             output.printString(enterNextNumberMessage);
@@ -112,7 +102,7 @@ public class Game {
     }
 
     private boolean userEnteredIncorrectValue(int userNumber) {
-        return (userNumber < currentRange[0] || userNumber > currentRange[1]);
+        return !currentRange.contains(userNumber);
     }
 
     /*

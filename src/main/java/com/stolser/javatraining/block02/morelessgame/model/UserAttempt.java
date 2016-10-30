@@ -1,5 +1,6 @@
-package com.stolser.javatraining.block02.morelessgame.model.menu;
+package com.stolser.javatraining.block02.morelessgame.model;
 
+import com.google.common.collect.Range;
 import com.stolser.javatraining.block02.morelessgame.model.Game;
 
 import java.util.Arrays;
@@ -8,17 +9,17 @@ import static com.stolser.javatraining.block02.morelessgame.model.Game.*;
 
 public class UserAttempt {
     private int serialNo;
-    private int[] currentRange;
-    private int[] newRange;
+    private Range<Integer> currentRange;
+    private Range<Integer> newRange;
     private int number;
     private AttemptResult result;
 
-    public UserAttempt(int serialNo, int[] currentRange) {
+    public UserAttempt(int serialNo, Range<Integer> currentRange) {
         this.serialNo = serialNo;
         this.currentRange = currentRange;
     }
 
-    public void setNewRange(int[] newRange) {
+    public void setNewRange(Range<Integer> newRange) {
         this.newRange = newRange;
     }
 
@@ -34,11 +35,11 @@ public class UserAttempt {
         return serialNo;
     }
 
-    public int[] getCurrentRange() {
+    public Range<Integer> getCurrentRange() {
         return currentRange;
     }
 
-    public int[] getNewRange() {
+    public Range<Integer> getNewRange() {
         return newRange;
     }
 
@@ -54,6 +55,6 @@ public class UserAttempt {
     public String toString() {
         return String.format("UserAttempt{serialNo = %d, currentRange = %s, " +
                 "number = %d, result = '%s', newRange = %s}",
-                serialNo, Arrays.toString(currentRange), number, result, Arrays.toString(newRange));
+                serialNo, currentRange, number, result, newRange);
     }
 }
