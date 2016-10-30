@@ -13,7 +13,6 @@ public class MenuController {
     private InputReader input;
     private ViewPrinter output;
     private ViewGenerator viewGenerator;
-    private ResourceBundle generalMessages;
 
     public MenuController(MenuItem menu, ViewFactory viewFactory, InputReader input) {
         this.menu = menu;
@@ -24,18 +23,23 @@ public class MenuController {
     }
 
     public void processUserInput() {
-        generalMessages = ResourceBundle.getBundle("generalMessages", output.getLocale());
-
-        showMenu();
         MenuItem chosenMenuItem;
-        do {
-            output.printString(generalMessages.getString("menu.makeachoice"));
-            int userChoice = readUserChoice();
-            chosenMenuItem = menu.getMenuItemByOptionId(userChoice);
-            if (chosenMenuItem == null) output.printlnMessageWithKey("generalMessages", "input.menuoption.error");
-        } while (chosenMenuItem == null);
 
-        chosenMenuItem.chooseMenu();
+        do {
+            showMenu();
+
+            do {
+                output.printMessageWithKey("generalMessages", "menu.makeachoice");
+                int userChoice = readUserChoice();
+                chosenMenuItem = menu.getMenuItemByOptionId(userChoice);
+                if (chosenMenuItem == null) output.printMessageWithKey("generalMessages", "input.menuoption.error");
+            } while (chosenMenuItem == null);
+
+            if ("exit".equals(chosenMenuItem.getSystemName())) break;
+
+            chosenMenuItem.chooseMenu();
+
+        } while (true);
 
     }
 
