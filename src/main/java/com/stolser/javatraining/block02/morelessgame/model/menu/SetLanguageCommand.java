@@ -1,8 +1,7 @@
 package com.stolser.javatraining.block02.morelessgame.model.menu;
 
 import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
-import com.stolser.javatraining.block02.morelessgame.view.ViewFactory;
-import com.stolser.javatraining.block02.morelessgame.view.ViewGenerator;
+import com.stolser.javatraining.block02.morelessgame.model.Environment;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
 import java.util.Locale;
@@ -11,9 +10,9 @@ public class SetLanguageCommand implements MenuCommand {
     private ViewPrinter output;
     private InputReader input;
 
-    public SetLanguageCommand(ViewFactory viewFactory, InputReader input) {
-        this.output = viewFactory.getViewPrinter();
-        this.input = input;
+    public SetLanguageCommand(Environment environment) {
+        this.output = environment.getViewPrinter();
+        this.input = environment.getInputReader();
     }
 
     @Override

@@ -1,25 +1,21 @@
 package com.stolser.javatraining.block02.morelessgame.controller;
 
+import com.stolser.javatraining.block02.morelessgame.model.Environment;
 import com.stolser.javatraining.block02.morelessgame.model.menu.MenuItem;
-import com.stolser.javatraining.block02.morelessgame.view.ViewFactory;
 import com.stolser.javatraining.block02.morelessgame.view.ViewGenerator;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
-import java.util.ResourceBundle;
-
 public class MenuController {
-    private MenuItem menu;
-    private ViewFactory viewFactory;
+    private MenuItem mainMenu;
     private InputReader input;
     private ViewPrinter output;
     private ViewGenerator viewGenerator;
 
-    public MenuController(MenuItem menu, ViewFactory viewFactory, InputReader input) {
-        this.menu = menu;
-        this.viewFactory = viewFactory;
-        this.input = input;
-        this.output = viewFactory.getViewPrinter();
-        this.viewGenerator = viewFactory.getViewGenerator(output);
+    public MenuController(Environment environment, MenuItem mainMenu) {
+        this.input = environment.getInputReader();
+        this.output = environment.getViewPrinter();
+        this.viewGenerator = environment.getViewGenerator();
+        this.mainMenu = mainMenu;
     }
 
     public void processUserInput() {
@@ -31,7 +27,7 @@ public class MenuController {
             do {
                 output.printMessageWithKey("generalMessages", "menu.makeachoice");
                 int userChoice = readUserChoice();
-                chosenMenuItem = menu.getMenuItemByOptionId(userChoice);
+                chosenMenuItem = mainMenu.getMenuItemByOptionId(userChoice);
                 if (chosenMenuItem == null) output.printMessageWithKey("generalMessages", "input.menuoption.error");
             } while (chosenMenuItem == null);
 
@@ -48,7 +44,6 @@ public class MenuController {
     }
 
     private void showMenu() {
-        output.printlnString(viewGenerator.getMenuView(menu));
-
+        output.printString(viewGenerator.getMenuView(mainMenu));
     }
 }

@@ -1,6 +1,7 @@
 package com.stolser.javatraining.block02.morelessgame.model.menu;
 
 import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
+import com.stolser.javatraining.block02.morelessgame.model.Environment;
 import com.stolser.javatraining.block02.morelessgame.model.Game;
 import com.stolser.javatraining.block02.morelessgame.view.ViewFactory;
 import com.stolser.javatraining.block02.morelessgame.view.ViewGenerator;
@@ -8,13 +9,11 @@ import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
 public class SetRandomMaxCommand implements MenuCommand {
     private ViewPrinter output;
-    private ViewGenerator viewGenerator;
     private InputReader input;
 
-    public SetRandomMaxCommand(ViewFactory viewFactory, InputReader input) {
-        this.output = viewFactory.getViewPrinter();
-        this.viewGenerator = viewFactory.getViewGenerator(output);
-        this.input = input;
+    public SetRandomMaxCommand(Environment environment) {
+        this.output = environment.getViewPrinter();
+        this.input = environment.getInputReader();
     }
 
     @Override
