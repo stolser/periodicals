@@ -1,12 +1,12 @@
 package com.stolser.javatraining.block02.morelessgame.model;
 
 import com.google.common.collect.Range;
-import com.stolser.javatraining.block02.morelessgame.model.Game;
 
-import java.util.Arrays;
+import static com.stolser.javatraining.block02.morelessgame.model.Game.AttemptResult;
 
-import static com.stolser.javatraining.block02.morelessgame.model.Game.*;
-
+/**
+ * Represents an abstraction of user attempt to guess a number picked by the computer.
+ */
 public class UserAttempt {
     private int serialNo;
     private Range<Integer> currentRange;

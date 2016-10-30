@@ -27,7 +27,7 @@ public class MenuController {
             do {
                 output.printMessageWithKey("generalMessages", "menu.makeachoice");
                 int userChoice = readUserChoice();
-                chosenMenuItem = mainMenu.getMenuItemByOptionId(userChoice);
+                chosenMenuItem = mainMenu.getItemByOptionId(userChoice);
                 if (chosenMenuItem == null) output.printMessageWithKey("generalMessages", "input.menuoption.error");
             } while (chosenMenuItem == null);
 

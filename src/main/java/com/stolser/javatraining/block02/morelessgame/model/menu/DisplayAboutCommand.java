@@ -3,6 +3,10 @@ package com.stolser.javatraining.block02.morelessgame.model.menu;
 import com.stolser.javatraining.block02.morelessgame.model.Environment;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
+/**
+ * Is an action executed when menu item 'About' is chosen,
+ * namely it displays info about this program.
+ */
 public class DisplayAboutCommand implements MenuCommand {
     private ViewPrinter output;
 

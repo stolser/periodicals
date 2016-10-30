@@ -38,11 +38,18 @@ public class MenuItem {
         command.execute();
     }
 
-    public MenuItem getMenuItemByOptionId(int optionId) {
 
-        for(MenuItem item: items) {
+    /**
+     * Tries to find in this menu a MenuItem that is not a subMenu with this {@code optionId}
+     * among all items at any level. An item is not a subMenu and doesn't contains items of its one.
+     *
+     * @return a found MenuItem or {@code null} otherwise.
+     */
+    public MenuItem getItemByOptionId(int optionId) {
+
+        for (MenuItem item : items) {
             if (item.isSubMenu()) {
-                MenuItem result = item.getMenuItemByOptionId(optionId);
+                MenuItem result = item.getItemByOptionId(optionId);
                 if (result != null) return result;
             } else {
                 if (item.getOptionId() == optionId) return item;

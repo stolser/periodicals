@@ -12,6 +12,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.stolser.javatraining.block02.morelessgame.view.ViewPrinter.RANDOM_MAX_OUT_OF_LIMITS_EXCEPTION_TEXT;
+
+/**
+ * The class abstracting a game process.
+ */
 public class Game {
     public static final int RANDOM_MAX_LOW_LIMIT = 10;
     public static final int RANDOM_MAX_HIGH_LIMIT = 1000;
@@ -26,6 +32,7 @@ public class Game {
     private Range<Integer> currentRange;
     private int target;
     private boolean targetIsNotHit;
+    private int userInput;
 
     public Game(Environment environment) {
         output = environment.getViewPrinter();
@@ -58,38 +65,21 @@ public class Game {
         LOGGER.debug("Starting a new Game. Default range: {}...", currentRange);
 
         do {
-            int userNumber = getNewNumberFromUser();
-            UserAttempt newAttempt = new UserAttempt(nextAttemptSerialNo, currentRange);
-            nextAttemptSerialNo++;
-            newAttempt.setNumber(userNumber);
+            getNewNumberFromUser();
+            UserAttempt currentAttempt = createNewAttempt();
 
-            if (userNumber == target) {
-                newAttempt.setResult(AttemptResult.ATTEMPT_RESULT_SCORE);
-                targetIsNotHit = false;
-            } else {
-                if(userNumber < target) {
-                    newAttempt.setResult(AttemptResult.ATTEMPT_RESULT_TOO_SMALL);
-                    currentRange = Range.closed(userNumber + 1, currentRange.upperEndpoint());
-                } else {
-                    newAttempt.setResult(AttemptResult.ATTEMPT_RESULT_TOO_LARGE);
-                    currentRange = Range.closed(currentRange.lowerEndpoint(), userNumber - 1);
-                }
+            checkInputNumberAndUpdateCurrentAttempt(currentAttempt);
 
-                newAttempt.setNewRange(currentRange);
-            }
-
-            LOGGER.debug("newAttempt: {}", newAttempt);
-            userAttempts.add(newAttempt);
+            LOGGER.debug("newAttempt: {}", currentAttempt);
+            userAttempts.add(currentAttempt);
 
         } while (targetIsNotHit);
 
-        LOGGER.debug("...the target has been hit. The game is finished.");
-        output.printMessageWithKey("generalMessages", "game.targetIsHit");
-        output.printlnString(viewGenerator.getGameStatisticsView(userAttempts));
+        printStatisticsAboutGame();
 
     }
 
-    private int getNewNumberFromUser() {
+    private void getNewNumberFromUser() {
         int userNumber;
         String enterNextNumberMessage = MessageFormat.format(
                 output.getMessageWithKey("generalMessages", "menu.enterNextNumber"), currentRange);
@@ -104,11 +94,47 @@ public class Game {
 
         } while (userEnteredIncorrectValue(userNumber));
 
-        return userNumber;
+        userInput = userNumber;
+    }
+
+    private UserAttempt createNewAttempt() {
+        UserAttempt newAttempt = new UserAttempt(nextAttemptSerialNo, currentRange);
+        nextAttemptSerialNo++;
+        newAttempt.setNumber(userInput);
+        return newAttempt;
+    }
+
+    private void checkInputNumberAndUpdateCurrentAttempt(UserAttempt currentAttempt) {
+        if (userGuessedTheNumber()) {
+            currentAttempt.setResult(AttemptResult.ATTEMPT_RESULT_SCORE);
+            targetIsNotHit = false;
+        } else {
+            if(userInput < target) {
+                currentAttempt.setResult(AttemptResult.ATTEMPT_RESULT_TOO_SMALL);
+                currentRange = getUpperSubRange();
+            } else {
+                currentAttempt.setResult(AttemptResult.ATTEMPT_RESULT_TOO_LARGE);
+                currentRange = getLowerSubRange();
+            }
+
+            currentAttempt.setNewRange(currentRange);
+        }
+    }
+
+    private boolean userGuessedTheNumber() {
+        return (userInput == target);
+    }
+
+    private Range<Integer> getLowerSubRange() {
+        return Range.closed(currentRange.lowerEndpoint(), userInput - 1);
+    }
+
+    private Range<Integer> getUpperSubRange() {
+        return Range.closed(userInput + 1, currentRange.upperEndpoint());
     }
 
     private boolean userEnteredIncorrectValue(int userNumber) {
-        return !currentRange.contains(userNumber);
+        return ! currentRange.contains(userNumber);
     }
 
     /*
@@ -126,8 +152,9 @@ public class Game {
     }
 
     public static void setRandomMaxDefault(int newValue) {
-        if(newValue < RANDOM_MAX_LOW_LIMIT || newValue > RANDOM_MAX_HIGH_LIMIT)
-            throw new IllegalArgumentException();
+        checkArgument((newValue >= RANDOM_MAX_LOW_LIMIT)
+                        && (newValue <= RANDOM_MAX_HIGH_LIMIT), RANDOM_MAX_OUT_OF_LIMITS_EXCEPTION_TEXT);
+
         randomMaxDefault = newValue;
     }
 
@@ -135,7 +162,9 @@ public class Game {
         return randomMinDefault;
     }
 
-    public static int getRandomMaxDefault() {
-        return randomMaxDefault;
+    private void printStatisticsAboutGame() {
+        LOGGER.debug("...the target has been hit. The game is finished.");
+        output.printlnMessageWithKey("generalMessages", "game.targetIsHit");
+        output.printlnString(viewGenerator.getGameStatisticsView(userAttempts));
     }
 }
