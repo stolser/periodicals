@@ -22,11 +22,11 @@ public class Game {
     public static final int RANDOM_MAX_LOW_LIMIT = 10;
     public static final int RANDOM_MAX_HIGH_LIMIT = 1000;
     private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
+    private static int randomMinDefault = 0;
+    private static int randomMaxDefault = 100;
     private ViewPrinter output;
     private ViewGenerator viewGenerator;
     private InputReader input;
-    private static int randomMinDefault = 0;
-    private static int randomMaxDefault = 100;
     private int nextAttemptSerialNo = 1;
     private List<UserAttempt> userAttempts;
     private Range<Integer> currentRange;
@@ -38,7 +38,7 @@ public class Game {
         output = environment.getViewPrinter();
         viewGenerator = environment.getViewGenerator();
         input = environment.getInputReader();
-        target = randomInt();
+        target = Utils.randomInt();
         userAttempts = new LinkedList<>();
         currentRange = Range.closed(randomMinDefault, randomMaxDefault);
         targetIsNotHit = true;
@@ -137,20 +137,6 @@ public class Game {
         return ! currentRange.contains(userNumber);
     }
 
-    /*
-    * Generates a random integer from the range [min;max] using an equality:
-    * random[min;max] = random[0;max-min] + min;
-    * Because the upper limit should be inclusive and standard nexInt() uses an exclusive one
-    * we use '+1'.
-    */
-    private int randomInt(int min, int max) {
-        return (ThreadLocalRandom.current().nextInt(max - min + 1) + min);
-    }
-
-    private int randomInt() {
-        return randomInt(randomMinDefault, randomMaxDefault);
-    }
-
     public static void setRandomMaxDefault(int newValue) {
         checkArgument((newValue >= RANDOM_MAX_LOW_LIMIT)
                         && (newValue <= RANDOM_MAX_HIGH_LIMIT), RANDOM_MAX_OUT_OF_LIMITS_EXCEPTION_TEXT);
@@ -160,6 +146,10 @@ public class Game {
 
     public static int getRandomMinDefault() {
         return randomMinDefault;
+    }
+
+    public static int getRandomMaxDefault() {
+        return randomMaxDefault;
     }
 
     private void printStatisticsAboutGame() {
