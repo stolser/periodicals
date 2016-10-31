@@ -2,6 +2,8 @@ package com.stolser.javatraining.block02.morelessgame.model;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 public final class Utils {
     private Utils() {}
 
@@ -17,6 +19,7 @@ public final class Utils {
      * @return - a pseudo-random integer number from the range [min;max].
      */
     public static int randomInt(int min, int max) {
+        checkArgument(min <= max);
         return (ThreadLocalRandom.current().nextInt(max - min + 1) + min);
     }
 
