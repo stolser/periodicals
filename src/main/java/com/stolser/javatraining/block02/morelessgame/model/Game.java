@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import java.text.MessageFormat;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.stolser.javatraining.block02.morelessgame.view.ViewPrinter.RANDOM_MAX_OUT_OF_LIMITS_EXCEPTION_TEXT;
@@ -42,23 +41,6 @@ public class Game {
         userAttempts = new LinkedList<>();
         currentRange = Range.closed(randomMinDefault, randomMaxDefault);
         targetIsNotHit = true;
-    }
-
-    enum AttemptResult {
-        ATTEMPT_RESULT_TOO_SMALL("too small"),
-        ATTEMPT_RESULT_TOO_LARGE("too large"),
-        ATTEMPT_RESULT_SCORE("score!");
-
-        private String description;
-
-        AttemptResult(String description) {
-            this.description = description;
-        }
-
-        @Override
-        public String toString() {
-            return description;
-        }
     }
 
     public void start() {
@@ -106,14 +88,14 @@ public class Game {
 
     private void checkInputNumberAndUpdateCurrentAttempt(UserAttempt currentAttempt) {
         if (userGuessedTheNumber()) {
-            currentAttempt.setResult(AttemptResult.ATTEMPT_RESULT_SCORE);
+            currentAttempt.setResult(UserAttempt.AttemptResult.ATTEMPT_RESULT_SCORE);
             targetIsNotHit = false;
         } else {
             if(userInput < target) {
-                currentAttempt.setResult(AttemptResult.ATTEMPT_RESULT_TOO_SMALL);
+                currentAttempt.setResult(UserAttempt.AttemptResult.ATTEMPT_RESULT_TOO_SMALL);
                 currentRange = getUpperSubRange();
             } else {
-                currentAttempt.setResult(AttemptResult.ATTEMPT_RESULT_TOO_LARGE);
+                currentAttempt.setResult(UserAttempt.AttemptResult.ATTEMPT_RESULT_TOO_LARGE);
                 currentRange = getLowerSubRange();
             }
 

@@ -2,8 +2,6 @@ package com.stolser.javatraining.block02.morelessgame.model;
 
 import com.google.common.collect.Range;
 
-import static com.stolser.javatraining.block02.morelessgame.model.Game.AttemptResult;
-
 /**
  * Represents an abstraction of user attempt to guess a number picked by the computer.
  */
@@ -17,6 +15,23 @@ public class UserAttempt {
     public UserAttempt(int serialNo, Range<Integer> currentRange) {
         this.serialNo = serialNo;
         this.currentRange = currentRange;
+    }
+
+    enum AttemptResult {
+        ATTEMPT_RESULT_TOO_SMALL("too small"),
+        ATTEMPT_RESULT_TOO_LARGE("too large"),
+        ATTEMPT_RESULT_SCORE("score!");
+
+        private String description;
+
+        AttemptResult(String description) {
+            this.description = description;
+        }
+
+        @Override
+        public String toString() {
+            return description;
+        }
     }
 
     public void setNewRange(Range<Integer> newRange) {
