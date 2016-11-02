@@ -9,6 +9,6 @@ import java.util.List;
  * Implementations of this interface generate specific view presentations of different information blocks.
  */
 public interface ViewGenerator {
-    String getMenuView(MenuItem menu);
+    String getMainMenuView(MenuItem menu);
     String getGameStatisticsView(List<UserAttempt> userAttempts);
 }

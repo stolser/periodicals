@@ -46,6 +46,8 @@ public class Game {
     public void start() {
         LOGGER.debug("Starting a new Game. Default range: {}...", currentRange);
 
+        displayGameStartMessage();
+
         do {
             getNewNumberFromUser();
             UserAttempt currentAttempt = createNewAttempt();
@@ -59,6 +61,10 @@ public class Game {
 
         printStatisticsAboutGame();
 
+    }
+
+    private void displayGameStartMessage() {
+        output.printlnMessageWithKey("generalMessages", "game.startMessage");
     }
 
     private void getNewNumberFromUser() {

@@ -44,6 +44,6 @@ public class MenuController {
     }
 
     private void showMenu() {
-        output.printString(viewGenerator.getMenuView(mainMenu));
+        output.printString(viewGenerator.getMainMenuView(mainMenu));
     }
 }
