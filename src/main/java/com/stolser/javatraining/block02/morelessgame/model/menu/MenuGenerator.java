@@ -5,10 +5,19 @@ import com.stolser.javatraining.block02.morelessgame.model.Environment;
 
 import java.util.Arrays;
 
+/**
+ * A utility class encapsulating static methods for creating different menus for the application.
+ */
 public final class MenuGenerator {
     private MenuGenerator() {
     }
 
+    /**
+     * Encapsulates the structure of the Main Menu (sub-menus and menu-items)
+     * and behavior of each menu-item.
+     * @param environment - contains all helper classes used by this app.
+     * @return an instance of the Main Menu for the app.
+     */
     static public MenuItem newMainMenu(Environment environment) {
         MenuItem playGame = new MenuItem(null, "playGame", 1);
         playGame.setCommand(new PlayGameCommand(environment));

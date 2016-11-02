@@ -4,6 +4,10 @@ import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
 import com.stolser.javatraining.block02.morelessgame.view.ViewGenerator;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
+/**
+ * A convenient class encapsulating classes for working with input and output
+ * for this instance of the application.
+ */
 public class Environment {
     private InputReader inputReader;
     private ViewPrinter viewPrinter;

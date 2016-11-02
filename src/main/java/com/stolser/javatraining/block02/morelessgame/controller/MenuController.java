@@ -5,6 +5,10 @@ import com.stolser.javatraining.block02.morelessgame.model.menu.MenuItem;
 import com.stolser.javatraining.block02.morelessgame.view.ViewGenerator;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
+/**
+ * The main class that is responsible for processing user input
+ * and dispatching him to an appropriate action class.
+ */
 public class MenuController {
     private MenuItem mainMenu;
     private InputReader input;

@@ -10,7 +10,14 @@ import com.stolser.javatraining.block02.morelessgame.view.ViewFactory;
 import com.stolser.javatraining.block02.morelessgame.view.ViewGenerator;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
+/**
+ * The main class of the More-Less game.
+ */
 public class Application {
+    /**
+     * Instantiate all classes necessary for the application and
+     * starts the game.
+     */
     public void start() {
         Environment environment = createEnvironment();
         MenuItem mainMenu = MenuGenerator.newMainMenu(environment);

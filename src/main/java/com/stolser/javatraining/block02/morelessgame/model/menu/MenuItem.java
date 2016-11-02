@@ -4,10 +4,27 @@ import com.stolser.javatraining.block02.morelessgame.controller.menu.MenuCommand
 
 import java.util.List;
 
+/**
+ * Represents an abstraction for a menu-item.
+ */
 public class MenuItem {
+    /**
+     * All sub-menus and menu-items composing this menu.
+     */
     private List<MenuItem> items;
+    /**
+     * A system name of an menu-item that is used for i18n as keys in *.properties files.
+     */
     private String systemName;
+    /**
+     * An integer that is associated with this menu-item. It is displayed as values that
+     * user has to enter on a command line in order to select a respective menu-item.
+     */
     private int optionId;
+    /**
+     * Represents an action that will be performed when a user chooses this menu-item.
+     * Implemented as The Command Design Pattern.
+     */
     private MenuCommand command;
 
     public MenuItem(List<MenuItem> items, String systemName, int optionId) {

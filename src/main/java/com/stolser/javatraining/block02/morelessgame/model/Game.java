@@ -18,19 +18,46 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class Game {
     private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
+    /**
+     * The minimum distance between the lower and upper bound in the initial range.
+     */
     private static final int MINIMUM_RANGE_SIZE = 10;
     private static final int LOWER_BOUND_MIN = -1000;
     private static final int UPPER_BOUND_MAX = 1000;
+    /**
+     * A default value for the Lower Bound of the range.
+     */
     private static int lowerBoundDefault = 0;
+    /**
+     * A default value for the Upper Bound of the range.
+     */
     private static int upperBoundDefault = 100;
     private ViewPrinter output;
     private ViewGenerator viewGenerator;
     private InputReader input;
+    /**
+     * An attempt counter for the current game.
+     */
     private int nextAttemptSerialNo = 1;
+    /**
+     * All attempts of a user during this game.
+     */
     private List<UserAttempt> userAttempts;
+    /**
+     * The current range in which the secret number resides.
+     */
     private Range<Integer> currentRange;
+    /**
+     * The secret number that the computer has picked.
+     */
     private int target;
+    /**
+     * A flag showing whether a user has guessed the secret number or not.
+     */
     private boolean targetIsNotHit;
+    /**
+     * The number picked by a user during the current attempt.
+     */
     private int userInput;
 
     public Game(Environment environment) {
@@ -43,6 +70,9 @@ public class Game {
         targetIsNotHit = true;
     }
 
+    /**
+     * Starts the game.
+     */
     public void start() {
         LOGGER.debug("Starting a new Game. Default range: {}...", currentRange);
 
