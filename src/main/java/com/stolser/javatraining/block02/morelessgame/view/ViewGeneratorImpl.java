@@ -70,7 +70,7 @@ class ViewGeneratorImpl implements ViewGenerator {
                     attempt.getSerialNo(),
                     attempt.getCurrentRange(),
                     attempt.getNumber(),
-                    attempt.getResult(),
+                    output.getMessageWithKey("generalMessages", attempt.getResult().toString()),
                     attempt.getNewRange()));
         }
 

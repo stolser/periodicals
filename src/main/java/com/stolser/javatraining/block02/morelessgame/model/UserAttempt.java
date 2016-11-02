@@ -17,20 +17,20 @@ public class UserAttempt {
         this.currentRange = currentRange;
     }
 
-    enum AttemptResult {
-        ATTEMPT_RESULT_TOO_SMALL("too small"),
-        ATTEMPT_RESULT_TOO_LARGE("too large"),
-        ATTEMPT_RESULT_SCORE("score!");
+    public enum AttemptResult {
+        ATTEMPT_RESULT_TOO_SMALL("attemptResult.tooSmall"),
+        ATTEMPT_RESULT_TOO_LARGE("attemptResult.tooLarge"),
+        ATTEMPT_RESULT_SCORE("attemptResult.score");
 
-        private String description;
+        private String systemName;
 
-        AttemptResult(String description) {
-            this.description = description;
+        AttemptResult(String systemName) {
+            this.systemName = systemName;
         }
 
         @Override
         public String toString() {
-            return description;
+            return systemName;
         }
     }
 
