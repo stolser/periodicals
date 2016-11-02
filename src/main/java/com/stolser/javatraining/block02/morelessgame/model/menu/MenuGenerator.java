@@ -13,13 +13,17 @@ public final class MenuGenerator {
         MenuItem playGame = new MenuItem(null, "playGame", 1);
         playGame.setCommand(new PlayGameCommand(environment));
 
-        MenuItem setRandomMax = new MenuItem(null, "setRandomMax", 21);
-        setRandomMax.setCommand(new SetUpperBoundCommand(environment));
+        MenuItem setLowerBound = new MenuItem(null, "setLowerBound", 21);
+        setLowerBound.setCommand(new SetLowerBoundCommand(environment));
 
-        MenuItem setLanguage = new MenuItem(null, "setLanguage", 22);
+        MenuItem setUpperBound = new MenuItem(null, "setUpperBound", 22);
+        setUpperBound.setCommand(new SetUpperBoundCommand(environment));
+
+        MenuItem setLanguage = new MenuItem(null, "setLanguage", 23);
         setLanguage.setCommand(new SetLanguageCommand(environment));
 
-        MenuItem settings = new MenuItem(Arrays.asList(setRandomMax, setLanguage), "settings", 2);
+        MenuItem settings = new MenuItem(Arrays.asList(setLowerBound, setUpperBound, setLanguage),
+                "settings", 2);
 
         MenuItem instructions = new MenuItem(null, "instructions", 3);
         instructions.setCommand(new DisplayInstructionsCommand(environment));
@@ -31,6 +35,6 @@ public final class MenuGenerator {
 
         return new MenuItem(
                 Arrays.asList(playGame, settings, instructions, about, exit),
-                "mainMenu", 1);
+                "mainMenu", 0);
     }
 }

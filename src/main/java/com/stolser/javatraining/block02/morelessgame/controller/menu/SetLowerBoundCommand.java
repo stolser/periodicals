@@ -7,26 +7,19 @@ import com.stolser.javatraining.block02.morelessgame.model.Game;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
 import java.text.MessageFormat;
-import java.text.NumberFormat;
 
-/**
- * Is an action executed when menu item 'Set Random Max Limit' is chosen,
- * namely it asks a user a new value and set it for all
- * {@link com.stolser.javatraining.block02.morelessgame.model.Game}s.
- * These changes take effect immediately.
- */
-public class SetUpperBoundCommand implements MenuCommand {
+public class SetLowerBoundCommand implements MenuCommand {
     private ViewPrinter output;
     private InputReader input;
 
-    public SetUpperBoundCommand(Environment environment) {
+    public SetLowerBoundCommand(Environment environment) {
         this.output = environment.getViewPrinter();
         this.input = environment.getInputReader();
     }
 
     @Override
     public void execute() {
-        Game.setUpperBoundDefault(getNewValueFromUser());
+        Game.setLowerBoundDefault(getNewValueFromUser());
     }
 
     private int getNewValueFromUser() {
@@ -36,7 +29,7 @@ public class SetUpperBoundCommand implements MenuCommand {
         do {
             askUserToEnterNewValue();
             newValue = input.readIntValue();
-            userEnteredIncorrectValue = ! Game.isValueForUpperBoundOk(newValue);
+            userEnteredIncorrectValue = ! Game.isValueForLowerBoundOk(newValue);
 
             if (userEnteredIncorrectValue) {
                 output.printMessageWithKey("generalMessages", "input.boundLimit.error");
@@ -48,10 +41,10 @@ public class SetUpperBoundCommand implements MenuCommand {
     }
 
     private void askUserToEnterNewValue() {
-        Range<Integer> upperBoundLimits = Game.getUpperBoundLimits();
+        Range<Integer> lowerBoundLimits = Game.getLowerBoundLimits();
         output.printString(MessageFormat.format(
-                output.getMessageWithKey("generalMessages", "menu.enterNewUpperBound"),
-                output.getLocalizedNumber(upperBoundLimits.lowerEndpoint()),
-                output.getLocalizedNumber(upperBoundLimits.upperEndpoint())));
+                output.getMessageWithKey("generalMessages", "menu.enterNewLowerBound"),
+                output.getLocalizedNumber(lowerBoundLimits.lowerEndpoint()),
+                output.getLocalizedNumber(lowerBoundLimits.upperEndpoint())));
     }
 }
