@@ -1,6 +1,7 @@
 package com.stolser.javatraining.block02.morelessgame.view;
 
 import java.io.*;
+import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -41,5 +42,10 @@ class ViewPrinterImpl implements ViewPrinter {
     public String getMessageWithKey(String bundleName, String key) {
         ResourceBundle bundle = ResourceBundle.getBundle("i18n/"+ bundleName, locale);
         return bundle.getString(key);
+    }
+
+    @Override
+    public String getLocalizedNumber(Number number) {
+        return NumberFormat.getInstance(locale).format(number);
     }
 }

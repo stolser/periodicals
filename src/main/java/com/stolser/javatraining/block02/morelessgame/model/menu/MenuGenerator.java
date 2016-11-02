@@ -1,5 +1,6 @@
 package com.stolser.javatraining.block02.morelessgame.model.menu;
 
+import com.stolser.javatraining.block02.morelessgame.controller.menu.*;
 import com.stolser.javatraining.block02.morelessgame.model.Environment;
 
 import java.util.Arrays;
@@ -13,7 +14,7 @@ public final class MenuGenerator {
         playGame.setCommand(new PlayGameCommand(environment));
 
         MenuItem setRandomMax = new MenuItem(null, "setRandomMax", 21);
-        setRandomMax.setCommand(new SetRandomMaxCommand(environment));
+        setRandomMax.setCommand(new SetUpperBoundCommand(environment));
 
         MenuItem setLanguage = new MenuItem(null, "setLanguage", 22);
         setLanguage.setCommand(new SetLanguageCommand(environment));

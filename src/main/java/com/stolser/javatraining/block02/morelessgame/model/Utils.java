@@ -24,6 +24,6 @@ public final class Utils {
     }
 
     public static int randomInt() {
-        return randomInt(Game.getRandomMinDefault(), Game.getRandomMaxDefault());
+        return randomInt(Game.getLowerBoundDefault(), Game.getUpperBoundDefault());
     }
 }

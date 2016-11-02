@@ -1,5 +1,7 @@
 package com.stolser.javatraining.block02.morelessgame.model.menu;
 
+import com.stolser.javatraining.block02.morelessgame.controller.menu.MenuCommand;
+
 import java.util.List;
 
 public class MenuItem {

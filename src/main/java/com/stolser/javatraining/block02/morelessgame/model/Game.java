@@ -12,17 +12,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.stolser.javatraining.block02.morelessgame.view.ViewPrinter.RANDOM_MAX_OUT_OF_LIMITS_EXCEPTION_TEXT;
 
 /**
  * The class abstracting a game process.
  */
 public class Game {
-    public static final int RANDOM_MAX_LOW_LIMIT = 10;
-    public static final int RANDOM_MAX_HIGH_LIMIT = 1000;
     private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
-    private static int randomMinDefault = 0;
-    private static int randomMaxDefault = 100;
+    private static final int MINIMUM_RANGE_SIZE = 10;
+    private static final int LOWER_BOUND_MIN = -1000;
+    private static final int UPPER_BOUND_MAX = 1000;
+    private static int lowerBoundDefault = 0;
+    private static int upperBoundDefault = 100;
     private ViewPrinter output;
     private ViewGenerator viewGenerator;
     private InputReader input;
@@ -39,7 +39,7 @@ public class Game {
         input = environment.getInputReader();
         target = Utils.randomInt();
         userAttempts = new LinkedList<>();
-        currentRange = Range.closed(randomMinDefault, randomMaxDefault);
+        currentRange = Range.closed(lowerBoundDefault, upperBoundDefault);
         targetIsNotHit = true;
     }
 
@@ -125,19 +125,40 @@ public class Game {
         return ! currentRange.contains(userNumber);
     }
 
-    public static void setRandomMaxDefault(int newValue) {
-        checkArgument((newValue >= RANDOM_MAX_LOW_LIMIT)
-                        && (newValue <= RANDOM_MAX_HIGH_LIMIT), RANDOM_MAX_OUT_OF_LIMITS_EXCEPTION_TEXT);
-
-        randomMaxDefault = newValue;
+    public static Range<Integer> getLowerBoundLimits() {
+        return Range.closed(LOWER_BOUND_MIN,
+                upperBoundDefault - MINIMUM_RANGE_SIZE);
     }
 
-    public static int getRandomMinDefault() {
-        return randomMinDefault;
+    public static boolean isValueForLowerBoundOk(int newValue) {
+        return getLowerBoundLimits().contains(newValue);
     }
 
-    public static int getRandomMaxDefault() {
-        return randomMaxDefault;
+    public static void setLowerBoundDefault(int newValue) {
+        checkArgument(isValueForLowerBoundOk(newValue));
+        lowerBoundDefault = newValue;
+    }
+
+    public static Range<Integer> getUpperBoundLimits() {
+        return Range.closed(lowerBoundDefault + MINIMUM_RANGE_SIZE,
+                UPPER_BOUND_MAX);
+    }
+
+    public static boolean isValueForUpperBoundOk(int newValue) {
+        return getUpperBoundLimits().contains(newValue);
+    }
+
+    public static void setUpperBoundDefault(int newValue) {
+        checkArgument(isValueForUpperBoundOk(newValue));
+        upperBoundDefault = newValue;
+    }
+
+    public static int getLowerBoundDefault() {
+        return lowerBoundDefault;
+    }
+
+    public static int getUpperBoundDefault() {
+        return upperBoundDefault;
     }
 
     private void printStatisticsAboutGame() {
