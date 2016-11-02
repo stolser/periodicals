@@ -1,4 +1,4 @@
-package com.stolser.javatraining.block02.morelessgame.model.menu;
+package com.stolser.javatraining.block02.morelessgame.controller.menu;
 
 /**
  * An interface that along with all classes implementing it is part of

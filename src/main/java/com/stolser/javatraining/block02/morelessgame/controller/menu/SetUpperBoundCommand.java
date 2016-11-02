@@ -1,9 +1,13 @@
-package com.stolser.javatraining.block02.morelessgame.model.menu;
+package com.stolser.javatraining.block02.morelessgame.controller.menu;
 
+import com.google.common.collect.Range;
 import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
 import com.stolser.javatraining.block02.morelessgame.model.Environment;
 import com.stolser.javatraining.block02.morelessgame.model.Game;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
+
+import java.text.MessageFormat;
+import java.text.NumberFormat;
 
 /**
  * Is an action executed when menu item 'Set Random Max Limit' is chosen,
@@ -11,42 +15,43 @@ import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
  * {@link com.stolser.javatraining.block02.morelessgame.model.Game}s.
  * These changes take effect immediately.
  */
-public class SetRandomMaxCommand implements MenuCommand {
+public class SetUpperBoundCommand implements MenuCommand {
     private ViewPrinter output;
     private InputReader input;
 
-    public SetRandomMaxCommand(Environment environment) {
+    public SetUpperBoundCommand(Environment environment) {
         this.output = environment.getViewPrinter();
         this.input = environment.getInputReader();
     }
 
     @Override
     public void execute() {
-        Game.setRandomMaxDefault(getNewRandomMaxFromUser());
+        Game.setUpperBoundDefault(getNewValueFromUser());
     }
 
-    private int getNewRandomMaxFromUser() {
+    private int getNewValueFromUser() {
         int newValue;
+        boolean userEnteredIncorrectValue;
 
         do {
             askUserToEnterNewValue();
             newValue = input.readIntValue();
-            if (userEnteredIncorrectValue(newValue)) {
+            userEnteredIncorrectValue = ! Game.isValueForUpperBoundOk(newValue);
+
+            if (userEnteredIncorrectValue) {
                 output.printMessageWithKey("generalMessages", "input.randomMax.error");
             }
 
-        } while (userEnteredIncorrectValue(newValue));
+        } while (userEnteredIncorrectValue);
 
         return newValue;
     }
 
     private void askUserToEnterNewValue() {
-        output.printMessageWithKey("generalMessages", "menu.enterNewRandomMaxValue");
-    }
-
-    private boolean userEnteredIncorrectValue(int value) {
-        return (value < Game.RANDOM_MAX_LOW_LIMIT
-                || value > Game.RANDOM_MAX_HIGH_LIMIT
-                || value <= Game.getRandomMinDefault());
+        Range<Integer> upperBoundLimits = Game.getUpperBoundLimits();
+        output.printString(MessageFormat.format(
+                output.getMessageWithKey("generalMessages", "menu.enterNewUpperBound"),
+                output.getLocalizedNumber(upperBoundLimits.lowerEndpoint()),
+                output.getLocalizedNumber(upperBoundLimits.upperEndpoint())));
     }
 }

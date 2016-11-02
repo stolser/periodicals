@@ -1,4 +1,4 @@
-package com.stolser.javatraining.block02.morelessgame.model.menu;
+package com.stolser.javatraining.block02.morelessgame.controller.menu;
 
 import com.stolser.javatraining.block02.morelessgame.model.Environment;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
