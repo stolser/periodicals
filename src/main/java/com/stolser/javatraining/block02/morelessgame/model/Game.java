@@ -14,47 +14,82 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * The class abstracting a game process.
+ * Represents an abstraction of a game process. It contains methods for
+ * <ul><li>checking and changing lower and upper bounds of the range
+ * from which computer pick a secret number;</li>
+ * <li>starting a new game;</li>
+ * </ul>
  */
 public class Game {
     private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
+
     /**
      * The minimum distance between the lower and upper bound in the initial range.
      */
     private static final int MINIMUM_RANGE_SIZE = 10;
+
+    /**
+     * The smallest possible custom lowerBound. User cannot set the lowerBound
+     * smaller than that number.
+     */
     private static final int LOWER_BOUND_MIN = -1000;
+
+    /**
+     * The biggest possible custom upperBound. User cannot set the upperBound
+     * bigger than that number.
+     */
     private static final int UPPER_BOUND_MAX = 1000;
+
     /**
      * A default value for the Lower Bound of the range.
      */
     private static int lowerBoundDefault = 0;
+
     /**
      * A default value for the Upper Bound of the range.
      */
     private static int upperBoundDefault = 100;
+
+    /**
+     * Used to get and print i18ned messages.
+     */
     private ViewPrinter output;
+
+    /**
+     * User to get view representations for some blocks.
+     */
     private ViewGenerator viewGenerator;
+
+    /**
+     * Used to display messages to a user.
+     */
     private InputReader input;
+
     /**
      * An attempt counter for the current game.
      */
     private int nextAttemptSerialNo = 1;
+
     /**
      * All attempts of a user during this game.
      */
     private List<UserAttempt> userAttempts;
+
     /**
      * The current range in which the secret number resides.
      */
     private Range<Integer> currentRange;
+
     /**
      * The secret number that the computer has picked.
      */
     private int target;
+
     /**
      * A flag showing whether a user has guessed the secret number or not.
      */
     private boolean targetIsNotHit;
+
     /**
      * The number picked by a user during the current attempt.
      */
@@ -106,7 +141,7 @@ public class Game {
             output.printString(enterNextNumberMessage);
             userNumber = input.readIntValue();
             LOGGER.debug("userNumber = {}", userNumber);
-            if(userEnteredIncorrectValue(userNumber)) {
+            if (userEnteredIncorrectValue(userNumber)) {
                 output.printMessageWithKey("generalMessages", "input.enterNextNumber.error");
             }
 
@@ -127,7 +162,7 @@ public class Game {
             currentAttempt.setResult(UserAttempt.AttemptResult.ATTEMPT_RESULT_SCORE);
             targetIsNotHit = false;
         } else {
-            if(userInput < target) {
+            if (userInput < target) {
                 currentAttempt.setResult(UserAttempt.AttemptResult.ATTEMPT_RESULT_TOO_SMALL);
                 currentRange = getUpperSubRange();
             } else {
@@ -152,7 +187,7 @@ public class Game {
     }
 
     private boolean userEnteredIncorrectValue(int userNumber) {
-        return ! currentRange.contains(userNumber);
+        return !currentRange.contains(userNumber);
     }
 
     public static Range<Integer> getLowerBoundLimits() {

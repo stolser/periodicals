@@ -16,7 +16,7 @@ import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 public class Application {
     /**
      * Instantiate all classes necessary for the application and
-     * starts the game.
+     * starts a new game.
      */
     public void start() {
         Environment environment = createEnvironment();
