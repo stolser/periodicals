@@ -2,7 +2,6 @@ package com.stolser.javatraining.block02.morelessgame.controller.menu;
 
 import com.stolser.javatraining.block02.morelessgame.model.Environment;
 import com.stolser.javatraining.block02.morelessgame.model.GameFactory;
-import com.stolser.javatraining.block02.morelessgame.model.MoreLessGame;
 
 /**
  * Is an action executed when menu item 'Play MoreLessGame' is chosen,

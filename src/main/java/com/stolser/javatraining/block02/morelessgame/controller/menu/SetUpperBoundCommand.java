@@ -9,9 +9,8 @@ import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 import java.text.MessageFormat;
 
 /**
- * Is an action executed when menu item 'Set Random Max Limit' is chosen,
- * namely it asks a user a new value and set it for all
- * {@link MoreLessGame}s.
+ * Is an action executed when menu item 'Set Upper Bound' is chosen,
+ * namely it asks a user a new value and set it for the game.
  * These changes take effect immediately.
  */
 public class SetUpperBoundCommand implements MenuCommand {

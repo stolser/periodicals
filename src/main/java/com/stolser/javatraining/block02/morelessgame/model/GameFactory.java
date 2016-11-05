@@ -1,5 +1,7 @@
 package com.stolser.javatraining.block02.morelessgame.model;
 
+import com.stolser.javatraining.block02.morelessgame.controller.MoreLessGameController;
+
 public class GameFactory {
     private Environment environment;
 
@@ -8,7 +10,7 @@ public class GameFactory {
     }
 
     public Game newMoreLessGame() {
-        Game newGame = new MoreLessGame();
+        Game newGame = new MoreLessGameController(new MoreLessGame());
         newGame.setup(environment);
 
         return newGame;

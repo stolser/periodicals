@@ -5,6 +5,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.google.common.base.Preconditions.checkArgument;
 
 public final class Utils {
+    private static final int LOWER_BOUND_DEFAULT = 0;
+    private static final int UPPER_BOUND_DEFAULT = 100;
+
     private Utils() {}
 
     /**
@@ -24,6 +27,6 @@ public final class Utils {
     }
 
     public static int randomInt() {
-        return randomInt(MoreLessGame.getLowerBoundDefault(), MoreLessGame.getUpperBoundDefault());
+        return randomInt(LOWER_BOUND_DEFAULT, UPPER_BOUND_DEFAULT);
     }
 }
