@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 public class ConsoleInputReader implements InputReader {
     private static final String GENERAL_MESSAGE_BUNDLE = "generalMessages";
-    private static final InputStream INPUT_STREAM = System.in;
     private static final String INPUT_INTEGER_ERROR = "input.integer.error";
 
     private Scanner scanner;
@@ -15,7 +14,7 @@ public class ConsoleInputReader implements InputReader {
 
     public ConsoleInputReader(ViewPrinter output) {
         this.output = output;
-        this.scanner = new Scanner(INPUT_STREAM);
+        this.scanner = new Scanner(System.in);
     }
 
     @Override
