@@ -4,41 +4,41 @@ import com.google.common.collect.Range;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class GameTest {
+public class MoreLessGameTest {
 
     @Test
     public void setRandomMaxDefaultWithCorrectValueShouldChangeIt() {
         int newValue = 250;
-        Game.setUpperBoundDefault(newValue);
+        MoreLessGame.setUpperBoundDefault(newValue);
 
-        Assert.assertEquals(newValue, Game.getUpperBoundDefault());
+        Assert.assertEquals(newValue, MoreLessGame.getUpperBoundDefault());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void setLowerBoundShouldThrowExceptionIfArgumentLessThanMin() {
-        Range<Integer> lowerBoundRange = Game.getLowerBoundLimits();
+        Range<Integer> lowerBoundRange = MoreLessGame.getLowerBoundLimits();
 
-        Game.setLowerBoundDefault(lowerBoundRange.lowerEndpoint() - 1);
+        MoreLessGame.setLowerBoundDefault(lowerBoundRange.lowerEndpoint() - 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void setLowerBoundShouldThrowExceptionIfArgumentMoreThanMax() {
-        Range<Integer> lowerBoundRange = Game.getLowerBoundLimits();
+        Range<Integer> lowerBoundRange = MoreLessGame.getLowerBoundLimits();
 
-        Game.setLowerBoundDefault(lowerBoundRange.upperEndpoint() + 1);
+        MoreLessGame.setLowerBoundDefault(lowerBoundRange.upperEndpoint() + 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void setUpperBoundShouldThrowExceptionIfArgumentLessThanMin() {
-        Range<Integer> upperBoundRange = Game.getUpperBoundLimits();
+        Range<Integer> upperBoundRange = MoreLessGame.getUpperBoundLimits();
 
-        Game.setUpperBoundDefault(upperBoundRange.lowerEndpoint() - 1);
+        MoreLessGame.setUpperBoundDefault(upperBoundRange.lowerEndpoint() - 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void setUpperBoundShouldThrowExceptionIfArgumentMoreThanMax() {
-        Range<Integer> upperBoundRange = Game.getUpperBoundLimits();
+        Range<Integer> upperBoundRange = MoreLessGame.getUpperBoundLimits();
 
-        Game.setUpperBoundDefault(upperBoundRange.upperEndpoint() + 1);
+        MoreLessGame.setUpperBoundDefault(upperBoundRange.upperEndpoint() + 1);
     }
 }

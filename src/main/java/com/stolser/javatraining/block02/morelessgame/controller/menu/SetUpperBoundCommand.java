@@ -3,16 +3,15 @@ package com.stolser.javatraining.block02.morelessgame.controller.menu;
 import com.google.common.collect.Range;
 import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
 import com.stolser.javatraining.block02.morelessgame.model.Environment;
-import com.stolser.javatraining.block02.morelessgame.model.Game;
+import com.stolser.javatraining.block02.morelessgame.model.MoreLessGame;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
 import java.text.MessageFormat;
-import java.text.NumberFormat;
 
 /**
  * Is an action executed when menu item 'Set Random Max Limit' is chosen,
  * namely it asks a user a new value and set it for all
- * {@link com.stolser.javatraining.block02.morelessgame.model.Game}s.
+ * {@link MoreLessGame}s.
  * These changes take effect immediately.
  */
 public class SetUpperBoundCommand implements MenuCommand {
@@ -29,7 +28,7 @@ public class SetUpperBoundCommand implements MenuCommand {
 
     @Override
     public void execute() {
-        Game.setUpperBoundDefault(getNewValueFromUser());
+        MoreLessGame.setUpperBoundDefault(getNewValueFromUser());
     }
 
     private int getNewValueFromUser() {
@@ -39,7 +38,7 @@ public class SetUpperBoundCommand implements MenuCommand {
         do {
             askUserToEnterNewValue();
             newValue = input.readIntValue();
-            userEnteredIncorrectValue = ! Game.isValueForUpperBoundOk(newValue);
+            userEnteredIncorrectValue = ! MoreLessGame.isValueForUpperBoundOk(newValue);
 
             if (userEnteredIncorrectValue) {
                 output.printMessageWithKey(GENERAL_MESSAGE_BUNDLE, INPUT_BOUND_LIMIT_ERROR);
@@ -51,7 +50,7 @@ public class SetUpperBoundCommand implements MenuCommand {
     }
 
     private void askUserToEnterNewValue() {
-        Range<Integer> upperBoundLimits = Game.getUpperBoundLimits();
+        Range<Integer> upperBoundLimits = MoreLessGame.getUpperBoundLimits();
         output.printString(MessageFormat.format(
                 output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, MENU_ENTER_NEW_UPPER_BOUND),
                 output.getLocalizedNumber(upperBoundLimits.lowerEndpoint()),

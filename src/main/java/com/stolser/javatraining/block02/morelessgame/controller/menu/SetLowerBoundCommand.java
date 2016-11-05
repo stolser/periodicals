@@ -3,7 +3,7 @@ package com.stolser.javatraining.block02.morelessgame.controller.menu;
 import com.google.common.collect.Range;
 import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
 import com.stolser.javatraining.block02.morelessgame.model.Environment;
-import com.stolser.javatraining.block02.morelessgame.model.Game;
+import com.stolser.javatraining.block02.morelessgame.model.MoreLessGame;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
 import java.text.MessageFormat;
@@ -23,7 +23,7 @@ public class SetLowerBoundCommand implements MenuCommand {
 
     @Override
     public void execute() {
-        Game.setLowerBoundDefault(getNewValueFromUser());
+        MoreLessGame.setLowerBoundDefault(getNewValueFromUser());
     }
 
     private int getNewValueFromUser() {
@@ -33,7 +33,7 @@ public class SetLowerBoundCommand implements MenuCommand {
         do {
             askUserToEnterNewValue();
             newValue = input.readIntValue();
-            userEnteredIncorrectValue = ! Game.isValueForLowerBoundOk(newValue);
+            userEnteredIncorrectValue = ! MoreLessGame.isValueForLowerBoundOk(newValue);
 
             if (userEnteredIncorrectValue) {
                 output.printMessageWithKey(GENERAL_MESSAGE_BUNDLE, INPUT_BOUND_LIMIT_ERROR);
@@ -45,7 +45,7 @@ public class SetLowerBoundCommand implements MenuCommand {
     }
 
     private void askUserToEnterNewValue() {
-        Range<Integer> lowerBoundLimits = Game.getLowerBoundLimits();
+        Range<Integer> lowerBoundLimits = MoreLessGame.getLowerBoundLimits();
         output.printString(MessageFormat.format(
                 output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, MENU_ENTER_NEW_LOWER_BOUND),
                 output.getLocalizedNumber(lowerBoundLimits.lowerEndpoint()),

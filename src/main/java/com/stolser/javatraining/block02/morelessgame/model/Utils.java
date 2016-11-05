@@ -13,7 +13,7 @@ public final class Utils {
      * Because the upper limit should be inclusive and standard nexInt() uses an exclusive one
      * we use '+1'.<br />
      * Without explicit parameters uses limits from
-     * class {@link com.stolser.javatraining.block02.morelessgame.model.Game}
+     * class {@link MoreLessGame}
      * @param min - an inclusive lower bound;
      * @param max - an inclusive upper bound;
      * @return - a pseudo-random integer number from the range [min;max].
@@ -24,6 +24,6 @@ public final class Utils {
     }
 
     public static int randomInt() {
-        return randomInt(Game.getLowerBoundDefault(), Game.getUpperBoundDefault());
+        return randomInt(MoreLessGame.getLowerBoundDefault(), MoreLessGame.getUpperBoundDefault());
     }
 }
