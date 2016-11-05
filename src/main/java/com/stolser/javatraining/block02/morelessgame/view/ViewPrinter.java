@@ -1,12 +1,14 @@
 package com.stolser.javatraining.block02.morelessgame.view;
 
+import com.stolser.javatraining.block02.morelessgame.model.SystemLocale;
+
 import java.util.Locale;
 
 /**
  * Implements The Adapter Design Pattern.
  */
 public interface ViewPrinter {
-    Locale DEFAULT_LOCALE = new Locale("en", "US");
+    Locale DEFAULT_LOCALE = SystemLocale.EN_US.getLocale();
 
     /**
      * Prints a string with a new line.

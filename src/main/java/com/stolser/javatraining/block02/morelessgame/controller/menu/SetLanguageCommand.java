@@ -2,8 +2,10 @@ package com.stolser.javatraining.block02.morelessgame.controller.menu;
 
 import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
 import com.stolser.javatraining.block02.morelessgame.model.Environment;
+import com.stolser.javatraining.block02.morelessgame.model.SystemLocale;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
+import java.text.MessageFormat;
 import java.util.*;
 
 /**
@@ -12,16 +14,9 @@ import java.util.*;
  * These changes take effect immediately.
  */
 public class SetLanguageCommand implements MenuCommand {
-    private static final Set<Integer> CORRECT_LOCALE_OPTIONS;
     private static final String GENERAL_MESSAGE_BUNDLE = "generalMessages";
     private static final String INPUT_NEW_LOCALE_ERROR = "input.newLocale.error";
     private static final String MENU_ENTER_NEW_LOCALE = "menu.enterNewLocale";
-
-    static {
-        CORRECT_LOCALE_OPTIONS = new HashSet<>();
-        CORRECT_LOCALE_OPTIONS.add(1);
-        CORRECT_LOCALE_OPTIONS.add(2);
-    }
 
     private ViewPrinter output;
     private InputReader input;
@@ -37,19 +32,20 @@ public class SetLanguageCommand implements MenuCommand {
     }
 
     private Locale getNewLocaleFromUser() {
-        int userInput;
+        Locale newLocale;
 
         do {
             askUserToChooseNewLocale();
 
-            userInput = input.readIntValue();
-            if (userEnteredIncorrectLocaleValue(userInput)) {
+            newLocale = selectLocaleByUserInput(input.readIntValue());
+
+            if (newLocale == null) {
                 informUserAboutError();
             }
 
-        } while (userEnteredIncorrectLocaleValue(userInput));
+        } while (newLocale == null);
 
-        return selectLocaleByUserInput(userInput);
+        return newLocale;
     }
 
     private void informUserAboutError() {
@@ -57,25 +53,23 @@ public class SetLanguageCommand implements MenuCommand {
     }
 
     private void askUserToChooseNewLocale() {
-        output.printMessageWithKey(GENERAL_MESSAGE_BUNDLE, MENU_ENTER_NEW_LOCALE);
-    }
+        StringBuilder localeOptionsBuilder = new StringBuilder();
+        for (SystemLocale systemLocale: SystemLocale.values()) {
+            localeOptionsBuilder
+                .append(output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, systemLocale.getSystemName()))
+                .append(" - ")
+                .append(systemLocale.getMenuOption())
+                .append("; ");
+        }
 
-    private boolean userEnteredIncorrectLocaleValue(int userInput) {
-        return ! CORRECT_LOCALE_OPTIONS.contains(userInput);
+        String message = MessageFormat.format(
+                output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, MENU_ENTER_NEW_LOCALE),
+                localeOptionsBuilder.toString());
+
+        output.printString(message);
     }
 
     private Locale selectLocaleByUserInput(int userInput) {
-        Locale newLocale;
-        switch (userInput) {
-            case 1:
-                newLocale = Locale.US;
-                break;
-            case 2:
-                newLocale = new Locale("ru", "RU");
-                break;
-            default:
-                throw new IllegalArgumentException("Illegal user input for a locale");
-        }
-        return newLocale;
+        return SystemLocale.getLocaleByMenuOption(userInput);
     }
 }
