@@ -4,62 +4,38 @@ import com.stolser.javatraining.block02.morelessgame.controller.menu.MenuCommand
 
 import java.util.List;
 
-/**
- * Represents an abstraction for a menu-item.
- */
-public class MenuItem {
+public interface MenuItem {
     /**
-     * All sub-menus and menu-items composing this menu.
+     * @return true is this menu-item is a sub-menu and contains other menu-items at the next level down.
      */
-    private List<MenuItem> items;
+    boolean isSubMenu();
 
     /**
-     * A system name of an menu-item that is used for i18n as keys in *.properties files.
+     * @return a list of all menu-items residing at the next level down.
      */
-    private String systemName;
+    List<MenuItem> getItems();
 
     /**
-     * An integer that is associated with this menu-item. It is displayed as values that
-     * user has to enter on a command line in order to select a respective menu-item.
+     * Is used to get localized label for this menu-item.
+     * @return localized label for this menu-item.
      */
-    private int optionId;
+    String getSystemName();
 
     /**
-     * Represents an action that will be performed when a user chooses this menu-item.
-     * Implemented as The Command Design Pattern.
+     * @return integer value that will be associated with this menu-item in the application.
      */
-    private MenuCommand command;
+    int getOptionId();
 
-    public MenuItem(List<MenuItem> items, String systemName, int optionId) {
-        this.items = items;
-        this.systemName = systemName;
-        this.optionId = optionId;
-    }
+    /**
+     * @param command represents an action that will be executed when this
+     * menu-item is chosen by a user.
+     */
+    void setCommand(MenuCommand command);
 
-    public boolean isSubMenu() {
-        return (getItems() != null);
-    }
-
-    public List<MenuItem> getItems() {
-        return items;
-    }
-
-    public String getSystemName() {
-        return systemName;
-    }
-
-    public int getOptionId() {
-        return optionId;
-    }
-
-    public void setCommand(MenuCommand command) {
-        this.command = command;
-    }
-
-    public void chooseMenu() {
-        command.execute();
-    }
-
+    /**
+     * activates the command of this menu-item.
+     */
+    void chooseMenu();
 
     /**
      * Tries to find in this menu a MenuItem that is not a subMenu with this {@code optionId}
@@ -67,17 +43,5 @@ public class MenuItem {
      *
      * @return a found MenuItem or {@code null} otherwise.
      */
-    public MenuItem getItemByOptionId(int optionId) {
-
-        for (MenuItem item : items) {
-            if (item.isSubMenu()) {
-                MenuItem result = item.getItemByOptionId(optionId);
-                if (result != null) return result;
-            } else {
-                if (item.getOptionId() == optionId) return item;
-            }
-        }
-
-        return null;
-    }
+    MenuItem getItemByOptionId(int optionId);
 }

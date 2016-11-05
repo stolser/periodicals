@@ -10,12 +10,14 @@ public class MenuItemTest {
 
     @Test
     public void getMenuItemByOptionIdShouldReturnCorrectItem() throws Exception {
-        MenuItem item1 = new MenuItem(null, "item1", 1);
-        MenuItem item2 = new MenuItem(null, "item2", 2);
-        MenuItem item3 = new MenuItem(Arrays.asList(item1, item2), "item3", 3);
-        MenuItem item4 = new MenuItem(null, "item4", 4);
-        MenuItem item5 = new MenuItem(null, "item5", 5);
-        MenuItem menu = new MenuItem(Arrays.asList(item3, item4, item5), "menu", 6);
+        MenuItemFactory factory = MenuItemFactory.newInstance();
+
+        MenuItem item1 = factory.newMainMenuItem(null, "item1", 1);
+        MenuItem item2 = factory.newMainMenuItem(null, "item2", 2);
+        MenuItem item3 = factory.newMainMenuItem(Arrays.asList(item1, item2), "item3", 3);
+        MenuItem item4 = factory.newMainMenuItem(null, "item4", 4);
+        MenuItem item5 = factory.newMainMenuItem(null, "item5", 5);
+        MenuItem menu = factory.newMainMenuItem(Arrays.asList(item3, item4, item5), "menu", 6);
 
         assertEquals(item1, menu.getItemByOptionId(1));
         assertEquals(item2, menu.getItemByOptionId(2));
