@@ -6,7 +6,10 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class ConsoleInputReader implements InputReader {
+    private static final String GENERAL_MESSAGE_BUNDLE = "generalMessages";
     private static final InputStream INPUT_STREAM = System.in;
+    private static final String INPUT_INTEGER_ERROR = "input.integer.error";
+
     private Scanner scanner;
     private ViewPrinter output;
 
@@ -18,7 +21,7 @@ public class ConsoleInputReader implements InputReader {
     @Override
     public int readIntValue() {
         while( ! scanner.hasNextInt()) {
-            output.printMessageWithKey("generalMessages", "input.integer.error");
+            output.printMessageWithKey(GENERAL_MESSAGE_BUNDLE, INPUT_INTEGER_ERROR);
             scanner.next();
         }
 

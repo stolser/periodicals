@@ -16,6 +16,9 @@ import java.text.NumberFormat;
  * These changes take effect immediately.
  */
 public class SetUpperBoundCommand implements MenuCommand {
+    private static final String GENERAL_MESSAGE_BUNDLE = "generalMessages";
+    private static final String INPUT_BOUND_LIMIT_ERROR = "input.boundLimit.error";
+    private static final String MENU_ENTER_NEW_UPPER_BOUND = "menu.enterNewUpperBound";
     private ViewPrinter output;
     private InputReader input;
 
@@ -39,7 +42,7 @@ public class SetUpperBoundCommand implements MenuCommand {
             userEnteredIncorrectValue = ! Game.isValueForUpperBoundOk(newValue);
 
             if (userEnteredIncorrectValue) {
-                output.printMessageWithKey("generalMessages", "input.boundLimit.error");
+                output.printMessageWithKey(GENERAL_MESSAGE_BUNDLE, INPUT_BOUND_LIMIT_ERROR);
             }
 
         } while (userEnteredIncorrectValue);
@@ -50,7 +53,7 @@ public class SetUpperBoundCommand implements MenuCommand {
     private void askUserToEnterNewValue() {
         Range<Integer> upperBoundLimits = Game.getUpperBoundLimits();
         output.printString(MessageFormat.format(
-                output.getMessageWithKey("generalMessages", "menu.enterNewUpperBound"),
+                output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, MENU_ENTER_NEW_UPPER_BOUND),
                 output.getLocalizedNumber(upperBoundLimits.lowerEndpoint()),
                 output.getLocalizedNumber(upperBoundLimits.upperEndpoint())));
     }

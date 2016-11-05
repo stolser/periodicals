@@ -9,9 +9,26 @@ import java.util.List;
 
 class ViewGeneratorImpl implements ViewGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewGeneratorImpl.class);
+    private static final String STATISTICS_DATA_LAYOUT = "|\t%-5s|\t%-15s|\t%-15s|\t%-15s|\t%-15s|\n";
+
+    /**
+     * The name of a bundle for general messages.
+     */
+    private static final String GENERAL_MESSAGE_BUNDLE = "generalMessages";
+
+    /**
+     * The first part of the compound key name of the elements related to the menu.
+     */
+    private static final String MENU_KEY_PART = "menu.";
+    private static final String GAME_STATISTICS_HEADER = "game.statisticsHeader";
+    private static final String GAME_STATISTICS_HEADER_ATTEMPT_NO = "game.statisticsHeader.attemptNo";
+    private static final String GAME_STATISTICS_HEADER_CURRENT_RANGE = "game.statisticsHeader.currentRange";
+    private static final String GAME_STATISTICS_HEADER_NUMBER = "game.statisticsHeader.number";
+    private static final String GAME_STATISTICS_HEADER_RESULT = "game.statisticsHeader.result";
+    private static final String GAME_STATISTICS_HEADER_NEW_RANGE = "game.statisticsHeader.newRange";
+
     private ViewPrinter output;
     private StringBuilder builder;
-    private static final String STATISTICS_DATA_LAYOUT = "|\t%-5s|\t%-15s|\t%-15s|\t%-15s|\t%-15s|\n";
 
     ViewGeneratorImpl(ViewPrinter output) {
         this.output = output;
@@ -30,7 +47,7 @@ class ViewGeneratorImpl implements ViewGenerator {
 
     private void appendMainMenuHeader(MenuItem menu) {
         builder.append(String.format("============ %s ============\n",
-                output.getMessageWithKey("generalMessages", "menu." + menu.getSystemName())));
+                output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, MENU_KEY_PART + menu.getSystemName())));
     }
 
     private void appendAllMenuItems(List<MenuItem> menu, int level) {
@@ -40,12 +57,12 @@ class ViewGeneratorImpl implements ViewGenerator {
             appendTabsBeforeThisMenuItem(level);
             if(item.isSubMenu()) {
                 builder.append(String.format("- %s\n",
-                        output.getMessageWithKey("generalMessages", "menu." + item.getSystemName())));
+                        output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, MENU_KEY_PART + item.getSystemName())));
                 appendAllMenuItems(item.getItems(), level + 1);
 
             } else {
                 builder.append(String.format("- %s: %s\n",
-                        output.getMessageWithKey("generalMessages", "menu." + item.getSystemName()),
+                        output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, MENU_KEY_PART + item.getSystemName()),
                         item.getOptionId()));
             }
         }
@@ -75,14 +92,14 @@ class ViewGeneratorImpl implements ViewGenerator {
     private void appendStatisticsHeader() {
         builder.append(String.format("==================================== " +
                 "%s ===================================\n",
-                output.getMessageWithKey("generalMessages", "game.statisticsHeader")));
+                output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, GAME_STATISTICS_HEADER)));
 
         builder.append(String.format(STATISTICS_DATA_LAYOUT,
-                output.getMessageWithKey("generalMessages", "game.statisticsHeader.attemptNo"),
-                output.getMessageWithKey("generalMessages", "game.statisticsHeader.currentRange"),
-                output.getMessageWithKey("generalMessages", "game.statisticsHeader.number"),
-                output.getMessageWithKey("generalMessages", "game.statisticsHeader.result"),
-                output.getMessageWithKey("generalMessages", "game.statisticsHeader.newRange")));
+                output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, GAME_STATISTICS_HEADER_ATTEMPT_NO),
+                output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, GAME_STATISTICS_HEADER_CURRENT_RANGE),
+                output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, GAME_STATISTICS_HEADER_NUMBER),
+                output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, GAME_STATISTICS_HEADER_RESULT),
+                output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, GAME_STATISTICS_HEADER_NEW_RANGE)));
     }
 
     private void appendStatisticsData(List<UserAttempt> userAttempts) {
@@ -91,7 +108,7 @@ class ViewGeneratorImpl implements ViewGenerator {
                     attempt.getSerialNo(),
                     attempt.getCurrentRange(),
                     attempt.getNumber(),
-                    output.getMessageWithKey("generalMessages", attempt.getResult().toString()),
+                    output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, attempt.getResult().toString()),
                     attempt.getNewRange()));
         }
     }

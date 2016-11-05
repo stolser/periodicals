@@ -22,6 +22,11 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class Game {
     private static final Logger LOGGER = LoggerFactory.getLogger(Game.class);
+    private static final String GENERAL_MESSAGE_BUNDLE = "generalMessages";
+    private static final String GAME_START_MESSAGE = "game.startMessage";
+    private static final String MENU_ENTER_NEXT_NUMBER = "menu.enterNextNumber";
+    private static final String INPUT_ENTER_NEXT_NUMBER_ERROR = "input.enterNextNumber.error";
+    private static final String GAME_TARGET_IS_HIT = "game.targetIsHit";
 
     /**
      * The minimum distance between the lower and upper bound in the initial range.
@@ -129,20 +134,20 @@ public class Game {
     }
 
     private void displayGameStartMessage() {
-        output.printlnMessageWithKey("generalMessages", "game.startMessage");
+        output.printlnMessageWithKey(GENERAL_MESSAGE_BUNDLE, GAME_START_MESSAGE);
     }
 
     private void getNewNumberFromUser() {
         int userNumber;
         String enterNextNumberMessage = MessageFormat.format(
-                output.getMessageWithKey("generalMessages", "menu.enterNextNumber"), currentRange);
+                output.getMessageWithKey(GENERAL_MESSAGE_BUNDLE, MENU_ENTER_NEXT_NUMBER), currentRange);
 
         do {
             output.printString(enterNextNumberMessage);
             userNumber = input.readIntValue();
             LOGGER.debug("userNumber = {}", userNumber);
             if (userEnteredIncorrectValue(userNumber)) {
-                output.printMessageWithKey("generalMessages", "input.enterNextNumber.error");
+                output.printMessageWithKey(GENERAL_MESSAGE_BUNDLE, INPUT_ENTER_NEXT_NUMBER_ERROR);
             }
 
         } while (userEnteredIncorrectValue(userNumber));
@@ -228,7 +233,7 @@ public class Game {
 
     private void printStatisticsAboutGame() {
         LOGGER.debug("...the target has been hit. The game is finished.");
-        output.printlnMessageWithKey("generalMessages", "game.targetIsHit");
+        output.printlnMessageWithKey(GENERAL_MESSAGE_BUNDLE, GAME_TARGET_IS_HIT);
         output.printlnString(viewGenerator.getGameStatisticsView(userAttempts));
     }
 }

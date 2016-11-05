@@ -8,6 +8,9 @@ import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
  * namely it displays info about this program.
  */
 public class DisplayAboutCommand implements MenuCommand {
+    private static final String GENERAL_MESSAGE_BUNDLE = "generalMessages";
+    private static final String MENU_ABOUT_TEXT = "menu.aboutText";
+
     private ViewPrinter output;
 
     public DisplayAboutCommand(Environment environment) {
@@ -16,6 +19,6 @@ public class DisplayAboutCommand implements MenuCommand {
 
     @Override
     public void execute() {
-        output.printlnMessageWithKey("generalMessages", "menu.aboutText");
+        output.printlnMessageWithKey(GENERAL_MESSAGE_BUNDLE, MENU_ABOUT_TEXT);
     }
 }

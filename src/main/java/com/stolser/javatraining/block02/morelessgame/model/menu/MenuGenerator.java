@@ -9,6 +9,25 @@ import java.util.Arrays;
  * A utility class encapsulating static methods for creating different menus for the application.
  */
 public final class MenuGenerator {
+    private static final String PLAY_GAME_LABEL = "playGame";
+    private static final int PLAY_GAME_OPTION_ID = 1;
+    private static final String SET_LOWER_BOUND_LABEL = "setLowerBound";
+    private static final int SET_LOWER_BOUND_OPTION_ID = 21;
+    private static final String SET_UPPER_BOUND_LABEL = "setUpperBound";
+    private static final int SET_UPPER_BOUND_OPTION_ID = 22;
+    private static final String SET_LANGUAGE_LABEL = "setLanguage";
+    private static final int SET_LANGUAGE_OPTION_ID = 23;
+    private static final String SETTINGS_LABEL = "settings";
+    private static final int SETTINGS_OPTION_ID = 2;
+    private static final String INSTRUCTIONS_LABEL = "instructions";
+    private static final int INSTRUCTIONS_OPTION_ID = 3;
+    private static final String ABOUT_LABEL = "about";
+    private static final int ABOUT_OPTION_ID = 4;
+    private static final String EXIT_LABLE = "exit";
+    private static final int EXIT_OPTION_ID = 5;
+    private static final String MAIN_MENU_LABEL = "mainMenu";
+    private static final int MAIN_MENU_OPTION_ID = 0;
+
     private MenuGenerator() {
     }
 
@@ -19,31 +38,31 @@ public final class MenuGenerator {
      * @return an instance of the Main Menu for the app.
      */
     static public MenuItem newMainMenu(Environment environment) {
-        MenuItem playGame = new MenuItem(null, "playGame", 1);
+        MenuItem playGame = new MenuItem(null, PLAY_GAME_LABEL, PLAY_GAME_OPTION_ID);
         playGame.setCommand(new PlayGameCommand(environment));
 
-        MenuItem setLowerBound = new MenuItem(null, "setLowerBound", 21);
+        MenuItem setLowerBound = new MenuItem(null, SET_LOWER_BOUND_LABEL, SET_LOWER_BOUND_OPTION_ID);
         setLowerBound.setCommand(new SetLowerBoundCommand(environment));
 
-        MenuItem setUpperBound = new MenuItem(null, "setUpperBound", 22);
+        MenuItem setUpperBound = new MenuItem(null, SET_UPPER_BOUND_LABEL, SET_UPPER_BOUND_OPTION_ID);
         setUpperBound.setCommand(new SetUpperBoundCommand(environment));
 
-        MenuItem setLanguage = new MenuItem(null, "setLanguage", 23);
+        MenuItem setLanguage = new MenuItem(null, SET_LANGUAGE_LABEL, SET_LANGUAGE_OPTION_ID);
         setLanguage.setCommand(new SetLanguageCommand(environment));
 
         MenuItem settings = new MenuItem(Arrays.asList(setLowerBound, setUpperBound, setLanguage),
-                "settings", 2);
+                SETTINGS_LABEL, SETTINGS_OPTION_ID);
 
-        MenuItem instructions = new MenuItem(null, "instructions", 3);
+        MenuItem instructions = new MenuItem(null, INSTRUCTIONS_LABEL, INSTRUCTIONS_OPTION_ID);
         instructions.setCommand(new DisplayInstructionsCommand(environment));
 
-        MenuItem about = new MenuItem(null, "about", 4);
+        MenuItem about = new MenuItem(null, ABOUT_LABEL, ABOUT_OPTION_ID);
         about.setCommand(new DisplayAboutCommand(environment));
 
-        MenuItem exit = new MenuItem(null, "exit", 5);
+        MenuItem exit = new MenuItem(null, EXIT_LABLE, EXIT_OPTION_ID);
 
         return new MenuItem(
                 Arrays.asList(playGame, settings, instructions, about, exit),
-                "mainMenu", 0);
+                MAIN_MENU_LABEL, MAIN_MENU_OPTION_ID);
     }
 }

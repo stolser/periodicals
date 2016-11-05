@@ -10,7 +10,11 @@ import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
  * and dispatching him to an appropriate action class.
  */
 public class MenuController {
+    private static final String GENERAL_MESSAGE_BUNDLE = "generalMessages";
+    private static final String CHOOSE_MENU_ITEM_TEXT = "menu.makeachoice";
+    private static final String INPUT_MENU_OPTION_ERROR = "input.menuoption.error";
     private static final String EXIT_SYSTEM_NAME = "exit";
+
     private MenuItem mainMenu;
     private InputReader input;
     private ViewPrinter output;
@@ -50,10 +54,10 @@ public class MenuController {
         MenuItem chosenMenuItem;
 
         do {
-            output.printMessageWithKey("generalMessages", "menu.makeachoice");
+            output.printMessageWithKey(GENERAL_MESSAGE_BUNDLE, CHOOSE_MENU_ITEM_TEXT);
             int userChoice = readUserChoice();
             chosenMenuItem = mainMenu.getItemByOptionId(userChoice);
-            if (chosenMenuItem == null) output.printMessageWithKey("generalMessages", "input.menuoption.error");
+            if (chosenMenuItem == null) output.printMessageWithKey(GENERAL_MESSAGE_BUNDLE, INPUT_MENU_OPTION_ERROR);
 
         } while (chosenMenuItem == null);
 

@@ -8,6 +8,7 @@ import java.io.PrintStream;
  */
 public final class ConsoleViewFactory implements ViewFactory {
     private static final PrintStream OUTPUT_STREAM = System.out;
+
     private ViewPrinter viewPrinter;
     private ViewGenerator viewGenerator;
 

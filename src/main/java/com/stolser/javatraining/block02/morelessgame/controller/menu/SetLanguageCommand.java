@@ -16,6 +16,10 @@ import java.util.Locale;
  */
 public class SetLanguageCommand implements MenuCommand {
     private static final List<Integer> CORRECT_USER_OPTIONS = new ArrayList<>(Arrays.asList(1, 2));
+    private static final String GENERAL_MESSAGE_BUNDLE = "generalMessages";
+    private static final String INPUT_NEW_LOCALE_ERROR = "input.newLocale.error";
+    private static final String MENU_ENTER_NEW_LOCALE = "menu.enterNewLocale";
+
     private ViewPrinter output;
     private InputReader input;
 
@@ -46,11 +50,11 @@ public class SetLanguageCommand implements MenuCommand {
     }
 
     private void informUserAboutError() {
-        output.printMessageWithKey("generalMessages", "input.newLocale.error");
+        output.printMessageWithKey(GENERAL_MESSAGE_BUNDLE, INPUT_NEW_LOCALE_ERROR);
     }
 
     private void askUserToChooseNewLocale() {
-        output.printMessageWithKey("generalMessages", "menu.enterNewLocale");
+        output.printMessageWithKey(GENERAL_MESSAGE_BUNDLE, MENU_ENTER_NEW_LOCALE);
     }
 
     private boolean userEnteredIncorrectLocaleValue(int userInput) {

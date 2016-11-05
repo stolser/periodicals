@@ -8,6 +8,9 @@ import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
  * namely it displays the game instructions.
  */
 public class DisplayInstructionsCommand implements MenuCommand {
+    private static final String GENERAL_MESSAGE_BUNDLE = "generalMessages";
+    private static final String MENU_INSTRUCTIONS_TEXT = "menu.instructionsText";
+
     private ViewPrinter output;
 
     public DisplayInstructionsCommand(Environment environment) {
@@ -16,6 +19,6 @@ public class DisplayInstructionsCommand implements MenuCommand {
 
     @Override
     public void execute() {
-        output.printlnMessageWithKey("generalMessages", "menu.instructionsText");
+        output.printlnMessageWithKey(GENERAL_MESSAGE_BUNDLE, MENU_INSTRUCTIONS_TEXT);
     }
 }
