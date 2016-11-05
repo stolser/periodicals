@@ -4,10 +4,7 @@ import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
 import com.stolser.javatraining.block02.morelessgame.model.Environment;
 import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Is an action executed when menu item 'Set Language' is chosen,
@@ -15,10 +12,16 @@ import java.util.Locale;
  * These changes take effect immediately.
  */
 public class SetLanguageCommand implements MenuCommand {
-    private static final List<Integer> CORRECT_USER_OPTIONS = new ArrayList<>(Arrays.asList(1, 2));
+    private static final Set<Integer> CORRECT_LOCALE_OPTIONS;
     private static final String GENERAL_MESSAGE_BUNDLE = "generalMessages";
     private static final String INPUT_NEW_LOCALE_ERROR = "input.newLocale.error";
     private static final String MENU_ENTER_NEW_LOCALE = "menu.enterNewLocale";
+
+    static {
+        CORRECT_LOCALE_OPTIONS = new HashSet<>();
+        CORRECT_LOCALE_OPTIONS.add(1);
+        CORRECT_LOCALE_OPTIONS.add(2);
+    }
 
     private ViewPrinter output;
     private InputReader input;
@@ -58,7 +61,7 @@ public class SetLanguageCommand implements MenuCommand {
     }
 
     private boolean userEnteredIncorrectLocaleValue(int userInput) {
-        return ! CORRECT_USER_OPTIONS.contains(userInput);
+        return ! CORRECT_LOCALE_OPTIONS.contains(userInput);
     }
 
     private Locale selectLocaleByUserInput(int userInput) {
@@ -71,7 +74,7 @@ public class SetLanguageCommand implements MenuCommand {
                 newLocale = new Locale("ru", "RU");
                 break;
             default:
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Illegal user input for a locale");
         }
         return newLocale;
     }
