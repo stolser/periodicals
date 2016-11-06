@@ -1,8 +1,8 @@
 package com.stolser.javatraining.block02.morelessgame.controller.menu;
 
-import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
-import com.stolser.javatraining.block02.morelessgame.model.Environment;
-import com.stolser.javatraining.block02.morelessgame.model.SystemLocale;
+import com.stolser.javatraining.controller.InputReader;
+import com.stolser.javatraining.model.Environment;
+import com.stolser.javatraining.model.SystemLocale;
 import com.stolser.javatraining.view.ViewPrinter;
 
 import java.text.MessageFormat;

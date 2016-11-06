@@ -2,6 +2,8 @@ package com.stolser.javatraining.block02.morelessgame.controller;
 
 import com.google.common.collect.Range;
 import com.stolser.javatraining.block02.morelessgame.model.*;
+import com.stolser.javatraining.controller.InputReader;
+import com.stolser.javatraining.model.Environment;
 import com.stolser.javatraining.view.ViewGenerator;
 import com.stolser.javatraining.view.ViewPrinter;
 import org.slf4j.Logger;

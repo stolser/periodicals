@@ -1,4 +1,4 @@
-package com.stolser.javatraining.block02.morelessgame.controller;
+package com.stolser.javatraining.controller;
 
 /**
  * An abstraction for input data source.

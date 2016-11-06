@@ -8,10 +8,10 @@ public class AppRunner {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppRunner.class);
 
     public static void main( String[] args ) {
-        LOGGER.debug("Loading a new application...");
+        LOGGER.debug("Loading a MoreLess game ...");
 
         new Application().start();
 
-        LOGGER.debug("The app successfully stopped.");
+        LOGGER.debug("The MoreLess game successfully stopped.");
     }
 }

@@ -13,6 +13,10 @@ public final class ConsoleViewFactory implements ViewFactory {
         viewGenerator = new ViewGeneratorImpl(viewPrinter);
     }
 
+    public static ViewFactory newInstance() {
+        return new ConsoleViewFactory();
+    }
+
     @Override
     public ViewGenerator getViewGenerator() {
         return viewGenerator;
@@ -21,13 +25,5 @@ public final class ConsoleViewFactory implements ViewFactory {
     @Override
     public ViewPrinter getViewPrinter() {
         return viewPrinter;
-    }
-
-    private static class InstanceHolder {
-        static final ConsoleViewFactory FACTORY_INSTANCE = new ConsoleViewFactory();
-    }
-
-    public static ConsoleViewFactory getInstance() {
-        return InstanceHolder.FACTORY_INSTANCE;
     }
 }

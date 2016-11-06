@@ -1,6 +1,6 @@
-package com.stolser.javatraining.block02.morelessgame.model;
+package com.stolser.javatraining.model;
 
-import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
+import com.stolser.javatraining.controller.InputReader;
 import com.stolser.javatraining.view.ViewGenerator;
 import com.stolser.javatraining.view.ViewPrinter;
 

@@ -1,6 +1,6 @@
 package com.stolser.javatraining.view;
 
-import com.stolser.javatraining.block02.morelessgame.model.SystemLocale;
+import com.stolser.javatraining.model.SystemLocale;
 
 import java.util.Locale;
 

@@ -1,6 +1,7 @@
 package com.stolser.javatraining.block02.morelessgame.model;
 
 import com.google.common.collect.Range;
+import com.stolser.javatraining.model.Utils;
 
 import java.util.LinkedList;
 import java.util.List;
