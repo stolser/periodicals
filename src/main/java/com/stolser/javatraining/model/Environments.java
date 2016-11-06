@@ -9,7 +9,7 @@ import com.stolser.javatraining.view.ViewPrinter;
 
 public class Environments {
 
-    public static Environment createEnvironment() {
+    public static Environment newConsoleEnvironment() {
         ViewFactory viewFactory = ConsoleViewFactory.newInstance();
         ViewPrinter viewPrinter = viewFactory.getViewPrinter();
         ViewGenerator viewGenerator = viewFactory.getViewGenerator();

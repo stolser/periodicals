@@ -15,7 +15,7 @@ public class Application {
      * starts a new game.
      */
     public void start() {
-        Environment environment = Environments.createEnvironment();
+        Environment environment = Environments.newConsoleEnvironment();
         MenuItem mainMenu = MenuGenerator.newMainMenu(environment);
         MenuController controller = new MenuController(environment, mainMenu);
 
