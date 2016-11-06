@@ -4,7 +4,7 @@ import com.google.common.collect.Range;
 import com.stolser.javatraining.block02.morelessgame.controller.InputReader;
 import com.stolser.javatraining.block02.morelessgame.model.Environment;
 import com.stolser.javatraining.block02.morelessgame.model.MoreLessGame;
-import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
+import com.stolser.javatraining.view.ViewPrinter;
 
 import java.text.MessageFormat;
 

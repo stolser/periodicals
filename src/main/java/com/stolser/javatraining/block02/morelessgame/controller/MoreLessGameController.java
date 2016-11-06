@@ -2,14 +2,12 @@ package com.stolser.javatraining.block02.morelessgame.controller;
 
 import com.google.common.collect.Range;
 import com.stolser.javatraining.block02.morelessgame.model.*;
-import com.stolser.javatraining.block02.morelessgame.view.ViewGenerator;
-import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
+import com.stolser.javatraining.view.ViewGenerator;
+import com.stolser.javatraining.view.ViewPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
-import java.util.LinkedList;
-import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 

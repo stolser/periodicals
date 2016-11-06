@@ -1,4 +1,4 @@
-package com.stolser.javatraining.block02.morelessgame.view;
+package com.stolser.javatraining.view;
 
 import java.io.*;
 import java.text.NumberFormat;

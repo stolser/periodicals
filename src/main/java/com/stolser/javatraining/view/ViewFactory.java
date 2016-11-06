@@ -1,4 +1,4 @@
-package com.stolser.javatraining.block02.morelessgame.view;
+package com.stolser.javatraining.view;
 
 /**
  * An abstraction of a factory that allow client to get concrete implementations for generating and

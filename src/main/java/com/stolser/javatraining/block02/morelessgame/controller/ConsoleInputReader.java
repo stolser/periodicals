@@ -1,8 +1,7 @@
 package com.stolser.javatraining.block02.morelessgame.controller;
 
-import com.stolser.javatraining.block02.morelessgame.view.ViewPrinter;
+import com.stolser.javatraining.view.ViewPrinter;
 
-import java.io.InputStream;
 import java.util.Scanner;
 
 public class ConsoleInputReader implements InputReader {

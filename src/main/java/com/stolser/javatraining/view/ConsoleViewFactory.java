@@ -1,19 +1,15 @@
-package com.stolser.javatraining.block02.morelessgame.view;
-
-import java.io.PrintStream;
+package com.stolser.javatraining.view;
 
 /**
  * An implementation of ViewFactory that returns classes for generating information
  * and displaying messages to the standard {@code System.out}.
  */
 public final class ConsoleViewFactory implements ViewFactory {
-    private static final PrintStream OUTPUT_STREAM = System.out;
-
     private ViewPrinter viewPrinter;
     private ViewGenerator viewGenerator;
 
     private ConsoleViewFactory(){
-        viewPrinter = new ViewPrinterImpl(OUTPUT_STREAM);
+        viewPrinter = new ViewPrinterImpl(System.out);
         viewGenerator = new ViewGeneratorImpl(viewPrinter);
     }
 
