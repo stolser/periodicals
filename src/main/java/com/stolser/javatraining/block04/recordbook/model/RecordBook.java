@@ -1,20 +1,20 @@
 package com.stolser.javatraining.block04.recordbook.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class RecordBook {
-    private List<Record> records;
+    private Set<Record> records;
     private String name;
     private String description;
 
     public RecordBook(String name) {
-        this(new ArrayList<>(), name, "");
+        this(new HashSet<>(), name, "");
     }
 
-    public RecordBook(List<Record> records, String name, String description) {
+    public RecordBook(Set<Record> records, String name, String description) {
         checkArguments(records, name, description);
 
         this.records = records;
@@ -22,19 +22,33 @@ public class RecordBook {
         this.description = description;
     }
 
-    public void addRecord(Record newRecord) {
+    /**
+     * Tries to add a new record. Since RecordBook contains only unique records
+     * duplicates will be discarded.
+     * @param newRecord must be unique in order to be added into this RecordBook
+     * @return {@code true} if a passed Record was added to records of this RecordBook
+     */
+    public boolean addRecord(Record newRecord) {
         checkNotNull(newRecord);
-        records.add(newRecord);
+        return records.add(newRecord);
     }
 
-    private void checkArguments(List<Record> records, String name, String description) {
+    private void checkArguments(Set<Record> records, String name, String description) {
         checkNotNull(records);
         checkNotNull(name);
         checkNotNull(description);
     }
 
-    public List<Record> getRecords() {
-        return records;
+    /**
+     * @return a deep copy of records of this RecordBook
+     */
+    public Set<Record> getRecords() {
+        Set<Record> copy = new HashSet<>(records.size());
+        copy.addAll(records.stream()
+                .map(Record::clone)
+                .collect(Collectors.toList()));
+
+        return copy;
     }
 
     public String getName() {

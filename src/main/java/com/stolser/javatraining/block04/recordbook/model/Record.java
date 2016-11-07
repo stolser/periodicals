@@ -7,7 +7,7 @@ import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class Record {
+public class Record implements Cloneable {
     private UserName userName;
     private String comment;
     private Set<UserGroup> groups;
@@ -159,5 +159,17 @@ public class Record {
 
     private void updateLastModifDate() {
         this.lastModifDate = Instant.now();
+    }
+
+    @Override
+    protected Record clone() {
+        Record clone;
+        try {
+            clone = (Record) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return clone;
     }
 }
