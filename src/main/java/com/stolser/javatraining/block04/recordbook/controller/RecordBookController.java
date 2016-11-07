@@ -1,16 +1,17 @@
 package com.stolser.javatraining.block04.recordbook.controller;
 
-import com.stolser.javatraining.block04.recordbook.model.Record;
-import com.stolser.javatraining.block04.recordbook.model.RecordBook;
-import com.stolser.javatraining.block04.recordbook.model.UserGroup;
-import com.stolser.javatraining.block04.recordbook.model.UserName;
+import com.stolser.javatraining.block04.recordbook.model.*;
 import com.stolser.javatraining.controller.InputReader;
 import com.stolser.javatraining.controller.RegexValidator;
 import com.stolser.javatraining.model.Environment;
 import com.stolser.javatraining.view.ViewGenerator;
 import com.stolser.javatraining.view.ViewPrinter;
 
+import java.time.Instant;
 import java.util.*;
+
+import static com.stolser.javatraining.block04.recordbook.model.UserAddress.*;
+import static com.stolser.javatraining.block04.recordbook.model.UserPhone.*;
 
 public class RecordBookController {
     // "firstName", "lastName", "extraName", "nickname"
@@ -54,7 +55,12 @@ public class RecordBookController {
         readComment();
         readUserGroups();
         readUserPhones();
+        readUserEmail();
+        readUserSkype();
+        readUserAddress();
 
+        recordBook.addRecord(newRecord);
+        newRecord.setCreationDate(Instant.now());
     }
 
     private void readUserFullName() {
@@ -85,7 +91,7 @@ public class RecordBookController {
         boolean validInputExist;
 
         do {
-            builder = new StringBuilder("Choose a group (");
+            builder = new StringBuilder("Choose a group ( ");
             validInput = new ArrayList<>();
 
             for (UserGroup group: UserGroup.values()) {
@@ -101,8 +107,8 @@ public class RecordBookController {
             validInputExist = (validInput.size() > 0);
 
             if (validInputExist) {
-                String promptLabel = builder.append("). ").toString();
-                userInput = getValidatedIntegerInput(promptLabel, validInput);
+                String promptText = builder.append("): ").toString();
+                userInput = getValidatedIntegerInput(promptText, validInput);
 
                 for (UserGroup group: UserGroup.values()) {
                     if (group.ordinal() == userInput) {
@@ -120,13 +126,71 @@ public class RecordBookController {
 
     private void readUserPhones() {
         boolean phoneIsMobile;
+        String phoneCode;
+        String phoneNumber;
+        UserPhoneType phoneType = null;
         String phoneCodeRegex;
+        boolean thereIsMorePhones;
 
-        output.printlnString("Is this phone number mobile?");
-        phoneIsMobile = input.readYesNoValue();
-        phoneCodeRegex = (phoneIsMobile) ? REGEX_PHONE_MOBILE_CODE : REGEX_PHONE_CITY_CODE;
+        List<Integer> validInput = new ArrayList<>();
+        StringBuilder builder = new StringBuilder("Choose a phone type ( ");
+        for (UserPhoneType type: UserPhoneType.values()) {
+            int ordinal = type.ordinal();
+            builder.append(type.toString());
+            builder.append(" - ");
+            builder.append(ordinal);
+            builder.append("; ");
+            validInput.add(ordinal);
+        }
+        String phoneCodePromptText = builder.append("): ").toString();
 
-        // todo: finish the implementation;
+        do {
+            output.printString("Is the next phone number mobile? ");
+            phoneIsMobile = input.readYesNoValue();
+            phoneCodeRegex = (phoneIsMobile) ? REGEX_PHONE_MOBILE_CODE : REGEX_PHONE_CITY_CODE;
+            phoneCode = getValidatedStringInput("phone code", false, phoneCodeRegex);
+            phoneNumber = getValidatedStringInput("phone number", false, REGEX_PHONE_NUMBER);
+            int phoneTypeUserInput = getValidatedIntegerInput(phoneCodePromptText, validInput);
+
+            for (UserPhoneType type: UserPhoneType.values()) {
+                if (type.ordinal() == phoneTypeUserInput) {
+                    phoneType = type;
+                }
+            }
+
+            if (phoneType == null) {
+                throw new IllegalStateException("phoneType must NOT be null");
+            }
+
+            UserPhone newPhone = new UserPhone(phoneCode, phoneNumber, phoneIsMobile, phoneType);
+            newRecord.addPhone(newPhone);
+
+            output.printString("Do you have more phones? ");
+            thereIsMorePhones = ! input.readYesNoValue();
+
+        } while (thereIsMorePhones);
+
+    }
+
+    private void readUserEmail() {
+        String email = getValidatedStringInput("email", false, REGEX_EMAIL);
+        newRecord.setEmail(email);
+
+    }
+
+    private void readUserSkype() {
+        String skype = getValidatedStringInput("skype", true, REGEX_SKYPE);
+        newRecord.setSkype(skype);
+    }
+
+    private void readUserAddress() {
+        LocalityType localityType;
+        String localityName;
+        StreetType streetType;
+        String streetName;
+        String houseNumber;
+        String apartmentNumber;
+
 
     }
 
@@ -140,7 +204,7 @@ public class RecordBookController {
         }
 
         do {
-            output.printlnString(String.format("Enter %s%s: ", promptLabel, canBeEmptyLabel));
+            output.printString(String.format("Enter %s%s: ", promptLabel, canBeEmptyLabel));
             userInput = input.readString();
 
             if ("".equals(userInput) && canBeEmpty) {
@@ -158,12 +222,12 @@ public class RecordBookController {
         return userInput;
     }
 
-    private int getValidatedIntegerInput(String promptLabel, List<Integer> validInput) {
+    private int getValidatedIntegerInput(String promptText, List<Integer> validInput) {
         int userInput;
         boolean userInputIsValid;
 
         do {
-            output.printlnString(String.format("%s: ", promptLabel));
+            output.printString(promptText);
             userInput = input.readIntValue();
             userInputIsValid = validInput.contains(userInput);
 

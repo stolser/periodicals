@@ -20,7 +20,6 @@ public class Record implements Cloneable {
     public Record(UserName userName) {
         checkNotNull(userName);
         this.userName = userName;
-        this.creationDate = Instant.now();
     }
 
     @Override
@@ -98,10 +97,10 @@ public class Record implements Cloneable {
 
     /**
      * @param address represents values that will used to update UserAddress.
-     *                Before creating a clone of a passes address it checks for not nullity of
-     *                the following field: localityName, streetType, streetName,
-     *                houseNumber, apartmentNumber. If any of the aforementioned fields is null
-     *                this method throws NPE.
+     *      Before creating a clone of a passes address it checks for not nullity of
+     *      the following field: localityName, streetType, streetName,
+     *      houseNumber, apartmentNumber. If any of the aforementioned fields is null
+     *      this method throws NPE.
      */
     public void updateAddress(UserAddress address) {
         checkArguments(address);
@@ -157,6 +156,16 @@ public class Record implements Cloneable {
         updateLastModifDate();
     }
 
+    /**
+     * This setter will set the creation date only once and only if it was {@code null} before.
+     * So, you cannot change the creation date using this method.
+     */
+    public void setCreationDate(Instant creationDate) {
+        if (this.creationDate == null) {
+            this.creationDate = creationDate;
+        }
+    }
+
     private void updateLastModifDate() {
         this.lastModifDate = Instant.now();
     }
@@ -166,6 +175,7 @@ public class Record implements Cloneable {
         Record clone;
         try {
             clone = (Record) super.clone();
+            // todo: implement deep cloning;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
