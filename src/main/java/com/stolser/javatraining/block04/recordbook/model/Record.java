@@ -56,7 +56,7 @@ public class Record implements Cloneable {
     }
 
     public Set<UserGroup> getGroups() {
-        return groups;
+        return Collections.unmodifiableSet(groups);
     }
 
     public void addGroup(UserGroup userGroup) {

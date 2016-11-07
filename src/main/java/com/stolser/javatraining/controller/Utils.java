@@ -1,4 +1,4 @@
-package com.stolser.javatraining.model;
+package com.stolser.javatraining.controller;
 
 import com.stolser.javatraining.block02.morelessgame.model.MoreLessGame;
 
