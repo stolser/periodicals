@@ -2,7 +2,7 @@ package com.stolser.javatraining.block04.recordbook.model;
 
 import static com.google.common.base.Preconditions.*;
 
-public class UserAddress {
+public class UserAddress implements Cloneable {
     private String postalCode;
     private LocalityType localityType;
     private String localityName;
@@ -130,5 +130,18 @@ public class UserAddress {
 
     public void setApartmentNumber(String apartmentNumber) {
         this.apartmentNumber = apartmentNumber;
+    }
+
+    @Override
+    protected UserAddress clone() {
+        UserAddress clone;
+
+        try {
+            clone = (UserAddress) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException();
+        }
+
+        return clone;
     }
 }

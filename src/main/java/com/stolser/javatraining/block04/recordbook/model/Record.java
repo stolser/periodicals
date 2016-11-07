@@ -2,7 +2,6 @@ package com.stolser.javatraining.block04.recordbook.model;
 
 import java.time.Instant;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -11,7 +10,7 @@ public class Record implements Cloneable {
     private UserName userName;
     private String comment;
     private Set<UserGroup> groups;
-    private List<UserPhone> phones;
+    private Set<UserPhone> phones;
     private String email;
     private String skype;
     private UserAddress address;
@@ -73,8 +72,8 @@ public class Record implements Cloneable {
         updateLastModifDate();
     }
 
-    public List<UserPhone> getPhones() {
-        return Collections.unmodifiableList(phones);
+    public Set<UserPhone> getPhones() {
+        return Collections.unmodifiableSet(phones);
     }
 
     public void addPhone(UserPhone newPhone) {
@@ -90,22 +89,23 @@ public class Record implements Cloneable {
         updateLastModifDate();
     }
 
+    /**
+     * @return a clone of the UserAddress
+     */
     public UserAddress getAddress() {
-        return new UserAddress(address.getPostalCode(), address.getLocalityType(),
-                address.getLocalityName(), address.getStreetType(), address.getStreetName(),
-                address.getHouseNumber(), address.getApartmentNumber());
+        return address.clone();
     }
 
+    /**
+     * @param address represents values that will used to update UserAddress.
+     *                Before creating a clone of a passes address it checks for not nullity of
+     *                the following field: localityName, streetType, streetName,
+     *                houseNumber, apartmentNumber. If any of the aforementioned fields is null
+     *                this method throws NPE.
+     */
     public void updateAddress(UserAddress address) {
         checkArguments(address);
-
-        this.address.setPostalCode(address.getPostalCode());
-        this.address.setLocalityType(address.getLocalityType());
-        this.address.setLocalityName(address.getLocalityName());
-        this.address.setStreetType(address.getStreetType());
-        this.address.setStreetName(address.getStreetName());
-        this.address.setHouseNumber(address.getHouseNumber());
-        this.address.setApartmentNumber(address.getApartmentNumber());
+        this.address = address.clone();
 
         updateLastModifDate();
     }
