@@ -175,11 +175,16 @@ public class Record implements Cloneable {
     }
 
     @Override
-    protected Record clone() {
+    public Record clone() {
         Record clone;
+
         try {
             clone = (Record) super.clone();
-            // todo: implement deep cloning;
+            clone.userName = clone.getUserName().clone();
+            clone.groups = new HashSet<>(groups);
+            clone.phones = new HashSet<>(phones);
+            clone.address = clone.getAddress().clone();
+
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }

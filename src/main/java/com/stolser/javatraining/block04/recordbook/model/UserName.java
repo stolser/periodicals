@@ -2,7 +2,7 @@ package com.stolser.javatraining.block04.recordbook.model;
 
 import static com.google.common.base.Preconditions.*;
 
-public class UserName {
+public class UserName implements Cloneable {
     private String firstName;
     private String lastName;
     private String extraName;
@@ -100,5 +100,19 @@ public class UserName {
         }
 
         return builder.toString();
+    }
+
+    @Override
+    public UserName clone() {
+        UserName clone;
+
+        try {
+            clone = (UserName) super.clone();
+
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+
+        return clone;
     }
 }

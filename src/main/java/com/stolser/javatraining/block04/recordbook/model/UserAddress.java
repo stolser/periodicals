@@ -133,7 +133,7 @@ public class UserAddress implements Cloneable {
     }
 
     @Override
-    protected UserAddress clone() {
+    public UserAddress clone() {
         UserAddress clone;
 
         try {
