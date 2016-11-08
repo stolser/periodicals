@@ -24,16 +24,16 @@ public class RecordBookController {
     // "http://www.my-site.com"
     private static final String REGEX_URL = "^((https?|ftp)\\:\\/\\/)?([a-z0-9]{1})((\\.[a-z0-9-])|([a-z0-9-]))*\\.([a-z]{2,6})(\\/?)$";
     // "stolser111"
-    private static final String REGEX_SKYPE = "[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,31}";
+    private static final String REGEX_SKYPE = "[a-zA-Z][a-zA-Z0-9\\.,\\-_]{5,21}";
     private static final String PLEASE_ENTER_NEW_RECORDS = "Please, enter new records.";
+    private static final String FIRST_NAME_TEXT = "Enter First/Given/Personal Name (only letters without spaces)";
+    private static final String lAST_NAME_TEXT = "Enter Last/Surname/Family Name (only letters without spaces)";
+    private static final String EXTRA_NAME_TEXT = "Enter Middle/Patronymic Name (only letters without spaces)";
+    private static final String NICKNAME_TEXT = "Enter Nickname (only letters without spaces)";
+    private static final String COMMENT_TEXT = "Enter a comment (up to 200 of any symbols)";
+    private static final String EMAIL_TEXT = "Enter a email (example@gmail.com)";
+    private static final String SKYPE_TEXT = "Enter a skype (yourskype707)";
     private static final String CONTINUE_ENTERING_DATA_QUESTION = "Would you like to continue entering data?";
-    private static final String FIRST_NAME_TEXT = "Enter First/Given/Personal Name";
-    private static final String lAST_NAME_TEXT = "Enter Last/Surname/Family Name";
-    private static final String EXTRA_NAME_TEXT = "Enter Middle/Patronymic Name";
-    private static final String NICKNAME_TEXT = "Enter Nickname";
-    private static final String COMMENT_TEXT = "Enter a comment";
-    private static final String EMAIL_TEXT = "Enter a email";
-    private static final String SKYPE_TEXT = "Enter a skype";
 
     private RecordBook recordBook;
     private ViewGenerator viewGenerator;
@@ -62,7 +62,7 @@ public class RecordBookController {
             new UserPhoneController(input, validatedInput, output).readUserPhonesAndSaveInto(newRecord);
             readUserEmail();
             readUserSkype();
-            new UserAddressController(input, validatedInput, output).readAddressAndSaveInto(newRecord);
+            new UserAddressController(validatedInput).readAddressAndSaveInto(newRecord);
 
             recordBook.addRecord(newRecord);
             newRecord.setCreationDate(Instant.now());

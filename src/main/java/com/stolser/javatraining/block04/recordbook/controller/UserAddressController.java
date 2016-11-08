@@ -2,9 +2,7 @@ package com.stolser.javatraining.block04.recordbook.controller;
 
 import com.stolser.javatraining.block04.recordbook.model.Record;
 import com.stolser.javatraining.block04.recordbook.model.UserAddress;
-import com.stolser.javatraining.controller.InputReader;
 import com.stolser.javatraining.controller.ValidatedInput;
-import com.stolser.javatraining.view.ViewPrinter;
 
 import java.util.List;
 
@@ -19,10 +17,16 @@ class UserAddressController {
     private static final String REGEX_LOCALITY_STREET_NAME = "[\\w\\s]{2,31}";
     // "15", "122B", "1020"
     private static final String REGEX_HOUSE_APT_NUMBER = "[a-zA-Z\\d]{1,4}";
+    private static final String POST_CODE_TEXT = "Enter a post code (XXXXX)";
+    private static final String LOCALITY_TYPE_TEXT = "Choose a locality type %s: ";
+    private static final String LOCALITY_NAME_TEXT = "Enter a locality name (up to 31 letters and digits)";
+    private static final String STREET_TYPE_TEXT = "Choose a street type %s: ";
+    private static final String STREET_NAME_TEXT = "Enter a street name (up to 31 letters and digits)";
+    private static final String HOUSE_NUMBER_TEXT = "Enter a house number (from 1 to 4 letters and digits)";
+    private static final String APARTMENT_NUMBER_TEXT = "Enter an apartment number " +
+                                                        "(from 1 to 4 letters and digits)";
 
-    private InputReader input;
     private ValidatedInput validatedInput;
-    private ViewPrinter output;
     private String postCode;
     private LocalityType localityType;
     private String localityName;
@@ -31,10 +35,8 @@ class UserAddressController {
     private String houseNumber;
     private String apartmentNumber;
 
-    UserAddressController(InputReader input, ValidatedInput validatedInput, ViewPrinter output) {
-        this.input = input;
+    UserAddressController(ValidatedInput validatedInput) {
         this.validatedInput = validatedInput;
-        this.output = output;
     }
 
     void readAddressAndSaveInto(Record newRecord) {
@@ -53,13 +55,13 @@ class UserAddressController {
     }
 
     private void readPostCode() {
-        postCode = validatedInput.getValidatedStringInput("Enter a post code", true, REGEX_POST_CODE);
+        postCode = validatedInput.getValidatedStringInput(POST_CODE_TEXT, true, REGEX_POST_CODE);
     }
 
     private void readLocalityType() {
         ValidInputOptions inputOptions = getValidInputOptionsFor(LocalityType.class);
         List<Integer> validInput = inputOptions.getOptions();
-        String promptText = String.format("Choose a locality type %s: ", inputOptions.getPromptingMessage());
+        String promptText = String.format(LOCALITY_TYPE_TEXT, inputOptions.getPromptingMessage());
 
         int userInput = validatedInput.getValidatedIntegerInput(promptText, validInput);
 
@@ -68,13 +70,13 @@ class UserAddressController {
 
     private void readLocalityName() {
         localityName = validatedInput
-                .getValidatedStringInput("Enter a locality name", false, REGEX_LOCALITY_STREET_NAME);
+                .getValidatedStringInput(LOCALITY_NAME_TEXT, false, REGEX_LOCALITY_STREET_NAME);
     }
 
     private void readStreetType() {
         ValidInputOptions inputOptions = getValidInputOptionsFor(StreetType.class);
         List<Integer> validInput = inputOptions.getOptions();
-        String promptText = String.format("Choose a street type %s: ", inputOptions.getPromptingMessage());
+        String promptText = String.format(STREET_TYPE_TEXT, inputOptions.getPromptingMessage());
 
         int userInput = validatedInput.getValidatedIntegerInput(promptText, validInput);
 
@@ -83,17 +85,17 @@ class UserAddressController {
 
     private void readStreetName() {
         streetName = validatedInput
-                .getValidatedStringInput("Enter a street name", false, REGEX_LOCALITY_STREET_NAME);
+                .getValidatedStringInput(STREET_NAME_TEXT, false, REGEX_LOCALITY_STREET_NAME);
     }
 
     private void readHouseNumber() {
         houseNumber = validatedInput
-                .getValidatedStringInput("Enter a house number", false, REGEX_HOUSE_APT_NUMBER);
+                .getValidatedStringInput(HOUSE_NUMBER_TEXT, false, REGEX_HOUSE_APT_NUMBER);
     }
 
     private void readApartmentNumber() {
         apartmentNumber = validatedInput
-                .getValidatedStringInput("Enter an apartment number", false, REGEX_HOUSE_APT_NUMBER);
+                .getValidatedStringInput(APARTMENT_NUMBER_TEXT, false, REGEX_HOUSE_APT_NUMBER);
     }
 
 }

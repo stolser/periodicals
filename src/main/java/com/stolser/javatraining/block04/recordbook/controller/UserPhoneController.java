@@ -25,8 +25,10 @@ class UserPhoneController {
     private static final String BEGINNING_MESSAGE = "---------------------\nEntering phone numbers.";
     private static final String CHOOSE_PHONE_TYPE_TEXT = "Choose a phone type %s: ";
     private static final String PHONE_TYPE_QUESTION = "Is the next phone number mobile? ";
-    private static final String PHONE_CODE_TEXT = "Enter a phone code";
-    private static final String PHONE_NUMBER_TEXT = "Enter a phone number";
+    private static final String PHONE_CODE_TEXT = "Enter a phone code without a leading +380" +
+                                                    " ('XX' - for mobile; 'XXXX' - for land)";
+    private static final String PHONE_NUMBER_TEXT = "Enter a phone number " +
+                                                    "('XXX XX' or 'XXX XXX' or 'XXX XX XX')";
     private static final String MORE_PHONES_QUESTION = "Do you have more phones? ";
 
     private InputReader input;

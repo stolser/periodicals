@@ -71,7 +71,7 @@ public class ViewGeneratorImpl implements ViewGenerator {
     }
 
     private void appendFooter() {
-        builder.append("======================================= Footer " +
-                "========================================\n");
+        builder.append("============================================ Footer " +
+                "=============================================\n");
     }
 }
