@@ -1,6 +1,7 @@
 package com.stolser.javatraining.block04.recordbook.controller;
 
 import com.stolser.javatraining.block04.recordbook.model.*;
+import com.stolser.javatraining.controller.EnumUtils;
 import com.stolser.javatraining.controller.InputReader;
 import com.stolser.javatraining.controller.RegexValidator;
 import com.stolser.javatraining.model.Environment;
@@ -12,6 +13,7 @@ import java.util.*;
 
 import static com.stolser.javatraining.block04.recordbook.model.UserAddress.*;
 import static com.stolser.javatraining.block04.recordbook.model.UserPhone.*;
+import static com.stolser.javatraining.controller.EnumUtils.*;
 
 public class RecordBookController {
     // "firstName", "lastName", "extraName", "nickname"
@@ -86,28 +88,17 @@ public class RecordBookController {
     private void readUserGroups() {
         Set<UserGroup> chosenGroups = new HashSet<>();
         List<Integer> validInput;
-        StringBuilder builder;
         int userInput;
         boolean validInputExist;
 
         do {
-            builder = new StringBuilder("Choose a group ( ");
-            validInput = new ArrayList<>();
-
-            for (UserGroup group: UserGroup.values()) {
-                if (! chosenGroups.contains(group)) {
-                    builder.append(group.toString());
-                    builder.append(" - ");
-                    builder.append(group.ordinal());
-                    builder.append("; ");
-                    validInput.add(group.ordinal());
-                }
-            }
+            ValidInputOptions inputOptions = getValidInputOptionsFor(UserGroup.class, chosenGroups);
+            validInput = inputOptions.getOptions();
 
             validInputExist = (validInput.size() > 0);
 
             if (validInputExist) {
-                String promptText = builder.append("): ").toString();
+                String promptText = String.format("Choose a group %s: ", inputOptions.getPromptingMessage());
                 userInput = getValidatedIntegerInput(promptText, validInput);
 
                 for (UserGroup group: UserGroup.values()) {
@@ -131,18 +122,12 @@ public class RecordBookController {
         UserPhoneType phoneType = null;
         String phoneCodeRegex;
         boolean thereIsMorePhones;
+        List<Integer> phoneTypeValidInput;
+        String phoneTypePromptText;
 
-        List<Integer> validInput = new ArrayList<>();
-        StringBuilder builder = new StringBuilder("Choose a phone type ( ");
-        for (UserPhoneType type: UserPhoneType.values()) {
-            int ordinal = type.ordinal();
-            builder.append(type.toString());
-            builder.append(" - ");
-            builder.append(ordinal);
-            builder.append("; ");
-            validInput.add(ordinal);
-        }
-        String phoneCodePromptText = builder.append("): ").toString();
+        ValidInputOptions codeInputOptions = getValidInputOptionsFor(UserPhoneType.class);
+        phoneTypeValidInput = codeInputOptions.getOptions();
+        phoneTypePromptText = String.format("Choose a phone type %s: ", codeInputOptions.getPromptingMessage());
 
         do {
             output.printString("Is the next phone number mobile? ");
@@ -150,16 +135,17 @@ public class RecordBookController {
             phoneCodeRegex = (phoneIsMobile) ? REGEX_PHONE_MOBILE_CODE : REGEX_PHONE_CITY_CODE;
             phoneCode = getValidatedStringInput("phone code", false, phoneCodeRegex);
             phoneNumber = getValidatedStringInput("phone number", false, REGEX_PHONE_NUMBER);
-            int phoneTypeUserInput = getValidatedIntegerInput(phoneCodePromptText, validInput);
+            int phoneTypeUserInput = getValidatedIntegerInput(phoneTypePromptText, phoneTypeValidInput);
 
             for (UserPhoneType type: UserPhoneType.values()) {
                 if (type.ordinal() == phoneTypeUserInput) {
                     phoneType = type;
+                    break;
                 }
             }
 
             if (phoneType == null) {
-                throw new IllegalStateException("phoneType must NOT be null");
+                throw new IllegalStateException("phoneType must NOT be null here.");
             }
 
             UserPhone newPhone = new UserPhone(phoneCode, phoneNumber, phoneIsMobile, phoneType);
@@ -190,6 +176,7 @@ public class RecordBookController {
         String streetName;
         String houseNumber;
         String apartmentNumber;
+
 
 
     }

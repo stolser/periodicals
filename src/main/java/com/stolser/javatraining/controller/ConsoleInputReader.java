@@ -33,7 +33,6 @@ public class ConsoleInputReader implements InputReader {
 
     @Override
     public boolean readYesNoValue() {
-        boolean userChoice = false;
         int userIntChoice;
 
         do {
@@ -46,10 +45,6 @@ public class ConsoleInputReader implements InputReader {
 
         } while ((userIntChoice != 0) && (userIntChoice != 1));
 
-        if (userIntChoice == 1) {
-            userChoice = true;
-        }
-
-        return userChoice;
+        return (userIntChoice == 1);
     }
 }
