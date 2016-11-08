@@ -2,17 +2,15 @@ package com.stolser.javatraining.block04.recordbook.controller;
 
 import com.stolser.javatraining.block04.recordbook.model.Record;
 import com.stolser.javatraining.block04.recordbook.model.UserAddress;
-import com.stolser.javatraining.block04.recordbook.model.UserPhone;
-import com.stolser.javatraining.controller.EnumUtils;
 import com.stolser.javatraining.controller.InputReader;
 import com.stolser.javatraining.controller.ValidatedInput;
 import com.stolser.javatraining.view.ViewPrinter;
 
 import java.util.List;
 
-import static com.stolser.javatraining.block04.recordbook.model.UserAddress.*;
+import static com.stolser.javatraining.block04.recordbook.model.UserAddress.LocalityType;
+import static com.stolser.javatraining.block04.recordbook.model.UserAddress.StreetType;
 import static com.stolser.javatraining.controller.EnumUtils.*;
-import static com.stolser.javatraining.controller.EnumUtils.getValidInputOptionsFor;
 
 class UserAddressController {
     // "03022"
@@ -33,13 +31,13 @@ class UserAddressController {
     private String houseNumber;
     private String apartmentNumber;
 
-    public UserAddressController(InputReader input, ValidatedInput validatedInput, ViewPrinter output) {
+    UserAddressController(InputReader input, ValidatedInput validatedInput, ViewPrinter output) {
         this.input = input;
         this.validatedInput = validatedInput;
         this.output = output;
     }
 
-    public void readAddressAndSaveInto(Record newRecord) {
+    void readAddressAndSaveInto(Record newRecord) {
         readPostCode();
         readLocalityType();
         readLocalityName();
