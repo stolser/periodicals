@@ -3,7 +3,7 @@ package com.stolser.javatraining.block04.recordbook.model;
 import static com.google.common.base.Preconditions.*;
 
 public class UserAddress implements Cloneable {
-    private String postalCode;
+    private String postCode;
     private LocalityType localityType;
     private String localityName;
     private StreetType streetType;
@@ -39,12 +39,12 @@ public class UserAddress implements Cloneable {
         }
     }
 
-    public UserAddress(String postalCode, LocalityType localityType, String localityName,
+    public UserAddress(String postCode, LocalityType localityType, String localityName,
                        StreetType streetType, String streetName, String houseNumber,
                        String apartmentNumber) {
         checkArguments(localityName, streetType, streetName, houseNumber, apartmentNumber);
 
-        this.postalCode = postalCode;
+        this.postCode = postCode;
         this.localityType = localityType;
         this.localityName = localityName;
         this.streetType = streetType;
@@ -65,23 +65,23 @@ public class UserAddress implements Cloneable {
 
     public String getFullAddress() {
         return String.format("%s %s %s, Apt %s, %s %s", houseNumber, streetName,
-                streetType.getShortName(), apartmentNumber, localityName, postalCode);
+                streetType.getShortName(), apartmentNumber, localityName, postCode);
     }
 
     @Override
     public String toString() {
-        return String.format("UserAddress{postalCode='%s', localityType=%s, localityName='%s', " +
+        return String.format("UserAddress{postCode='%s', localityType=%s, localityName='%s', " +
                 "streetType=%s, streetName='%s', houseNumber='%s', apartmentNumber='%s'}",
-                postalCode, localityType, localityName,
+                postCode, localityType, localityName,
                 streetType, streetName, houseNumber, apartmentNumber);
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    public String getPostCode() {
+        return postCode;
     }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
     }
 
     public LocalityType getLocalityType() {

@@ -5,6 +5,6 @@ package com.stolser.javatraining.controller;
  */
 public interface InputReader {
     int readIntValue();
-    String readString();
+    String readLine();
     boolean readYesNoValue();
 }

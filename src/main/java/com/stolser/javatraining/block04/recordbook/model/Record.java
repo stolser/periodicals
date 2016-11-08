@@ -2,6 +2,7 @@ package com.stolser.javatraining.block04.recordbook.model;
 
 import java.time.Instant;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -20,6 +21,8 @@ public class Record implements Cloneable {
     public Record(UserName userName) {
         checkNotNull(userName);
         this.userName = userName;
+        this.groups = new HashSet<>();
+        this.phones = new HashSet<>();
     }
 
     @Override
@@ -60,6 +63,7 @@ public class Record implements Cloneable {
 
     public void addGroup(UserGroup userGroup) {
         checkNotNull(userGroup);
+
         groups.add(userGroup);
 
         updateLastModifDate();

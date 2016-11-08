@@ -89,6 +89,16 @@ public class UserName {
     }
 
     public String getFullForm() {
-        return String.format("%s %s", lastName, firstName);
+        StringBuilder builder = new StringBuilder(String.format("%s %s", lastName, firstName));
+
+        if (extraName != null) {
+            builder.append(String.format(" %s", extraName));
+        }
+
+        if (nickname != null) {
+            builder.append(String.format(" (known as '%s')", nickname));
+        }
+
+        return builder.toString();
     }
 }

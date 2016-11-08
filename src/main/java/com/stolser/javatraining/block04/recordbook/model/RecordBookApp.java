@@ -7,7 +7,7 @@ import com.stolser.javatraining.model.Environments;
 public class RecordBookApp {
 
     public void start() {
-        Environment environment = Environments.newConsoleEnvironment();
+        Environment environment = Environments.newMoreLessConsoleEnvironment();
         RecordBook recordBook = new RecordBook("Personal RecordBook");
         RecordBookController controller = new RecordBookController(recordBook, environment);
 

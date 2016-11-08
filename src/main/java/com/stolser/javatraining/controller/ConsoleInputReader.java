@@ -20,15 +20,18 @@ public class ConsoleInputReader implements InputReader {
     public int readIntValue() {
         while(! scanner.hasNextInt()) {
             output.printMessageWithKey(GENERAL_MESSAGE_BUNDLE, INPUT_INTEGER_ERROR);
-            scanner.next();
+            scanner.nextLine();
         }
 
-        return scanner.nextInt();
+        int input = scanner.nextInt();
+        scanner.nextLine();
+
+        return input;
     }
 
     @Override
-    public String readString() {
-        return scanner.next();
+    public String readLine() {
+        return scanner.nextLine();
     }
 
     @Override
@@ -36,14 +39,17 @@ public class ConsoleInputReader implements InputReader {
         int userIntChoice;
 
         do {
+            output.printString(" Enter 0 - no; 1 - yes: ");
+
             while (! scanner.hasNextInt()) {
-                output.printlnString("Enter 0 - no; 1 - yes: ");
-                scanner.next();
+                scanner.nextLine();
             }
 
             userIntChoice = scanner.nextInt();
 
         } while ((userIntChoice != 0) && (userIntChoice != 1));
+
+        scanner.nextLine();
 
         return (userIntChoice == 1);
     }

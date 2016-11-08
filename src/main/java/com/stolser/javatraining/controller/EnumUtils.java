@@ -1,13 +1,13 @@
 package com.stolser.javatraining.controller;
 
 import com.google.common.base.Preconditions;
+import com.stolser.javatraining.block04.recordbook.model.UserAddress;
 
 import java.util.*;
 
 import static com.google.common.base.Preconditions.*;
 
 public class EnumUtils {
-
     public static <T extends Enum<T>> ValidInputOptions getValidInputOptionsFor(Class<T> enumType,
                                                                                 Set<T> excludeOpts) {
         checkNotNull(enumType);
@@ -30,7 +30,7 @@ public class EnumUtils {
                 validInput.add(ordinal);
         });
 
-        String promptingMessage = builder.append(" }").toString();
+        String promptingMessage = builder.append("}").toString();
 
         return new ValidInputOptions(promptingMessage, validInput);
     }
@@ -55,5 +55,17 @@ public class EnumUtils {
         public List<Integer> getOptions() {
             return options;
         }
+    }
+
+    public static <T extends Enum<T>> T getEnumByOrdinal(Class<T> enumType, int ordinal) {
+        checkNotNull(enumType);
+
+        for (T item: EnumSet.allOf(enumType)) {
+            if (item.ordinal() == ordinal) {
+                return item;
+            }
+        }
+
+        return null;
     }
 }
