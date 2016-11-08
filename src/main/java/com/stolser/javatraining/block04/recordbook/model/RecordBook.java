@@ -5,6 +5,9 @@ import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Represents an abstraction of a record book that can contain records.
+ */
 public class RecordBook {
     private Set<Record> records;
     private String name;
@@ -23,7 +26,7 @@ public class RecordBook {
     }
 
     /**
-     * Tries to add a new record. Since RecordBook contains only unique records
+     * Tries to add a new record. Since RecordBook contains only unique records <br />
      * duplicates will be discarded.
      * @param newRecord must be unique in order to be added into this RecordBook
      * @return {@code true} if a passed Record was added to records of this RecordBook

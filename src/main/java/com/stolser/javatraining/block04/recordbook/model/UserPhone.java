@@ -31,6 +31,9 @@ public final class UserPhone {
         checkNotNull(type);
     }
 
+    /**
+     * @return a full textual representation of this phone in the format '+380 XXX XX XX'.
+     */
     public String getFullNumber() {
         return String.format("%s%s %s", PREFIX, code, number);
     }

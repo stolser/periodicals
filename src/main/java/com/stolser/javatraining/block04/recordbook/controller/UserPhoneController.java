@@ -11,6 +11,9 @@ import java.util.List;
 import static com.stolser.javatraining.block04.recordbook.model.UserPhone.UserPhoneType;
 import static com.stolser.javatraining.controller.EnumUtils.*;
 
+/**
+ * A controller for asking a user info about user phones, processing and saving it into a current record.
+ */
 class UserPhoneController {
     // "67", "97"
     private static final String REGEX_PHONE_MOBILE_CODE = "\\d{2}";
@@ -22,7 +25,8 @@ class UserPhoneController {
             "|(\\d{3}\\s{1}\\d{2}\\s{1}\\d{2})";
     // "+38(044)555-55-55"
     private static final String REGEX_PHONE = "^\\+\\d{2}\\(\\d{3}\\)\\d{3}-\\d{2}-\\d{2}$";
-    private static final String BEGINNING_MESSAGE = "---------------------\nEntering phone numbers.";
+    private static final String BEGINNING_MESSAGE = "---------------------\nEntering phone numbers " +
+                                                                        "(must be at least one).";
     private static final String CHOOSE_PHONE_TYPE_TEXT = "Choose a phone type %s: ";
     private static final String PHONE_TYPE_QUESTION = "Is the next phone number mobile? ";
     private static final String PHONE_CODE_TEXT = "Enter a phone code without a leading +380" +
@@ -45,6 +49,10 @@ class UserPhoneController {
         this.output = output;
     }
 
+    /**
+     * Each user must have at least one phone. There are can be a multitude of them of different types.
+     * @param newRecord a current record which will be populated with phones data entered by a user.
+     */
     void readUserPhonesAndSaveInto(Record newRecord) {
         boolean thereAreMorePhones;
         List<Integer> phoneTypeValidInput;

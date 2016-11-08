@@ -13,6 +13,10 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Instant;
 
+/**
+ * The main controller of the RecordBook app. Has methods for adding new records filled with
+ * a user input.
+ */
 public class RecordBookController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RecordBookController.class);
 
@@ -49,7 +53,11 @@ public class RecordBookController {
         this.output = environment.getViewPrinter();
     }
 
-    public void update() {
+    /**
+     * Asks a user about different data, creates a new record, populates it with entered by a user data
+     * and adds a new record to this RecordBook. Can be used to add several records in a row.
+     */
+    public void processUserInput() {
         boolean thereIsMoreData;
         validatedInput = new ValidatedInput(input, output);
 
@@ -107,6 +115,9 @@ public class RecordBookController {
         newRecord.setSkype(skype);
     }
 
+    /**
+     * Displays all records from this RecordBook.
+     */
     public void displayRecords() {
         output.printlnString(viewGenerator.getRecordBookView(recordBook));
     }

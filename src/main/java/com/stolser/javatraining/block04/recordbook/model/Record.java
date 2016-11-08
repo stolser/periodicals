@@ -7,6 +7,12 @@ import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Represents one record in a RecordBook. Contains all the info about a user.<br />
+ * Records are stored in no particular order. The uniqueness is determined by a user name,<br />
+ * so there are no two records in the same RecordBook which user name are equal.
+ * The {@link Record#clone()} is implemented using deep copying.
+ */
 public class Record implements Cloneable {
     private UserName userName;
     private String comment;
@@ -174,6 +180,9 @@ public class Record implements Cloneable {
         this.lastModifDate = Instant.now();
     }
 
+    /**
+     * @return a new instance of Record. Implements deep copying of all fields.
+     */
     @Override
     public Record clone() {
         Record clone;

@@ -14,6 +14,9 @@ import java.util.Set;
 
 import static com.stolser.javatraining.controller.EnumUtils.*;
 
+/**
+ * A controller for asking a user info about user groups, processing and saving it into a current record.
+ */
 class UserGroupController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserGroupController.class);
     private static final String BEGINNING_MESSAGE = "---------------------\n" +
@@ -33,6 +36,10 @@ class UserGroupController {
         this.output = output;
     }
 
+    /**
+     * Each user must be attached to at least one use group. But it can be attached to several different groups.
+     * @param newRecord a current record which will be populated with user group data entered by a user.
+     */
     void readUserGroupsAndSaveInto(Record newRecord) {
         chosenGroups = new HashSet<>();
 

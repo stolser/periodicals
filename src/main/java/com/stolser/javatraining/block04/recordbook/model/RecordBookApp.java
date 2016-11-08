@@ -9,7 +9,7 @@ public class RecordBookApp {
         RecordBook recordBook = new RecordBook("Personal RecordBook");
         RecordBookController controller = new RecordBookController(recordBook, environment);
 
-        controller.update();
+        controller.processUserInput();
         controller.displayRecords();
     }
 

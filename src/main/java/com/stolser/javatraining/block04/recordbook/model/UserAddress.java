@@ -2,6 +2,9 @@ package com.stolser.javatraining.block04.recordbook.model;
 
 import static com.google.common.base.Preconditions.*;
 
+/**
+ * Represents an abstraction of a user address.
+ */
 public class UserAddress implements Cloneable {
     private String postCode;
     private LocalityType localityType;
@@ -63,6 +66,10 @@ public class UserAddress implements Cloneable {
         checkNotNull(apartmentNumber);
     }
 
+    /**
+     * @return a formatted representation of this address.
+     * An example: '24 Lomonosova St., Apt 104B, Kiev 03022'
+     */
     public String getFullAddress() {
         return String.format("%s %s %s, Apt %s, %s %s", houseNumber, streetName,
                 streetType.getShortName(), apartmentNumber, localityName, postCode);

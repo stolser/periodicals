@@ -2,6 +2,9 @@ package com.stolser.javatraining.block04.recordbook.model;
 
 import static com.google.common.base.Preconditions.*;
 
+/**
+ * Represents an abstraction of user name.
+ */
 public class UserName implements Cloneable {
     private String firstName;
     private String lastName;

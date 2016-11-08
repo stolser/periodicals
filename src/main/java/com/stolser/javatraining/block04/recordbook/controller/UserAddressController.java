@@ -10,6 +10,10 @@ import static com.stolser.javatraining.block04.recordbook.model.UserAddress.Loca
 import static com.stolser.javatraining.block04.recordbook.model.UserAddress.StreetType;
 import static com.stolser.javatraining.controller.EnumUtils.*;
 
+/**
+ * A controller for asking a user info about address, processing and saving it into a current record.
+ *
+ */
 class UserAddressController {
     // "03022"
     private static final String REGEX_POST_CODE = "\\d{5}";
@@ -39,6 +43,9 @@ class UserAddressController {
         this.validatedInput = validatedInput;
     }
 
+    /**
+     * @param newRecord a current record which will be populated with address data entered by a user.
+     */
     void readAddressAndSaveInto(Record newRecord) {
         readPostCode();
         readLocalityType();
