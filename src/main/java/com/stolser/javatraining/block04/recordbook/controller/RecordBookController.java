@@ -5,7 +5,6 @@ import com.stolser.javatraining.block04.recordbook.view.ViewGenerator;
 import com.stolser.javatraining.controller.EnumUtils;
 import com.stolser.javatraining.controller.InputReader;
 import com.stolser.javatraining.controller.ValidatedInput;
-import com.stolser.javatraining.model.Environment;
 import com.stolser.javatraining.view.ViewPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

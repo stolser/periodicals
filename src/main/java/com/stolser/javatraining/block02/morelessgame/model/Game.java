@@ -1,7 +1,5 @@
 package com.stolser.javatraining.block02.morelessgame.model;
 
-import com.stolser.javatraining.model.Environment;
-
 public interface Game {
     /**
      * Setups the initial state of this game along with all necessary components

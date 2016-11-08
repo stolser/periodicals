@@ -1,4 +1,7 @@
-package com.stolser.javatraining.view;
+package com.stolser.javatraining.block02.morelessgame.view;
+
+import com.stolser.javatraining.view.ViewPrinter;
+import com.stolser.javatraining.view.ViewPrinterImpl;
 
 /**
  * An implementation of ViewFactory that returns classes for generating information

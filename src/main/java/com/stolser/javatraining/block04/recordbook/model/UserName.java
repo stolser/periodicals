@@ -91,11 +91,11 @@ public class UserName {
     public String getFullForm() {
         StringBuilder builder = new StringBuilder(String.format("%s %s", lastName, firstName));
 
-        if (extraName != null) {
+        if ((extraName != null) && (! "".equals(extraName))) {
             builder.append(String.format(" %s", extraName));
         }
 
-        if (nickname != null) {
+        if ((nickname != null) && (! "".equals(nickname))) {
             builder.append(String.format(" (known as '%s')", nickname));
         }
 

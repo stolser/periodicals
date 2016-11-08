@@ -5,7 +5,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-class ViewPrinterImpl implements ViewPrinter {
+public class ViewPrinterImpl implements ViewPrinter {
     private Locale locale;
     private PrintStream output;
 
