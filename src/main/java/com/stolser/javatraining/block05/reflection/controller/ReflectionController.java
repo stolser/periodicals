@@ -25,22 +25,28 @@ public class ReflectionController {
 
         getAndPrintInfoAbout(vehicle1);
         getAndPrintInfoAbout(vehicle2);
+//        getAndPrintInfoAbout("Hello World");
     }
 
     private void getAndPrintInfoAbout(Object vehicle1) {
         Class clazz = vehicle1.getClass();
 
         output.printlnString("==================================================");
-        printName(clazz);
+        printNameAndSuperclass(clazz);
         printConstructors(clazz);
         printMethods(clazz);
         printFields(clazz);
+        printInterfaces(clazz);
 
         output.printlnString("==================================================");
     }
 
-    private void printName(Class clazz) {
-        output.printlnString(String.format("Class name: %s", clazz.getName()));
+    private void printNameAndSuperclass(Class clazz) {
+        output.printlnString(String.format("Class full name: %s", clazz.getName()));
+        output.printlnString(String.format("Class simple name: %s", getShortName(clazz.getName())));
+        output.printlnString(String.format("Superclass full name: %s", clazz.getSuperclass().getName()));
+        output.printlnString(String.format("Superclass simple name: %s",
+                getShortName(clazz.getSuperclass().getName())));
     }
 
     private void printConstructors(Class clazz) {
@@ -89,6 +95,31 @@ public class ReflectionController {
         Field[] fields = clazz.getDeclaredFields();
 
         output.printlnString("------------ Fields ------------");
+        Arrays.stream(fields).forEach(field -> {
+            output.printlnString(field.toString());
+        });
 
+    }
+
+    private void printInterfaces(Class clazz) {
+        output.printlnString("------------ Interfaces ------------");
+
+        printInterfacesOfThisType(clazz);
+    }
+
+    private void printInterfacesOfThisType(Class clazz) {
+        if (clazz.getSuperclass() != null) {
+            printInterfacesOfThisType(clazz.getSuperclass());
+
+        }
+
+        Class[] interfaces = clazz.getInterfaces();
+
+        if (interfaces.length > 0) {
+            Arrays.stream(interfaces).forEach(thisInterface -> {
+                printInterfacesOfThisType(thisInterface);
+                output.printlnString(thisInterface.toString());
+            });
+        }
     }
 }
