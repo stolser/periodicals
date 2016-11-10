@@ -1,4 +1,4 @@
-package com.stolser.javatraining.block05.reflection.model.entity;
+package com.stolser.javatraining.block05.reflection.model.vehicle;
 
 public interface Vehicle {
     void accelerate(double time);

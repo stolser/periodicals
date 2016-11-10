@@ -1,4 +1,4 @@
-package com.stolser.javatraining.block04.recordbook.model;
+package com.stolser.javatraining.block04.recordbook.model.recordbook;
 
 import java.util.*;
 import java.util.stream.Collectors;

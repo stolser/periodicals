@@ -1,12 +1,12 @@
 package com.stolser.javatraining.block04.recordbook.controller;
 
 import com.stolser.javatraining.block04.recordbook.model.Environment;
-import com.stolser.javatraining.block04.recordbook.model.Record;
-import com.stolser.javatraining.block04.recordbook.model.RecordBook;
-import com.stolser.javatraining.block04.recordbook.model.UserName;
+import com.stolser.javatraining.block04.recordbook.model.recordbook.Record;
+import com.stolser.javatraining.block04.recordbook.model.recordbook.RecordBook;
+import com.stolser.javatraining.block04.recordbook.model.user.UserName;
 import com.stolser.javatraining.block04.recordbook.view.ViewGenerator;
 import com.stolser.javatraining.controller.InputReader;
-import com.stolser.javatraining.controller.ValidatedInput;
+import com.stolser.javatraining.controller.validate.ValidatedInput;
 import com.stolser.javatraining.view.ViewPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

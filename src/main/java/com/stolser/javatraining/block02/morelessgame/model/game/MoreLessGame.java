@@ -1,7 +1,7 @@
-package com.stolser.javatraining.block02.morelessgame.model;
+package com.stolser.javatraining.block02.morelessgame.model.game;
 
 import com.google.common.collect.Range;
-import com.stolser.javatraining.controller.Utils;
+import com.stolser.javatraining.controller.utils.NumberUtils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -58,7 +58,7 @@ public class MoreLessGame {
 
     public MoreLessGame() {
         userAttempts = new LinkedList<>();
-        secretNumber = Utils.randomInt(lowerBoundDefault, upperBoundDefault);
+        secretNumber = NumberUtils.randomInt(lowerBoundDefault, upperBoundDefault);
         currentRange = Range.closed(lowerBoundDefault, upperBoundDefault);
     }
 

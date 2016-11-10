@@ -1,6 +1,6 @@
 package com.stolser.javatraining.block02.morelessgame;
 
-import com.stolser.javatraining.block02.morelessgame.model.Application;
+import com.stolser.javatraining.block02.morelessgame.controller.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

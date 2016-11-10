@@ -1,4 +1,6 @@
-package com.stolser.javatraining.block02.morelessgame.model;
+package com.stolser.javatraining.block02.morelessgame.model.game;
+
+import com.stolser.javatraining.block02.morelessgame.model.Environment;
 
 public interface Game {
     /**

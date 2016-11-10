@@ -1,6 +1,6 @@
 package com.stolser.javatraining.block02.morelessgame.model;
 
-import com.stolser.javatraining.controller.Utils;
+import com.stolser.javatraining.controller.utils.NumberUtils;
 import org.junit.Test;
 
 public class UtilsTest2 {
@@ -9,6 +9,6 @@ public class UtilsTest2 {
         int min = 100;
         int max = 50;
 
-        Utils.randomInt(min, max);
+        NumberUtils.randomInt(min, max);
     }
 }

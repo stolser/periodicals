@@ -1,4 +1,4 @@
-package com.stolser.javatraining.block05.reflection.model;
+package com.stolser.javatraining.block05.reflection.controller;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

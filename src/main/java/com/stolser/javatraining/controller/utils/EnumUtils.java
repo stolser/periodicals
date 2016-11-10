@@ -1,7 +1,4 @@
-package com.stolser.javatraining.controller;
-
-import com.google.common.base.Preconditions;
-import com.stolser.javatraining.block04.recordbook.model.UserAddress;
+package com.stolser.javatraining.controller.utils;
 
 import java.util.*;
 

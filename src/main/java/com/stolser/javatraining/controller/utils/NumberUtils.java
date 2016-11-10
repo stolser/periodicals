@@ -1,16 +1,16 @@
-package com.stolser.javatraining.controller;
+package com.stolser.javatraining.controller.utils;
 
-import com.stolser.javatraining.block02.morelessgame.model.MoreLessGame;
+import com.stolser.javatraining.block02.morelessgame.model.game.MoreLessGame;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-public final class Utils {
+public final class NumberUtils {
     private static final int LOWER_BOUND_DEFAULT = 0;
     private static final int UPPER_BOUND_DEFAULT = 100;
 
-    private Utils() {}
+    private NumberUtils() {}
 
     /**
      * Generates a pseudo-random integer using an equality:

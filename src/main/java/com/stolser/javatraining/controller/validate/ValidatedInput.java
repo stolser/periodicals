@@ -1,5 +1,7 @@
-package com.stolser.javatraining.controller;
+package com.stolser.javatraining.controller.validate;
 
+import com.stolser.javatraining.controller.InputReader;
+import com.stolser.javatraining.controller.validate.RegexValidator;
 import com.stolser.javatraining.view.ViewPrinter;
 
 import java.util.List;

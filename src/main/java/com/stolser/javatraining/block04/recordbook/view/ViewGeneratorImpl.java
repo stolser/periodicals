@@ -1,8 +1,8 @@
 package com.stolser.javatraining.block04.recordbook.view;
 
-import com.stolser.javatraining.block04.recordbook.model.Record;
-import com.stolser.javatraining.block04.recordbook.model.RecordBook;
-import com.stolser.javatraining.block04.recordbook.model.UserPhone;
+import com.stolser.javatraining.block04.recordbook.model.recordbook.Record;
+import com.stolser.javatraining.block04.recordbook.model.recordbook.RecordBook;
+import com.stolser.javatraining.block04.recordbook.model.user.UserPhone;
 
 import java.text.SimpleDateFormat;
 import java.util.List;

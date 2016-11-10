@@ -1,15 +1,15 @@
 package com.stolser.javatraining.block04.recordbook.controller;
 
-import com.stolser.javatraining.block04.recordbook.model.Record;
-import com.stolser.javatraining.block04.recordbook.model.UserPhone;
+import com.stolser.javatraining.block04.recordbook.model.recordbook.Record;
+import com.stolser.javatraining.block04.recordbook.model.user.UserPhone;
 import com.stolser.javatraining.controller.InputReader;
-import com.stolser.javatraining.controller.ValidatedInput;
+import com.stolser.javatraining.controller.validate.ValidatedInput;
 import com.stolser.javatraining.view.ViewPrinter;
 
 import java.util.List;
 
-import static com.stolser.javatraining.block04.recordbook.model.UserPhone.UserPhoneType;
-import static com.stolser.javatraining.controller.EnumUtils.*;
+import static com.stolser.javatraining.block04.recordbook.model.user.UserPhone.UserPhoneType;
+import static com.stolser.javatraining.controller.utils.EnumUtils.*;
 
 /**
  * A controller for asking a user info about user phones, processing and saving it into a current record.

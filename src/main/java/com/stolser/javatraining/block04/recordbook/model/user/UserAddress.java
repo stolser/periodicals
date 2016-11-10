@@ -1,4 +1,4 @@
-package com.stolser.javatraining.block04.recordbook.model;
+package com.stolser.javatraining.block04.recordbook.model.user;
 
 import static com.google.common.base.Preconditions.*;
 

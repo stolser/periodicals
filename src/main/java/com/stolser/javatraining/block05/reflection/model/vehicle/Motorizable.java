@@ -1,6 +1,6 @@
-package com.stolser.javatraining.block05.reflection.model.entity;
+package com.stolser.javatraining.block05.reflection.model.vehicle;
 
-import static com.stolser.javatraining.block05.reflection.model.entity.Car.*;
+import static com.stolser.javatraining.block05.reflection.model.vehicle.Car.*;
 
 public interface Motorizable {
     int getCylinderNumber();

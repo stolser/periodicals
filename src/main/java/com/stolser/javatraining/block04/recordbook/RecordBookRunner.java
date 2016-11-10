@@ -1,6 +1,6 @@
 package com.stolser.javatraining.block04.recordbook;
 
-import com.stolser.javatraining.block04.recordbook.model.RecordBookApp;
+import com.stolser.javatraining.block04.recordbook.controller.RecordBookApp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,9 +1,9 @@
 package com.stolser.javatraining.block04.recordbook.controller;
 
-import com.stolser.javatraining.block04.recordbook.model.Record;
-import com.stolser.javatraining.block04.recordbook.model.UserGroup;
+import com.stolser.javatraining.block04.recordbook.model.recordbook.Record;
+import com.stolser.javatraining.block04.recordbook.model.user.UserGroup;
 import com.stolser.javatraining.controller.InputReader;
-import com.stolser.javatraining.controller.ValidatedInput;
+import com.stolser.javatraining.controller.validate.ValidatedInput;
 import com.stolser.javatraining.view.ViewPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.stolser.javatraining.controller.EnumUtils.*;
+import static com.stolser.javatraining.controller.utils.EnumUtils.*;
 
 /**
  * A controller for asking a user info about user groups, processing and saving it into a current record.

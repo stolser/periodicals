@@ -1,8 +1,8 @@
-package com.stolser.javatraining.block05.reflection.model.entity;
+package com.stolser.javatraining.block05.reflection.model.vehicle;
 
 import com.stolser.javatraining.block05.reflection.model.Describable;
-import com.stolser.javatraining.block05.reflection.model.Invocable;
-import com.stolser.javatraining.block05.reflection.model.NotNegative;
+import com.stolser.javatraining.block05.reflection.controller.Invocable;
+import com.stolser.javatraining.block05.reflection.controller.NotNegative;
 import com.stolser.javatraining.block05.reflection.model.TrafficParticipant;
 import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.google.common.base.Preconditions.*;
-import static com.stolser.javatraining.block05.reflection.model.entity.Car.TransmissionType.*;
+import static com.stolser.javatraining.block05.reflection.model.vehicle.Car.TransmissionType.*;
 
 @TrafficParticipant
 public class Car implements Vehicle, Motorizable, Describable {

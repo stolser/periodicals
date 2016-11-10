@@ -1,6 +1,6 @@
 package com.stolser.javatraining.block04.recordbook.view;
 
-import com.stolser.javatraining.block04.recordbook.model.RecordBook;
+import com.stolser.javatraining.block04.recordbook.model.recordbook.RecordBook;
 
 /**
  * Implementations of this interface generate specific view presentations<br />

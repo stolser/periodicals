@@ -1,4 +1,4 @@
-package com.stolser.javatraining.controller;
+package com.stolser.javatraining.controller.validate;
 
 import java.util.HashMap;
 import java.util.Map;

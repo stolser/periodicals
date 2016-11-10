@@ -1,6 +1,6 @@
-package com.stolser.javatraining.block05.reflection.model.entity;
+package com.stolser.javatraining.block05.reflection.model.vehicle;
 
-import com.stolser.javatraining.block05.reflection.model.NotNegative;
+import com.stolser.javatraining.block05.reflection.controller.NotNegative;
 
 import static com.google.common.base.Preconditions.checkArgument;
 

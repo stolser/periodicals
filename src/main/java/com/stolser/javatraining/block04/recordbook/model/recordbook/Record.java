@@ -1,4 +1,9 @@
-package com.stolser.javatraining.block04.recordbook.model;
+package com.stolser.javatraining.block04.recordbook.model.recordbook;
+
+import com.stolser.javatraining.block04.recordbook.model.user.UserAddress;
+import com.stolser.javatraining.block04.recordbook.model.user.UserGroup;
+import com.stolser.javatraining.block04.recordbook.model.user.UserName;
+import com.stolser.javatraining.block04.recordbook.model.user.UserPhone;
 
 import java.time.Instant;
 import java.util.Collections;

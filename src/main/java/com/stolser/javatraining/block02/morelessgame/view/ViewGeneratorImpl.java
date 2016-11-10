@@ -1,6 +1,6 @@
 package com.stolser.javatraining.block02.morelessgame.view;
 
-import com.stolser.javatraining.block02.morelessgame.model.UserAttempt;
+import com.stolser.javatraining.block02.morelessgame.model.game.UserAttempt;
 import com.stolser.javatraining.block02.morelessgame.model.menu.MenuItem;
 import com.stolser.javatraining.view.ViewPrinter;
 import org.slf4j.Logger;

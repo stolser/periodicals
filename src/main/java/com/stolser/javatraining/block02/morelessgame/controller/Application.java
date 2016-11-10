@@ -1,6 +1,7 @@
-package com.stolser.javatraining.block02.morelessgame.model;
+package com.stolser.javatraining.block02.morelessgame.controller;
 
 import com.stolser.javatraining.block02.morelessgame.controller.MenuController;
+import com.stolser.javatraining.block02.morelessgame.model.Environment;
 import com.stolser.javatraining.block02.morelessgame.model.menu.MenuGenerator;
 import com.stolser.javatraining.block02.morelessgame.model.menu.MenuItem;
 
