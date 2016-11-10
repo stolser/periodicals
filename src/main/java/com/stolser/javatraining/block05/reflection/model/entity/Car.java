@@ -1,27 +1,44 @@
-package com.stolser.javatraining.block05.reflection.model;
+package com.stolser.javatraining.block05.reflection.model.entity;
+
+import com.stolser.javatraining.block05.reflection.model.Describable;
+import com.stolser.javatraining.block05.reflection.model.Invocable;
+import com.stolser.javatraining.block05.reflection.model.NotNegative;
+import com.stolser.javatraining.block05.reflection.model.TrafficParticipant;
+import com.sun.istack.internal.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.google.common.base.Preconditions.*;
-import static com.stolser.javatraining.block05.reflection.model.Car.TransmissionType.*;
+import static com.stolser.javatraining.block05.reflection.model.entity.Car.TransmissionType.*;
 
 @TrafficParticipant
-public class Car implements Vehicle {
+public class Car implements Vehicle, Motorizable, Describable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Car.class);
     private static final AtomicInteger nextUID = new AtomicInteger(1);
     private static final int CYLINDER_NUMBER_DEFAULT = 4;
     private static final int POWER_DEFAULT = 320;
     private static final double ACCELERATION_POWER = 0.01;
     private static final double MILLIS_TO_SECONDS = 0.001;
     private static final int BRAKES_EFFICIENCY = 50;
-    protected static final TransmissionType TRANS_TYPE_DEFAULT = MANUAL;
+    private static final TransmissionType TRANS_TYPE_DEFAULT = MANUAL;
 
     private int uid; // unique identifier
+    @NotNull
     private String brand;
+    private String description;
+    @NotNegative
     private int cylinderNumber;
+    @NotNegative
     private int power; // measured in 'hp' (horsepower);
+    @NotNull
     private TransmissionType transType;
+    @NotNegative
     private double currentSpeed;
+    @NotNegative
     private double maxSpeed;
+    private boolean isEngineOn;
 
     public Car(String brand) {
         this(brand, CYLINDER_NUMBER_DEFAULT, POWER_DEFAULT, TRANS_TYPE_DEFAULT);
@@ -41,21 +58,20 @@ public class Car implements Vehicle {
         maxSpeed = setMaxSpeed();
     }
 
-    private double setMaxSpeed() {
-        return (power * 0.7) * (1 + cylinderNumber/10);
+    protected double setMaxSpeed() {
+        double maxSpeed = (power * 0.7) * (1 + cylinderNumber/10);
+        LOGGER.debug("maxSpeed = {}", maxSpeed);
+
+        return maxSpeed;
     }
 
     public enum TransmissionType {
         MANUAL, AUTOMATIC, SEMI_AUTOMATIC, CVT;
     }
 
-    /**
-     * Starts the engine without moving.
-     */
     @Override
-    @Invocable
-    public void startEngine() {
-        System.out.println("Starting the engine.");
+    public int getUid() {
+        return uid;
     }
 
     /**
@@ -64,7 +80,7 @@ public class Car implements Vehicle {
      */
 
     @Override
-    @Invocable(times = 2)
+    @Invocable(times = 3)
     public void accelerate(double time) {
         checkArgument(time > 0);
         double oldCurrentSpeed = currentSpeed;
@@ -79,7 +95,7 @@ public class Car implements Vehicle {
      *             of the car after calling this method.
      */
     @Override
-    @Invocable(times = 3)
+    @Invocable(times = 2)
     public void brake(double time) {
         checkArgument(time > 0);
         double oldCurrentSpeed = currentSpeed;
@@ -89,7 +105,7 @@ public class Car implements Vehicle {
     }
 
     @Override
-    @Invocable
+    @Invocable(times = 0)
     public void moveLeft(double distance) {
         checkArgument(distance > 0);
         System.out.printf("Moving left at %f meters.\n", distance);
@@ -122,41 +138,59 @@ public class Car implements Vehicle {
         return uid;
     }
 
+    @Override
     public String getBrand() {
         return brand;
     }
 
+    @Override
     public int getCylinderNumber() {
         return cylinderNumber;
     }
 
+    @Override
     public void setCylinderNumber(int cylinderNumber) {
         checkArgument(cylinderNumber > 0);
         this.cylinderNumber = cylinderNumber;
     }
 
+    @Override
     public int getPower() {
         return power;
     }
 
+    @Override
     public void setPower(int power) {
         checkArgument(power > 0);
         this.power = power;
     }
 
+    @Override
+    @Invocable(isActive = false)
     public double getMaxSpeed() {
+        System.out.printf("The max speed = %f", maxSpeed);
         return maxSpeed;
     }
 
+    @Override
+    @Invocable
     public double getCurrentSpeed() {
+        System.out.printf("The current speed = %f", currentSpeed);
         return currentSpeed;
     }
 
-    public int getUid() {
-        return uid;
-    }
-
+    @Override
     public TransmissionType getTransType() {
         return transType;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

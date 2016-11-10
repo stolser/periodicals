@@ -1,9 +1,13 @@
-package com.stolser.javatraining.block05.reflection.model;
+package com.stolser.javatraining.block05.reflection.model.entity;
+
+import com.stolser.javatraining.block05.reflection.model.NotNegative;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class Truck extends Car implements Loadable {
+    @NotNegative
     private double loadRating;
+    @NotNegative
     private double currentCargoWeight;
 
     /**
@@ -38,5 +42,10 @@ public class Truck extends Car implements Loadable {
     public void unLoadCargo() {
         System.out.printf("Unloading the cargo.");
         currentCargoWeight = 0.0;
+    }
+
+    @Override
+    public double getCurrentCargoWeight() {
+        return currentCargoWeight;
     }
 }
