@@ -84,10 +84,10 @@ public class Car implements Vehicle, Motorizable, Describable {
     public void accelerate(double time) {
         checkArgument(time > 0);
         double oldCurrentSpeed = currentSpeed;
-        double newCurrentSpeed = Math.max(maxSpeed, currentSpeed +
+        double newCurrentSpeed = Math.min(maxSpeed, currentSpeed +
                 ((power * ACCELERATION_POWER) * cylinderNumber * (time * MILLIS_TO_SECONDS)));
         currentSpeed = newCurrentSpeed;
-        System.out.printf("Accelerating from %f to %f\n", oldCurrentSpeed, newCurrentSpeed);
+        System.out.printf("Accelerating from %.2f to %.2f\n", oldCurrentSpeed, newCurrentSpeed);
     }
 
     /**
@@ -99,43 +99,23 @@ public class Car implements Vehicle, Motorizable, Describable {
     public void brake(double time) {
         checkArgument(time > 0);
         double oldCurrentSpeed = currentSpeed;
-        double newCurrentSpeed = Math.min(0, currentSpeed - (BRAKES_EFFICIENCY * (time * MILLIS_TO_SECONDS)));
+        double newCurrentSpeed = Math.max(0, currentSpeed - (BRAKES_EFFICIENCY * (time * MILLIS_TO_SECONDS)));
         currentSpeed = newCurrentSpeed;
-        System.out.printf("Braking from %f to %f\n", oldCurrentSpeed, newCurrentSpeed);
+        System.out.printf("Braking from %.2f to %.2f\n", oldCurrentSpeed, newCurrentSpeed);
     }
 
     @Override
     @Invocable(times = 0)
     public void moveLeft(double distance) {
         checkArgument(distance > 0);
-        System.out.printf("Moving left at %f meters.\n", distance);
+        System.out.printf("Moving left at %.2f meters.\n", distance);
     }
 
     @Override
     @Invocable
     public void moveRight(double distance) {
         checkArgument(distance > 0);
-        System.out.printf("Moving right at %f meters.\n", distance);
-    }
-
-    @Override
-    public String toString() {
-        return String.format("Car {'%s'; cylinders = %d; power = %d hp}", brand, cylinderNumber, power);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Car car = (Car) o;
-
-        return uid == car.uid;
-    }
-
-    @Override
-    public int hashCode() {
-        return uid;
+        System.out.printf("Moving right at %.2f meters.\n", distance);
     }
 
     @Override
@@ -168,14 +148,14 @@ public class Car implements Vehicle, Motorizable, Describable {
     @Override
     @Invocable(isActive = false)
     public double getMaxSpeed() {
-        System.out.printf("The max speed = %f", maxSpeed);
+        System.out.printf("The max speed = %.2f", maxSpeed);
         return maxSpeed;
     }
 
     @Override
     @Invocable
     public double getCurrentSpeed() {
-        System.out.printf("The current speed = %f", currentSpeed);
+        System.out.printf("The current speed = %.2f", currentSpeed);
         return currentSpeed;
     }
 
@@ -192,5 +172,25 @@ public class Car implements Vehicle, Motorizable, Describable {
     @Override
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Car {'%s'; cylinders = %d; power = %d hp}", brand, cylinderNumber, power);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Car car = (Car) o;
+
+        return uid == car.uid;
+    }
+
+    @Override
+    public int hashCode() {
+        return uid;
     }
 }

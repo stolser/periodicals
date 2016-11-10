@@ -26,7 +26,7 @@ public class ReflectionController {
 
         getAndPrintInfoAbout(vehicle1);
         getAndPrintInfoAbout(vehicle2);
-        new InvokeController(output).invokeMethodsViaReflection(vehicle1);
+        new InvokeController(output).invokeMethodsOf(vehicle1);
     }
 
     private void getAndPrintInfoAbout(Object vehicle1) {
