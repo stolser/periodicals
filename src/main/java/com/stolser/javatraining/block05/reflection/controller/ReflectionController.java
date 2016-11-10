@@ -1,15 +1,18 @@
 package com.stolser.javatraining.block05.reflection.controller;
 
-import com.stolser.javatraining.block05.reflection.model.Car;
-import com.stolser.javatraining.block05.reflection.model.Truck;
-import com.stolser.javatraining.block05.reflection.model.Vehicle;
+import com.stolser.javatraining.block05.reflection.model.entity.Car;
+import com.stolser.javatraining.block05.reflection.model.entity.Truck;
+import com.stolser.javatraining.block05.reflection.model.entity.Vehicle;
 import com.stolser.javatraining.view.ViewPrinter;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class ReflectionController {
@@ -25,7 +28,7 @@ public class ReflectionController {
 
         getAndPrintInfoAbout(vehicle1);
         getAndPrintInfoAbout(vehicle2);
-//        getAndPrintInfoAbout("Hello World");
+        new InvokeController(output).invokeMethodsViaReflection(vehicle1);
     }
 
     private void getAndPrintInfoAbout(Object vehicle1) {
@@ -42,11 +45,15 @@ public class ReflectionController {
     }
 
     private void printNameAndSuperclass(Class clazz) {
-        output.printlnString(String.format("Class full name: %s", clazz.getName()));
-        output.printlnString(String.format("Class simple name: %s", getShortName(clazz.getName())));
-        output.printlnString(String.format("Superclass full name: %s", clazz.getSuperclass().getName()));
-        output.printlnString(String.format("Superclass simple name: %s",
-                getShortName(clazz.getSuperclass().getName())));
+        output.printlnString(String.format("Class's full name: %s", clazz.getName()));
+        output.printlnString(String.format("Class's package name: %s", clazz.getPackage()));
+        output.printlnString(String.format("Class's simple name: %s", getShortNameAsString(clazz.getName())));
+        output.printlnString(String.format("Class's modifiers: %s", getModifiesAsString(clazz.getModifiers())));
+        output.printlnString(String.format("Class's annotations: %s", Arrays.toString(clazz.getAnnotations())));
+        output.printlnString(String.format("Superclass's full name: %s", clazz.getSuperclass().getName()));
+        output.printlnString(String.format("Superclass's package name: %s", clazz.getSuperclass().getPackage()));
+        output.printlnString(String.format("Superclass's simple name: %s",
+                getShortNameAsString(clazz.getSuperclass().getName())));
     }
 
     private void printConstructors(Class clazz) {
@@ -54,10 +61,10 @@ public class ReflectionController {
         output.printlnString("------------ Constructors ------------");
         Arrays.stream(constructors)
                 .forEach(constructor -> {
-                    String name = getShortName(constructor.getName());
+                    String name = getShortNameAsString(constructor.getName());
                     Class[] params = constructor.getParameterTypes();
                     String paramsString = String.join(", ", Arrays.stream(params)
-                            .map(param -> getShortName(param.getName())).collect(Collectors.toList()));
+                            .map(param -> getShortNameAsString(param.getName())).collect(Collectors.toList()));
 
                     output.printlnString(String.format("%s(%s); number of params = %d",
                             name, paramsString, params.length));
@@ -73,22 +80,15 @@ public class ReflectionController {
         output.printlnString(String.format("The number of public methods: %d", allPublicMethods.length));
         output.printlnString(String.format("The number of methods declared in this type: %d", allMethods.length));
         Arrays.stream(allMethods).forEach(method -> {
-            Annotation[] annotations = method.getAnnotations();
-            if (annotations.length > 0) {
-                Arrays.stream(annotations)
-                        .forEach(annotation -> {
-                            // todo: annotations are printed incorrectly;
-                            output.printlnString(String.format("\t@%s", annotation.getClass().getName()));
-                        });
-            }
-            output.printlnString(String.format("%s", method));
+            String annotations = getAnnotationsAsMultiLineString(method.getDeclaredAnnotations());
+            String modifiers = getModifiesAsString(method.getModifiers());
+            String returnTypeName = getShortNameAsString(method.getReturnType().getName());
+            String methodName = getShortNameAsString(method.getName());
+            String params = getParamsAsString(method.getParameterTypes());
+
+            output.printlnString(String.format("%s%s %s %s(%s);", annotations, modifiers,
+                    returnTypeName, methodName, params));
         });
-    }
-
-    private String getShortName(String fullName) {
-        String[] nameParts = fullName.split("\\.");
-
-        return nameParts[nameParts.length - 1];
     }
 
     private void printFields(Class clazz) {
@@ -96,7 +96,12 @@ public class ReflectionController {
 
         output.printlnString("------------ Fields ------------");
         Arrays.stream(fields).forEach(field -> {
-            output.printlnString(field.toString());
+            String annotations = getAnnotationsAsMultiLineString(field.getDeclaredAnnotations());
+            String modifiers = getModifiesAsString(field.getModifiers());
+            String type = getShortNameAsString(field.getType().getName());
+            String name = getShortNameAsString(field.getName());
+
+            output.printlnString(String.format("%s%s %s %s", annotations, modifiers, type, name));
         });
 
     }
@@ -118,8 +123,92 @@ public class ReflectionController {
         if (interfaces.length > 0) {
             Arrays.stream(interfaces).forEach(thisInterface -> {
                 printInterfacesOfThisType(thisInterface);
-                output.printlnString(thisInterface.toString());
+                output.printlnString(thisInterface.getName());
             });
         }
     }
+
+    private String getModifiesAsString(int modifiers) {
+        List<String> labels = new ArrayList<>();
+
+        if (Modifier.isPublic(modifiers)) {
+            labels.add("public");
+        }
+
+        if (Modifier.isProtected(modifiers)) {
+            labels.add("protected");
+        }
+
+        if (Modifier.isPrivate(modifiers)) {
+            labels.add("private");
+        }
+
+        if (Modifier.isAbstract(modifiers)) {
+            labels.add("abstract");
+        }
+
+        if (Modifier.isStatic(modifiers)) {
+            labels.add("static");
+        }
+
+        if (Modifier.isFinal(modifiers)) {
+            labels.add("final");
+        }
+
+        if (Modifier.isNative(modifiers)) {
+            labels.add("native");
+        }
+
+        if (Modifier.isStrict(modifiers)) {
+            labels.add("strictfp");
+        }
+
+        if (Modifier.isSynchronized(modifiers)) {
+            labels.add("synchronized");
+        }
+
+        if (Modifier.isTransient(modifiers)) {
+            labels.add("transient");
+        }
+
+        if (Modifier.isVolatile(modifiers)) {
+            labels.add("volatile");
+        }
+
+        return String.join(" ", labels);
+    }
+
+    private String getParamsAsString(Class<?>[] parameterTypes) {
+        List<String> labels = new ArrayList<>();
+        Arrays.stream(parameterTypes)
+                .forEach(paramType -> labels.add(getShortNameAsString(paramType.getName())));
+
+        return String.join(", ", labels);
+    }
+
+    private String getShortNameAsString(String fullName) {
+        String shortName;
+
+        if (fullName.contains(".")) {
+            String[] nameParts = fullName.split("\\.");
+            shortName = nameParts[nameParts.length - 1];
+        } else {
+            shortName = fullName;
+        }
+
+        return shortName;
+    }
+
+    private String getAnnotationsAsMultiLineString(Annotation[] annotations) {
+        StringBuilder builder = new StringBuilder();
+
+        if (annotations.length > 0) {
+            Arrays.stream(annotations)
+                    .forEach(annotation -> builder.append(String.format("\t@%s\n",
+                            getShortNameAsString(annotation.annotationType().getName()))));
+        }
+
+        return builder.toString();
+    }
+
 }
