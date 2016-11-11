@@ -1,7 +1,8 @@
 package com.stolser.javatraining.block05.reflection.controller;
 
 import com.stolser.javatraining.block05.reflection.model.vehicle.Vehicle;
-import com.stolser.javatraining.view.ViewPrinter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,40 +10,56 @@ import java.lang.reflect.Method;
 import static com.stolser.javatraining.controller.utils.ReflectionUtils.getShortNameAsString;
 
 class InvokeController {
-    private ViewPrinter output;
+    private static final Logger LOGGER = LoggerFactory.getLogger(InvokeController.class);
+    private static final String ACCELERATE_METHOD = "accelerate";
+    private static final String BRAKE_METHOD = "brake";
+    private static final String MOVE_LEFT_METHOD = "moveLeft";
+    private static final String MOVE_RIGHT_METHOD = "moveRight";
 
-    InvokeController(ViewPrinter output) {
-        this.output = output;
+    private Invocable invocable;
+    private Vehicle vehicle;
+    private Method method;
+
+    void invokeMethodsOf(Vehicle annotation) {
+        this.vehicle = annotation;
+
+        for (Method nextMethod : vehicle.getClass().getDeclaredMethods()) {
+            invocable = nextMethod.getAnnotation(Invocable.class);
+            method = nextMethod;
+            callMethodIfInvocableIsActive();
+        }
     }
 
+    private void callMethodIfInvocableIsActive() {
+        if ((invocable != null) && (invocable.isActive())) {
+            String methodName = getShortNameAsString(method.getName());
 
-    void invokeMethodsOf(Vehicle vehicle1) {
-        Method[] methods = vehicle1.getClass().getDeclaredMethods();
-
-        for (Method method : methods) {
-            Invocable invocable = method.getAnnotation(Invocable.class);
-            if ((invocable != null) && (invocable.isActive())) {
-                String methodName = getShortNameAsString(method.getName());
-                try {
-                    for (int i = 1; i <= invocable.times(); i++) {
-                        switch (methodName) {
-                            case "accelerate":
-                            case "brake":
-                                double time = 1500;
-                                method.invoke(vehicle1, time);
-                                break;
-                            case "moveLeft":
-                            case "moveRight":
-                                double distance = 10;
-                                method.invoke(vehicle1, distance);
-                        }
-                    }
-
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
+            try {
+                for (int i = 1; i <= invocable.times(); i++) {
+                    callMethodOnce(methodName);
                 }
 
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                LOGGER.debug("Reflection exception during invoking {} method", method.getName(), e);
+                throw new RuntimeException();
             }
+        }
+    }
+
+    private void callMethodOnce(String methodName) throws IllegalAccessException, InvocationTargetException {
+        switch (methodName) {
+            case ACCELERATE_METHOD:
+            case BRAKE_METHOD:
+                double time = 1500;
+                method.invoke(vehicle, time);
+                break;
+            case MOVE_LEFT_METHOD:
+            case MOVE_RIGHT_METHOD:
+                double distance = 10;
+                method.invoke(vehicle, distance);
+                break;
+            default:
+                method.invoke(vehicle);
         }
     }
 }

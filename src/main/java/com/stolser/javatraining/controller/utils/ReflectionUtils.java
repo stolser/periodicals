@@ -5,8 +5,12 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReflectionUtils {
+    private static final String PARAMS_DELIMITER = ", ";
+    private static final String MODIFIER_DELIMITER = " ";
+
     public static String getModifiesAsString(int modifiers) {
         List<String> labels = new ArrayList<>();
 
@@ -54,27 +58,30 @@ public class ReflectionUtils {
             labels.add("volatile");
         }
 
-        return String.join(" ", labels);
+        return String.join(MODIFIER_DELIMITER, labels);
     }
 
     public static String getParamsAsString(Class<?>[] parameterTypes) {
-        List<String> labels = new ArrayList<>();
-        Arrays.stream(parameterTypes)
-                .forEach(paramType -> labels.add(getShortNameAsString(paramType.getName())));
+        List<String> labels = Arrays.stream(parameterTypes)
+                .map(paramType -> getShortNameAsString(paramType.getName()))
+                .collect(Collectors.toList());
 
-        return String.join(", ", labels);
+        return String.join(PARAMS_DELIMITER, labels);
     }
 
     public static String getShortNameAsString(String fullName) {
+
+        return thisIsPackage(fullName) ? splitNameAndGetLastPart(fullName) : fullName;
+    }
+
+    private static boolean thisIsPackage(String fullName) {
+        return fullName.contains(".");
+    }
+
+    private static String splitNameAndGetLastPart(String fullName) {
         String shortName;
-
-        if (fullName.contains(".")) {
-            String[] nameParts = fullName.split("\\.");
-            shortName = nameParts[nameParts.length - 1];
-        } else {
-            shortName = fullName;
-        }
-
+        String[] nameParts = fullName.split("\\.");
+        shortName = nameParts[nameParts.length - 1];
         return shortName;
     }
 

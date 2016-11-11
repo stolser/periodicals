@@ -14,7 +14,21 @@ import java.util.stream.Collectors;
 import static com.stolser.javatraining.controller.utils.ReflectionUtils.*;
 
 public class ReflectionController {
+    private static final String CLASS_FULL_NAME_TEXT = "Class's full name: %s";
+    private static final String CLASS_PACKAGE_NAME_TEXT = "Class's package name: %s";
+    private static final String CLASS_SIMPLE_NAME_TEXT = "Class's simple name: %s";
+    private static final String CLASS_MODIFIERS_TEXT = "Class's modifiers: %s";
+    private static final String CLASS_ANNOTATIONS_TEXT = "Class's annotations: %s";
+    private static final String SUPERCLASS_FULL_NAME_TEXT = "Superclass's full name: %s";
+    private static final String SUPERCLASS_PACKAGE_NAME_TEXT = "Superclass's package name: %s";
+    private static final String SUPERCLASS_SIMPLE_NAME_TEXT = "Superclass's simple name: %s";
+    private static final String CONSTRUCTORS_TITLE = "------------ Constructors ------------";
+    private static final String METHODS_TITLE = "------------ Methods ------------";
+    private static final String FIELDS_TITLE = "------------ Fields ------------";
+    private static final String INTERFACES_TITLE = "------------ Interfaces ------------";
+    private static final String METHOD_SEPARATOR_STRING = "==================================================";
     private ViewPrinter output;
+    private Class clazz;
 
     public ReflectionController(ViewPrinter output) {
         this.output = output;
@@ -26,37 +40,38 @@ public class ReflectionController {
 
         getAndPrintInfoAbout(vehicle1);
         getAndPrintInfoAbout(vehicle2);
-        new InvokeController(output).invokeMethodsOf(vehicle1);
+        new InvokeController().invokeMethodsOf(vehicle1);
     }
 
     private void getAndPrintInfoAbout(Object vehicle1) {
-        Class clazz = vehicle1.getClass();
+        clazz = vehicle1.getClass();
 
-        output.printlnString("==================================================");
-        printNameAndSuperclass(clazz);
-        printConstructors(clazz);
-        printMethods(clazz);
-        printFields(clazz);
-        printInterfaces(clazz);
+        printMethodInfoSeparator();
 
-        output.printlnString("==================================================");
+        printNameAndSuperclass();
+        printConstructors();
+        printMethods();
+        printFields();
+        printInterfaces();
+
+        printMethodInfoSeparator();
     }
 
-    private void printNameAndSuperclass(Class clazz) {
-        output.printlnString(String.format("Class's full name: %s", clazz.getName()));
-        output.printlnString(String.format("Class's package name: %s", clazz.getPackage()));
-        output.printlnString(String.format("Class's simple name: %s", getShortNameAsString(clazz.getName())));
-        output.printlnString(String.format("Class's modifiers: %s", getModifiesAsString(clazz.getModifiers())));
-        output.printlnString(String.format("Class's annotations: %s", Arrays.toString(clazz.getAnnotations())));
-        output.printlnString(String.format("Superclass's full name: %s", clazz.getSuperclass().getName()));
-        output.printlnString(String.format("Superclass's package name: %s", clazz.getSuperclass().getPackage()));
-        output.printlnString(String.format("Superclass's simple name: %s",
+    private void printNameAndSuperclass() {
+        output.printlnString(String.format(CLASS_FULL_NAME_TEXT, clazz.getName()));
+        output.printlnString(String.format(CLASS_PACKAGE_NAME_TEXT, clazz.getPackage()));
+        output.printlnString(String.format(CLASS_SIMPLE_NAME_TEXT, getShortNameAsString(clazz.getName())));
+        output.printlnString(String.format(CLASS_MODIFIERS_TEXT, getModifiesAsString(clazz.getModifiers())));
+        output.printlnString(String.format(CLASS_ANNOTATIONS_TEXT, Arrays.toString(clazz.getAnnotations())));
+        output.printlnString(String.format(SUPERCLASS_FULL_NAME_TEXT, clazz.getSuperclass().getName()));
+        output.printlnString(String.format(SUPERCLASS_PACKAGE_NAME_TEXT, clazz.getSuperclass().getPackage()));
+        output.printlnString(String.format(SUPERCLASS_SIMPLE_NAME_TEXT,
                 getShortNameAsString(clazz.getSuperclass().getName())));
     }
 
-    private void printConstructors(Class clazz) {
+    private void printConstructors() {
         Constructor[] constructors = clazz.getConstructors();
-        output.printlnString("------------ Constructors ------------");
+        output.printlnString(CONSTRUCTORS_TITLE);
         Arrays.stream(constructors)
                 .forEach(constructor -> {
                     String name = getShortNameAsString(constructor.getName());
@@ -69,12 +84,11 @@ public class ReflectionController {
                 });
     }
 
-    private void printMethods(Class clazz) {
-
+    private void printMethods() {
         Method[] allPublicMethods = clazz.getMethods();
         Method[] allMethods = clazz.getDeclaredMethods();
 
-        output.printlnString("------------ Methods ------------");
+        output.printlnString(METHODS_TITLE);
         output.printlnString(String.format("The number of public methods: %d", allPublicMethods.length));
         output.printlnString(String.format("The number of methods declared in this type: %d", allMethods.length));
         Arrays.stream(allMethods).forEach(method -> {
@@ -89,10 +103,10 @@ public class ReflectionController {
         });
     }
 
-    private void printFields(Class clazz) {
+    private void printFields() {
         Field[] fields = clazz.getDeclaredFields();
 
-        output.printlnString("------------ Fields ------------");
+        output.printlnString(FIELDS_TITLE);
         Arrays.stream(fields).forEach(field -> {
             String annotations = getAnnotationsAsMultiLineString(field.getDeclaredAnnotations());
             String modifiers = getModifiesAsString(field.getModifiers());
@@ -104,8 +118,8 @@ public class ReflectionController {
 
     }
 
-    private void printInterfaces(Class clazz) {
-        output.printlnString("------------ Interfaces ------------");
+    private void printInterfaces() {
+        output.printlnString(INTERFACES_TITLE);
 
         printInterfacesOfThisType(clazz);
     }
@@ -124,6 +138,10 @@ public class ReflectionController {
                 output.printlnString(thisInterface.getName());
             });
         }
+    }
+
+    private void printMethodInfoSeparator() {
+        output.printlnString(METHOD_SEPARATOR_STRING);
     }
 
 }
