@@ -2,7 +2,7 @@ package com.stolser.javatraining.block05.reflection.model.vehicle;
 
 import com.stolser.javatraining.block05.reflection.controller.Invocable;
 import com.stolser.javatraining.block05.reflection.controller.NotNegative;
-import com.stolser.javatraining.block05.reflection.model.Describable;
+import com.stolser.javatraining.block05.reflection.model.UniquelyDescribable;
 import com.stolser.javatraining.block05.reflection.model.TrafficParticipant;
 import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
@@ -14,15 +14,30 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.stolser.javatraining.block05.reflection.model.vehicle.Car.TransmissionType.MANUAL;
 
+/**
+ * A car entity having characteristics common for all vehicles.<br />
+ *
+ * @see com.stolser.javatraining.block05.reflection.model.vehicle.Vehicle
+ * @see com.stolser.javatraining.block05.reflection.model.vehicle.Motorizable
+ * @see com.stolser.javatraining.block05.reflection.model.UniquelyDescribable
+ */
 @TrafficParticipant
-public class Car implements Vehicle, Motorizable, Describable {
+public class Car implements Vehicle, Motorizable, UniquelyDescribable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Car.class);
     private static final AtomicInteger nextUID = new AtomicInteger(1);
     private static final int CYLINDER_NUMBER_DEFAULT = 4;
     private static final int POWER_DEFAULT = 320;
-    private static final double ACCELERATION_POWER = 0.01;
-    private static final double MILLIS_TO_SECONDS = 0.001;
-    private static final int BRAKES_EFFICIENCY = 50;
+    /**
+     * Participates in calculating the current speed during accelerating
+     * the power is multiplied by this ratio).
+     */
+    private static final double ACCELERATION_RATIO = 0.01;
+    private static final double MILLIS_TO_SECONDS_RATIO = 0.001;
+    /**
+     * Participates in calculating the current speed during braking. Measured in
+     * number of kilometers per second.
+     */
+    private static final int BRAKES_EFFICIENCY_RATIO = 50;
     private static final TransmissionType TRANS_TYPE_DEFAULT = MANUAL;
     private static final String ACCELERATING_TEXT = "Accelerating from %.2f to %.2f\n";
     private static final String BRAKING_TEXT = "Braking from %.2f to %.2f\n";
@@ -32,21 +47,26 @@ public class Car implements Vehicle, Motorizable, Describable {
     private static final String CURRENT_SPEED_TEXT = "The current speed = %.2f\n";
     private static final String TO_STRING_PATTERN = "Car {'%s'; cylinders = %d; power = %d hp}";
 
-    private int uid; // unique identifier
+    /**
+     * Unique identifier of this car.
+     */
+    private int uid;
     @NotNull
     private String brand;
     private String description;
     @NotNegative
     private int cylinderNumber;
+    /**
+     * The power measured in horsepowers ('hp').
+     */
     @NotNegative
-    private int power; // measured in 'hp' (horsepower);
+    private int power;
     @NotNull
     private TransmissionType transType;
     @NotNegative
     private double currentSpeed;
     @NotNegative
     private double maxSpeed;
-    private boolean isEngineOn;
 
     public Car(String brand) {
         this(brand, CYLINDER_NUMBER_DEFAULT, POWER_DEFAULT, TRANS_TYPE_DEFAULT);
@@ -66,6 +86,10 @@ public class Car implements Vehicle, Motorizable, Describable {
         maxSpeed = setMaxSpeed();
     }
 
+    /**
+     * Sets the maximum speed of this car taking into account some technical characteristics.
+     * @return
+     */
     protected double setMaxSpeed() {
         double maxSpeed = (power * 0.7) * (1 + cylinderNumber/10);
         LOGGER.debug("maxSpeed = {}", maxSpeed);
@@ -73,6 +97,9 @@ public class Car implements Vehicle, Motorizable, Describable {
         return maxSpeed;
     }
 
+    /**
+     * Represents a type of the gear box.
+     */
     public enum TransmissionType {
         MANUAL, AUTOMATIC, SEMI_AUTOMATIC, CVT;
     }
@@ -82,11 +109,6 @@ public class Car implements Vehicle, Motorizable, Describable {
         return uid;
     }
 
-    /**
-     * @param time the duration in milliseconds of the car acceleration. The longer time, the higher speed
-     *             of the car after calling this method.
-     */
-
     @Override
     @Invocable(times = 3)
     public void accelerate(double time) {
@@ -94,23 +116,20 @@ public class Car implements Vehicle, Motorizable, Describable {
 
         double oldCurrentSpeed = currentSpeed;
         double newCurrentSpeed = Math.min(maxSpeed, currentSpeed +
-                ((power * ACCELERATION_POWER) * cylinderNumber * (time * MILLIS_TO_SECONDS)));
+                ((power * ACCELERATION_RATIO) * cylinderNumber * (time * MILLIS_TO_SECONDS_RATIO)));
         currentSpeed = newCurrentSpeed;
 
         System.out.printf(ACCELERATING_TEXT, oldCurrentSpeed, newCurrentSpeed);
     }
 
-    /**
-     * @param time the duration in milliseconds of the car braking. The longer time, the smaller speed
-     *             of the car after calling this method.
-     */
     @Override
     @Invocable(times = 2)
     public void brake(double time) {
         checkArgument(time > 0);
 
         double oldCurrentSpeed = currentSpeed;
-        double newCurrentSpeed = Math.max(0, currentSpeed - (BRAKES_EFFICIENCY * (time * MILLIS_TO_SECONDS)));
+        double newCurrentSpeed = Math.max(0, currentSpeed -
+                (BRAKES_EFFICIENCY_RATIO * (time * MILLIS_TO_SECONDS_RATIO)));
         currentSpeed = newCurrentSpeed;
 
         System.out.printf(BRAKING_TEXT, oldCurrentSpeed, newCurrentSpeed);

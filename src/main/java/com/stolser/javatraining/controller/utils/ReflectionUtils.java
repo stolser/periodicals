@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ReflectionUtils {
-    private static final String PARAMS_DELIMITER = ", ";
-    private static final String MODIFIER_DELIMITER = " ";
+    public static final String PARAMS_DELIMITER = ", ";
+    public static final String MODIFIER_DELIMITER = " ";
 
     public static String getModifiesAsString(int modifiers) {
         List<String> labels = new ArrayList<>();

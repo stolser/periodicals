@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
 
 import static com.stolser.javatraining.controller.utils.ReflectionUtils.*;
 
+/**
+ * The main controller for displaying info about objects using the Reflection API.
+ */
 public class ReflectionController {
     private static final String CLASS_FULL_NAME_TEXT = "Class's full name: %s";
     private static final String CLASS_PACKAGE_NAME_TEXT = "Class's package name: %s";
@@ -34,6 +37,9 @@ public class ReflectionController {
         this.output = output;
     }
 
+    /**
+     * Creates some variables and display info their types and members.
+     */
     public void start() {
         Vehicle vehicle1 = new Car("BMW", 5, 420, Car.TransmissionType.AUTOMATIC);
         Vehicle vehicle2 = new Truck("MAN", 5000);
@@ -76,8 +82,9 @@ public class ReflectionController {
                 .forEach(constructor -> {
                     String name = getShortNameAsString(constructor.getName());
                     Class[] params = constructor.getParameterTypes();
-                    String paramsString = String.join(", ", Arrays.stream(params)
-                            .map(param -> getShortNameAsString(param.getName())).collect(Collectors.toList()));
+                    String paramsString = String.join(PARAMS_DELIMITER, Arrays.stream(params)
+                            .map(param -> getShortNameAsString(param.getName()))
+                            .collect(Collectors.toList()));
 
                     output.printlnString(String.format("%s(%s); number of params = %d",
                             name, paramsString, params.length));
@@ -91,7 +98,8 @@ public class ReflectionController {
         output.printlnString(METHODS_TITLE);
         output.printlnString(String.format("The number of public methods: %d", allPublicMethods.length));
         output.printlnString(String.format("The number of methods declared in this type: %d", allMethods.length));
-        Arrays.stream(allMethods).forEach(method -> {
+
+        for (Method method: allMethods) {
             String annotations = getAnnotationsAsMultiLineString(method.getDeclaredAnnotations());
             String modifiers = getModifiesAsString(method.getModifiers());
             String returnTypeName = getShortNameAsString(method.getReturnType().getName());
@@ -100,7 +108,7 @@ public class ReflectionController {
 
             output.printlnString(String.format("%s%s %s %s(%s);", annotations, modifiers,
                     returnTypeName, methodName, params));
-        });
+        }
     }
 
     private void printFields() {
@@ -143,5 +151,4 @@ public class ReflectionController {
     private void printMethodInfoSeparator() {
         output.printlnString(METHOD_SEPARATOR_STRING);
     }
-
 }

@@ -4,9 +4,9 @@ import com.stolser.javatraining.block05.reflection.controller.NotNegative;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-public class Truck extends Car implements Loadable {
-    public static final String WEIGHT_TOO_HEAVY_TEXT = "Sorry, the weight is too heavy!\n";
-    public static final String UNLOADING_CARGO_TEXT = "Unloading the cargo.\n";
+public class Truck extends Car implements LoadableVehicle {
+    private static final String WEIGHT_TOO_HEAVY_TEXT = "Sorry, the weight is too heavy!\n";
+    private static final String UNLOADING_CARGO_TEXT = "Unloading the cargo.\n";
     @NotNegative
     private double loadRating;
     @NotNegative

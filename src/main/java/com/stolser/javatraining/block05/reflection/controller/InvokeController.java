@@ -9,6 +9,9 @@ import java.lang.reflect.Method;
 
 import static com.stolser.javatraining.controller.utils.ReflectionUtils.getShortNameAsString;
 
+/**
+ * Contains methods for invoking methods via reflection.
+ */
 class InvokeController {
     private static final Logger LOGGER = LoggerFactory.getLogger(InvokeController.class);
     private static final String ACCELERATE_METHOD = "accelerate";
@@ -20,6 +23,10 @@ class InvokeController {
     private Vehicle vehicle;
     private Method method;
 
+    /**
+     * Using the Reflection API invokes methods on a Vehicle object if it is annotated with<br />
+     * {@code @Invocable}.
+     */
     void invokeMethodsOf(Vehicle annotation) {
         this.vehicle = annotation;
 
