@@ -1,9 +1,10 @@
 package com.stolser.javatraining.block05.reflection.model.vehicle;
 
-import com.stolser.javatraining.block05.reflection.controller.Invocable;
+import com.stolser.javatraining.block05.reflection.controller.Invokable;
 import com.stolser.javatraining.block05.reflection.controller.NotNegative;
 import com.stolser.javatraining.block05.reflection.model.UniquelyDescribable;
 import com.stolser.javatraining.block05.reflection.model.TrafficParticipant;
+import com.stolser.javatraining.controller.utils.ReflectionUtils;
 import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +19,11 @@ import static com.stolser.javatraining.block05.reflection.model.vehicle.Car.Tran
  * A car entity having characteristics common for all vehicles.<br />
  *
  * @see com.stolser.javatraining.block05.reflection.model.vehicle.Vehicle
- * @see com.stolser.javatraining.block05.reflection.model.vehicle.Motorizable
+ * @see Motorizeable
  * @see com.stolser.javatraining.block05.reflection.model.UniquelyDescribable
  */
 @TrafficParticipant
-public class Car implements Vehicle, Motorizable, UniquelyDescribable {
+public class Car implements Vehicle, Motorizeable, UniquelyDescribable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Car.class);
     private static final AtomicInteger nextUID = new AtomicInteger(1);
     private static final int CYLINDER_NUMBER_DEFAULT = 4;
@@ -39,13 +40,6 @@ public class Car implements Vehicle, Motorizable, UniquelyDescribable {
      */
     private static final int BRAKES_EFFICIENCY_RATIO = 50;
     private static final TransmissionType TRANS_TYPE_DEFAULT = MANUAL;
-    private static final String ACCELERATING_TEXT = "Accelerating from %.2f to %.2f\n";
-    private static final String BRAKING_TEXT = "Braking from %.2f to %.2f\n";
-    private static final String MOVING_LEFT_TEXT = "Moving left at %.2f meters.\n";
-    private static final String MOVING_RIGHT_TEXT = "Moving right at %.2f meters.\n";
-    private static final String MAX_SPEED_TEXT = "The max speed = %.2f\n";
-    private static final String CURRENT_SPEED_TEXT = "The current speed = %.2f\n";
-    private static final String TO_STRING_PATTERN = "Car {'%s'; cylinders = %d; power = %d hp}";
 
     /**
      * Unique identifier of this car.
@@ -74,7 +68,7 @@ public class Car implements Vehicle, Motorizable, UniquelyDescribable {
 
     public Car(String brand, int cylinderNumber, int power, TransmissionType transType) {
         checkNotNull(brand);
-        checkArgument(cylinderNumber > 0);
+//        checkArgument(cylinderNumber > 0);
         checkArgument(power > 0);
         checkNotNull(transType);
 
@@ -110,7 +104,7 @@ public class Car implements Vehicle, Motorizable, UniquelyDescribable {
     }
 
     @Override
-    @Invocable(times = 3)
+    @Invokable(times = 3)
     public void accelerate(double time) {
         checkArgument(time > 0);
 
@@ -119,11 +113,11 @@ public class Car implements Vehicle, Motorizable, UniquelyDescribable {
                 ((power * ACCELERATION_RATIO) * cylinderNumber * (time * MILLIS_TO_SECONDS_RATIO)));
         currentSpeed = newCurrentSpeed;
 
-        System.out.printf(ACCELERATING_TEXT, oldCurrentSpeed, newCurrentSpeed);
+        System.out.printf("Accelerating from %.2f to %.2f\n", oldCurrentSpeed, newCurrentSpeed);
     }
 
     @Override
-    @Invocable(times = 2)
+    @Invokable(times = 2)
     public void brake(double time) {
         checkArgument(time > 0);
 
@@ -132,23 +126,23 @@ public class Car implements Vehicle, Motorizable, UniquelyDescribable {
                 (BRAKES_EFFICIENCY_RATIO * (time * MILLIS_TO_SECONDS_RATIO)));
         currentSpeed = newCurrentSpeed;
 
-        System.out.printf(BRAKING_TEXT, oldCurrentSpeed, newCurrentSpeed);
+        System.out.printf("Braking from %.2f to %.2f\n", oldCurrentSpeed, newCurrentSpeed);
     }
 
     @Override
-    @Invocable(times = 0)
+    @Invokable(times = 0)
     public void moveLeft(double distance) {
         checkArgument(distance > 0);
 
-        System.out.printf(MOVING_LEFT_TEXT, distance);
+        System.out.printf("Moving left at %.2f meters.\n", distance);
     }
 
     @Override
-    @Invocable
+    @Invokable
     public void moveRight(double distance) {
         checkArgument(distance > 0);
 
-        System.out.printf(MOVING_RIGHT_TEXT, distance);
+        System.out.printf("Moving right at %.2f meters.\n", distance);
     }
 
     @Override
@@ -181,17 +175,17 @@ public class Car implements Vehicle, Motorizable, UniquelyDescribable {
     }
 
     @Override
-    @Invocable(isActive = true)
+    @Invokable(isActive = true)
     public double getMaxSpeed() {
-        System.out.printf(MAX_SPEED_TEXT, maxSpeed);
+        System.out.printf("The max speed = %.2f\n", maxSpeed);
 
         return maxSpeed;
     }
 
     @Override
-    @Invocable
+    @Invokable
     public double getCurrentSpeed() {
-        System.out.printf(CURRENT_SPEED_TEXT, currentSpeed);
+        System.out.printf("The current speed = %.2f\n", currentSpeed);
 
         return currentSpeed;
     }
@@ -213,7 +207,9 @@ public class Car implements Vehicle, Motorizable, UniquelyDescribable {
 
     @Override
     public String toString() {
-        return String.format(TO_STRING_PATTERN, brand, cylinderNumber, power);
+        return String.format("%s {'%s'; cylinders = %d; power = %d hp}",
+                ReflectionUtils.getShortNameAsString(this.getClass().getName()),
+                brand, cylinderNumber, power);
     }
 
     @Override

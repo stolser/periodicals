@@ -1,6 +1,8 @@
 package com.stolser.javatraining.block05.reflection.controller;
 
+import com.stolser.javatraining.block05.reflection.controller.proxy.ProxyFactory;
 import com.stolser.javatraining.block05.reflection.model.vehicle.Car;
+import com.stolser.javatraining.block05.reflection.model.vehicle.Motorizeable;
 import com.stolser.javatraining.block05.reflection.model.vehicle.Truck;
 import com.stolser.javatraining.block05.reflection.model.vehicle.Vehicle;
 import com.stolser.javatraining.view.ViewPrinter;
@@ -11,6 +13,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import static com.stolser.javatraining.block05.reflection.model.vehicle.Car.TransmissionType.AUTOMATIC;
 import static com.stolser.javatraining.controller.utils.ReflectionUtils.*;
 
 /**
@@ -41,12 +44,38 @@ public class ReflectionController {
      * Creates some variables and display info their types and members.
      */
     public void start() {
-        Vehicle vehicle1 = new Car("BMW", 5, 420, Car.TransmissionType.AUTOMATIC);
+        Vehicle vehicle1 = new Car("BMW", 5, 420, AUTOMATIC);
         Vehicle vehicle2 = new Truck("MAN", 5000);
 
         getAndPrintInfoAbout(vehicle1);
         getAndPrintInfoAbout(vehicle2);
-        new InvokeController().invokeMethodsOf(vehicle1);
+
+        Vehicle invokable1 = (Vehicle) ProxyFactory.getInvokable(vehicle1);
+        runVehicle(invokable1);
+
+        Vehicle notNegative1 = (Vehicle) ProxyFactory.getNotNegative(vehicle1);
+        runVehicle(notNegative1);
+
+        Motorizeable immutable = (Motorizeable) ProxyFactory.getImmutable(vehicle1);
+        System.out.printf("The number of cylinders: %d\n", immutable.getCylinderNumber());
+        System.out.printf("The power in hps: %d\n", immutable.getPower());
+        System.out.printf("The transmission type: %s\n", immutable.getTransType());
+        immutable.setPower(500);    // throws an exception!
+    }
+
+    private void runVehicle(Vehicle vehicle) {
+        System.out.printf("Running vehicle: %s\n", vehicle);
+        vehicle.getMaxSpeed();
+        vehicle.accelerate(1000);
+        vehicle.brake(500);
+        vehicle.getCurrentSpeed();
+        vehicle.accelerate(500);
+        vehicle.brake(200);
+        vehicle.getCurrentSpeed();
+        vehicle.moveLeft(10);
+        vehicle.moveRight(30);
+        vehicle.getCurrentSpeed();
+
     }
 
     private void getAndPrintInfoAbout(Object vehicle1) {
@@ -99,7 +128,7 @@ public class ReflectionController {
         output.printlnString(String.format("The number of public methods: %d", allPublicMethods.length));
         output.printlnString(String.format("The number of methods declared in this type: %d", allMethods.length));
 
-        for (Method method: allMethods) {
+        for (Method method : allMethods) {
             String annotations = getAnnotationsAsMultiLineString(method.getDeclaredAnnotations());
             String modifiers = getModifiesAsString(method.getModifiers());
             String returnTypeName = getShortNameAsString(method.getReturnType().getName());
