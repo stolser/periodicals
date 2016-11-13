@@ -32,7 +32,7 @@ public class InvokableHandler implements InvocationHandler {
         Object result = null;
         proxiedMethod = proxied.getClass().getMethod(method.getName(), method.getParameterTypes());
 
-        if (thisMethodIsAnnotated()) {
+        if (methodAnnotatedInvokable()) {
             Invokable invokable = proxiedMethod.getAnnotation(Invokable.class);
             int times = invokable.times();
 
@@ -71,7 +71,7 @@ public class InvokableHandler implements InvocationHandler {
         System.out.printf("Invoking %s() %d %s:\n", method.getName(), times, multipleForm);
     }
 
-    private boolean thisMethodIsAnnotated() {
+    private boolean methodAnnotatedInvokable() {
         return proxiedMethod.isAnnotationPresent(Invokable.class);
     }
 

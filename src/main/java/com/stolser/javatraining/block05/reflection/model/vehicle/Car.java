@@ -40,6 +40,8 @@ public class Car implements Vehicle, Motorizeable, UniquelyDescribable {
      */
     private static final int BRAKES_EFFICIENCY_RATIO = 50;
     private static final TransmissionType TRANS_TYPE_DEFAULT = MANUAL;
+    public static final double MAX_SPEED_POWER_RATIO = 0.7;
+    public static final int MAX_SPEED_CYLINDER_RATIO = 10;
 
     /**
      * Unique identifier of this car.
@@ -51,7 +53,7 @@ public class Car implements Vehicle, Motorizeable, UniquelyDescribable {
     @NotNegative
     private int cylinderNumber;
     /**
-     * The power measured in horsepowers ('hp').
+     * The power measured in horse-powers ('hp').
      */
     @NotNegative
     private int power;
@@ -85,7 +87,7 @@ public class Car implements Vehicle, Motorizeable, UniquelyDescribable {
      * @return
      */
     protected double setMaxSpeed() {
-        double maxSpeed = (power * 0.7) * (1 + cylinderNumber/10);
+        double maxSpeed = (power * MAX_SPEED_POWER_RATIO) * (1 + cylinderNumber/ MAX_SPEED_CYLINDER_RATIO);
         LOGGER.debug("maxSpeed = {}", maxSpeed);
 
         return maxSpeed;
