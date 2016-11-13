@@ -68,7 +68,7 @@ public class Car implements Vehicle, Motorizeable, UniquelyDescribable {
 
     public Car(String brand, int cylinderNumber, int power, TransmissionType transType) {
         checkNotNull(brand);
-//        checkArgument(cylinderNumber > 0);
+//        checkArgument(cylinderNumber > 0);  // is deliberately commented. See ReflectionController.start().
         checkArgument(power > 0);
         checkNotNull(transType);
 
@@ -109,11 +109,15 @@ public class Car implements Vehicle, Motorizeable, UniquelyDescribable {
         checkArgument(time > 0);
 
         double oldCurrentSpeed = currentSpeed;
-        double newCurrentSpeed = Math.min(maxSpeed, currentSpeed +
-                ((power * ACCELERATION_RATIO) * cylinderNumber * (time * MILLIS_TO_SECONDS_RATIO)));
+        double newCurrentSpeed = getAcceleratedSpeed(time);
         currentSpeed = newCurrentSpeed;
 
         System.out.printf("Accelerating from %.2f to %.2f\n", oldCurrentSpeed, newCurrentSpeed);
+    }
+
+    private double getAcceleratedSpeed(double time) {
+        return Math.min(maxSpeed, currentSpeed +
+                ((power * ACCELERATION_RATIO) * cylinderNumber * (time * MILLIS_TO_SECONDS_RATIO)));
     }
 
     @Override
@@ -122,11 +126,15 @@ public class Car implements Vehicle, Motorizeable, UniquelyDescribable {
         checkArgument(time > 0);
 
         double oldCurrentSpeed = currentSpeed;
-        double newCurrentSpeed = Math.max(0, currentSpeed -
-                (BRAKES_EFFICIENCY_RATIO * (time * MILLIS_TO_SECONDS_RATIO)));
+        double newCurrentSpeed = getSlowedDownSpeed(time);
         currentSpeed = newCurrentSpeed;
 
         System.out.printf("Braking from %.2f to %.2f\n", oldCurrentSpeed, newCurrentSpeed);
+    }
+
+    private double getSlowedDownSpeed(double time) {
+        return Math.max(0, currentSpeed -
+                (BRAKES_EFFICIENCY_RATIO * (time * MILLIS_TO_SECONDS_RATIO)));
     }
 
     @Override

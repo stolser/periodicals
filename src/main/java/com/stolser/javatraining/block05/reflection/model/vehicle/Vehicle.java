@@ -13,7 +13,7 @@ public interface Vehicle {
     void accelerate(double time);
 
     /**
-     * Decreases a current spped of the vehicle unless it is already zero.
+     * Decreases a current speed of the vehicle unless it is already zero.
      * @param time duration in milliseconds of braking. The longer time, the lesser speed
      *             of the vehicle after applying this method
      */

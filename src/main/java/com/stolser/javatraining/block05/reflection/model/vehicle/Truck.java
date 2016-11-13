@@ -5,7 +5,6 @@ import com.stolser.javatraining.block05.reflection.controller.NotNegative;
 import static com.google.common.base.Preconditions.checkArgument;
 
 public class Truck extends Car implements LoadableVehicle {
-    private static final String WEIGHT_TOO_HEAVY_TEXT = "Sorry, the weight is too heavy!\n";
     private static final String UNLOADING_CARGO_TEXT = "Unloading the cargo.\n";
     @NotNegative
     private double loadRating;
@@ -31,12 +30,12 @@ public class Truck extends Car implements LoadableVehicle {
     }
 
     @Override
-    public void loadCargo(double weight) {
+    public void tryToLoadCargo(double weight) {
         if (weight <= loadRating) {
             System.out.printf("Loading cargo (weight = %f)\n", weight);
             currentCargoWeight = weight;
         } else {
-            System.out.printf(WEIGHT_TOO_HEAVY_TEXT);
+            throw new TooHeavyCargo();
         }
     }
 
@@ -49,5 +48,10 @@ public class Truck extends Car implements LoadableVehicle {
     @Override
     public double getCurrentCargoWeight() {
         return currentCargoWeight;
+    }
+
+    @Override
+    public double getLoadRating() {
+        return loadRating;
     }
 }

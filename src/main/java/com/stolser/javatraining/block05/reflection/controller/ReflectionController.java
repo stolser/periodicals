@@ -33,6 +33,7 @@ public class ReflectionController {
     private static final String FIELDS_TITLE = "------------ Fields ------------";
     private static final String INTERFACES_TITLE = "------------ Interfaces ------------";
     private static final String METHOD_SEPARATOR_STRING = "==================================================";
+
     private ViewPrinter output;
     private Class clazz;
 
@@ -44,19 +45,21 @@ public class ReflectionController {
      * Creates some variables and display info their types and members.
      */
     public void start() {
+        /*Replace '5' with '-5' to check the NotNegative annotation in action.
+        Checking this argument in the constructor is deliberately commented.*/
         Vehicle vehicle1 = new Car("BMW", 5, 420, AUTOMATIC);
         Vehicle vehicle2 = new Truck("MAN", 5000);
 
         getAndPrintInfoAbout(vehicle1);
         getAndPrintInfoAbout(vehicle2);
 
-        Vehicle invokable1 = (Vehicle) ProxyFactory.getInvokable(vehicle1);
+        Vehicle invokable1 = (Vehicle) ProxyFactory.newInvokableProxyFor(vehicle1);
         runVehicle(invokable1);
 
-        Vehicle notNegative1 = (Vehicle) ProxyFactory.getNotNegative(vehicle1);
+        Vehicle notNegative1 = (Vehicle) ProxyFactory.newNotNegativeProxyFor(vehicle1);
         runVehicle(notNegative1);
 
-        Motorizeable immutable = (Motorizeable) ProxyFactory.getImmutable(vehicle1);
+        Motorizeable immutable = (Motorizeable) ProxyFactory.newImmutableProxyFor(vehicle1);
         System.out.printf("The number of cylinders: %d\n", immutable.getCylinderNumber());
         System.out.printf("The power in hps: %d\n", immutable.getPower());
         System.out.printf("The transmission type: %s\n", immutable.getTransType());
@@ -106,6 +109,7 @@ public class ReflectionController {
 
     private void printConstructors() {
         Constructor[] constructors = clazz.getConstructors();
+
         output.printlnString(CONSTRUCTORS_TITLE);
         Arrays.stream(constructors)
                 .forEach(constructor -> {
@@ -164,7 +168,6 @@ public class ReflectionController {
     private void printInterfacesOfThisType(Class clazz) {
         if (clazz.getSuperclass() != null) {
             printInterfacesOfThisType(clazz.getSuperclass());
-
         }
 
         Class[] interfaces = clazz.getInterfaces();

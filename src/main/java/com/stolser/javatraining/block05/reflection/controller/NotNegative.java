@@ -8,10 +8,11 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.*;
 
 /**
- * Indicates that annotated variables cannot be negative. The variable should have a type {@code Number}
- * otherwise this annotation will have no affect.<br />
+ * Indicates that annotated variables cannot be negative. The variable should have one of the following
+ * primitive types: {@code byte, short, int, long, float, double} otherwise this annotation
+ * will have no affect.<br />
  * This invariant is verified after each method invocation of a proxied object,
- * so a class should make all variables using this annotation private
+ * so a class using this annotation should make all variables private and provide setters,
  * otherwise the annotation will not achieve its purpose.
  */
 @Target(value = {FIELD, PARAMETER, LOCAL_VARIABLE})

@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Is used to create proxies that control field annotated with {@link NotNegative}.
+ */
 public class NotNegativeHandler implements InvocationHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(NotNegativeHandler.class);
 
@@ -20,7 +23,11 @@ public class NotNegativeHandler implements InvocationHandler {
 
     public NotNegativeHandler(Object proxied) {
         this.proxied = proxied;
-        this.NotNegativeNumberFields = Arrays
+        this.NotNegativeNumberFields = filterDeclaredFieldsAndGetAppropriate(proxied);
+    }
+
+    private List<Field> filterDeclaredFieldsAndGetAppropriate(Object proxied) {
+        return Arrays
                 .stream(this.proxied.getClass().getDeclaredFields())
                 .filter(field -> !Modifier.isFinal(field.getModifiers()))
                 .filter(field -> field.isAnnotationPresent(NotNegative.class))
@@ -47,6 +54,10 @@ public class NotNegativeHandler implements InvocationHandler {
                 }).collect(Collectors.toList());
     }
 
+    /**
+     * After invocation of each method checks values of annotated with {@code @NotNegative} fields and
+     * throws an {@code IllegalStateException} if they are less than zero. Otherwise does nothing.
+     */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object result = method.invoke(proxied, args);

@@ -2,6 +2,9 @@ package com.stolser.javatraining.block05.reflection.controller.proxy;
 
 import java.lang.reflect.Method;
 
+/**
+ * Is thrown when a client calls a setter on a proxy object that is supposed to be immutable.
+ */
 public class ImmutabilityException extends RuntimeException {
     private Method invokedMethod;
 

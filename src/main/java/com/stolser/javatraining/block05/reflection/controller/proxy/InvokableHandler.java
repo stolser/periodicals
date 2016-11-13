@@ -9,33 +9,36 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 
+/**
+ * Is used to create proxies that process the {@link Invokable} annotation on a proxied object.
+ */
 public class InvokableHandler implements InvocationHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(InvokableHandler.class);
     private static final String METHOD_SEPARATOR = "..................";
     private Object proxied;
+    private Method proxiedMethod;
 
     public InvokableHandler(Object proxied) {
         this.proxied = proxied;
     }
 
     /**
-     * Using the Reflection API checks for the {@code Invokable} annotation and processes it
+     * Using the Reflection API checks for the {@link Invokable} annotation and processes it
      * according to its logic.
      * @see Invokable
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object result = null;
-        Method proxiedMethod = proxied.getClass().getMethod(method.getName(),
-                method.getParameterTypes());
+        proxiedMethod = proxied.getClass().getMethod(method.getName(), method.getParameterTypes());
 
-        if (proxiedMethod.isAnnotationPresent(Invokable.class)) {
+        if (thisMethodIsAnnotated()) {
             Invokable invokable = proxiedMethod.getAnnotation(Invokable.class);
             int times = invokable.times();
 
             displayInvokingMessage(method, times);
 
-            if (invokable.isActive() && (times > 0)) {
+            if (thisMethodShouldBeInvoked(invokable, times)) {
                 try {
                     for (int i = 1; i <= times; i++) {
                        result = method.invoke(proxied, args);
@@ -66,6 +69,14 @@ public class InvokableHandler implements InvocationHandler {
         String multipleForm = (times == 1) ? "time" : "times";
 
         System.out.printf("Invoking %s() %d %s:\n", method.getName(), times, multipleForm);
+    }
+
+    private boolean thisMethodIsAnnotated() {
+        return proxiedMethod.isAnnotationPresent(Invokable.class);
+    }
+
+    private boolean thisMethodShouldBeInvoked(Invokable invokable, int times) {
+        return invokable.isActive() && (times > 0);
     }
 
     private Object getDefaultReturnValue(Class returnType) {
