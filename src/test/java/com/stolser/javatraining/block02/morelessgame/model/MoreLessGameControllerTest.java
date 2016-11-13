@@ -2,18 +2,9 @@ package com.stolser.javatraining.block02.morelessgame.model;
 
 import com.google.common.collect.Range;
 import com.stolser.javatraining.block02.morelessgame.model.game.MoreLessGame;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class MoreLessGameControllerTest {
-
-    @Test
-    public void setRandomMaxDefaultWithCorrectValueShouldChangeIt() {
-        int newValue = 250;
-        MoreLessGame.setUpperBoundDefault(newValue);
-
-        Assert.assertEquals(newValue, (int) MoreLessGame.getUpperBoundLimits().upperEndpoint());
-    }
 
     @Test(expected = IllegalArgumentException.class)
     public void setLowerBoundShouldThrowExceptionIfArgumentLessThanMin() {

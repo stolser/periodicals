@@ -1,6 +1,5 @@
 package com.stolser.javatraining.block04.recordbook.controller;
 
-import com.stolser.javatraining.block04.recordbook.controller.RecordBookController;
 import com.stolser.javatraining.block04.recordbook.model.Environment;
 import com.stolser.javatraining.block04.recordbook.model.recordbook.RecordBook;
 

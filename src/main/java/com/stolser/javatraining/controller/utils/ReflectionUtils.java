@@ -70,7 +70,6 @@ public class ReflectionUtils {
     }
 
     public static String getShortNameAsString(String fullName) {
-
         return thisIsPackage(fullName) ? splitNameAndGetLastPart(fullName) : fullName;
     }
 

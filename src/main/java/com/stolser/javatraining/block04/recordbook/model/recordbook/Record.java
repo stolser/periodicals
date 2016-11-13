@@ -107,7 +107,7 @@ public class Record implements Cloneable {
      * @return a clone of the UserAddress
      */
     public UserAddress getAddress() {
-        return address.clone();
+        return (address != null) ? address.clone() : null;
     }
 
     /**
@@ -197,7 +197,7 @@ public class Record implements Cloneable {
             clone.userName = clone.getUserName().clone();
             clone.groups = new HashSet<>(groups);
             clone.phones = new HashSet<>(phones);
-            clone.address = clone.getAddress().clone();
+            clone.address = (clone.getAddress() != null) ? clone.getAddress().clone() : null;
 
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
