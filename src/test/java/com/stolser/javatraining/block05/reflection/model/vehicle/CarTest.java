@@ -23,7 +23,7 @@ public class CarTest {
     }
 
     @Test
-    public void carShouldHaveCorrectInitialState() {
+    public void car_Should_HaveCorrectInitialState() {
         assertEquals(BRAND, car.getBrand());
         assertEquals(CYLINDER_NUMBER, car.getCylinderNumber());
         assertEquals(POWER, car.getPower());
@@ -33,7 +33,7 @@ public class CarTest {
     }
 
     @Test
-    public void accelerateShouldNotMakeCurrentSpeedMoreThanMaxSpeed() throws Exception {
+    public void accelerate_ShouldNot_MakeCurrentSpeed_MoreThanMaxSpeed() throws Exception {
         assertEquals(0, car.getCurrentSpeed(), DELTA);
 
         car.accelerate(ACCELERATION_TIME);
@@ -42,7 +42,7 @@ public class CarTest {
     }
 
     @Test
-    public void brakeShouldNotMakeCurrentSpeedLessThanZero() throws Exception {
+    public void brake_ShouldNot_MakeCurrentSpeed_LessThanZero() throws Exception {
         car.accelerate(ACCELERATION_TIME);
         assertTrue(car.getCurrentSpeed() > 0.0);
 

@@ -32,7 +32,7 @@ public class NumberUtilsTest {
     }
 
     @Test
-    public void randomIntShouldReturnValueFromRange() {
+    public void randomInt_Should_ReturnValueFromRange() {
         int random = NumberUtils.randomInt(min, max);
 
         assertTrue(random >= min);

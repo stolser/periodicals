@@ -44,7 +44,7 @@ public class RecordTest {
     }
 
     @Test
-    public void cloneShouldMakeDeepCopy() throws Exception {
+    public void clone_Should_MakeDeepCopy() throws Exception {
         Record clone = original.clone();
 
         userName.setFirstName("FirstName");
@@ -63,10 +63,5 @@ public class RecordTest {
         original.removePhone(phone2);
         assertEquals(0, original.getPhones().size());
         assertEquals(2, clone.getPhones().size());
-    }
-
-    @Test
-    public void updateUserNameShouldCallAllGettersOnArgument() {
-
     }
 }

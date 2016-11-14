@@ -16,7 +16,7 @@ public class NotNegativeHandlerTest {
     }
 
     @Test
-    public void fieldAnnotatedNotNegativeShouldBeAssignablePositiveValue() {
+    public void fieldAnnotatedNotNegative_Should_BeAssignablePositiveValues() {
         assertEquals(0, notNegative.getResult());
 
         notNegative.increaseBy(2);
@@ -24,7 +24,7 @@ public class NotNegativeHandlerTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void methodShouldThrowExceptionIfNotNegativeFieldIsAssignedNegativeValue() {
+    public void notNegativeProxy_Should_ThrowException_IfNotNegativeField_AssignedNegativeValue() {
         assertEquals(0, notNegative.getResult());
 
         notNegative.decreaseBy(2);

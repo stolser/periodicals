@@ -7,28 +7,28 @@ import org.junit.Test;
 public class MoreLessGameControllerTest {
 
     @Test(expected = IllegalArgumentException.class)
-    public void setLowerBoundShouldThrowExceptionIfArgumentLessThanMin() {
+    public void setLowerBound_Should_ThrowException_IfArgumentLessThanMin() {
         Range<Integer> lowerBoundRange = MoreLessGame.getLowerBoundLimits();
 
         MoreLessGame.setLowerBoundDefault(lowerBoundRange.lowerEndpoint() - 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void setLowerBoundShouldThrowExceptionIfArgumentMoreThanMax() {
+    public void setLowerBound_Should_ThrowException_IfArgumentMoreThanMax() {
         Range<Integer> lowerBoundRange = MoreLessGame.getLowerBoundLimits();
 
         MoreLessGame.setLowerBoundDefault(lowerBoundRange.upperEndpoint() + 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void setUpperBoundShouldThrowExceptionIfArgumentLessThanMin() {
+    public void setUpperBound_Should_ThrowException_IfArgumentLessThanMin() {
         Range<Integer> upperBoundRange = MoreLessGame.getUpperBoundLimits();
 
         MoreLessGame.setUpperBoundDefault(upperBoundRange.lowerEndpoint() - 1);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void setUpperBoundShouldThrowExceptionIfArgumentMoreThanMax() {
+    public void setUpperBound_Should_ThrowException_IfArgumentMoreThanMax() {
         Range<Integer> upperBoundRange = MoreLessGame.getUpperBoundLimits();
 
         MoreLessGame.setUpperBoundDefault(upperBoundRange.upperEndpoint() + 1);

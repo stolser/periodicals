@@ -18,12 +18,12 @@ public class ImmutableHandlerTest {
     }
 
     @Test(expected = ImmutabilityException.class)
-    public void settersOnImmutableProxyShouldThrowException() {
+    public void settersOnImmutableProxy_Should_ThrowException() {
         immutable.setPower(350);
     }
 
     @Test
-    public void gettersOnImmutableProxyShouldExecute() {
+    public void gettersOnImmutableProxy_Should_ExecuteNormally() {
         immutable.getPower();
         immutable.getCylinderNumber();
         immutable.getTransType();

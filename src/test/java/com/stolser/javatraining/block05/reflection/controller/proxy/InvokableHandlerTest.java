@@ -19,7 +19,7 @@ public class InvokableHandlerTest {
     }
 
     @Test
-    public void invokableProxyShouldProcessMethodsAnnotatedInvokable() {
+    public void invokableProxy_Should_CallMethodsAnnotated_Invokable_SpecifiedNumberOfTimes() {
         assertEquals(0, invokableProxy.getCurrentSpeed(), DELTA);
 
         invokableProxy.accelerate(0);

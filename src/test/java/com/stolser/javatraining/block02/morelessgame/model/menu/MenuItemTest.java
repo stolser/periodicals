@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class MenuItemTest {
 
     @Test
-    public void getMenuItemByOptionIdShouldReturnCorrectItem() throws Exception {
+    public void getMenuItemByOptionId_Should_ReturnCorrectItem() throws Exception {
         MenuItemFactory factory = MenuItemFactory.newInstance();
 
         MenuItem item1 = factory.newMainMenuItem(null, "item1", 1);

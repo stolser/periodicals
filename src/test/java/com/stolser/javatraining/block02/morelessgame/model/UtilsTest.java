@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class UtilsTest {
     @Test(expected = IllegalArgumentException.class)
-    public void randomIntWithMinArgGraterThanMaxArgShouldThrowException() {
+    public void randomInt_WithMinArgGraterThanMaxArg_Should_ThrowException() {
         int min = 100;
         int max = 50;
 

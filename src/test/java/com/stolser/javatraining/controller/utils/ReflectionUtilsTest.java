@@ -18,12 +18,12 @@ public class ReflectionUtilsTest {
     }
 
     @Test
-    public void getShortNameAsStringShouldReturnTypeNameWithoutPackageName() throws Exception {
+    public void getShortNameAsString_Should_ReturnTypeName_WithoutPackageName() throws Exception {
         assertEquals("ClassName", getShortNameAsString("com.s_toler@urk.net.Package.ClassName"));
     }
 
     @Test
-    public void getModifiesAsStringShouldReturnCorrectString() throws Exception {
+    public void getModifiesAsString_Should_ReturnCorrectString() throws Exception {
         int modifiers = ReflectionUtilsTest.class.getMethod("methodA", methodAParamTypes)
                 .getModifiers();
 
@@ -31,7 +31,7 @@ public class ReflectionUtilsTest {
     }
 
     @Test
-    public void getParamsAsStringShouldReturnCorrectString() throws Exception {
+    public void getParamsAsString_Should_ReturnCorrectString() throws Exception {
         Class<?>[] parameterTypes = ReflectionUtilsTest.class.getMethod("methodA", methodAParamTypes)
                 .getParameterTypes();
 

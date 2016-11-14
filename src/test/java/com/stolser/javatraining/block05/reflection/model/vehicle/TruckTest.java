@@ -19,7 +19,7 @@ public class TruckTest {
     }
 
     @Test
-    public void tryToLoadCargoShouldExecuteOkWhenWeightLessThanLoadRating() throws Exception {
+    public void tryToLoadCargo_Should_ExecuteOk_WhenWeightIsLessThanLoadRating() throws Exception {
         double cargoWeight = truck.getLoadRating() - CARGO_WEIGHT_DELTA;
         truck.tryToLoadCargo(cargoWeight);
 
@@ -27,13 +27,13 @@ public class TruckTest {
     }
 
     @Test(expected = TooHeavyCargo.class)
-    public void tryToLoadCargoShouldThrowExceptionWhenWeightMoreThanLoadRating() throws Exception {
+    public void tryToLoadCargo_Should_ThrowException_WhenWeightMoreThanLoadRating() throws Exception {
         double cargoWeight = truck.getLoadRating() + CARGO_WEIGHT_DELTA;
         truck.tryToLoadCargo(cargoWeight);
     }
 
     @Test
-    public void unLoadCargoShouldMakeCurrentCargoWeightEqualsZero() throws Exception {
+    public void unLoadCargo_Should_MakeCurrentCargoWeightEqualsZero() throws Exception {
         double cargoWeight = truck.getLoadRating() - CARGO_WEIGHT_DELTA;
         truck.tryToLoadCargo(cargoWeight);
         truck.unLoadCargo();
