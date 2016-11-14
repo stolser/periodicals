@@ -5,8 +5,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
+import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static com.stolser.javatraining.block05.reflection.controller.proxy.mock.FileVisitorMockingProxy.FileVisitorMethod.*;
 import static com.stolser.javatraining.controller.utils.ReflectionUtils.getShortNameAsString;
@@ -17,6 +20,8 @@ import static com.stolser.javatraining.controller.utils.ReflectionUtils.getShort
  */
 public class FileVisitorMockingProxy implements InvocationHandler {
     private Map<FileVisitorMethod, Integer> counter = getInitialMap();
+    private Set<String> directoriesToSkip = new HashSet<>();
+    private boolean terminateAfterFirstFile;
 
     enum FileVisitorMethod {
         VISIT_FILE,
@@ -46,6 +51,14 @@ public class FileVisitorMockingProxy implements InvocationHandler {
 
             return result;
         }
+    }
+
+    public void skipDirectory(String dirName) {
+        directoriesToSkip.add(dirName);
+    }
+
+    public void setTerminateAfterFirstFile(boolean terminateAfterFirstFile) {
+        this.terminateAfterFirstFile = terminateAfterFirstFile;
     }
 
     /**
@@ -80,12 +93,22 @@ public class FileVisitorMockingProxy implements InvocationHandler {
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        FileVisitResult fileVisitResult = FileVisitResult.CONTINUE;
         String methodName = getShortNameAsString(method.getName());
         FileVisitorMethod fileVisitorMethod = FileVisitorMethod.getByName(methodName);
         int oldCounter = counter.get(fileVisitorMethod);
         counter.put(fileVisitorMethod, ++oldCounter);
 
-        return FileVisitResult.CONTINUE;
+        if (fileVisitorMethod == PRE_VISIT_DIRECTORY
+                && directoriesToSkip.contains(((Path) args[0]).getFileName().toString())) {
+            fileVisitResult = FileVisitResult.SKIP_SUBTREE;
+        }
+
+        if (fileVisitorMethod == VISIT_FILE && terminateAfterFirstFile) {
+            fileVisitResult = FileVisitResult.TERMINATE;
+        }
+
+        return fileVisitResult;
     }
 
     private HashMap<FileVisitorMethod, Integer> getInitialMap() {
