@@ -14,6 +14,10 @@ public interface LoadableVehicle extends Vehicle {
      * Unloads the cargo from this vehicle making its weight equals 0.
      */
     void unLoadCargo();
+
+    /**
+     * @return the weight of the cargo already loaded on this vehicle
+     */
     double getCurrentCargoWeight();
     double getLoadRating();
 }
