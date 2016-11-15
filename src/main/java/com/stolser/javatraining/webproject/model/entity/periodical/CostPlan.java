@@ -7,11 +7,11 @@ public class CostPlan {
     private double cost;
 
     public enum PlanType {
-        ONE_ISSUE("1 (next) issue"),
-        ONE_WEEK("1 week prepaid"),
-        ONE_MONTH("1 month prepaid"),
-        SIX_MONTH("6 months prepaid"),
-        ONE_YEAR("one solid year prepaid");
+        ONE_ISSUE("periodical.costplanlabel.oneissue"),
+        ONE_WEEK("periodical.costplanlabel.oneweek"),
+        ONE_MONTH("periodical.costplanlabel.onemonth"),
+        SIX_MONTHS("periodical.costplanlabel.sixmonths"),
+        ONE_YEAR("periodical.costplanlabel.oneyear");
 
         private String description;
 
