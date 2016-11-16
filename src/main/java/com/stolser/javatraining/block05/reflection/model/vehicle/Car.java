@@ -5,7 +5,6 @@ import com.stolser.javatraining.block05.reflection.controller.NotNegative;
 import com.stolser.javatraining.block05.reflection.model.UniquelyDescribable;
 import com.stolser.javatraining.block05.reflection.model.TrafficParticipant;
 import com.stolser.javatraining.controller.utils.ReflectionUtils;
-import com.sun.istack.internal.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +46,6 @@ public class Car implements Vehicle, Motorizeable, UniquelyDescribable {
      * Unique identifier of this car.
      */
     private int uid;
-    @NotNull
     private String brand;
     private String description;
     @NotNegative
@@ -57,7 +55,6 @@ public class Car implements Vehicle, Motorizeable, UniquelyDescribable {
      */
     @NotNegative
     private int power;
-    @NotNull
     private TransmissionType transType;
     @NotNegative
     private double currentSpeed;

@@ -63,7 +63,7 @@ public class DbSetupServiceImpl implements DbSetupService {
                 "passwordSalt VARCHAR(200)," +
                 "passwordHash VARCHAR(200)," +
                 "userId BIGINT," +
-                "registrDate DATETIME," +
+                "registrDate DATETIME NOT NULL," +
                 "CONSTRAINT UNIQUE (login)," +
                 "CONSTRAINT FOREIGN KEY (userId) REFERENCES users(id));";
 

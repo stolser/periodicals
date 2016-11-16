@@ -3,9 +3,8 @@ package com.stolser.javatraining.webproject.model.dao.user;
 import com.stolser.javatraining.webproject.model.entity.user.Login;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Date;
 
 public class MysqlLoginDao implements LoginDao {
     private Connection conn;
@@ -26,20 +25,17 @@ public class MysqlLoginDao implements LoginDao {
 
     @Override
     public void save(Login login) throws SQLException {
-        long id = login.getId();
-        String _login = login.getLogin();
-        String passwordSalt = login.getPasswordSalt();
-        String passwordHash = login.getPasswordHash();
-        long userId = login.getUser().getId();
-        Date registrDate = login.getRegistrationDate();
+        String insertLogin = "INSERT INTO logins (login, passwordSalt, passwordHash, userId, registrDate) " +
+                "VALUES (?,?,?,?,?);";
 
-        String insertLogin = "INSERT INTO logins " +
-                "(login, passwordSalt, passwordHash, userId) " +
-                String.format("VALUES ('%s', '%s', '%s', '%d');",
-                        _login, passwordSalt, passwordHash, userId);
+        try (PreparedStatement st = conn.prepareStatement(insertLogin)) {
+            st.setString(1, login.getLogin());
+            st.setString(2, login.getPasswordSalt());
+            st.setString(3, login.getPasswordHash());
+            st.setLong(4, login.getUser().getId());
+            st.setTimestamp(5, new java.sql.Timestamp(login.getRegistrationDate().getTime()));
 
-        try (Statement st = conn.createStatement()) {
-            st.executeUpdate(insertLogin);
+            st.executeUpdate();
         }
     }
 

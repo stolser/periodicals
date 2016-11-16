@@ -12,6 +12,7 @@ import com.stolser.javatraining.webproject.model.service.login.LoginService;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.Properties;
 
 public class AppRunner {
@@ -34,9 +35,11 @@ public class AppRunner {
         Login login = new Login();
         User user = new User();
         user.setId(1);
-        login.setId(1);
-        login.setLogin("stolser");
+        login.setLogin("stolser4");
+        login.setPasswordHash("fnknlkjdkfjdk");
+        login.setPasswordSalt("kknbkerklkp");
         login.setUser(user);
+        login.setRegistrationDate(new Date());
 
         loginService.save(login);
     }
