@@ -26,14 +26,33 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public void save(Login login) {
-        try (Connection conn = pool.getConnection()) {
+    public synchronized void save(Login login) {
+        Connection conn = null;
+        try {
+            conn = pool.getConnection();
+            conn.setAutoCommit(false);
+
             daoFactory.getLoginDao(conn).save(login);
+            conn.commit();
 
         } catch (SQLException e) {
-            String message = String.format("Exception during saving a login(%s) into the db. " +
-                    "Caused by: %s", login, e.getMessage());
-            LOGGER.debug(message);
+            String message = null;
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                    LOGGER.debug("A transaction was rolled back " +
+                            "after exception during saving a login({}). Caused by: {}", login, e.getMessage());
+                } catch (SQLException e1) {
+                    message = String.format("Exception during rolling back saving a login(%s)", login);
+                    LOGGER.debug(message);
+
+                    throw new CustomSqlException(message);
+                }
+            } else {
+                message = String.format("Exception during saving a login(%s) into the db. " +
+                        "Caused by: %s", login, e.getMessage());
+                LOGGER.debug(message);
+            }
 
             throw new CustomSqlException(message);
         }
