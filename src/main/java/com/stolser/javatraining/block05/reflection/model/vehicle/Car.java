@@ -2,8 +2,8 @@ package com.stolser.javatraining.block05.reflection.model.vehicle;
 
 import com.stolser.javatraining.block05.reflection.controller.Invokable;
 import com.stolser.javatraining.block05.reflection.controller.NotNegative;
-import com.stolser.javatraining.block05.reflection.model.UniquelyDescribable;
 import com.stolser.javatraining.block05.reflection.model.TrafficParticipant;
+import com.stolser.javatraining.block05.reflection.model.UniquelyDescribable;
 import com.stolser.javatraining.controller.utils.ReflectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
