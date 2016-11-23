@@ -1,14 +1,17 @@
-package com.stolser.javatraining.webproject.model.entity;
+package com.stolser.javatraining.webproject.model.entity.invoice;
+
+import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import java.util.Date;
+import java.util.List;
 
 public class Invoice {
     private long id;
-    private Subscription subscription;
+    private User user;
     private double amount;
-    private String desription;
     private Status status;
     private Date creationDate;
+    private List<InvoiceItem> items;
 
     public enum Status {
         NEW, PAID;
@@ -22,12 +25,12 @@ public class Invoice {
         this.id = id;
     }
 
-    public Subscription getSubscription() {
-        return subscription;
+    public User getUser() {
+        return user;
     }
 
-    public void setSubscription(Subscription subscription) {
-        this.subscription = subscription;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public double getAmount() {
@@ -36,14 +39,6 @@ public class Invoice {
 
     public void setAmount(double amount) {
         this.amount = amount;
-    }
-
-    public String getDesription() {
-        return desription;
-    }
-
-    public void setDesription(String desription) {
-        this.desription = desription;
     }
 
     public Status getStatus() {
@@ -60,5 +55,13 @@ public class Invoice {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public List<InvoiceItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<InvoiceItem> items) {
+        this.items = items;
     }
 }

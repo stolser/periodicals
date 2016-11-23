@@ -1,21 +1,18 @@
 package com.stolser.javatraining.webproject.model.entity.periodical;
 
-import java.util.List;
-
 public class Periodical {
-    private int id;
+    private long id;
     private String name;
-    private Category category;
-    private Publisher publisher;
-    private String generalDescription;
-    private String publishingDescription;
-    private List<NumberDiscount> discounts;
+    private String category;
+    private String publisher;
+    private String description;
+    private double oneMonthCost;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -27,43 +24,35 @@ public class Periodical {
         this.name = name;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
-    public Publisher getPublisher() {
+    public String getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(Publisher publisher) {
+    public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
 
-    public String getGeneralDescription() {
-        return generalDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setGeneralDescription(String generalDescription) {
-        this.generalDescription = generalDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getPublishingDescription() {
-        return publishingDescription;
+    public double getOneMonthCost() {
+        return oneMonthCost;
     }
 
-    public void setPublishingDescription(String publishingDescription) {
-        this.publishingDescription = publishingDescription;
-    }
-
-    public List<NumberDiscount> getDiscounts() {
-        return discounts;
-    }
-
-    public void setDiscounts(List<NumberDiscount> discounts) {
-        this.discounts = discounts;
+    public void setOneMonthCost(double oneMonthCost) {
+        this.oneMonthCost = oneMonthCost;
     }
 }

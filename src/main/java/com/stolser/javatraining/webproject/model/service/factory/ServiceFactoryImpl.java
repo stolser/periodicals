@@ -4,8 +4,6 @@ import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
 import com.stolser.javatraining.webproject.model.database.ConnectionPool;
 import com.stolser.javatraining.webproject.model.service.dbsetup.DbSetupService;
 import com.stolser.javatraining.webproject.model.service.dbsetup.DbSetupServiceImpl;
-import com.stolser.javatraining.webproject.model.service.login.LoginService;
-import com.stolser.javatraining.webproject.model.service.login.LoginServiceImpl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -26,13 +24,6 @@ public class ServiceFactoryImpl implements ServiceFactory {
         DbSetupServiceImpl.setUp(pool);
 
         return DbSetupServiceImpl.getInstance();
-    }
-
-    @Override
-    public LoginService getLoginService() {
-        LoginServiceImpl.setUp(daoFactory, pool);
-
-        return LoginServiceImpl.getInstance();
     }
 
     public static void setUp(DaoFactory loginDao, ConnectionPool pool) {

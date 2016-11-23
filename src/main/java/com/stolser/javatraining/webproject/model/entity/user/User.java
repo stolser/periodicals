@@ -5,24 +5,13 @@ import java.util.Set;
 
 public class User {
     private long id;
-    private Gender gender;
+    private String userName;
+    private String firstName;
+    private String lastName;
     private Date birthDate;
-    private String phone;
-    private String email; // todo: check for uniqueness;
+    private String email;
     private String address;
-    private Set<Role> roles;
-
-    public enum Gender {
-        MALE, FEMALE;
-    }
-
-    public enum Status {
-        ACTIVE, BLOCKED;
-    }
-
-    public enum Role {
-        ANONYMOUS, SUBSCRIBER, ADMIN;
-    }
+    private Set<String> roles;
 
     public long getId() {
         return id;
@@ -32,12 +21,28 @@ public class User {
         this.id = id;
     }
 
-    public Gender getGender() {
-        return gender;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Date getBirthDate() {
@@ -46,14 +51,6 @@ public class User {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getEmail() {
@@ -72,11 +69,11 @@ public class User {
         this.address = address;
     }
 
-    public Set<Role> getRoles() {
+    public Set<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<String> roles) {
         this.roles = roles;
     }
 }
