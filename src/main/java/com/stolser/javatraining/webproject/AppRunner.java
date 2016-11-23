@@ -3,16 +3,12 @@ package com.stolser.javatraining.webproject;
 import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
 import com.stolser.javatraining.webproject.model.database.ConnectionPool;
 import com.stolser.javatraining.webproject.model.database.SqlConnectionPool;
-import com.stolser.javatraining.webproject.model.entity.user.Login;
-import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.model.service.factory.ServiceFactory;
 import com.stolser.javatraining.webproject.model.service.factory.ServiceProvider;
-import com.stolser.javatraining.webproject.model.service.login.LoginService;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.Properties;
 
 public class AppRunner {
@@ -22,27 +18,9 @@ public class AppRunner {
     public static void main(String[] args) throws IOException {
         readDbConfigAndCreateServiceFactory();
 //        createSchemaAndInsertData();
-        testLoginService();
 
     }
 
-    private static void testLoginService() {
-        DaoFactory daoFactory = DaoFactory.getMysqlDaoFactory();
-        LoginService loginService = ServiceProvider.newServiceFactory(daoFactory, connectionPool)
-                .getLoginService();
-
-
-        Login login = new Login();
-        User user = new User();
-        user.setId(1);
-        login.setLogin("stolser4");
-        login.setPasswordHash("fnknlkjdkfjdk");
-        login.setPasswordSalt("kknbkerklkp");
-        login.setUser(user);
-        login.setRegistrationDate(new Date());
-
-        loginService.save(login);
-    }
 
     private static void readDbConfigAndCreateServiceFactory() throws IOException {
         String filename = ServiceProvider.DB_CONFIG_FILENAME;
