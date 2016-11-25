@@ -11,7 +11,12 @@ public class User {
     private Date birthDate;
     private String email;
     private String address;
+    private Status status;
     private Set<String> roles;
+
+    enum Status {
+        ACTIVE, BLOCKED;
+    }
 
     public long getId() {
         return id;
@@ -67,6 +72,14 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Set<String> getRoles() {

@@ -1,12 +1,9 @@
 package com.stolser.javatraining.webproject.model.dao.user;
 
-import com.stolser.javatraining.webproject.model.entity.user.User;
-
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
-public class MysqlUserDao implements UserDao {
+public class MysqlUserDao<User> implements UserDao<User> {
     private Connection conn;
 
     public MysqlUserDao(Connection conn) {
@@ -14,32 +11,28 @@ public class MysqlUserDao implements UserDao {
     }
 
     @Override
-    public boolean exists(long id) throws SQLException {
-        return false;
-    }
-
-    @Override
-    public User findOne(long id) throws SQLException {
+    public User findOne(long id) {
+        String sqlStatement = "";
         return null;
     }
 
     @Override
-    public List<User> findAll() throws SQLException {
+    public List<User> findAll() {
         return null;
     }
 
     @Override
-    public User save(User user) throws SQLException {
+    public User save(User user) {
         return null;
     }
 
     @Override
-    public void delete(long id) throws SQLException {
+    public void delete(long id) {
 
     }
 
     @Override
-    public void deleteAll() throws SQLException {
+    public void deleteAll() {
 
     }
 }

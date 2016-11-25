@@ -55,4 +55,11 @@ public class Periodical {
     public void setOneMonthCost(double oneMonthCost) {
         this.oneMonthCost = oneMonthCost;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Periodical{id=%d, name='%s', category='%s', publisher='%s', " +
+                "description='%s', oneMonthCost=%s}", id, name, category, publisher,
+                description, oneMonthCost);
+    }
 }
