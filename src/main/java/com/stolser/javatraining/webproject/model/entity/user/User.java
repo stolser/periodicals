@@ -89,4 +89,12 @@ public class User {
     public void setRoles(Set<String> roles) {
         this.roles = roles;
     }
+
+    @Override
+    public String toString() {
+        return String.format("User{id=%d, userName='%s', firstName='%s', lastName='%s', " +
+                "birthDate=%s, email='%s', address='%s', status=%s, roles=%s}",
+                id, userName, firstName, lastName,
+                birthDate, email, address, status, roles);
+    }
 }

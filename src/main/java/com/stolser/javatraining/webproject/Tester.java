@@ -11,6 +11,7 @@ import java.sql.SQLException;
 public class Tester {
     public static void main(String[] args) {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+            System.out.println("connection has been got.");
             PeriodicalDao periodicalDao = DaoFactory.getMysqlDaoFactory().getPeriodicalDao(conn);
 
             System.out.println(periodicalDao.findOne(2L));

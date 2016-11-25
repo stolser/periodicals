@@ -21,8 +21,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
 
     @Override
     public Periodical findOne(long id) {
-        String sqlStatement = "SELECT *  " +
-                "FROM periodicals WHERE id = ?";
+        String sqlStatement = "SELECT * FROM periodicals WHERE id = ?";
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
@@ -30,8 +29,9 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
 
             ResultSet rs = st.executeQuery();
 
-            Periodical periodical = new Periodical();
+            Periodical periodical = null;
             if (rs.next()) {
+                periodical = new Periodical();
                 periodical.setId(rs.getLong("id"));
                 periodical.setName(rs.getString("name"));
                 periodical.setCategory(rs.getString("category"));

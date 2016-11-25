@@ -32,10 +32,16 @@ public class PeriodicalService {
 
 
     public Periodical findOne(long id) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-            PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
 
-            return periodicalDao.findOne(id);
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+            System.out.println("PeriodicalService: connection has been got.");
+
+            PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
+            Periodical periodical = periodicalDao.findOne(id);
+
+            System.out.println(periodical);
+
+            return periodical;
         } catch (SQLException e) {
             LOGGER.debug("Exception during closing a connection.");
             throw new CustomSqlException(e);

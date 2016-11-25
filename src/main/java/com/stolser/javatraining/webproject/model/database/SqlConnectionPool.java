@@ -17,7 +17,8 @@ class SqlConnectionPool implements ConnectionPool {
     private static final String USER_PASSWORD_DEFAULT = "test";
     private static final String DRIVER_NAME_DEFAULT = "com.mysql.jdbc.Driver";
     private static final int MAX_TOTAL_CONNECTIONS = 10;
-    private static final String CONNECTION_EXCEPTION_TEXT = "Exception during getting a connection from a dataSource.";
+    private static final String CONNECTION_EXCEPTION_TEXT =
+            "Exception during getting a connection from a dataSource.";
     private BasicDataSource dataSource;
     private String description;
 
@@ -48,10 +49,12 @@ class SqlConnectionPool implements ConnectionPool {
         Connection newConn;
 
         try {
+            System.out.println("Before getting a conn from the dataSource...");
+
             newConn = dataSource.getConnection();
         } catch (SQLException e) {
             LOGGER.debug(CONNECTION_EXCEPTION_TEXT, e);
-            throw new CustomSqlException(CONNECTION_EXCEPTION_TEXT);
+            throw new CustomSqlException(e);
         }
 
         LOGGER.debug("A new connection is got from {}", this);
