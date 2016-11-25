@@ -1,10 +1,9 @@
 package com.stolser.javatraining.webproject.model.database;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public interface ConnectionPool {
-    Connection getConnection() throws SQLException;
+    Connection getConnection();
     String getDriverClassName();
     String getUrl();
 }

@@ -7,4 +7,8 @@ public class CustomSqlException extends RuntimeException {
     public CustomSqlException(String message) {
         super(message);
     }
+
+    public CustomSqlException(Throwable cause) {
+        super(cause);
+    }
 }

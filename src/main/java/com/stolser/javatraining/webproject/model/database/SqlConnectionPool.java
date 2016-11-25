@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.model.database;
 
+import com.stolser.javatraining.webproject.model.CustomSqlException;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,12 +11,13 @@ import java.sql.SQLException;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class SqlConnectionPool implements ConnectionPool {
+class SqlConnectionPool implements ConnectionPool {
     private static final Logger LOGGER = LoggerFactory.getLogger(SqlConnectionPool.class);
     private static final String USER_NAME_DEFAULT = "test";
     private static final String USER_PASSWORD_DEFAULT = "test";
     private static final String DRIVER_NAME_DEFAULT = "com.mysql.jdbc.Driver";
     private static final int MAX_TOTAL_CONNECTIONS = 10;
+    private static final String CONNECTION_EXCEPTION_TEXT = "Exception during getting a connection from a dataSource.";
     private BasicDataSource dataSource;
     private String description;
 
@@ -42,9 +44,17 @@ public class SqlConnectionPool implements ConnectionPool {
         return new Builder(url, dbName);
     }
 
-    public Connection getConnection() throws SQLException {
-        Connection newConn = dataSource.getConnection();
-        LOGGER.debug("A connection is got from {}", this);
+    public Connection getConnection() {
+        Connection newConn;
+
+        try {
+            newConn = dataSource.getConnection();
+        } catch (SQLException e) {
+            LOGGER.debug(CONNECTION_EXCEPTION_TEXT, e);
+            throw new CustomSqlException(CONNECTION_EXCEPTION_TEXT);
+        }
+
+        LOGGER.debug("A new connection is got from {}", this);
 
         return newConn;
     }
