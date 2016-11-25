@@ -1,1 +1,1 @@
-<jsp:forward page="public/home.jsp"/>
+<jsp:forward page="home.jsp"/>

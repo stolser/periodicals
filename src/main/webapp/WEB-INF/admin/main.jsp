@@ -1,5 +1,5 @@
-<%@include file="../pages/includes/general.jsp" %>
-<%@include file="../pages/includes/header.jsp" %>
+<%@include file="/WEB-INF/includes/general.jsp" %>
+<%@include file="/WEB-INF/includes/header.jsp" %>
 <fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
 
 <div class="row">
@@ -22,4 +22,4 @@
     </p>
 </div>
 
-<%@include file="../pages/includes/footer.jsp" %>
+<%@include file="/WEB-INF/includes/footer.jsp" %>
