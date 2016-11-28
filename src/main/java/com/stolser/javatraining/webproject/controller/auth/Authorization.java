@@ -1,8 +1,6 @@
 package com.stolser.javatraining.webproject.controller.auth;
 
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -14,11 +12,10 @@ public class Authorization {
     static {
         Set<String> onlyAdmin = new HashSet<>(Collections.singletonList("admin"));
 
-        permissionMapping.put("/admin/users(/.*)?", onlyAdmin);
+        permissionMapping.put("/adminPanel/users(/.*)?", onlyAdmin);
     }
 
     private HttpServletRequest request;
-    private Subject subject;
     private User user;
 
     public Authorization(HttpServletRequest request) {
@@ -26,7 +23,6 @@ public class Authorization {
     }
 
     public boolean checkPermissions() {
-        subject = SecurityUtils.getSubject();
         String requestURI = request.getRequestURI();
         user = (User) request.getSession().getAttribute("thisUser");
 
