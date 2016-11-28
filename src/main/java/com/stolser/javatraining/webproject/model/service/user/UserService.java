@@ -5,6 +5,7 @@ import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
 import com.stolser.javatraining.webproject.model.dao.role.RoleDao;
 import com.stolser.javatraining.webproject.model.dao.user.UserDao;
 import com.stolser.javatraining.webproject.model.database.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.model.entity.user.Login;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,19 +33,37 @@ public class UserService {
         return InstanceHolder.INSTANCE;
     }
 
-    public User findOneByUserName(String userName) {
+    public Login findOneLoginByUserName(String userName) {
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+            UserDao userDao = factory.getUserDao(conn);
+
+            Login login = userDao.findLoginByUserName(userName);
+
+            if (login == null) {
+                throw new NoSuchElementException();
+            }
+
+            return login;
+
+        } catch (SQLException e) {
+            LOGGER.debug("Exception during closing a connection.");
+            throw new CustomSqlException(e);
+        }
+    }
+
+    public User findOneUserByUserName(String userName) {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
             System.out.println("UserService: connection has been got.");
 
             UserDao userDao = factory.getUserDao(conn);
             RoleDao roleDao = factory.getRoleDao(conn);
-            User user = userDao.getUserByUserName(userName);
+            User user = userDao.findUserByUserName(userName);
 
             if (user == null) {
                 throw new NoSuchElementException();
             }
 
-            user.setRoles(roleDao.getRolesByUserName(userName));
+            user.setRoles(roleDao.findRolesByUserName(userName));
 
             System.out.println("user form the db: " + user);
 

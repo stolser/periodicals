@@ -14,7 +14,7 @@ public class User {
     private Status status;
     private Set<String> roles;
 
-    enum Status {
+    public enum Status {
         ACTIVE, BLOCKED;
     }
 
