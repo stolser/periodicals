@@ -1,22 +1,21 @@
 package com.stolser.javatraining.webproject.controller;
 
-import com.stolser.javatraining.webproject.controller.command.RequestCommand;
+import com.stolser.javatraining.webproject.controller.command.DisplayAdminPanelMainPage;
+import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.command.periodical.DisplayOnePeriodical;
 import com.stolser.javatraining.webproject.controller.command.user.DisplayAllUsers;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class RequestHelper {
-    private static final Map<String, RequestCommand> requestMapping = new HashMap<>();
+    private static final Map<String, RequestProcessor> requestMapping = new HashMap<>();
 
     static {
-        requestMapping.put("GET:/admin/periodicals/\\d+", new DisplayOnePeriodical());
-        requestMapping.put("GET:/admin/users", new DisplayAllUsers());
+        requestMapping.put("GET:/adminPanel/periodicals/\\d+", new DisplayOnePeriodical());
+        requestMapping.put("GET:/adminPanel/users", new DisplayAllUsers());
+        requestMapping.put("GET|POST:/adminPanel", new DisplayAdminPanelMainPage());
 
     }
 
@@ -26,14 +25,21 @@ public class RequestHelper {
         this.request = request;
     }
 
-    public RequestCommand getCommand() throws NoSuchElementException {
-        String method = request.getMethod().toUpperCase();
+    public RequestProcessor getRequestProcessor() throws NoSuchElementException {
+        String requestMethod = request.getMethod().toUpperCase();
         String requestURI = request.getRequestURI();
-        System.out.println("getCommand(): requestURI = '" + requestURI + "'");
+        System.out.println("getRequestProcessor(): requestURI = '" + requestURI + "'");
 
-        Optional<Map.Entry<String, RequestCommand>> mapping = requestMapping.entrySet()
+        Optional<Map.Entry<String, RequestProcessor>> mapping = requestMapping.entrySet()
                 .stream()
-                .filter(entry -> entry.getKey().startsWith(method))
+                .filter(entry -> {
+                    String methodPattern = entry.getKey().split(":")[0];
+                    String[] methods = methodPattern.split("\\|");
+                    System.out.println("------------- methods from the pattern:");
+                    Arrays.asList(methods).forEach(System.out::println);
+
+                    return Arrays.asList(methods).contains(requestMethod);
+                })
                 .filter(entry -> {
                     String urlPattern = entry.getKey().split(":")[1];
                     System.out.println("urlPattern = '" + urlPattern + "'");

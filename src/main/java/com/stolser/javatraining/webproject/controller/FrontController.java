@@ -1,21 +1,20 @@
 package com.stolser.javatraining.webproject.controller;
 
-import com.stolser.javatraining.webproject.controller.command.RequestCommand;
+import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
+import com.stolser.javatraining.webproject.view.ViewResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.MESSAGE_ATTRIBUTE;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.getErrorPage;
 
-@WebServlet(urlPatterns = {"/admin/*"})
+//@WebServlet(urlPatterns = {"/admin/*"})
 public class FrontController extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(FrontController.class);
 
@@ -35,31 +34,34 @@ public class FrontController extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String page;
+        String viewName;
 
         String requestURI = request.getRequestURI();
         System.out.println("processRequest(): requestURI = " + requestURI);
 
         try {
-            RequestHelper helper = new RequestHelper(request);
-            RequestCommand command = helper.getCommand();
+            RequestProcessor command = new RequestHelper(request).getRequestProcessor();
 
-            System.out.println("command = " + command);
+            System.out.println("command = " + command.getClass().getName());
 
-            page = command.process(request, response);
+            viewName = command.getViewName(request, response);
 
         } catch (Exception e) {
             LOGGER.debug("Exception during request processing: {}", e.getMessage());
             request.setAttribute(MESSAGE_ATTRIBUTE, e.getLocalizedMessage());
 
-            page = getErrorPage(e);
+            viewName = ApplicationResources.getErrorViewName(e);
         }
 
-        dispatch(page, request, response);
+        dispatch(viewName, request, response);
     }
 
-    private void dispatch(String page, HttpServletRequest request, HttpServletResponse response)
+    private void dispatch(String viewName, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        String page = ViewResolver.getPageByViewName(viewName);
+
+        System.out.println("forwarding to '" + page + "'");
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(page);
         dispatcher.forward(request, response);

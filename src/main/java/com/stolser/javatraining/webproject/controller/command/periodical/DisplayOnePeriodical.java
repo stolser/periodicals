@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.controller.command.periodical;
 
-import com.stolser.javatraining.webproject.controller.command.RequestCommand;
+import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
 
@@ -10,10 +10,10 @@ import java.util.NoSuchElementException;
 
 import static java.lang.String.*;
 
-public class DisplayOnePeriodical implements RequestCommand {
+public class DisplayOnePeriodical implements RequestProcessor {
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
-        String idString = request.getRequestURI().replace("/admin/periodicals/", "");
+    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+        String idString = request.getRequestURI().replace("/adminPanel/periodicals/", "");
         long periodicalId = Integer.valueOf(idString);
 
         Periodical periodical = PeriodicalService.getInstance().findOne(periodicalId);
@@ -26,6 +26,6 @@ public class DisplayOnePeriodical implements RequestCommand {
 
         request.setAttribute("periodical", periodical);
 
-        return "/WEB-INF/admin/periodical/periodical.jsp";
+        return "periodicals/onePeriodical";
     }
 }
