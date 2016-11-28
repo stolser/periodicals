@@ -19,6 +19,8 @@
                 <c:out value="${user.email}"/></p>
             <p><fmt:message key="user.address.label" bundle="${langUser}"/>:
                 <c:out value="${user.address}"/></p>
+            <p><fmt:message key="user.status.label" bundle="${langUser}"/>:
+                <c:out value="${user.status}"/></p>
             <p><fmt:message key="user.roles.label" bundle="${langUser}"/>:
                 <c:out value="${user.roles}"/></p>
             <ul>

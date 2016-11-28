@@ -5,47 +5,70 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
          http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
-
     <display-name>Java Training 2016Aut</display-name>
-
-    <listener>
-        <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
-    </listener>
-
-    <filter>
-        <filter-name>ShiroFilter</filter-name>
-        <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>ShiroFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-        <dispatcher>INCLUDE</dispatcher>
-        <dispatcher>ERROR</dispatcher>
-    </filter-mapping>
 
     <session-config>
         <!-- web.xml expects the session timeout in minutes: -->
         <session-timeout>10</session-timeout>
     </session-config>
-    <!--<context-param>-->
-        <!--<param-name>contextConfigLocation</param-name>-->
-        <!--<param-value>-->
-            <!--/WEB-INF/config/mainAppConfig.xml-->
-            <!--&lt;!&ndash;/WEB-INF/spring-security.xml&ndash;&gt;-->
-        <!--</param-value>-->
-    <!--</context-param>-->
 
-    <!--<servlet>-->
-        <!--<servlet-name>spring</servlet-name>-->
-        <!--<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>-->
-        <!--<load-on-startup>1</load-on-startup>-->
-    <!--</servlet>-->
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>com.stolser.javatraining.webproject.controller.AuthenticationFilter</filter-class>
+    </filter>
 
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>spring</servlet-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
-    <!--</servlet-mapping>-->
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/adminPanel/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>AuthorizationFilter</filter-name>
+        <filter-class>com.stolser.javatraining.webproject.controller.AuthorizationFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>AuthorizationFilter</filter-name>
+        <url-pattern>/adminPanel/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.stolser.javatraining.webproject.controller.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>FrontController</servlet-name>
+        <servlet-class>com.stolser.javatraining.webproject.controller.FrontController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>FrontController</servlet-name>
+        <url-pattern>/adminPanel/*</url-pattern>
+    </servlet-mapping>
+
+
+    <!--    <listener>
+            <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
+        </listener>
+
+        <filter>
+            <filter-name>ShiroFilter</filter-name>
+            <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
+        </filter>
+
+        <filter-mapping>
+            <filter-name>ShiroFilter</filter-name>
+            <url-pattern>/*</url-pattern>
+            <dispatcher>REQUEST</dispatcher>
+            &lt;!&ndash;<dispatcher>FORWARD</dispatcher>&ndash;&gt;
+            &lt;!&ndash;<dispatcher>INCLUDE</dispatcher>&ndash;&gt;
+            <dispatcher>ERROR</dispatcher>
+        </filter-mapping>-->
 </web-app>

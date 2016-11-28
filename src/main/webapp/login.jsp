@@ -7,7 +7,8 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><fmt:message key="login.signin.title" bundle="${login}"/></h3>
-                <form name="loginform" action="" method="POST" accept-charset="UTF-8" role="form">
+                <form action="/LoginServlet" name="loginform"
+                      method="POST" accept-charset="UTF-8" role="form">
                     <div class="form-group">
                         <label for="userName"><fmt:message key="login.username.label" bundle="${login}"/></label>
                         <input type="text" class="form-control" id="userName"
