@@ -17,7 +17,7 @@ public class ValidatorFactory {
             case "signInUsername":
                 return new SignInUsernameValidator();
             default:
-                throw new IllegalArgumentException("There is no validator for such a parameter!");
+                return new OkValidator();
         }
     }
 }

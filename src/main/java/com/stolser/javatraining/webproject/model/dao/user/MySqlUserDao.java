@@ -86,7 +86,7 @@ public class MysqlUserDao implements UserDao {
     @Override
     public List<User> findAll() {
         String sqlStatement = "SELECT * FROM logins " +
-                "INNER JOIN users ON (logins.userId = users.id) ";
+                "RIGHT OUTER JOIN users ON (logins.userId = users.id) ";
 
         try {
             Statement st = conn.createStatement();

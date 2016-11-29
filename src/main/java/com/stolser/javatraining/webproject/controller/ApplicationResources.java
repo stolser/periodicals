@@ -5,7 +5,7 @@ import java.util.Locale;
 public class ApplicationResources {
     public static final String MESSAGE_ATTRIBUTE = "messageAttr";
     public static final String CURRENT_USER_ATTR_NAME = "thisUser";
-    public static final String REQUEST_ORIGINAL_URI = "originalUri";
+    public static final String ORIGINAL_URI_ATTR_NAME = "originalUri";
     public static final String VALIDATION_BUNDLE_PATH = "webProject/i18n/validation";
 
 

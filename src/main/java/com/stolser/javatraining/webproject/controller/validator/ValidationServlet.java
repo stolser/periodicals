@@ -12,7 +12,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
+
+import static com.stolser.javatraining.webproject.controller.LoginServlet.MESSAGES_ATTR_NAME;
 
 public class ValidationServlet extends HttpServlet {
 
@@ -25,6 +28,8 @@ public class ValidationServlet extends HttpServlet {
         String paramValue = request.getParameter("paramValue");
         System.out.println("paramName = " + paramName + "; paramValue = " + paramValue);
 
+        removeMessagesForCurrentParam(session, paramName);
+
         ValidationResult result = ValidatorFactory.getInstance().newValidator(paramName)
                 .validate(paramValue, request);
 
@@ -33,7 +38,7 @@ public class ValidationServlet extends HttpServlet {
         ResourceBundle bundle = ResourceBundle.getBundle(ApplicationResources.VALIDATION_BUNDLE_PATH, locale);
         System.out.println("locale = " + locale + "; bundle = " + bundle);
 
-        String localizedMessage = bundle.getString(result.getLocaleMessage());
+        String localizedMessage = bundle.getString(result.getMessageKey());
         int statusCode = result.getStatusCode();
 
         response.setContentType("application/json");
@@ -57,6 +62,14 @@ public class ValidationServlet extends HttpServlet {
         writer.println(jsonResponse.toString());
         writer.flush();
 
+    }
+
+    private void removeMessagesForCurrentParam(HttpSession session, String paramName) {
+        Map frontEndMessages = (Map)session.getAttribute(MESSAGES_ATTR_NAME);
+
+        if (frontEndMessages != null) {
+            frontEndMessages.remove(paramName);
+        }
     }
 
     private Locale getLocaleFromSession(HttpSession session) {

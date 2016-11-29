@@ -2,11 +2,11 @@ package com.stolser.javatraining.webproject.controller.validator;
 
 public class ValidationResult {
     private int statusCode;
-    private String localeMessage;
+    private String messageKey;
 
-    public ValidationResult(int statusCode, String localeMessage) {
+    public ValidationResult(int statusCode, String messageKey) {
         this.statusCode = statusCode;
-        this.localeMessage = localeMessage;
+        this.messageKey = messageKey;
     }
 
     public int getStatusCode() {
@@ -17,11 +17,11 @@ public class ValidationResult {
         this.statusCode = statusCode;
     }
 
-    public String getLocaleMessage() {
-        return localeMessage;
+    public String getMessageKey() {
+        return messageKey;
     }
 
-    public void setLocaleMessage(String localeMessage) {
-        this.localeMessage = localeMessage;
+    public void setMessageKey(String messageKey) {
+        this.messageKey = messageKey;
     }
 }

@@ -29,12 +29,13 @@ public class AuthenticationFilter implements Filter {
 
         if (session.getAttribute(CURRENT_USER_ATTR_NAME) == null) {
 
-            session.setAttribute(ApplicationResources.REQUEST_ORIGINAL_URI, requestURI);
+            session.setAttribute(ApplicationResources.ORIGINAL_URI_ATTR_NAME, requestURI);
 
             System.out.println("redirect to login.jsp (requestURI = " + requestURI + ")");
             response.sendRedirect("/login.jsp");
 
         } else {
+            System.out.println("thisUser = " + session.getAttribute(CURRENT_USER_ATTR_NAME));
             chain.doFilter(servletRequest, servletResponse);
         }
     }

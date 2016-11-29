@@ -10,7 +10,8 @@
     font-style: italic;
 }
 
-.validationMessage {
+.validationMessage,
+.validated .messages {
     font-size: 80%;
     font-style: italic;
 }
@@ -19,6 +20,7 @@
     color: darkgreen;
 }
 
-.validationMessage.error {
+.validationMessage.error,
+.validated .messages.error {
     color: red;
 }
