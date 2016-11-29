@@ -77,8 +77,13 @@ public class UserService {
     public List<User> findAll() {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
             UserDao userDao = factory.getUserDao(conn);
+            RoleDao roleDao = factory.getRoleDao(conn);
 
-            return userDao.findAll();
+            List<User> allUser = userDao.findAll();
+
+            allUser.forEach(user -> user.setRoles(roleDao.findRolesByUserName(user.getUserName())));
+
+            return allUser;
 
         } catch (SQLException e) {
             LOGGER.debug("Exception during closing a connection.");

@@ -1,6 +1,7 @@
 package com.stolser.javatraining.webproject.model.dao.user;
 
 import com.stolser.javatraining.webproject.model.CustomSqlException;
+import com.stolser.javatraining.webproject.model.entity.user.Login;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +25,10 @@ public class MysqlUserDao implements UserDao {
     }
 
     @Override
-    public User getUserByUserName(String userName) {
-        String sqlStatement = "SELECT * FROM users WHERE userName = ?";
+    public User findUserByUserName(String userName) {
+        String sqlStatement = "SELECT * FROM logins " +
+                "INNER JOIN users ON (logins.userId = users.id) " +
+                "WHERE logins.userName = ?";
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
@@ -36,12 +39,13 @@ public class MysqlUserDao implements UserDao {
             User user = null;
             if (rs.next()) {
                 user = new User();
-                user.setId(rs.getLong("id"));
-                user.setUserName(rs.getString("userName"));
+                user.setId(rs.getLong("users.id"));
+                user.setUserName(rs.getString("logins.userName"));
                 user.setFirstName(rs.getString("firstName"));
                 user.setLastName(rs.getString("lastName"));
                 user.setEmail(rs.getString("email"));
                 user.setAddress(rs.getString("address"));
+                user.setStatus(User.Status.valueOf(rs.getString("status").toUpperCase()));
             }
 
             return user;
@@ -53,8 +57,36 @@ public class MysqlUserDao implements UserDao {
     }
 
     @Override
+    public Login findLoginByUserName(String userName) {
+        String sqlStatement = "SELECT * FROM logins " +
+                "WHERE userName = ?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            st.setString(1, userName);
+
+            ResultSet rs = st.executeQuery();
+
+            Login login = null;
+            if (rs.next()) {
+                login = new Login();
+                login.setId(rs.getLong("id"));
+                login.setUserName(rs.getString("userName"));
+                login.setPasswordHash(rs.getString("passwordHash"));
+            }
+
+            return login;
+
+        } catch (SQLException e) {
+            LOGGER.debug("Exception during retrieving a login with userName = {}", userName, e);
+            throw new CustomSqlException(e);
+        }
+    }
+
+    @Override
     public List<User> findAll() {
-        String sqlStatement = "SELECT * FROM users";
+        String sqlStatement = "SELECT * FROM logins " +
+                "INNER JOIN users ON (logins.userId = users.id) ";
 
         try {
             Statement st = conn.createStatement();
@@ -65,11 +97,12 @@ public class MysqlUserDao implements UserDao {
             while (rs.next()) {
                 User user = new User();
                 user.setId(rs.getLong("id"));
-                user.setUserName(rs.getString("userName"));
+                user.setUserName(rs.getString("logins.userName"));
                 user.setFirstName(rs.getString("firstName"));
                 user.setLastName(rs.getString("lastName"));
                 user.setEmail(rs.getString("email"));
                 user.setAddress(rs.getString("address"));
+                user.setStatus(User.Status.valueOf(rs.getString("status").toUpperCase()));
 
                 users.add(user);
             }

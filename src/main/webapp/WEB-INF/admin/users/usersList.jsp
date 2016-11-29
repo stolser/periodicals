@@ -6,7 +6,7 @@
 <div class="row">
     <h1><fmt:message key="user.usersList.title" bundle="${langUser}"/></h1>
     <div class="col-md-8 col-md-offset-2">
-        <c:forEach items="${allUsers}" var="user">
+        <c:forEach items="${allUsers}" var="user" varStatus="rowStatus">
             <p><fmt:message key="user.id.label" bundle="${langUser}"/>:
                 <c:out value="${user.id}"/></p>
             <p><fmt:message key="user.username.label" bundle="${langUser}"/>:
@@ -22,9 +22,8 @@
             <p><fmt:message key="user.status.label" bundle="${langUser}"/>:
                 <c:out value="${user.status}"/></p>
             <p><fmt:message key="user.roles.label" bundle="${langUser}"/>:
-                <c:out value="${user.roles}"/></p>
             <ul>
-                <c:forEach items="${user.roles}" var="role">
+                <c:forEach items="${user.roles}" var="role" varStatus="rowCount">
                     <li><c:out value="${role}"/></li>
                 </c:forEach>
             </ul>
