@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class RequestHelper {
+public class RequestProvider {
     private static final Map<String, RequestProcessor> requestMapping = new HashMap<>();
 
     static {
@@ -23,7 +23,7 @@ public class RequestHelper {
 
     private HttpServletRequest request;
 
-    public RequestHelper(HttpServletRequest request) {
+    public RequestProvider(HttpServletRequest request) {
         this.request = request;
     }
 

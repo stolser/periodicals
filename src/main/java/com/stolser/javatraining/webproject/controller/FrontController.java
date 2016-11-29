@@ -40,7 +40,7 @@ public class FrontController extends HttpServlet {
         System.out.println("processRequest(): requestURI = " + requestURI);
 
         try {
-            RequestProcessor command = new RequestHelper(request).getRequestProcessor();
+            RequestProcessor command = new RequestProvider(request).getRequestProcessor();
 
             System.out.println("command = " + command.getClass().getName());
 

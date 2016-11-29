@@ -19,7 +19,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String redirectUri;
-        String username = request.getParameter("username");
+        String username = request.getParameter("signInUsername");
         String password = request.getParameter("password");
 
         if ((username != null) && (password != null)) {

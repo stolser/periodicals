@@ -53,6 +53,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>ValidationServlet</servlet-name>
+        <servlet-class>com.stolser.javatraining.webproject.controller.validator.ValidationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ValidationServlet</servlet-name>
+        <url-pattern>/Validation</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>FrontController</servlet-name>
         <servlet-class>com.stolser.javatraining.webproject.controller.FrontController</servlet-class>
     </servlet>

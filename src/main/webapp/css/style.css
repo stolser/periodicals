@@ -9,3 +9,16 @@
 #header .userEmail {
     font-style: italic;
 }
+
+.validationMessage {
+    font-size: 80%;
+    font-style: italic;
+}
+
+.validationMessage.success {
+    color: darkgreen;
+}
+
+.validationMessage.error {
+    color: red;
+}

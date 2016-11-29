@@ -1,0 +1,75 @@
+package com.stolser.javatraining.webproject.controller.validator;
+
+import com.stolser.javatraining.webproject.controller.ApplicationResources;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+public class ValidationServlet extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession();
+        String paramName = request.getParameter("paramName");
+        String paramValue = request.getParameter("paramValue");
+        System.out.println("paramName = " + paramName + "; paramValue = " + paramValue);
+
+        ValidationResult result = ValidatorFactory.getInstance().newValidator(paramName)
+                .validate(paramValue, request);
+
+        Locale locale = getLocaleFromSession(session);
+
+        ResourceBundle bundle = ResourceBundle.getBundle(ApplicationResources.VALIDATION_BUNDLE_PATH, locale);
+        System.out.println("locale = " + locale + "; bundle = " + bundle);
+
+        String localizedMessage = bundle.getString(result.getLocaleMessage());
+        int statusCode = result.getStatusCode();
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        PrintWriter writer = response.getWriter();
+        JSONObject jsonResponse = new JSONObject();
+
+        System.out.println("statusCode = " + statusCode);
+        System.out.println("localizedMessage = " + localizedMessage);
+
+        try {
+            jsonResponse.put("statusCode", statusCode);
+            jsonResponse.put("validationMessage", localizedMessage);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("jsonResponse.toString() = " + jsonResponse.toString());
+
+        writer.println(jsonResponse.toString());
+        writer.flush();
+
+    }
+
+    private Locale getLocaleFromSession(HttpSession session) {
+        Object localeAttr = session.getAttribute("language");
+        Locale locale;
+
+        if (localeAttr instanceof Locale) {
+            locale = (Locale) localeAttr;
+        } else {
+            locale = ApplicationResources.SystemLocale.valueOf(((String) localeAttr).toUpperCase())
+                    .getLocale();
+        }
+
+        return locale;
+    }
+}

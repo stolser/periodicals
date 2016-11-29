@@ -9,18 +9,19 @@
                 <h3 class="panel-title"><fmt:message key="login.signin.title" bundle="${login}"/></h3>
                 <form action="/Login" name="loginform"
                       method="POST" accept-charset="UTF-8" role="form">
-                    <div class="form-group">
+                    <div class="form-group validated">
                         <label for="userName"><fmt:message key="login.username.label" bundle="${login}"/></label>
                         <input type="text" class="form-control" id="userName"
                                placeholder="<fmt:message key="login.username.label" bundle="${login}"/>"
-                               name="username"
-                        value="${sessionScope.username}">
+                               name="signInUsername"
+                               value="${sessionScope.username}"/>
+                        <label class="validationMessage"></label>
                     </div>
                     <div class="form-group">
                         <label for="userPassword"><fmt:message key="login.password.label" bundle="${login}"/></label>
                         <input type="password" class="form-control" id="userPassword"
                                placeholder="<fmt:message key="login.password.label" bundle="${login}"/>"
-                               name="password">
+                               name="password"/>
                     </div>
 
 
@@ -32,6 +33,10 @@
         </div>
     </div>
 </div>
+
+<script>
+
+</script>
 
 
 <%@include file="/WEB-INF/includes/footer.jsp" %>
