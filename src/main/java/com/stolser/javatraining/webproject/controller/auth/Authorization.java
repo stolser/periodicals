@@ -12,7 +12,7 @@ public class Authorization {
     static {
         Set<String> onlyAdmin = new HashSet<>(Collections.singletonList("admin"));
 
-        permissionMapping.put("/adminPanel/users(/.*)?", onlyAdmin);
+        permissionMapping.put("/adminPanel/users(/\\d*)?", onlyAdmin);
     }
 
     private HttpServletRequest request;
@@ -43,9 +43,15 @@ public class Authorization {
 
     private boolean userHasLegitRole(Set<String> legitRoles) {
         Set<String> userRoles = user.getRoles();
+        Set<String> userLegitRoles = new HashSet<>(legitRoles);
+        System.out.println("------ User's roles:");
+        userRoles.forEach(System.out::println);
 
-        legitRoles.retainAll(userRoles);
+        userLegitRoles.retainAll(userRoles);
 
-        return (legitRoles.size() != 0);
+        System.out.println("------ legitRoles: ");
+        userLegitRoles.forEach(System.out::println);
+
+        return (userLegitRoles.size() != 0);
     }
 }

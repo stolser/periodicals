@@ -34,8 +34,10 @@ public class LoginServlet extends HttpServlet {
 
                 String originalUri = (String) request.getSession().getAttribute(REQUEST_ORIGINAL_URI);
                 redirectUri = (originalUri != null) ? originalUri : "/adminPanel";
+                request.getSession().removeAttribute(REQUEST_ORIGINAL_URI);
 
             } else {
+                request.getSession().setAttribute("username", username);
                 redirectUri = "/login.jsp";
             }
 
