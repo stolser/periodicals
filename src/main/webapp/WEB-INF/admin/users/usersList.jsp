@@ -4,8 +4,8 @@
 <fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
 
 <div class="row">
-    <h1><fmt:message key="user.usersList.title" bundle="${langUser}"/></h1>
     <div class="col-md-12 table-responsive">
+        <h1><fmt:message key="user.usersList.title" bundle="${langUser}"/></h1>
         <table class="table table-hover table-bordered table-striped">
             <thead>
             <tr>

@@ -8,15 +8,15 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><fmt:message key="login.signin.title" bundle="${login}"/></h3>
-                <form action="/Login" name="loginform"
+                <form action="/Login" name="loginform" id="loginform"
                       method="POST" accept-charset="UTF-8" role="form">
                     <div class="form-group validated">
-                        <label for="userName"><fmt:message key="login.username.label" bundle="${login}"/></label>
-                        <input type="text" class="form-control" id="userName"
+                        <label class="control-label" for="userName">
+                            <fmt:message key="login.username.label" bundle="${login}"/></label>
+                        <input type="text" class="form-control ajax-validated" id="userName"
                                placeholder="<fmt:message key="login.username.label" bundle="${login}"/>"
                                name="signInUsername"
                                value="${sessionScope.username}"/>
-                        <label class="validationMessage"></label>
                         <c:if test="${(not empty messages) && (not empty messages['signInUsername'])}">
                             <label class="messages
                             <c:out value="${messages['signInUsername'].type == 'ERROR' ? 'error' : ''}"/>">
@@ -26,7 +26,8 @@
 
                     </div>
                     <div class="form-group validated">
-                        <label for="userPassword"><fmt:message key="login.password.label" bundle="${login}"/></label>
+                        <label class="control-label" for="userPassword">
+                            <fmt:message key="login.password.label" bundle="${login}"/></label>
                         <input type="password" class="form-control" id="userPassword"
                                placeholder="<fmt:message key="login.password.label" bundle="${login}"/>"
                                name="password"/>
@@ -39,8 +40,9 @@
                     </div>
 
 
-                    <button type="submit" class="btn btn-lg btn-success btn-block"><fmt:message key="login.signin.label"
-                                                                                                bundle="${login}"/></button>
+                    <button type="submit"
+                            class="btn btn-lg btn-success btn-block disabled">
+                        <fmt:message key="login.signin.label" bundle="${login}"/></button>
                 </form>
             </div>
 
