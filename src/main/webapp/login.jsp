@@ -41,7 +41,7 @@
 
 
                     <button type="submit"
-                            class="btn btn-lg btn-success btn-block disabled">
+                            class="btn btn-lg btn-primary btn-block disabled">
                         <fmt:message key="login.signin.label" bundle="${login}"/></button>
                 </form>
             </div>

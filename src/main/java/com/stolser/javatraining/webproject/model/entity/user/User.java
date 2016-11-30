@@ -90,6 +90,10 @@ public class User {
         this.roles = roles;
     }
 
+    public boolean hasRole(String role) {
+        return roles.contains(role);
+    }
+
     @Override
     public String toString() {
         return String.format("User{id=%d, userName='%s', firstName='%s', lastName='%s', " +

@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.controller.command.periodical;
 
+import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.Utils;
 import com.stolser.javatraining.webproject.model.CustomSqlException;
@@ -31,6 +32,6 @@ public class DisplayAllPeriodicals implements RequestProcessor {
 
         request.setAttribute("allPeriodicals", allPeriodicals);
 
-        return "periodicals/periodicalList";
+        return ApplicationResources.PERIODICAL_LIST_VIEW_NAME;
     }
 }

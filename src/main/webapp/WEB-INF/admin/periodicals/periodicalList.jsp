@@ -1,3 +1,5 @@
+<%@ page import="com.stolser.javatraining.webproject.controller.ApplicationResources" %>
+<%@ page import="com.stolser.javatraining.webproject.model.entity.user.User" %>
 <%@include file="../../includes/general.jsp" %>
 <%@include file="../../includes/header.jsp" %>
 <fmt:setBundle basename="webProject.i18n.admin.periodical" var="langPeriodical"/>
@@ -24,7 +26,8 @@
                         <c:if test="${periodical.status == 'INVISIBLE'}">class="warning"</c:if>
                         <c:if test="${periodical.status == 'DISCARDED'}">class="danger"</c:if>>
                     <td><c:out value="${periodical.id}"/></td>
-                    <td><c:out value="${periodical.name}"/></td>
+                    <td><a href="/adminPanel/periodicals/<c:out value="${periodical.id}"/>">
+                        <c:out value="${periodical.name}"/></a></td>
                     <td><c:out value="${periodical.category}"/></td>
                     <td><c:out value="${periodical.publisher}"/></td>
                     <td><c:out value="${periodical.oneMonthCost}"/></td>
@@ -36,6 +39,17 @@
 
         </table>
 
+    </div>
+
+    <div class="col-md-12">
+        <% if (((User) session.getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME))
+                .hasRole(ApplicationResources.ADMIN_ROLE_NAME)) {%>
+        <a href="/adminPanel/periodicals/createNew"
+           class="btn btn-primary active" role="button">
+            <fmt:message key="newPeriodicalBt.label" bundle="${langPeriodical}"/>
+        </a>
+
+        <%}%>
     </div>
 
 </div>

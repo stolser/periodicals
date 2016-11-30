@@ -2,6 +2,7 @@ package com.stolser.javatraining.webproject.controller;
 
 import com.stolser.javatraining.webproject.controller.command.DisplayAdminPanelMainPage;
 import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.command.periodical.CreateNewPeriodical;
 import com.stolser.javatraining.webproject.controller.command.periodical.DisplayAllPeriodicals;
 import com.stolser.javatraining.webproject.controller.command.periodical.DisplayOnePeriodical;
 import com.stolser.javatraining.webproject.controller.command.user.DisplayAllUsers;
@@ -15,11 +16,12 @@ public class RequestProvider {
     private static final Map<String, RequestProcessor> requestMapping = new HashMap<>();
 
     static {
+        requestMapping.put("GET|POST:/adminPanel/?", new DisplayAdminPanelMainPage());
         requestMapping.put("GET:/adminPanel/periodicals/\\d+", new DisplayOnePeriodical());
         requestMapping.put("GET:/adminPanel/periodicals/?", new DisplayAllPeriodicals());
+        requestMapping.put("GET:/adminPanel/periodicals/createNew/?", new CreateNewPeriodical());
         requestMapping.put("GET:/adminPanel/users/?", new DisplayAllUsers());
         requestMapping.put("GET:/adminPanel/users/currentUser/?", new DisplayOneUser());
-        requestMapping.put("GET|POST:/adminPanel/?", new DisplayAdminPanelMainPage());
 
     }
 

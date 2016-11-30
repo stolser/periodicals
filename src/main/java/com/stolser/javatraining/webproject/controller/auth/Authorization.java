@@ -13,6 +13,7 @@ public class Authorization {
         Set<String> onlyAdmin = new HashSet<>(Collections.singletonList("admin"));
 
         permissionMapping.put("/adminPanel/users(/\\d*)?", onlyAdmin);
+        permissionMapping.put("/adminPanel/periodicals/createNew/?", onlyAdmin);
     }
 
     private HttpServletRequest request;

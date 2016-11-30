@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.controller.command.user;
 
+import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.model.service.user.UserService;
@@ -16,6 +17,6 @@ public class DisplayAllUsers implements RequestProcessor {
 
         request.setAttribute("allUsers", allUsers);
 
-        return "users/userList";
+        return ApplicationResources.USER_LIST_VIEW_NAME;
     }
 }
