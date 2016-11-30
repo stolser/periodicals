@@ -16,6 +16,6 @@ public class DisplayAllUsers implements RequestProcessor {
 
         request.setAttribute("allUsers", allUsers);
 
-        return "users/usersList";
+        return "users/userList";
     }
 }

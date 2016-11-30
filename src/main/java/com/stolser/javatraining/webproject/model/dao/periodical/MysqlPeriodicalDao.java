@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MysqlPeriodicalDao implements PeriodicalDao {
@@ -38,20 +39,48 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
                 periodical.setPublisher(rs.getString("publisher"));
                 periodical.setDescription(rs.getString("description"));
                 periodical.setOneMonthCost(rs.getDouble("oneMonthCost"));
+                periodical.setStatus(Periodical.Status.valueOf(rs.getString("status").toUpperCase()));
             }
 
             return periodical;
 
         } catch (SQLException e) {
-            LOGGER.debug("Exception during retrieving a periodical with id = {}", id, e);
-            throw new CustomSqlException(e);
+            String message = String.format("Exception during retrieving a periodical with id = %d. " +
+                    "Original: $s. ", id, e.getMessage());
+            throw new CustomSqlException(message);
         }
 
     }
 
     @Override
     public List<Periodical> findAll() {
-        return null;
+        String sqlStatement = "SELECT * FROM periodicals";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            ResultSet rs = st.executeQuery();
+
+            List<Periodical> periodicals = new ArrayList<>();
+            while (rs.next()) {
+                Periodical periodical = new Periodical();
+                periodical.setId(rs.getLong("id"));
+                periodical.setName(rs.getString("name"));
+                periodical.setCategory(rs.getString("category"));
+                periodical.setPublisher(rs.getString("publisher"));
+                periodical.setDescription(rs.getString("description"));
+                periodical.setOneMonthCost(rs.getDouble("oneMonthCost"));
+                periodical.setStatus(Periodical.Status.valueOf(rs.getString("status").toUpperCase()));
+
+                periodicals.add(periodical);
+            }
+
+            return periodicals;
+
+        } catch (SQLException e) {
+            String message = String.format("Exception during retrieving all periodicals. " +
+                    "Original: $s. ", e.getMessage());
+            throw new CustomSqlException(message);
+        }
     }
 
     @Override

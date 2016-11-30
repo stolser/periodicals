@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/includes/general.jsp" %>
 <%@include file="/WEB-INF/includes/header.jsp" %>
-<fmt:setBundle basename="webProject.i18n.admin.user" var="user"/>
+<fmt:setBundle basename="webProject.i18n.admin.user" var="periodical"/>
 <fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
 
 <div class="row">

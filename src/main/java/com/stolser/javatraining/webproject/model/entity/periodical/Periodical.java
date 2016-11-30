@@ -7,6 +7,11 @@ public class Periodical {
     private String publisher;
     private String description;
     private double oneMonthCost;
+    private Status status;
+
+    public enum Status {
+        VISIBLE, INVISIBLE, DISCARDED;
+    }
 
     public long getId() {
         return id;
@@ -54,6 +59,14 @@ public class Periodical {
 
     public void setOneMonthCost(double oneMonthCost) {
         this.oneMonthCost = oneMonthCost;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override

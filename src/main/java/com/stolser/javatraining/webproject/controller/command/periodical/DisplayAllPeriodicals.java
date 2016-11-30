@@ -10,19 +10,17 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
-public class DisplayOnePeriodical implements RequestProcessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DisplayOnePeriodical.class);
+public class DisplayAllPeriodicals implements RequestProcessor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DisplayAllPeriodicals.class);
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
 
-        String idString = request.getRequestURI().replace("/adminPanel/periodicals/", "");
-        long periodicalId = Integer.valueOf(idString);
-
-        Periodical periodical;
+        List<Periodical> allPeriodicals;
         try {
-            periodical = PeriodicalService.getInstance().findOne(periodicalId);
+            allPeriodicals = PeriodicalService.getInstance().findAll();
 
         } catch (CustomSqlException e) {
             String message = Utils.getExceptionMessageForRequestProcessor(request, e);
@@ -30,10 +28,9 @@ public class DisplayOnePeriodical implements RequestProcessor {
 
             throw new RuntimeException(message);
         }
-        System.out.println("found periodical: " + periodical);
 
-        request.setAttribute("periodical", periodical);
+        request.setAttribute("allPeriodicals", allPeriodicals);
 
-        return "periodicals/onePeriodical";
+        return "periodicals/periodicalList";
     }
 }
