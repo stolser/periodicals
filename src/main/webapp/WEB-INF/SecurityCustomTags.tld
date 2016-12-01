@@ -1,0 +1,19 @@
+<taglib version="2.0"
+        xmlns="http://java.sun.com/xml/ns/j2ee"
+>
+    <tlib-version>0.1</tlib-version>
+    <short-name>security</short-name>
+    <uri>http://stolser.com/javaee/tags/security-0.1</uri>
+    <tag>
+        <name>if-authorized</name>
+        <tag-class>com.stolser.javatraining.webproject.view.jsp_tag.AuthorizationTagHandler</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>mustHaveRoles</name>
+            <required>true</required>
+        </attribute>
+        <attribute>
+            <name>mustNotHaveRoles</name>
+        </attribute>
+    </tag>
+</taglib>
