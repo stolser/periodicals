@@ -50,7 +50,7 @@ public class Authorization {
 
         userLegitRoles.retainAll(userRoles);
 
-        System.out.println("------ legitRoles: ");
+        System.out.println("------ legit user's roles: ");
         userLegitRoles.forEach(System.out::println);
 
         return (userLegitRoles.size() != 0);
