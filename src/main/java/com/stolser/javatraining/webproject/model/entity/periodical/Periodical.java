@@ -72,7 +72,7 @@ public class Periodical {
     @Override
     public String toString() {
         return String.format("Periodical{id=%d, name='%s', category='%s', publisher='%s', " +
-                "description='%s', oneMonthCost=%s}", id, name, category, publisher,
-                description, oneMonthCost);
+                "description='%s', oneMonthCost=%.2f, status=%s}", id, name, category, publisher,
+                description.substring(0, 15), oneMonthCost, status);
     }
 }

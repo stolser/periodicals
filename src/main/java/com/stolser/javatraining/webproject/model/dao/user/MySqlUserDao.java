@@ -1,7 +1,6 @@
 package com.stolser.javatraining.webproject.model.dao.user;
 
 import com.stolser.javatraining.webproject.model.CustomSqlException;
-import com.stolser.javatraining.webproject.model.entity.user.Login;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +18,7 @@ public class MysqlUserDao implements UserDao {
     }
 
     @Override
-    public User findOne(long id) {
+    public User findOneById(long id) {
         String sqlStatement = "";
         return null;
     }
@@ -57,33 +56,6 @@ public class MysqlUserDao implements UserDao {
     }
 
     @Override
-    public Login findLoginByUserName(String userName) {
-        String sqlStatement = "SELECT * FROM logins " +
-                "WHERE userName = ?";
-
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
-            st.setString(1, userName);
-
-            ResultSet rs = st.executeQuery();
-
-            Login login = null;
-            if (rs.next()) {
-                login = new Login();
-                login.setId(rs.getLong("id"));
-                login.setUserName(rs.getString("userName"));
-                login.setPasswordHash(rs.getString("passwordHash"));
-            }
-
-            return login;
-
-        } catch (SQLException e) {
-            LOGGER.debug("Exception during retrieving a login with userName = {}", userName, e);
-            throw new CustomSqlException(e);
-        }
-    }
-
-    @Override
     public List<User> findAll() {
         String sqlStatement = "SELECT * FROM logins " +
                 "RIGHT OUTER JOIN users ON (logins.userId = users.id) ";
@@ -116,8 +88,11 @@ public class MysqlUserDao implements UserDao {
     }
 
     @Override
-    public User save(User user) {
-        return null;
+    public void createNew(User entity) {
+    }
+
+    @Override
+    public void update(User entity) {
     }
 
     @Override

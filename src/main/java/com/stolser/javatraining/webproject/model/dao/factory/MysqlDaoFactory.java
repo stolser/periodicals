@@ -1,5 +1,7 @@
 package com.stolser.javatraining.webproject.model.dao.factory;
 
+import com.stolser.javatraining.webproject.model.dao.login.LoginDao;
+import com.stolser.javatraining.webproject.model.dao.login.MysqlLoginDao;
 import com.stolser.javatraining.webproject.model.dao.periodical.MysqlPeriodicalDao;
 import com.stolser.javatraining.webproject.model.dao.periodical.PeriodicalDao;
 import com.stolser.javatraining.webproject.model.dao.role.MysqlRoleDao;
@@ -14,6 +16,11 @@ public class MysqlDaoFactory extends DaoFactory {
     @Override
     public PeriodicalDao getPeriodicalDao(Connection conn) {
         return new MysqlPeriodicalDao(conn);
+    }
+
+    @Override
+    public LoginDao getLoginDao(Connection conn) {
+        return new MysqlLoginDao(conn);
     }
 
     @Override

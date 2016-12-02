@@ -1,22 +1,22 @@
 <%@include file="../../includes/general.jsp" %>
 <%@include file="../../includes/header.jsp" %>
-<fmt:setBundle basename="webProject.i18n.admin.user" var="langUser"/>
+<fmt:setBundle basename="webProject.i18n.admin.user" var="langPeriodical"/>
 <fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
 
 <div class="row">
     <div class="col-md-12 table-responsive">
-        <h1><fmt:message key="user.usersList.title" bundle="${langUser}"/></h1>
+        <h1><fmt:message key="user.usersList.title" bundle="${langPeriodical}"/></h1>
         <table class="table table-hover table-bordered table-striped">
             <thead>
             <tr>
-                <th><fmt:message key="user.id.label" bundle="${langUser}"/></th>
-                <th><fmt:message key="user.username.label" bundle="${langUser}"/></th>
-                <th><fmt:message key="user.firstName.label" bundle="${langUser}"/></th>
-                <th><fmt:message key="user.lastName.label" bundle="${langUser}"/></th>
-                <th><fmt:message key="user.email.label" bundle="${langUser}"/></th>
-                <th><fmt:message key="user.address.label" bundle="${langUser}"/></th>
-                <th><fmt:message key="user.status.label" bundle="${langUser}"/></th>
-                <th><fmt:message key="user.roles.label" bundle="${langUser}"/></th>
+                <th><fmt:message key="user.id.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="user.username.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="user.firstName.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="user.lastName.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="user.email.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="user.address.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="user.status.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="user.roles.label" bundle="${langPeriodical}"/></th>
             </tr>
             </thead>
             <tbody>

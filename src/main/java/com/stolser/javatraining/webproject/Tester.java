@@ -14,7 +14,7 @@ public class Tester {
             System.out.println("connection has been got.");
             PeriodicalDao periodicalDao = DaoFactory.getMysqlDaoFactory().getPeriodicalDao(conn);
 
-            System.out.println(periodicalDao.findOne(2L));
+            System.out.println(periodicalDao.findOneById(2L));
         } catch (SQLException e) {
             System.out.println("Exception during closing a connection.");
             throw new CustomSqlException(e);

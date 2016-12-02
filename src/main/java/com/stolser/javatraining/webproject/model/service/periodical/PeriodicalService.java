@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
 
 public class PeriodicalService {
     private static final DaoFactory factory = DaoFactory.getMysqlDaoFactory();
+    public static final String NO_PERIODICAL_WITH_ID_MESSAGE = "There is no periodical in the DB with id = %d";
 
     private PeriodicalService() {
     }
@@ -35,10 +36,10 @@ public class PeriodicalService {
             System.out.println("PeriodicalService: connection has been got.");
 
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
-            Periodical periodical = periodicalDao.findOne(id);
+            Periodical periodical = periodicalDao.findOneById(id);
 
             if (periodical == null) {
-                String message = String.format("There is no periodical in the DB with id = %d", id);
+                String message = String.format(NO_PERIODICAL_WITH_ID_MESSAGE, id);
 
                 throw new NoSuchElementException(message);
             }
@@ -48,7 +49,7 @@ public class PeriodicalService {
             return periodical;
         } catch (SQLException e) {
             String message = String.format("Exception during closing a connection. " +
-                    "Original: $s. ", e.getMessage());
+                    "Original: %s. ", e.getMessage());
             throw new CustomSqlException(message);
         }
     }
@@ -63,13 +64,68 @@ public class PeriodicalService {
 
         } catch (SQLException e) {
             String message = String.format("Exception during closing a connection. " +
-                    "Original: $s. ", e.getMessage());
+                    "Original: %s. ", e.getMessage());
             throw new CustomSqlException(message);
         }
     }
 
-    public Periodical save(Periodical entity) {
-        return null;
+    /**
+     * Use the returned instance for further operations as the save operation
+     * might have changed the entity instance completely.
+     * @param periodical
+     * @return
+     */
+    public Periodical save(Periodical periodical) throws Exception {
+        long thisId = periodical.getId();
+
+        if (thisId == 0) {
+            createNewPeriodical(periodical);
+        } else {
+            tryToUpdatePeriodical(periodical);
+        }
+
+        return getPeriodicalFromDbByName(periodical.getName());
+    }
+
+    private void createNewPeriodical(Periodical periodical) throws Exception {
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+            System.out.println("PeriodicalService: connection has been got. Creating a new one.");
+
+            PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
+            periodicalDao.createNew(periodical);
+        }
+    }
+
+    private Periodical getPeriodicalFromDbByName(String name) throws SQLException {
+        Periodical periodicalInDb;
+
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+            PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
+            periodicalInDb = periodicalDao.findOneByName(name);
+        }
+
+        return periodicalInDb;
+    }
+
+    private void tryToUpdatePeriodical(Periodical periodical) throws Exception {
+        Periodical periodicalInDb = getPeriodicalFromDbByName(periodical.getName());
+
+        if (periodicalInDb == null) {
+            String message = String.format(NO_PERIODICAL_WITH_ID_MESSAGE, periodicalInDb);
+
+            throw new NoSuchElementException(message);
+        } else {
+            updatePeriodical(periodical);
+        }
+    }
+
+    private void updatePeriodical(Periodical periodical) throws Exception {
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+            System.out.println("PeriodicalService: connection has been got.");
+
+            PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
+            periodicalDao.update(periodical);
+        }
     }
 
     public void delete(long id) {

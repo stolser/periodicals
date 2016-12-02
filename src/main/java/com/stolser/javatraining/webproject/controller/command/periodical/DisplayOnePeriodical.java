@@ -29,7 +29,7 @@ public class DisplayOnePeriodical implements RequestProcessor {
             String message = Utils.getExceptionMessageForRequestProcessor(request, e);
             LOGGER.debug(message, e);
 
-            throw new RuntimeException(message);
+            throw new RuntimeException(message, e);
         }
         System.out.println("found periodical: " + periodical);
 

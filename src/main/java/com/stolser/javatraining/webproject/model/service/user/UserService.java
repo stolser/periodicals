@@ -2,6 +2,7 @@ package com.stolser.javatraining.webproject.model.service.user;
 
 import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
+import com.stolser.javatraining.webproject.model.dao.login.LoginDao;
 import com.stolser.javatraining.webproject.model.dao.role.RoleDao;
 import com.stolser.javatraining.webproject.model.dao.user.UserDao;
 import com.stolser.javatraining.webproject.model.database.ConnectionPoolProvider;
@@ -34,9 +35,9 @@ public class UserService {
 
     public Login findOneLoginByUserName(String userName) {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-            UserDao userDao = factory.getUserDao(conn);
+            LoginDao loginDao = factory.getLoginDao(conn);
 
-            Login login = userDao.findLoginByUserName(userName);
+            Login login = loginDao.findLoginByUserName(userName);
 
             return login;
 

@@ -1,21 +1,21 @@
 <%@ page import="com.stolser.javatraining.webproject.controller.ApplicationResources" %>
 <%@include file="../../includes/general.jsp" %>
 <%@include file="../../includes/header.jsp" %>
-<fmt:setBundle basename="webProject.i18n.admin.periodical" var="langUser"/>
+<fmt:setBundle basename="webProject.i18n.admin.periodical" var="langPeriodical"/>
 <fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
 
 <div class="row">
     <div class="col-md-12 table-responsive">
-        <h1><fmt:message key="periodicalList.title.top" bundle="${langUser}"/></h1>
+        <h1><fmt:message key="periodicalList.title.top" bundle="${langPeriodical}"/></h1>
         <table class="table table-hover table-bordered table-striped">
             <thead>
             <tr>
-                <th><fmt:message key="id.label" bundle="${langUser}"/></th>
-                <th><fmt:message key="name.label" bundle="${langUser}"/></th>
-                <th><fmt:message key="category.label" bundle="${langUser}"/></th>
-                <th><fmt:message key="publisher.label" bundle="${langUser}"/></th>
-                <th><fmt:message key="oneMonthCost.label" bundle="${langUser}"/></th>
-                <th><fmt:message key="status.label" bundle="${langUser}"/></th>
+                <th><fmt:message key="id.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="name.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="category.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="publisher.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="oneMonthCost.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="status.label" bundle="${langPeriodical}"/></th>
             </tr>
             </thead>
             <tbody>
@@ -46,7 +46,7 @@
         <auth:if-authorized mustHaveRoles="admin">
             <a href="<% out.print(ApplicationResources.PERIODICAL_CREATE_NEW_HREF); %>"
                class="btn btn-primary active" role="button">
-                <fmt:message key="newPeriodicalBt.label" bundle="${langUser}"/>
+                <fmt:message key="newPeriodicalBt.label" bundle="${langPeriodical}"/>
             </a>
         </auth:if-authorized>
         <auth:if-authorized mustHaveRoles="*" mustNotHaveRoles="admin">

@@ -15,7 +15,7 @@ public class Utils {
 
     public static String getExceptionMessageForRequestProcessor(HttpServletRequest request, Exception e) {
         String message = String.format("User id = %d. " +
-                "Original: $s. ", Utils.getUserIdFromRequest(request), e.getMessage());
+                "Original: %s. ", Utils.getUserIdFromRequest(request), e.getMessage());
 
         return message;
     }
