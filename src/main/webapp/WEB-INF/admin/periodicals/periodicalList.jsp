@@ -19,21 +19,22 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${allPeriodicals}" var="user" varStatus="rowStatus">
-
-                <tr
-                        <c:if test="${user.status == 'VISIBLE'}">class="success"</c:if>
-                        <c:if test="${user.status == 'INVISIBLE'}">class="warning"</c:if>
-                        <c:if test="${user.status == 'DISCARDED'}">class="danger"</c:if>>
-                    <td><c:out value="${user.id}"/></td>
-                    <td>
-                        <a href="<% out.print(ApplicationResources.PERIODICAL_LIST_HREF); %><c:out value="${user.id}"/>">
-                            <c:out value="${user.name}"/></a></td>
-                    <td><c:out value="${user.category}"/></td>
-                    <td><c:out value="${user.publisher}"/></td>
-                    <td><c:out value="${user.oneMonthCost}"/></td>
-                    <td><c:out value="${user.status}"/></td>
-                </tr>
+            <c:forEach items="${allPeriodicals}" var="periodical" varStatus="rowStatus">
+                <c:if test="${(periodical.status == 'VISIBLE') || thisUser.hasRole('admin')}">
+                    <tr
+                            <c:if test="${periodical.status == 'VISIBLE'}">class="success"</c:if>
+                            <c:if test="${periodical.status == 'INVISIBLE'}">class="warning"</c:if>
+                            <c:if test="${periodical.status == 'DISCARDED'}">class="danger"</c:if>>
+                        <td><c:out value="${periodical.id}"/></td>
+                        <td>
+                            <a href="<% out.print(ApplicationResources.PERIODICAL_LIST_HREF); %><c:out value="${periodical.id}"/>">
+                                <c:out value="${periodical.name}"/></a></td>
+                        <td><c:out value="${periodical.category}"/></td>
+                        <td><c:out value="${periodical.publisher}"/></td>
+                        <td><c:out value="${periodical.oneMonthCost}"/></td>
+                        <td><c:out value="${periodical.status}"/></td>
+                    </tr>
+                </c:if>
 
             </c:forEach>
             </tbody>

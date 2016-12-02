@@ -12,6 +12,13 @@
         <form class="form-horizontal"
               method="post"
               action="<% out.print(ApplicationResources.PERIODICAL_CREATE_NEW_REST); %>">
+            <div class="form-group hidden">
+                <div class="col-sm-9">
+                    <input id="periodicalId" type="text" class="form-control"
+                           name="periodicalId"
+                           value="<c:out value="${periodical.id}"/>"/>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="periodicalName" class="col-sm-3 control-label">
                     <fmt:message key="name.label" bundle="${langPeriodical}"/></label>
@@ -19,7 +26,7 @@
                     <input id="periodicalName" type="text" class="form-control"
                            name="periodicalName"
                            value="<c:out value="${periodical.name}"/>"
-                           placeholder="<fmt:message key="name.label" bundle="${langPeriodical}"/>">
+                           placeholder="<fmt:message key="name.label" bundle="${langPeriodical}"/>"/>
                 </div>
             </div>
             <div class="form-group">
@@ -29,7 +36,7 @@
                     <input id="periodicalCategory" type="text" class="form-control"
                            name="periodicalCategory"
                            value="<c:out value="${periodical.category}"/>"
-                           placeholder="<fmt:message key="category.label" bundle="${langPeriodical}"/>">
+                           placeholder="<fmt:message key="category.label" bundle="${langPeriodical}"/>"/>
                 </div>
             </div>
             <div class="form-group">
@@ -39,7 +46,7 @@
                     <input id="periodicalPublisher" type="text" class="form-control"
                            name="periodicalPublisher"
                            value="<c:out value="${periodical.publisher}"/>"
-                           placeholder="<fmt:message key="publisher.label" bundle="${langPeriodical}"/>">
+                           placeholder="<fmt:message key="publisher.label" bundle="${langPeriodical}"/>"/>
                 </div>
             </div>
             <div class="form-group">
@@ -60,7 +67,7 @@
                     <input id="periodicalCost" type="text" class="form-control"
                            name="periodicalCost"
                            value="<c:out value="${periodical.oneMonthCost}"/>"
-                           placeholder="<fmt:message key="oneMonthCost.label" bundle="${langPeriodical}"/>">
+                           placeholder="<fmt:message key="oneMonthCost.label" bundle="${langPeriodical}"/>"/>
                 </div>
             </div>
             <div class="form-group">
