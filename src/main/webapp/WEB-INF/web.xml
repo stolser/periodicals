@@ -13,6 +13,20 @@
     </session-config>
 
     <filter>
+        <filter-name>CharsetFilter</filter-name>
+        <filter-class>com.stolser.javatraining.webproject.controller.CharsetFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CharsetFilter</filter-name>
+        <url-pattern>/adminPanel/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+
+    <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>com.stolser.javatraining.webproject.controller.AuthenticationFilter</filter-class>
     </filter>
