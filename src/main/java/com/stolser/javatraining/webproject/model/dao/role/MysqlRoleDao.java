@@ -23,10 +23,10 @@ public class MysqlRoleDao implements RoleDao {
     public Set<String> findRolesByUserName(String userName) {
         String sqlStatement = "SELECT user_roles.name " +
                 "FROM users INNER JOIN user_roles " +
-                "ON (users.id = user_roles.userId) " +
+                "ON (users.id = user_roles.user_id) " +
                 "INNER JOIN logins " +
-                "ON (logins.userId = users.id) " +
-                "WHERE logins.userName = ?";
+                "ON (logins.user_id = users.id) " +
+                "WHERE logins.user_name = ?";
 
         Set<String> roles = new HashSet<>();
 

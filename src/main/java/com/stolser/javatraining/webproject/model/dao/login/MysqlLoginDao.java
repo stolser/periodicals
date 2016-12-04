@@ -21,7 +21,7 @@ public class MysqlLoginDao implements LoginDao {
     @Override
     public Login findLoginByUserName(String userName) {
         String sqlStatement = "SELECT * FROM logins " +
-                "WHERE userName = ?";
+                "WHERE user_name = ?";
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
@@ -33,8 +33,8 @@ public class MysqlLoginDao implements LoginDao {
             if (rs.next()) {
                 login = new Login();
                 login.setId(rs.getLong("id"));
-                login.setUserName(rs.getString("userName"));
-                login.setPasswordHash(rs.getString("passwordHash"));
+                login.setUserName(rs.getString("user_name"));
+                login.setPasswordHash(rs.getString("password_hash"));
             }
 
             return login;

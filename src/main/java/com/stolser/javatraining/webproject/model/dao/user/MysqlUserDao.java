@@ -26,8 +26,8 @@ public class MysqlUserDao implements UserDao {
     @Override
     public User findUserByUserName(String userName) {
         String sqlStatement = "SELECT * FROM logins " +
-                "INNER JOIN users ON (logins.userId = users.id) " +
-                "WHERE logins.userName = ?";
+                "INNER JOIN users ON (logins.user_id = users.id) " +
+                "WHERE logins.user_name = ?";
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
@@ -37,14 +37,7 @@ public class MysqlUserDao implements UserDao {
 
             User user = null;
             if (rs.next()) {
-                user = new User();
-                user.setId(rs.getLong("users.id"));
-                user.setUserName(rs.getString("logins.userName"));
-                user.setFirstName(rs.getString("firstName"));
-                user.setLastName(rs.getString("lastName"));
-                user.setEmail(rs.getString("email"));
-                user.setAddress(rs.getString("address"));
-                user.setStatus(User.Status.valueOf(rs.getString("status").toUpperCase()));
+                user = getUserFromResults(rs);
             }
 
             return user;
@@ -58,25 +51,14 @@ public class MysqlUserDao implements UserDao {
     @Override
     public List<User> findAll() {
         String sqlStatement = "SELECT * FROM logins " +
-                "RIGHT OUTER JOIN users ON (logins.userId = users.id) ";
+                "RIGHT OUTER JOIN users ON (logins.user_id = users.id) ";
 
         try {
-            Statement st = conn.createStatement();
-
-            ResultSet rs = st.executeQuery(sqlStatement);
+            ResultSet rs = conn.createStatement().executeQuery(sqlStatement);
 
             List<User> users = new ArrayList<>();
             while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getLong("id"));
-                user.setUserName(rs.getString("logins.userName"));
-                user.setFirstName(rs.getString("firstName"));
-                user.setLastName(rs.getString("lastName"));
-                user.setEmail(rs.getString("email"));
-                user.setAddress(rs.getString("address"));
-                user.setStatus(User.Status.valueOf(rs.getString("status").toUpperCase()));
-
-                users.add(user);
+                users.add(getUserFromResults(rs));
             }
 
             return users;
@@ -85,6 +67,21 @@ public class MysqlUserDao implements UserDao {
             LOGGER.debug("Exception during retrieving all users", e);
             throw new CustomSqlException(e);
         }
+    }
+
+    private User getUserFromResults(ResultSet rs) throws SQLException {
+        User user;
+
+        user = new User();
+        user.setId(rs.getLong("users.id"));
+        user.setUserName(rs.getString("logins.user_name"));
+        user.setFirstName(rs.getString("first_name"));
+        user.setLastName(rs.getString("last_name"));
+        user.setEmail(rs.getString("email"));
+        user.setAddress(rs.getString("address"));
+        user.setStatus(User.Status.valueOf(rs.getString("status").toUpperCase()));
+
+        return user;
     }
 
     @Override

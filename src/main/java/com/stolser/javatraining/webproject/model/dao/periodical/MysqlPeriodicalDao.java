@@ -99,7 +99,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         periodical.setCategory(rs.getString("category"));
         periodical.setPublisher(rs.getString("publisher"));
         periodical.setDescription(rs.getString("description"));
-        periodical.setOneMonthCost(rs.getDouble("oneMonthCost"));
+        periodical.setOneMonthCost(rs.getDouble("one_month_cost"));
         periodical.setStatus(Periodical.Status.valueOf(rs.getString("status").toUpperCase()));
 
         return periodical;
@@ -108,7 +108,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     @Override
     public void createNew(Periodical periodical) {
         String sqlStatement = "INSERT INTO periodicals " +
-                "(name, category, publisher, description, oneMonthCost, status) " +
+                "(name, category, publisher, description, one_month_cost, status) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
         try {
@@ -134,7 +134,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     @Override
     public void update(Periodical periodical) {
         String sqlStatement = "UPDATE periodicals " +
-                "SET name=?, category=?, publisher=?, description=?, oneMonthCost=?, status=? " +
+                "SET name=?, category=?, publisher=?, description=?, one_month_cost=?, status=? " +
                 "WHERE name=?";
 
         try {
