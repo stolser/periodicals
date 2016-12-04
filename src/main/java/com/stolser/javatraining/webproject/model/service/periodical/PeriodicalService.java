@@ -30,7 +30,7 @@ public class PeriodicalService {
     }
 
 
-    public Periodical findOne(long id) {
+    public Periodical findOneById(long id) {
 
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
             System.out.println("PeriodicalService: connection has been got.");
@@ -38,13 +38,30 @@ public class PeriodicalService {
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             Periodical periodical = periodicalDao.findOneById(id);
 
-            if (periodical == null) {
-                String message = String.format(NO_PERIODICAL_WITH_ID_MESSAGE, id);
+            System.out.println("periodical from the DB: " + periodical);
 
-                throw new NoSuchElementException(message);
-            }
+//            if (periodical == null) {
+//                String message = String.format(NO_PERIODICAL_WITH_ID_MESSAGE, id);
+//
+//                throw new NoSuchElementException(message);
+//            }
 
-            System.out.println(periodical);
+
+            return periodical;
+        } catch (SQLException e) {
+            String message = String.format("Exception during closing a connection. " +
+                    "Original: %s. ", e.getMessage());
+            throw new CustomSqlException(message);
+        }
+    }
+
+    public Periodical findOneByName(String name) {
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+
+            PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
+            Periodical periodical = periodicalDao.findOneByName(name);
+
+            System.out.println("periodical from the DB: " + periodical);
 
             return periodical;
         } catch (SQLException e) {

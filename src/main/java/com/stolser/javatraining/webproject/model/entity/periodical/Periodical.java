@@ -71,8 +71,12 @@ public class Periodical {
 
     @Override
     public String toString() {
+        String description = (this.description.length() <= 15)
+                ? this.description
+                : this.description.substring(0, 15);
+
         return String.format("Periodical{id=%d, name='%s', category='%s', publisher='%s', " +
                 "description='%s', oneMonthCost=%.2f, status=%s}", id, name, category, publisher,
-                description.substring(0, 15), oneMonthCost, status);
+                description, oneMonthCost, status);
     }
 }

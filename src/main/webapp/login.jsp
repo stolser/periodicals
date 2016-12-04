@@ -1,6 +1,7 @@
 <%@include file="/WEB-INF/includes/general.jsp" %>
 <fmt:setBundle basename="webProject.i18n.login.login" var="login"/>
 <fmt:setBundle basename="webProject.i18n.validation" var="validation"/>
+<fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
 <%@include file="/WEB-INF/includes/header.jsp" %>
 
 <div class="row">
@@ -8,9 +9,10 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title"><fmt:message key="login.signin.title" bundle="${login}"/></h3>
-                <form action="/Login" name="loginform" id="loginform"
-                      method="POST" accept-charset="UTF-8" role="form">
-                    <div class="form-group validated">
+                <form method="POST" name="loginform" id="loginform"
+                      action="/Login"
+                      accept-charset="UTF-8" role="form">
+                    <div class="form-group validated required">
                         <label class="control-label" for="userName">
                             <fmt:message key="login.username.label" bundle="${login}"/></label>
                         <input type="text" class="form-control ajax-validated" id="userName"
@@ -25,7 +27,7 @@
                         </c:if>
 
                     </div>
-                    <div class="form-group validated">
+                    <div class="form-group validated required">
                         <label class="control-label" for="userPassword">
                             <fmt:message key="login.password.label" bundle="${login}"/></label>
                         <input type="password" class="form-control" id="userPassword"
@@ -38,6 +40,7 @@
                             </label>
                         </c:if>
                     </div>
+                    <p class="requiredFieldsMessage"><fmt:message key="requiredFieldsMessage" bundle="${general}"/></p>
 
 
                     <button type="submit"

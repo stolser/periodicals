@@ -47,7 +47,7 @@ public class FrontController extends HttpServlet {
             viewName = command.getViewName(request, response);
 
         } catch (Exception e) {
-            LOGGER.debug("Exception during request processing: {}", e.getMessage());
+            LOGGER.debug("Exception during request processing: {}", e.getMessage(), e);
             request.setAttribute(MESSAGE_ATTRIBUTE, e.getLocalizedMessage());
 
             viewName = ApplicationResources.getErrorViewName(e);
@@ -59,12 +59,14 @@ public class FrontController extends HttpServlet {
     private void dispatch(String viewName, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String page = ViewResolver.getPageByViewName(viewName);
+        if (viewName != null) {
+            String page = ViewResolver.getPageByViewName(viewName);
 
-        System.out.println("forwarding to '" + page + "'");
+            System.out.println("forwarding to '" + page + "'");
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-        dispatcher.forward(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+            dispatcher.forward(request, response);
+        }
     }
 
 }

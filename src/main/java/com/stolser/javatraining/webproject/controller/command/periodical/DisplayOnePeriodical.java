@@ -23,7 +23,7 @@ public class DisplayOnePeriodical implements RequestProcessor {
 
         Periodical periodical;
         try {
-            periodical = PeriodicalService.getInstance().findOne(periodicalId);
+            periodical = PeriodicalService.getInstance().findOneById(periodicalId);
 
         } catch (CustomSqlException e) {
             String message = Utils.getExceptionMessageForRequestProcessor(request, e);

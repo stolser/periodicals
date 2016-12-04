@@ -15,7 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import static com.stolser.javatraining.webproject.controller.LoginServlet.MESSAGES_ATTR_NAME;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.MESSAGES_ATTR_NAME;
 
 public class ValidationServlet extends HttpServlet {
 

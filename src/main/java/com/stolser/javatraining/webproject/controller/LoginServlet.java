@@ -22,7 +22,6 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 
 public class LoginServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginServlet.class);
-    public static final String MESSAGES_ATTR_NAME = "messages";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -53,7 +52,7 @@ public class LoginServlet extends HttpServlet {
                     String originalUri = (String) request.getSession().getAttribute(ORIGINAL_URI_ATTR_NAME);
                     redirectUri = (originalUri != null) ? originalUri : "/adminPanel";
                     request.getSession().removeAttribute(ORIGINAL_URI_ATTR_NAME);
-                    request.getSession().removeAttribute(MESSAGES_ATTR_NAME);
+                    request.getSession().removeAttribute(ApplicationResources.MESSAGES_ATTR_NAME);
 
                 } else {
                     messages.put("signInUsername", new FrontendMessage("signInUsername", "error.userIsBlocked",
@@ -74,7 +73,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         request.getSession().setAttribute("username", username);
-        request.getSession().setAttribute(MESSAGES_ATTR_NAME, messages);
+        request.getSession().setAttribute(ApplicationResources.MESSAGES_ATTR_NAME, messages);
         response.sendRedirect(redirectUri);
 
     }

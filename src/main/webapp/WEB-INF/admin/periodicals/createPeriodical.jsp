@@ -2,6 +2,7 @@
 <%@include file="../../includes/general.jsp" %>
 <%@include file="../../includes/header.jsp" %>
 <fmt:setBundle basename="webProject.i18n.admin.periodical" var="langPeriodical"/>
+<fmt:setBundle basename="webProject.i18n.validation" var="validation"/>
 <fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
 
 <div class="row">
@@ -9,44 +10,60 @@
         <h1><fmt:message key="createPeriodical.title" bundle="${langPeriodical}"/></h1>
         <h3><fmt:message key="title.top" bundle="${langPeriodical}"/></h3>
 
-        <form class="form-horizontal"
+        <form class="form-horizontal" role="form"
               method="post"
               action="<% out.print(ApplicationResources.PERIODICAL_CREATE_NEW_REST); %>">
             <div class="form-group hidden">
-                <div class="col-sm-9">
-                    <input id="periodicalId" type="text" class="form-control"
-                           name="periodicalId"
-                           value="<c:out value="${periodical.id}"/>"/>
-                </div>
+                <input id="entityId" type="text" class="form-control"
+                       name="entityId"
+                       value="<c:out value="${periodical.id}"/>"/>
             </div>
-            <div class="form-group">
+            <div class="form-group validated required">
                 <label for="periodicalName" class="col-sm-3 control-label">
                     <fmt:message key="name.label" bundle="${langPeriodical}"/></label>
                 <div class="col-sm-9">
-                    <input id="periodicalName" type="text" class="form-control"
+                    <input id="periodicalName" type="text" class="form-control ajax-validated"
                            name="periodicalName"
                            value="<c:out value="${periodical.name}"/>"
                            placeholder="<fmt:message key="name.label" bundle="${langPeriodical}"/>"/>
+                    <c:if test="${(not empty messages) && (not empty messages['periodicalName'])}">
+                        <label class="messages
+                            <c:out value="${messages['periodicalName'].type == 'ERROR' ? 'error' : ''}"/>">
+                            <fmt:message key="${messages['periodicalName'].messageKey}" bundle="${validation}"/>
+                        </label>
+                    </c:if>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group validated required">
                 <label for="periodicalCategory" class="col-sm-3 control-label">
                     <fmt:message key="category.label" bundle="${langPeriodical}"/></label>
                 <div class="col-sm-9">
-                    <input id="periodicalCategory" type="text" class="form-control"
+                    <input id="periodicalCategory" type="text" class="form-control ajax-validated"
                            name="periodicalCategory"
                            value="<c:out value="${periodical.category}"/>"
                            placeholder="<fmt:message key="category.label" bundle="${langPeriodical}"/>"/>
+                    <c:if test="${(not empty messages) && (not empty messages['periodicalCategory'])}">
+                        <label class="messages
+                            <c:out value="${messages['periodicalCategory'].type == 'ERROR' ? 'error' : ''}"/>">
+                            <fmt:message key="${messages['periodicalCategory'].messageKey}" bundle="${validation}"/>
+                        </label>
+                    </c:if>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group validated required">
                 <label for="periodicalPublisher" class="col-sm-3 control-label">
                     <fmt:message key="publisher.label" bundle="${langPeriodical}"/></label>
                 <div class="col-sm-9">
-                    <input id="periodicalPublisher" type="text" class="form-control"
+                    <input id="periodicalPublisher" type="text" class="form-control ajax-validated"
                            name="periodicalPublisher"
                            value="<c:out value="${periodical.publisher}"/>"
                            placeholder="<fmt:message key="publisher.label" bundle="${langPeriodical}"/>"/>
+                    <c:if test="${(not empty messages) && (not empty messages['periodicalPublisher'])}">
+                        <label class="messages
+                            <c:out value="${messages['periodicalPublisher'].type == 'ERROR' ? 'error' : ''}"/>">
+                            <fmt:message key="${messages['periodicalPublisher'].messageKey}" bundle="${validation}"/>
+                        </label>
+                    </c:if>
                 </div>
             </div>
             <div class="form-group">
@@ -60,14 +77,20 @@
                     </textarea>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group validated required">
                 <label for="periodicalCost" class="col-sm-3 control-label">
                     <fmt:message key="oneMonthCost.label" bundle="${langPeriodical}"/></label>
                 <div class="col-sm-9">
-                    <input id="periodicalCost" type="text" class="form-control"
+                    <input id="periodicalCost" type="text" class="form-control ajax-validated"
                            name="periodicalCost"
                            value="<c:out value="${periodical.oneMonthCost}"/>"
                            placeholder="<fmt:message key="oneMonthCost.label" bundle="${langPeriodical}"/>"/>
+                    <c:if test="${(not empty messages) && (not empty messages['periodicalCost'])}">
+                        <label class="messages
+                            <c:out value="${messages['periodicalCost'].type == 'ERROR' ? 'error' : ''}"/>">
+                            <fmt:message key="${messages['periodicalCost'].messageKey}" bundle="${validation}"/>
+                        </label>
+                    </c:if>
                 </div>
             </div>
             <div class="form-group">
@@ -85,8 +108,15 @@
                     </select>
                 </div>
             </div>
+            <div class="form-group hidden">
+                <input id="entityOperationType" type="text" class="form-control"
+                       name="entityOperationType"
+                       value="<c:out value="${entityOperationType}"/>"/>
+            </div>
+            <p class="requiredFieldsMessage"><fmt:message key="requiredFieldsMessage" bundle="${general}"/></p>
+
             <button type="submit"
-                    class="btn btn-lg btn-primary">
+                    class="btn btn-lg btn-primary disabled">
                 <fmt:message key="savePeriodicalBtn.label" bundle="${langPeriodical}"/></button>
         </form>
 
