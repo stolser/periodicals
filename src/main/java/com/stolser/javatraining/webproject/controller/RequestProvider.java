@@ -2,10 +2,7 @@ package com.stolser.javatraining.webproject.controller;
 
 import com.stolser.javatraining.webproject.controller.command.DisplayAdminPanelMainPage;
 import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.command.periodical.CreateNewPeriodical;
-import com.stolser.javatraining.webproject.controller.command.periodical.DisplayAllPeriodicals;
-import com.stolser.javatraining.webproject.controller.command.periodical.DisplayOnePeriodical;
-import com.stolser.javatraining.webproject.controller.command.periodical.PersistOnePeriodical;
+import com.stolser.javatraining.webproject.controller.command.periodical.*;
 import com.stolser.javatraining.webproject.controller.command.user.DisplayAllUsers;
 import com.stolser.javatraining.webproject.controller.command.user.DisplayOneUser;
 
@@ -22,6 +19,7 @@ public class RequestProvider {
         requestMapping.put("GET:/adminPanel/periodicals/?", new DisplayAllPeriodicals());
         requestMapping.put("POST:/adminPanel/periodicals/?", new PersistOnePeriodical());
         requestMapping.put("GET:/adminPanel/periodicals/createNew/?", new CreateNewPeriodical());
+        requestMapping.put("GET:/adminPanel/periodicals/update/\\d+", new UpdatePeriodical());
         requestMapping.put("GET:/adminPanel/users/?", new DisplayAllUsers());
         requestMapping.put("GET:/adminPanel/users/currentUser/?", new DisplayOneUser());
 
@@ -57,6 +55,11 @@ public class RequestProvider {
                 .findFirst();
 
         System.out.println("mapping = " + mapping);
+
+        if (!mapping.isPresent()) {
+            throw new NoSuchElementException(
+                    String.format("There no mapping for such a request: '%s'.", requestURI));
+        }
 
         return mapping.get().getValue();
     }

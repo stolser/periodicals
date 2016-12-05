@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 public class CreateNewPeriodical implements RequestProcessor {
+
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
@@ -36,6 +37,6 @@ public class CreateNewPeriodical implements RequestProcessor {
         request.setAttribute("statuses", Periodical.Status.values());
         request.setAttribute("entityOperationType", "create");
 
-        return "periodicals/createPeriodical";
+        return ApplicationResources.CREATE_EDIT_PERIODICAL_VIEW_NAME;
     }
 }

@@ -30,7 +30,20 @@ public class PersistOnePeriodical implements RequestProcessor {
 
             if (periodicalToSaveIsNotValid(periodicalToSave, request)) {
                 request.getSession().setAttribute("periodical", periodicalToSave);
-                response.sendRedirect(ApplicationResources.PERIODICAL_CREATE_NEW_HREF);
+
+                String entityOperationType = request.getParameter("entityOperationType");
+                switch (entityOperationType) {
+                    case "create":
+                        response.sendRedirect(ApplicationResources.PERIODICAL_CREATE_NEW_HREF);
+                        break;
+                    case "update":
+                        response.sendRedirect(ApplicationResources.PERIODICAL_UPDATE_HREF +
+                                periodicalToSave.getId());
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Incorrect entityOperationType " +
+                                "during persisting a periodical.");
+                }
 
                 return null;
             }

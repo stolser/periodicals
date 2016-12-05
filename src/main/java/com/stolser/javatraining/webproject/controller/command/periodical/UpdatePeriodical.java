@@ -11,25 +11,19 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.NoSuchElementException;
 
-public class DisplayOnePeriodical implements RequestProcessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DisplayOnePeriodical.class);
+public class UpdatePeriodical implements RequestProcessor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UpdatePeriodical.class);
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
-
-        String idString = request.getRequestURI().replace("/adminPanel/periodicals/", "");
+        String idString = request.getRequestURI().replace("/adminPanel/periodicals/update/", "");
         long periodicalId = Integer.valueOf(idString);
 
         Periodical periodical;
         try {
             periodical = PeriodicalService.getInstance().findOneById(periodicalId);
-
-            if (periodical == null) {
-                throw new NoSuchElementException(
-                        String.format("There is no periodical with id + %d in the db.", periodicalId));
-            }
+            request.setAttribute("periodical", periodical);
 
         } catch (CustomSqlException e) {
             String message = Utils.getExceptionMessageForRequestProcessor(request, e);
@@ -39,8 +33,9 @@ public class DisplayOnePeriodical implements RequestProcessor {
         }
         System.out.println("found periodical: " + periodical);
 
-        request.setAttribute("periodical", periodical);
+        request.setAttribute("entityOperationType", "update");
+        request.setAttribute("statuses", Periodical.Status.values());
 
-        return ApplicationResources.ONE_PERIODICAL_VIEW_NAME;
+        return ApplicationResources.CREATE_EDIT_PERIODICAL_VIEW_NAME;
     }
 }

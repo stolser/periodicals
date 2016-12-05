@@ -7,12 +7,17 @@
 
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
-        <h1><fmt:message key="createPeriodical.title" bundle="${langPeriodical}"/></h1>
+        <c:if test="${entityOperationType == 'create'}">
+            <h1><fmt:message key="createPeriodical.title" bundle="${langPeriodical}"/></h1>
+        </c:if>
+        <c:if test="${entityOperationType == 'update'}">
+            <h1><fmt:message key="editPeriodical.title" bundle="${langPeriodical}"/></h1>
+        </c:if>
         <h3><fmt:message key="title.top" bundle="${langPeriodical}"/></h3>
 
         <form class="form-horizontal" role="form"
               method="post"
-              action="<% out.print(ApplicationResources.PERIODICAL_CREATE_NEW_REST); %>">
+              action="<% out.print(ApplicationResources.PERIODICAL_CREATE_UPDATE_REST); %>">
             <div class="form-group hidden">
                 <input id="entityId" type="text" class="form-control"
                        name="entityId"

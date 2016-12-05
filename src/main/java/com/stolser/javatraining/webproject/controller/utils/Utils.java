@@ -24,6 +24,7 @@ public class Utils {
     public static Periodical getPeriodicalFromRequest(HttpServletRequest request) {
         Periodical periodical = new Periodical();
 
+        System.out.println("Periodical from a request:");
         System.out.println("periodicalId = " + request.getParameter("entityId"));
         System.out.println("periodicalName = " + request.getParameter("periodicalName"));
         System.out.println("periodicalCategory = " + request.getParameter("periodicalCategory"));

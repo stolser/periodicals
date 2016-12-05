@@ -14,6 +14,7 @@ public class Authorization {
 
         permissionMapping.put("/adminPanel/users(/\\d*)?", onlyAdmin);
         permissionMapping.put("/adminPanel/periodicals/createNew/?", onlyAdmin);
+        permissionMapping.put("/adminPanel/periodicals/update/\\d+", onlyAdmin);
     }
 
     private HttpServletRequest request;

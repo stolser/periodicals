@@ -11,13 +11,15 @@ public class ApplicationResources {
     public static final String VALIDATION_BUNDLE_PATH = "webProject/i18n/validation";
     public static final String PERIODICAL_LIST_VIEW_NAME = "periodicals/periodicalList";
     public static final String ONE_PERIODICAL_VIEW_NAME = "periodicals/onePeriodical";
-    public static final String USER_LIST_VIEW_NAME = "users/userList";
+    public static final String CREATE_EDIT_PERIODICAL_VIEW_NAME = "periodicals/createAndEdit";
 
+    public static final String USER_LIST_VIEW_NAME = "users/userList";
     public static final String ONE_USER_INFO_VIEW_NAME = "users/oneUserInfo";
     public static final String PERIODICAL_LIST_HREF = "/adminPanel/periodicals/";
-    public static final String PERIODICAL_CREATE_NEW_HREF = "/adminPanel/periodicals/createNew";
 
-    public static final String PERIODICAL_CREATE_NEW_REST = "/adminPanel/periodicals/";
+    public static final String PERIODICAL_CREATE_NEW_HREF = "/adminPanel/periodicals/createNew";
+    public static final String PERIODICAL_UPDATE_HREF = "/adminPanel/periodicals/update/";
+    public static final String PERIODICAL_CREATE_UPDATE_REST = "/adminPanel/periodicals/";
     public static final String ADMIN_ROLE_NAME = "admin";
     public static final String SUBSCRIBER_ROLE_NAME = "subscriber";
     public static final String GUEST_ROLE_NAME = "guest";

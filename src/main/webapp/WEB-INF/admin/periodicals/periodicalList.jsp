@@ -27,7 +27,8 @@
                             <c:if test="${periodical.status == 'DISCARDED'}">class="danger"</c:if>>
                         <td><c:out value="${periodical.id}"/></td>
                         <td>
-                            <a href="<% out.print(ApplicationResources.PERIODICAL_LIST_HREF); %><c:out value="${periodical.id}"/>">
+                            <a href="${thisUser.hasRole('admin') ? '/adminPanel/periodicals/update/'
+                            : '/adminPanel/periodicals/'}<c:out value="${periodical.id}"/>">
                                 <c:out value="${periodical.name}"/></a></td>
                         <td><c:out value="${periodical.category}"/></td>
                         <td><c:out value="${periodical.publisher}"/></td>

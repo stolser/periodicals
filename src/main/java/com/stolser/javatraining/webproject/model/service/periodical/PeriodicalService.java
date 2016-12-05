@@ -95,6 +95,8 @@ public class PeriodicalService {
     public Periodical save(Periodical periodical) throws Exception {
         long thisId = periodical.getId();
 
+        System.out.println("Saving a periodical: " + periodical);
+
         if (thisId == 0) {
             createNewPeriodical(periodical);
         } else {
@@ -124,8 +126,9 @@ public class PeriodicalService {
         return periodicalInDb;
     }
 
+
     private void tryToUpdatePeriodical(Periodical periodical) throws Exception {
-        Periodical periodicalInDb = getPeriodicalFromDbByName(periodical.getName());
+        Periodical periodicalInDb = getPeriodicalFromDbById(periodical.getId());
 
         if (periodicalInDb == null) {
             String message = String.format(NO_PERIODICAL_WITH_ID_MESSAGE, periodicalInDb);
@@ -136,9 +139,20 @@ public class PeriodicalService {
         }
     }
 
+    private Periodical getPeriodicalFromDbById(long id) throws SQLException {
+        Periodical periodicalInDb;
+
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+            PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
+            periodicalInDb = periodicalDao.findOneById(id);
+        }
+
+        return periodicalInDb;
+    }
+
     private void updatePeriodical(Periodical periodical) throws Exception {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-            System.out.println("PeriodicalService: connection has been got.");
+            System.out.println("PeriodicalService.updatePeriodical(): connection has been got.");
 
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             periodicalDao.update(periodical);

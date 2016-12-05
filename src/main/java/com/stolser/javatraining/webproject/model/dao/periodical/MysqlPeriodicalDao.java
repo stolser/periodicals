@@ -135,7 +135,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     public void update(Periodical periodical) {
         String sqlStatement = "UPDATE periodicals " +
                 "SET name=?, category=?, publisher=?, description=?, one_month_cost=?, status=? " +
-                "WHERE name=?";
+                "WHERE id=?";
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
@@ -146,7 +146,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
             st.setString(4, periodical.getDescription());
             st.setDouble(5, periodical.getOneMonthCost());
             st.setString(6, periodical.getStatus().name().toLowerCase());
-            st.setString(7, periodical.getName());
+            st.setLong(7, periodical.getId());
 
             st.executeUpdate();
 
