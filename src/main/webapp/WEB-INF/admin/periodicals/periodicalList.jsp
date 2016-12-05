@@ -46,13 +46,23 @@
 
     <div class="col-md-12">
         <auth:if-authorized mustHaveRoles="admin">
-            <a href="<% out.print(ApplicationResources.PERIODICAL_CREATE_NEW_HREF); %>"
-               class="btn btn-primary active" role="button">
-                <fmt:message key="newPeriodicalBt.label" bundle="${langPeriodical}"/>
-            </a>
+            <div class="row">
+                <div class="col-md-6 text-left">
+                    <a href="<% out.print(ApplicationResources.PERIODICAL_CREATE_NEW_HREF); %>"
+                       class="btn btn-primary active" role="button">
+                        <fmt:message key="newPeriodicalBt.label" bundle="${langPeriodical}"/>
+                    </a>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a href="<% out.print(ApplicationResources.PERIODICAL_DELETE_DISCARDED); %>"
+                       class="btn btn-danger active" role="button">
+                        <fmt:message key="deleteDiscardedBt.label" bundle="${langPeriodical}"/>
+                    </a>
+                </div>
+            </div>
         </auth:if-authorized>
         <auth:if-authorized mustHaveRoles="*" mustNotHaveRoles="admin">
-            <p>You are NOT an admin, so you <b>cannot</b> create new periodicals!!!</p>
+            <p>You are NOT an admin, so you <b>cannot</b> create or delete periodicals!!!</p>
         </auth:if-authorized>
     </div>
 

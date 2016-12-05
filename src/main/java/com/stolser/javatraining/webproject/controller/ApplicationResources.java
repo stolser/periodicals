@@ -15,11 +15,12 @@ public class ApplicationResources {
 
     public static final String USER_LIST_VIEW_NAME = "users/userList";
     public static final String ONE_USER_INFO_VIEW_NAME = "users/oneUserInfo";
-    public static final String PERIODICAL_LIST_HREF = "/adminPanel/periodicals/";
+    public static final String PERIODICAL_LIST_HREF = "/adminPanel/periodicals";
 
     public static final String PERIODICAL_CREATE_NEW_HREF = "/adminPanel/periodicals/createNew";
-    public static final String PERIODICAL_UPDATE_HREF = "/adminPanel/periodicals/update/";
-    public static final String PERIODICAL_CREATE_UPDATE_REST = "/adminPanel/periodicals/";
+    public static final String PERIODICAL_UPDATE_HREF = "/adminPanel/periodicals/update";
+    public static final String PERIODICAL_DELETE_DISCARDED = "/adminPanel/periodicals/discarded/delete";
+    public static final String PERIODICAL_CREATE_UPDATE_REST = "/adminPanel/periodicals";
     public static final String ADMIN_ROLE_NAME = "admin";
     public static final String SUBSCRIBER_ROLE_NAME = "subscriber";
     public static final String GUEST_ROLE_NAME = "guest";

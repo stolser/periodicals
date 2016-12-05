@@ -7,9 +7,9 @@ $(document).ready(function () {
         var paramValue = $validatedElem.val();
         var entityOperationType = $("#entityOperationType").val();
         var entityId = $("#entityId").val();
-        
-        console.log("paramName = " + paramName + "; paramValue = " + paramValue + 
-        "entityId = " + entityId + "; entityOperationType = " + entityOperationType);
+
+        console.log("paramName = " + paramName + "; paramValue = " + paramValue +
+            "entityId = " + entityId + "; entityOperationType = " + entityOperationType);
 
         $.post("/Validation", {
             'paramName': paramName,
@@ -49,8 +49,12 @@ $(document).ready(function () {
         }, 'json');
     });
 
-    $("#loginform input").not(".ajax-validated").focusout(function () {
+    $("input, textarea").not(".ajax-validated").focusout(function () {
         $(this).next(".messages").remove();
+        activateOrDisableSubmitBtn($(this));
+    });
+
+    $("form select").change(function () {
         activateOrDisableSubmitBtn($(this));
     });
 
@@ -70,14 +74,14 @@ $(document).ready(function () {
                 // returns empty form-elements that reside inside elements with class='required';
                 var $parent = $(this).closest(".required");
                 console.log("$parent.length = " + $parent.length);
-                
+
                 return ($parent.length > 0) && ($(this).val() == "");
             }).length == 0)) {
             console.log("activating the submit btn...");
 
             $submitBtn.removeClass("disabled");
             $submitBtn.addClass("active");
-            
+
         } else {
             console.log("Deactivating the submit btn...");
 
@@ -86,10 +90,10 @@ $(document).ready(function () {
         }
     }
 
-    // $(document).on("keypress", ":input:not(textarea)", function(event) {
-    //     if (event.keyCode == 13) {
-    //         event.preventDefault();
-    //     }
-    // });
+    $(document).on("keypress", ":input:not(textarea)", function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+        }
+    });
 
 });

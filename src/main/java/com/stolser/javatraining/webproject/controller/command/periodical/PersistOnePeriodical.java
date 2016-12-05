@@ -37,7 +37,7 @@ public class PersistOnePeriodical implements RequestProcessor {
                         response.sendRedirect(ApplicationResources.PERIODICAL_CREATE_NEW_HREF);
                         break;
                     case "update":
-                        response.sendRedirect(ApplicationResources.PERIODICAL_UPDATE_HREF +
+                        response.sendRedirect(ApplicationResources.PERIODICAL_UPDATE_HREF + "/" +
                                 periodicalToSave.getId());
                         break;
                     default:

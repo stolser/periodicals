@@ -159,6 +159,15 @@ public class PeriodicalService {
         }
     }
 
+    public void deleteAllDiscarded() throws Exception {
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+            System.out.println("PeriodicalService.deleteAllDiscarded(): connection has been got.");
+
+            PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
+            periodicalDao.deleteAllDiscarded();
+        }
+    }
+
     public void delete(long id) {
 
     }

@@ -3,10 +3,7 @@ package com.stolser.javatraining.webproject.model.dao.periodical;
 import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -153,6 +150,24 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         } catch (SQLException e) {
             String message = String.format("Exception during updating %s. " +
                     "Original: %s. ", periodical, e.getMessage());
+
+            throw new CustomSqlException(message, e);
+        }
+    }
+
+    @Override
+    public void deleteAllDiscarded() {
+        String sqlStatement = "DELETE FROM periodicals " +
+                "WHERE status = 'discarded'";
+
+        try {
+            Statement st = conn.createStatement();
+
+            st.executeUpdate(sqlStatement);
+
+        } catch (SQLException e) {
+            String message = String.format("Exception during deleting discarded periodicals" +
+                    "Original: %s. ", e.getMessage());
 
             throw new CustomSqlException(message, e);
         }
