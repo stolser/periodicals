@@ -33,11 +33,11 @@ $(document).ready(function () {
             console.log("cssClass = " + cssClass);
 
             if (cssClass == "success") {
-                $validatedElem.parent(".form-group").removeClass("has-error");
-                $validatedElem.parent(".form-group").addClass("has-success");
+                $validatedElem.closest(".form-group").removeClass("has-error");
+                $validatedElem.closest(".form-group").addClass("has-success");
             } else if (cssClass == "error") {
-                $validatedElem.parent(".form-group").removeClass("has-success");
-                $validatedElem.parent(".form-group").addClass("has-error");
+                $validatedElem.closest(".form-group").removeClass("has-success");
+                $validatedElem.closest(".form-group").addClass("has-error");
             }
 
             $validatedElem.next(".messages").remove();
@@ -72,10 +72,10 @@ $(document).ready(function () {
         if (($errorMsg.length == 0) // there is no error-messages;
             && ($thisFormInputs.filter(function () {
                 // returns empty form-elements that reside inside elements with class='required';
-                var $parent = $(this).closest(".required");
-                console.log("$parent.length = " + $parent.length);
+                var $closest = $(this).closest(".required");
+                console.log("$parent.length = " + $closest.length);
 
-                return ($parent.length > 0) && ($(this).val() == "");
+                return ($closest.length > 0) && ($(this).val() == "");
             }).length == 0)) {
             console.log("activating the submit btn...");
 
@@ -95,5 +95,9 @@ $(document).ready(function () {
             event.preventDefault();
         }
     });
+
+    // $('#subscribeEndDatePicker').datepicker({
+    //     minDate: -20,
+    //     maxDate: "+1M +10D" });
 
 });
