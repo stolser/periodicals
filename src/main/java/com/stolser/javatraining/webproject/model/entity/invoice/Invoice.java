@@ -1,17 +1,19 @@
 package com.stolser.javatraining.webproject.model.entity.invoice;
 
+import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
-import java.util.Date;
-import java.util.List;
+import java.time.Instant;
 
 public class Invoice {
     private long id;
     private User user;
-    private double amount;
+    private Periodical periodical;
+    private int subscriptionPeriod;
+    private double totalSum;
+    private Instant creationDate;
+    private Instant paymentDate;
     private Status status;
-    private Date creationDate;
-    private List<InvoiceItem> items;
 
     public enum Status {
         NEW, PAID;
@@ -33,12 +35,12 @@ public class Invoice {
         this.user = user;
     }
 
-    public double getAmount() {
-        return amount;
+    public double getTotalSum() {
+        return totalSum;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setTotalSum(double totalSum) {
+        this.totalSum = totalSum;
     }
 
     public Status getStatus() {
@@ -49,19 +51,35 @@ public class Invoice {
         this.status = status;
     }
 
-    public Date getCreationDate() {
+    public Instant getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Instant creationDate) {
         this.creationDate = creationDate;
     }
 
-    public List<InvoiceItem> getItems() {
-        return items;
+    public Instant getPaymentDate() {
+        return paymentDate;
     }
 
-    public void setItems(List<InvoiceItem> items) {
-        this.items = items;
+    public void setPaymentDate(Instant paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public Periodical getPeriodical() {
+        return periodical;
+    }
+
+    public void setPeriodical(Periodical periodical) {
+        this.periodical = periodical;
+    }
+
+    public int getSubscriptionPeriod() {
+        return subscriptionPeriod;
+    }
+
+    public void setSubscriptionPeriod(int subscriptionPeriod) {
+        this.subscriptionPeriod = subscriptionPeriod;
     }
 }

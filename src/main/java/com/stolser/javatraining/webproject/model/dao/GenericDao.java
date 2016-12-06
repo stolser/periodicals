@@ -2,7 +2,7 @@ package com.stolser.javatraining.webproject.model.dao;
 
 import java.util.List;
 
-public interface GeneralDao<E> {
+public interface GenericDao<E> {
     /**
      * Retrieves an entity by its id.
      *
@@ -42,10 +42,10 @@ public interface GeneralDao<E> {
      *
      * @param id must not be null
      */
-    void delete(long id);
+    boolean delete(long id);
 
     /**
      * Delete all entities from the db.
      */
-    void deleteAll();
+    boolean deleteAll();
 }
