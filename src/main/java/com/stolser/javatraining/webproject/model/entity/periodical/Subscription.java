@@ -2,19 +2,18 @@ package com.stolser.javatraining.webproject.model.entity.periodical;
 
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
-import java.util.Date;
+import java.time.Instant;
 
 public class Subscription {
     private long id;
     private User user;
     private Periodical periodical;
     private String deliveryAddress;
-    private Date startDate;
-    private Date endDate;
+    private Instant endDate;
     private Status status;
 
     public enum Status {
-        NEW, ACTIVE, SUSPENDED, STOPPED;
+        ACTIVE, INACTIVE;
     }
 
     public long getId() {
@@ -49,19 +48,11 @@ public class Subscription {
         this.deliveryAddress = deliveryAddress;
     }
 
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
+    public Instant getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Instant endDate) {
         this.endDate = endDate;
     }
 
