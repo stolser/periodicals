@@ -33,6 +33,20 @@ public class UserService {
         return InstanceHolder.INSTANCE;
     }
 
+    public User findOneById(long id) {
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+
+            User user = factory.getUserDao(conn).findOneById(id);
+            user.setRoles(factory.getRoleDao(conn).findRolesByUserName(user.getUserName()));
+
+            return user;
+
+        } catch (SQLException e) {
+            LOGGER.debug("Exception during closing a connection.");
+            throw new CustomSqlException(e);
+        }
+    }
+
     public Login findOneLoginByUserName(String userName) {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
             LoginDao loginDao = factory.getLoginDao(conn);
@@ -82,4 +96,6 @@ public class UserService {
             throw new CustomSqlException(e);
         }
     }
+
+
 }

@@ -8,7 +8,7 @@ public class User {
     private String userName;
     private String firstName;
     private String lastName;
-    private Date birthDate;
+    private Date birthday;
     private String email;
     private String address;
     private Status status;
@@ -50,12 +50,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public String getEmail() {
@@ -99,6 +99,6 @@ public class User {
         return String.format("User{id=%d, userName='%s', firstName='%s', lastName='%s', " +
                 "birthDate=%s, email='%s', address='%s', status=%s, roles=%s}",
                 id, userName, firstName, lastName,
-                birthDate, email, address, status, roles);
+                birthday, email, address, status, roles);
     }
 }
