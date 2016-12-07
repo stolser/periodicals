@@ -46,8 +46,8 @@ public class MysqlInvoiceDao implements InvoiceDao {
 
                 invoice.setSubscriptionPeriod(rs.getInt("invoices.period"));
                 invoice.setTotalSum(rs.getDouble("invoices.total_sum"));
-                invoice.setCreationDate(Instant.ofEpochMilli(rs.getDate("invoices.creation_date").getTime()));
-                invoice.setPaymentDate(Instant.ofEpochMilli(rs.getDate("invoices.payment_date").getTime()));
+                invoice.setCreationDate(getCreationDateFromResults(rs));
+                invoice.setPaymentDate(getPaymentDateFromResults(rs));
                 invoice.setStatus(Invoice.Status.valueOf(rs.getString("invoices.status").toUpperCase()));
 
                 invoices.add(invoice);
@@ -60,6 +60,21 @@ public class MysqlInvoiceDao implements InvoiceDao {
             throw new CustomSqlException(e);
         }
 
+    }
+
+    private Instant getCreationDateFromResults(ResultSet rs) throws SQLException {
+        return Instant.ofEpochMilli(rs.getTimestamp("invoices.creation_date").getTime());
+    }
+
+    private Instant getPaymentDateFromResults(ResultSet rs) throws SQLException {
+        Instant paymentDate = null;
+        Timestamp timestamp = rs.getTimestamp("invoices.payment_date");
+
+        if (timestamp != null) {
+            paymentDate = Instant.ofEpochMilli(timestamp.getTime());
+        }
+
+        return paymentDate;
     }
 
     @Override

@@ -14,3 +14,5 @@
 <![endif]-->
 </body>
 </html>
+
+<% session.removeAttribute("messages");%>

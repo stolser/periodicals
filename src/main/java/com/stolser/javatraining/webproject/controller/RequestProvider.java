@@ -2,9 +2,10 @@ package com.stolser.javatraining.webproject.controller;
 
 import com.stolser.javatraining.webproject.controller.command.DisplayAdminPanelMainPage;
 import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.command.invoice.PersistOneInvoice;
 import com.stolser.javatraining.webproject.controller.command.periodical.*;
 import com.stolser.javatraining.webproject.controller.command.user.DisplayAllUsers;
-import com.stolser.javatraining.webproject.controller.command.user.DisplayOneUser;
+import com.stolser.javatraining.webproject.controller.command.user.DisplayCurrentUser;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -15,14 +16,15 @@ public class RequestProvider {
 
     static {
         requestMapping.put("GET:/adminPanel/?", new DisplayAdminPanelMainPage());
+        requestMapping.put("GET:/adminPanel/users/?", new DisplayAllUsers());
+        requestMapping.put("GET:/adminPanel/users/currentUser/?", new DisplayCurrentUser());
         requestMapping.put("GET:/adminPanel/periodicals/\\d+", new DisplayOnePeriodical());
         requestMapping.put("GET:/adminPanel/periodicals/?", new DisplayAllPeriodicals());
         requestMapping.put("POST:/adminPanel/periodicals/?", new PersistOnePeriodical());
         requestMapping.put("GET:/adminPanel/periodicals/createNew/?", new CreateNewPeriodical());
         requestMapping.put("GET:/adminPanel/periodicals/update/\\d+", new UpdatePeriodical());
         requestMapping.put("GET:/adminPanel/periodicals/discarded/delete/?", new DeleteDiscardedPeriodicals());
-        requestMapping.put("GET:/adminPanel/users/?", new DisplayAllUsers());
-        requestMapping.put("GET:/adminPanel/users/currentUser/?", new DisplayOneUser());
+        requestMapping.put("POST:/adminPanel/users/\\d+/invoices/?", new PersistOneInvoice());
 
     }
 

@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
+<fmt:setBundle basename="webProject.i18n.validation" var="langValidation"/>
+
 <!DOCTYPE html>
 <html lang="${language}">
 <head>
@@ -39,3 +41,15 @@
         </div>
 
     </div>
+
+    <c:if test="${(not empty messages) && (not empty messages['topMessages'])}">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="topMessages alert ${messages['topMessages'].type == 'SUCCESS' ? 'alert-success' :
+        (messages['topMessages'].type == 'ERROR' ? 'alert-danger' : '')}" role="alert">
+                <fmt:message key="${messages['topMessages'].messageKey}" bundle="${langValidation}"/>
+            </div>
+        </div>
+    </div>
+    </c:if>
+
