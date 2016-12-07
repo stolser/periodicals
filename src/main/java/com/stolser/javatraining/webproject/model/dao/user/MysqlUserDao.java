@@ -5,8 +5,12 @@ import com.stolser.javatraining.webproject.model.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MysqlUserDao implements UserDao {
@@ -19,8 +23,26 @@ public class MysqlUserDao implements UserDao {
 
     @Override
     public User findOneById(long id) {
-        String sqlStatement = "";
-        return null;
+        String sqlStatement = "SELECT * FROM users " +
+                "JOIN logins ON (users.id = logins.user_id) " +
+                "WHERE users.id = ?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            st.setLong(1, id);
+
+            ResultSet rs = st.executeQuery();
+
+            User user = null;
+            if (rs.next()) {
+                user = getUserFromResults(rs);
+            }
+
+            return user;
+
+        } catch (SQLException e) {
+            throw new CustomSqlException(e);
+        }
     }
 
     @Override
@@ -77,6 +99,7 @@ public class MysqlUserDao implements UserDao {
         user.setUserName(rs.getString("logins.user_name"));
         user.setFirstName(rs.getString("first_name"));
         user.setLastName(rs.getString("last_name"));
+        user.setBirthday(new Date(rs.getDate("birthday").getTime()));
         user.setEmail(rs.getString("email"));
         user.setAddress(rs.getString("address"));
         user.setStatus(User.Status.valueOf(rs.getString("status").toUpperCase()));
@@ -86,19 +109,21 @@ public class MysqlUserDao implements UserDao {
 
     @Override
     public void createNew(User entity) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void update(User entity) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void delete(long id) {
-
+    public boolean delete(long id) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void deleteAll() {
-
+    public boolean deleteAll() {
+        throw new UnsupportedOperationException();
     }
 }

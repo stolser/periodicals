@@ -96,8 +96,4 @@ $(document).ready(function () {
         }
     });
 
-    // $('#subscribeEndDatePicker').datepicker({
-    //     minDate: -20,
-    //     maxDate: "+1M +10D" });
-
 });

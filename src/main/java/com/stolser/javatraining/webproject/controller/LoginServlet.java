@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
             Login login = userService.findOneLoginByUserName(username);
 
             if (login == null) {
-                messages.put("signInUsername", new FrontendMessage("signInUsername", "validation.noSuchUserName",
+                messages.put("signInUsername", new FrontendMessage("validation.noSuchUserName",
                         FrontendMessage.MessageType.ERROR));
 
                 redirectUri = "/login.jsp";
@@ -55,14 +55,14 @@ public class LoginServlet extends HttpServlet {
                     request.getSession().removeAttribute(ApplicationResources.MESSAGES_ATTR_NAME);
 
                 } else {
-                    messages.put("signInUsername", new FrontendMessage("signInUsername", "error.userIsBlocked",
+                    messages.put("signInUsername", new FrontendMessage("error.userIsBlocked",
                             FrontendMessage.MessageType.ERROR));
 
                     redirectUri = "/login.jsp";
                 }
 
             } else {
-                messages.put("password", new FrontendMessage("password", "error.wrongPassword",
+                messages.put("password", new FrontendMessage("error.wrongPassword",
                         FrontendMessage.MessageType.ERROR));
 
                 redirectUri = "/login.jsp";

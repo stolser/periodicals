@@ -18,11 +18,11 @@ public class SignInUsernameValidator implements Validator {
         Login login = UserService.getInstance().findOneLoginByUserName(usernameValue);
 
         if (login != null) {
-            statusCode = 200;
-            messageKey = "validation.ok";
+            statusCode = STATUS_CODE_SUCCESS;
+            messageKey = MESSAGE_KEY_SUCCESS;
         } else {
-            statusCode = 404;
-            messageKey = "validation.noSuchUserName";
+            statusCode = STATUS_CODE_VALIDATION_FAILED;
+            messageKey = MESSAGE_KEY_NO_SUCH_USER_NAME;
         }
 
         return new ValidationResult(statusCode, messageKey);

@@ -10,12 +10,14 @@ public class Authorization {
     private static final Map<String, Set<String>> permissionMapping = new HashMap<>();
 
     static {
-        Set<String> onlyAdmin = new HashSet<>(Collections.singletonList("admin"));
+        Set<String> admin = new HashSet<>(Collections.singletonList("admin"));
+        Set<String> subscriber = new HashSet<>(Collections.singletonList("subscriber"));
 
-        permissionMapping.put("/adminPanel/users(/\\d*)?", onlyAdmin);
-        permissionMapping.put("/adminPanel/periodicals/createNew/?", onlyAdmin);
-        permissionMapping.put("/adminPanel/periodicals/update/\\d+", onlyAdmin);
-        permissionMapping.put("/adminPanel/periodicals/discarded/delete/?", onlyAdmin);
+        permissionMapping.put("/adminPanel/users(/\\d*)?", admin);
+        permissionMapping.put("/adminPanel/periodicals/createNew/?", admin);
+        permissionMapping.put("/adminPanel/periodicals/update/\\d+", admin);
+        permissionMapping.put("/adminPanel/periodicals/discarded/delete/?", admin);
+        permissionMapping.put("/adminPanel/invoices/?", subscriber);
     }
 
     private HttpServletRequest request;

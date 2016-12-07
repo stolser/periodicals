@@ -15,6 +15,7 @@
                 <th><fmt:message key="user.lastName.label" bundle="${langPeriodical}"/></th>
                 <th><fmt:message key="user.email.label" bundle="${langPeriodical}"/></th>
                 <th><fmt:message key="user.address.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="user.birthday.label" bundle="${langPeriodical}"/></th>
                 <th><fmt:message key="user.status.label" bundle="${langPeriodical}"/></th>
                 <th><fmt:message key="user.roles.label" bundle="${langPeriodical}"/></th>
             </tr>
@@ -28,6 +29,7 @@
                     <td><c:out value="${user.lastName}"/></td>
                     <td><c:out value="${user.email}"/></td>
                     <td><c:out value="${user.address}"/></td>
+                    <td><c:out value="${user.birthday}"/></td>
                     <td><c:out value="${user.status}"/></td>
                     <td>
                         <ul>

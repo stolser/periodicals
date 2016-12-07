@@ -74,7 +74,7 @@ public class PersistOnePeriodical implements RequestProcessor {
 
         if (result.getStatusCode() != Validator.STATUS_CODE_SUCCESS) {
             isNotValid = true;
-            messages.put("periodicalName", new FrontendMessage("periodicalName", result.getMessageKey(),
+            messages.put("periodicalName", new FrontendMessage(result.getMessageKey(),
                     FrontendMessage.MessageType.ERROR));
         }
 
@@ -83,7 +83,7 @@ public class PersistOnePeriodical implements RequestProcessor {
 
         if (result.getStatusCode() != Validator.STATUS_CODE_SUCCESS) {
             isNotValid = true;
-            messages.put("periodicalCategory", new FrontendMessage("periodicalCategory", result.getMessageKey(),
+            messages.put("periodicalCategory", new FrontendMessage(result.getMessageKey(),
                     FrontendMessage.MessageType.ERROR));
         }
 
@@ -92,7 +92,7 @@ public class PersistOnePeriodical implements RequestProcessor {
 
         if (result.getStatusCode() != Validator.STATUS_CODE_SUCCESS) {
             isNotValid = true;
-            messages.put("periodicalPublisher", new FrontendMessage("periodicalPublisher", result.getMessageKey(),
+            messages.put("periodicalPublisher", new FrontendMessage(result.getMessageKey(),
                     FrontendMessage.MessageType.ERROR));
         }
 
@@ -101,7 +101,7 @@ public class PersistOnePeriodical implements RequestProcessor {
 
         if (result.getStatusCode() != Validator.STATUS_CODE_SUCCESS) {
             isNotValid = true;
-            messages.put("periodicalCost", new FrontendMessage("periodicalCost", result.getMessageKey(),
+            messages.put("periodicalCost", new FrontendMessage(result.getMessageKey(),
                     FrontendMessage.MessageType.ERROR));
         }
 

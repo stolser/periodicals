@@ -1,7 +1,6 @@
 package com.stolser.javatraining.webproject.controller.validator;
 
 public class FrontendMessage {
-    private String fieldName;
     private String messageKey;
     private MessageType type;
 
@@ -12,18 +11,9 @@ public class FrontendMessage {
         ERROR;
     }
 
-    public FrontendMessage(String fieldName, String messageKey, MessageType type) {
-        this.fieldName = fieldName;
+    public FrontendMessage(String messageKey, MessageType type) {
         this.messageKey = messageKey;
         this.type = type;
-    }
-
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
     }
 
     public String getMessageKey() {
@@ -44,6 +34,6 @@ public class FrontendMessage {
 
     @Override
     public String toString() {
-        return String.format("FrontendMessage{fieldName='%s', messageKey='%s', type=%s}", fieldName, messageKey, type);
+        return String.format("FrontendMessage{messageKey='%s', type=%s}", messageKey, type);
     }
 }

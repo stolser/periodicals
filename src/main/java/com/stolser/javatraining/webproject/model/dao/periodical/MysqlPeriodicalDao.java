@@ -111,12 +111,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
 
-            st.setString(1, periodical.getName());
-            st.setString(2, periodical.getCategory());
-            st.setString(3, periodical.getPublisher());
-            st.setString(4, periodical.getDescription());
-            st.setDouble(5, periodical.getOneMonthCost());
-            st.setString(6, periodical.getStatus().name().toLowerCase());
+            setStatementFromPeriodical(st, periodical);
 
             st.executeUpdate();
 
@@ -128,6 +123,15 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         }
     }
 
+    private void setStatementFromPeriodical(PreparedStatement st, Periodical periodical) throws SQLException {
+        st.setString(1, periodical.getName());
+        st.setString(2, periodical.getCategory());
+        st.setString(3, periodical.getPublisher());
+        st.setString(4, periodical.getDescription());
+        st.setDouble(5, periodical.getOneMonthCost());
+        st.setString(6, periodical.getStatus().name().toLowerCase());
+    }
+
     @Override
     public void update(Periodical periodical) {
         String sqlStatement = "UPDATE periodicals " +
@@ -137,12 +141,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
 
-            st.setString(1, periodical.getName());
-            st.setString(2, periodical.getCategory());
-            st.setString(3, periodical.getPublisher());
-            st.setString(4, periodical.getDescription());
-            st.setDouble(5, periodical.getOneMonthCost());
-            st.setString(6, periodical.getStatus().name().toLowerCase());
+            setStatementFromPeriodical(st, periodical);
             st.setLong(7, periodical.getId());
 
             st.executeUpdate();
@@ -174,12 +173,12 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     }
 
     @Override
-    public void delete(long id) {
-
+    public boolean delete(long id) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public void deleteAll() {
-
+    public boolean deleteAll() {
+        throw new UnsupportedOperationException();
     }
 }

@@ -37,3 +37,9 @@ footer {
     color: red;
     font-style: italic;
 }
+
+.periodicalNameModal {
+    font-weight: bold;
+    font-style: italic;
+    color: darkgreen;
+}

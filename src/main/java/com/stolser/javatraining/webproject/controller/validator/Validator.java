@@ -6,6 +6,8 @@ public interface Validator {
     int STATUS_CODE_SUCCESS = 200;
     int STATUS_CODE_VALIDATION_FAILED = 412;
     String MESSAGE_KEY_SUCCESS = "validation.ok";
+    String MESSAGE_KEY_NO_SUCH_USER_NAME = "validation.noSuchUserName";
+    String MESSAGE_KEY_USER_IS_BLOCKED = "validation.userIsBlocked";
     String MESSAGE_KEY_PERIODICAL_NAME_ERROR = "periodicalName.validationError";
     String MESSAGE_KEY_PERIODICAL_NAME_DUPLICATION = "periodicalName.duplicationError";
     String MESSAGE_KEY_PERIODICAL_PUBLISHER_ERROR = "periodicalPublisher.validationError";

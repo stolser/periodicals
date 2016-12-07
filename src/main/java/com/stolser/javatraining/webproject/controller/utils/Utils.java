@@ -3,20 +3,29 @@ package com.stolser.javatraining.webproject.controller.utils;
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
+import com.stolser.javatraining.webproject.model.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utils {
-    public static long getUserIdFromRequest(HttpServletRequest request) {
+    public static long getUserIdFromSession(HttpServletRequest request) {
         User user = (User) request.getSession()
                 .getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
 
         return user.getId();
     }
 
+    public static User getUserFromSession(HttpServletRequest request) {
+        long userId = getUserIdFromSession(request);
+
+        return UserService.getInstance().findOneById(userId);
+    }
+
     public static String getExceptionMessageForRequestProcessor(HttpServletRequest request, Exception e) {
         String message = String.format("User id = %d. " +
-                "Original: %s. ", Utils.getUserIdFromRequest(request), e.getMessage());
+                "Original: %s. ", Utils.getUserIdFromSession(request), e.getMessage());
 
         return message;
     }
@@ -42,6 +51,19 @@ public class Utils {
         periodical.setStatus(Periodical.Status.valueOf((request.getParameter("periodicalStatus")).toUpperCase()));
 
         return periodical;
+    }
+
+    public static int getIdFromUri(String uri) {
+        Matcher matcher = Pattern.compile("\\d+").matcher(uri);
+
+        if (matcher.find()) {
+            String stringId = matcher.group();
+
+            return Integer.valueOf(stringId);
+
+        }
+
+        throw new IllegalArgumentException(String.format("Uri (%s) must contain id.", uri));
     }
 
 }

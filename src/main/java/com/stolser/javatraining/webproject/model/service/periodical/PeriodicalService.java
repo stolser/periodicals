@@ -12,10 +12,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class PeriodicalService {
-    private static final DaoFactory factory = DaoFactory.getMysqlDaoFactory();
+    private final DaoFactory factory;
     public static final String NO_PERIODICAL_WITH_ID_MESSAGE = "There is no periodical in the DB with id = %d";
 
     private PeriodicalService() {
+        factory = DaoFactory.getMysqlDaoFactory();
     }
 
     private static class InstanceHolder {
@@ -87,26 +88,36 @@ public class PeriodicalService {
     }
 
     /**
+     * If the id of this periodical is 0, creates a new one. Otherwise tries to update an existing periodical in
+     * the db with this id.
      * Use the returned instance for further operations as the save operation
      * might have changed the entity instance completely.
-     * @param periodical
-     * @return
+     * @param periodical the persisted periodical
+     * @return a periodical from the db
      */
-    public Periodical save(Periodical periodical) throws Exception {
+    public Periodical save(Periodical periodical) {
         long thisId = periodical.getId();
 
         System.out.println("Saving a periodical: " + periodical);
 
-        if (thisId == 0) {
-            createNewPeriodical(periodical);
-        } else {
-            tryToUpdatePeriodical(periodical);
+        try {
+            if (thisId == 0) {
+                createNewPeriodical(periodical);
+            } else {
+                tryToUpdatePeriodical(periodical);
+            }
+
+            return getPeriodicalFromDbByName(periodical.getName());
+
+        } catch (SQLException e) {
+            String message = String.format("Exception during closing a connection. " +
+                    "Original: %s. ", e.getMessage());
+            throw new CustomSqlException(message);
         }
 
-        return getPeriodicalFromDbByName(periodical.getName());
     }
 
-    private void createNewPeriodical(Periodical periodical) throws Exception {
+    private void createNewPeriodical(Periodical periodical) throws SQLException {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
             System.out.println("PeriodicalService: connection has been got. Creating a new one.");
 
@@ -127,11 +138,11 @@ public class PeriodicalService {
     }
 
 
-    private void tryToUpdatePeriodical(Periodical periodical) throws Exception {
+    private void tryToUpdatePeriodical(Periodical periodical) throws SQLException {
         Periodical periodicalInDb = getPeriodicalFromDbById(periodical.getId());
 
         if (periodicalInDb == null) {
-            String message = String.format(NO_PERIODICAL_WITH_ID_MESSAGE, periodicalInDb);
+            String message = String.format(NO_PERIODICAL_WITH_ID_MESSAGE, periodical.getId());
 
             throw new NoSuchElementException(message);
         } else {
@@ -150,7 +161,7 @@ public class PeriodicalService {
         return periodicalInDb;
     }
 
-    private void updatePeriodical(Periodical periodical) throws Exception {
+    private void updatePeriodical(Periodical periodical) throws SQLException {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
             System.out.println("PeriodicalService.updatePeriodical(): connection has been got.");
 
@@ -159,7 +170,7 @@ public class PeriodicalService {
         }
     }
 
-    public void deleteAllDiscarded() throws Exception {
+    public void deleteAllDiscarded() throws SQLException {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
             System.out.println("PeriodicalService.deleteAllDiscarded(): connection has been got.");
 
@@ -168,11 +179,4 @@ public class PeriodicalService {
         }
     }
 
-    public void delete(long id) {
-
-    }
-
-    public void deleteAll() {
-
-    }
 }
