@@ -60,14 +60,17 @@
                             <c:if test="${invoice.status == 'PAID'}">class="success"</c:if>
                             <c:if test="${invoice.status == 'NEW'}">class="danger"</c:if>>
                         <td><c:out value="${invoice.id}"/></td>
-                        <td><a href="'/adminPanel/periodicals/'<c:out value="${invoice.periodical.id}"/>">
+                        <td><a href="/adminPanel/periodicals/<c:out value="${invoice.periodical.id}"/>">
                             <c:out value="${invoice.periodical.name}"/></a></td>
                         <td><c:out value="${invoice.subscriptionPeriod}"/></td>
                         <td><c:out value="${invoice.periodical.oneMonthCost}"/></td>
                         <td><c:out value="${invoice.totalSum}"/></td>
 
-                        <td><fmt:formatDate value="${invoice.creationDate}" type="both"/></td>
-                        <td><fmt:formatDate value="${invoice.paymentDate}" type="both"/></td>
+                        <td><custom:format-datetime value="${invoice.creationDate}"/></td>
+                        <td><custom:format-datetime value="${invoice.paymentDate}"/></td>
+
+                        <%--<td><fmt:formatDate value="${invoice.creationDate}" type="both"/></td>--%>
+                        <%--<td><fmt:formatDate value="${invoice.paymentDate}" type="both"/></td>--%>
                         <td><c:out value="${invoice.status}"/><br/>
                             <c:if test="${invoice.status == 'NEW'}">
                                 <form method="post"

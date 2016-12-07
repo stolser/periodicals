@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AuthorizationTagHandler extends TagSupport {
+public class AuthorizationTag extends TagSupport {
     private String mustHaveRoles;
     private String mustNotHaveRoles;
     private User user;

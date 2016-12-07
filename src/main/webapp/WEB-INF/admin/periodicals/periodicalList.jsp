@@ -45,7 +45,7 @@
     </div>
 
     <div class="col-md-12">
-        <auth:if-authorized mustHaveRoles="admin">
+        <custom:if-authorized mustHaveRoles="admin">
             <div class="row">
                 <div class="col-md-6 text-left">
                     <a href="<% out.print(ApplicationResources.PERIODICAL_CREATE_NEW_HREF); %>"
@@ -60,10 +60,10 @@
                     </a>
                 </div>
             </div>
-        </auth:if-authorized>
-        <auth:if-authorized mustHaveRoles="*" mustNotHaveRoles="admin">
+        </custom:if-authorized>
+        <custom:if-authorized mustHaveRoles="*" mustNotHaveRoles="admin">
             <p>You are NOT an admin, so you <b>cannot</b> create or delete periodicals!!!</p>
-        </auth:if-authorized>
+        </custom:if-authorized>
     </div>
 
 </div>

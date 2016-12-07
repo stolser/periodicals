@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <auth:if-authorized mustHaveRoles="subscriber">
+            <custom:if-authorized mustHaveRoles="subscriber">
                 <c:if test="${periodical.status == 'VISIBLE'}">
                     <div class="col-md-12 text-center">
                         <button type="button" class="btn btn-primary" data-toggle="modal"
@@ -55,12 +55,12 @@
                     </div>
                 </c:if>
 
-            </auth:if-authorized>
+            </custom:if-authorized>
 
         </form>
 
         <!-- Modal window -->
-        <auth:if-authorized mustHaveRoles="subscriber">
+        <custom:if-authorized mustHaveRoles="subscriber">
             <div class="modal fade" id="subscriptionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
             </div>
-        </auth:if-authorized>
+        </custom:if-authorized>
 
     </div>
 
