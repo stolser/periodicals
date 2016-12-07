@@ -43,3 +43,7 @@ footer {
     font-style: italic;
     color: darkgreen;
 }
+
+table.text-center th {
+    text-align: center;
+}

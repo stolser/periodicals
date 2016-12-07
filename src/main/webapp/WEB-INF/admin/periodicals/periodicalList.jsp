@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-md-12 table-responsive">
         <h1><fmt:message key="periodicalList.title.top" bundle="${langPeriodical}"/></h1>
-        <table class="table table-hover table-bordered table-striped">
+        <table class="table table-hover table-bordered table-striped text-center">
             <thead>
             <tr>
                 <th><fmt:message key="id.label" bundle="${langPeriodical}"/></th>

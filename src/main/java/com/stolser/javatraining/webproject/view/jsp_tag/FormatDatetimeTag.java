@@ -35,7 +35,6 @@ public class FormatDatetimeTag extends TagSupport {
 
 
     public void setValue(final Temporal value) {
-        System.out.println("..........FormatDatetimeTag: value = " + value);
         this.value = value;
     }
 
