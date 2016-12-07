@@ -1,7 +1,6 @@
 <%@include file="/WEB-INF/includes/general.jsp" %>
 <%@include file="/WEB-INF/includes/header.jsp" %>
 <fmt:setBundle basename="webProject.i18n.admin.user" var="langPeriodical"/>
-<fmt:setBundle basename="webProject.i18n.admin.invoice" var="langInvoice"/>
 <fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
 
 <div class="row">
@@ -40,6 +39,10 @@
 
     <c:if test="${not empty userInvoices}">
         <%@include file="/WEB-INF/admin/invoices/userInvoiceList.jsp" %>
+    </c:if>
+
+    <c:if test="${not empty userSubscriptions}">
+        <%@include file="/WEB-INF/admin/subscriptions/userSubscriptionList.jsp" %>
     </c:if>
 
 </div>

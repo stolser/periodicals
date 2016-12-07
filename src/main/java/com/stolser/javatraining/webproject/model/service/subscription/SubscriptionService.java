@@ -39,7 +39,7 @@ public class SubscriptionService {
             SubscriptionDao subscriptionDao = factory.getSubscriptionDao(conn);
 
             User userInDb = userDao.findOneById(id);
-            subscriptions = subscriptionDao.findSubscriptionsByUser(userInDb);
+            subscriptions = subscriptionDao.findAllByUser(userInDb);
 
         } catch (SQLException e) {
             throw new CustomSqlException(e);

@@ -2,6 +2,7 @@ package com.stolser.javatraining.webproject.controller;
 
 import com.stolser.javatraining.webproject.controller.command.DisplayAdminPanelMainPage;
 import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.command.invoice.PayOneInvoice;
 import com.stolser.javatraining.webproject.controller.command.invoice.PersistOneInvoice;
 import com.stolser.javatraining.webproject.controller.command.periodical.*;
 import com.stolser.javatraining.webproject.controller.command.user.DisplayAllUsers;
@@ -25,6 +26,7 @@ public class RequestProvider {
         requestMapping.put("GET:/adminPanel/periodicals/update/\\d+", new UpdatePeriodical());
         requestMapping.put("GET:/adminPanel/periodicals/discarded/delete/?", new DeleteDiscardedPeriodicals());
         requestMapping.put("POST:/adminPanel/users/\\d+/invoices/?", new PersistOneInvoice());
+        requestMapping.put("POST:/adminPanel/users/\\d+/invoices/\\d+/pay/?", new PayOneInvoice());
 
     }
 

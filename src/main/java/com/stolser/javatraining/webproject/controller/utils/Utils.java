@@ -17,7 +17,7 @@ public class Utils {
         return user.getId();
     }
 
-    public static User getUserFromSession(HttpServletRequest request) {
+    public static User getCurrentUserFromFromDb(HttpServletRequest request) {
         long userId = getUserIdFromSession(request);
 
         return UserService.getInstance().findOneById(userId);
@@ -53,7 +53,7 @@ public class Utils {
         return periodical;
     }
 
-    public static int getIdFromUri(String uri) {
+    public static int getFirstIdFromUri(String uri) {
         Matcher matcher = Pattern.compile("\\d+").matcher(uri);
 
         if (matcher.find()) {

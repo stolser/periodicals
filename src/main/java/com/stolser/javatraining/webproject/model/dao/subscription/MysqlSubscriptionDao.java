@@ -17,7 +17,46 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
     }
 
     @Override
-    public List<Subscription> findSubscriptionsByUser(User user) {
+    public Subscription findOneByUserIdAndPeriodicalId(long userId, long periodicalId) {
+        String sqlStatement = "SELECT * FROM subscriptions " +
+                "WHERE user_id=? AND periodical_id=?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            st.setLong(1, userId);
+            st.setLong(2, periodicalId);
+
+            ResultSet rs = st.executeQuery();
+
+            Subscription subscription = null;
+            if (rs.next()) {
+                subscription = new Subscription();
+                subscription.setId(rs.getLong("id"));
+
+                User user = new User();
+                user.setId(rs.getLong("user_id"));
+                subscription.setUser(user);
+
+                Periodical periodical = new Periodical();
+                periodical.setId(rs.getLong("periodical_id"));
+                subscription.setPeriodical(periodical);
+
+                subscription.setDeliveryAddress(rs.getString("delivery_address"));
+                subscription.setEndDate(rs.getTimestamp("end_date").toInstant());
+                subscription.setStatus(Subscription.Status.valueOf(
+                        rs.getString("status").toUpperCase()));
+
+            }
+
+            return subscription;
+
+        } catch (SQLException e) {
+            throw new CustomSqlException(e);
+        }
+    }
+
+    @Override
+    public List<Subscription> findAllByUser(User user) {
         String sqlStatement = "SELECT * FROM users " +
                 "JOIN subscriptions ON (users.id = subscriptions.user_id) " +
                 "JOIN periodicals ON (subscriptions.periodical_id = periodicals.id) " +
@@ -47,7 +86,8 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
                 subscription.setPeriodical(periodical);
                 subscription.setDeliveryAddress(rs.getString("subscriptions.delivery_address"));
                 subscription.setEndDate(rs.getTimestamp("subscriptions.end_date").toInstant());
-                subscription.setStatus(Subscription.Status.valueOf(rs.getString("subscriptions.status")));
+                subscription.setStatus(Subscription.Status.valueOf(
+                        rs.getString("subscriptions.status").toUpperCase()));
 
                 subscriptions.add(subscription);
             }

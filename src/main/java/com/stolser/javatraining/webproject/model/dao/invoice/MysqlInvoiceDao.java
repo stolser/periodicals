@@ -18,6 +18,44 @@ public class MysqlInvoiceDao implements InvoiceDao {
     }
 
     @Override
+    public Invoice findOneById(long invoiceId) {
+        String sqlStatement = "SELECT * FROM invoices " +
+                "WHERE id = ?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            st.setLong(1, invoiceId);
+
+            ResultSet rs = st.executeQuery();
+
+            Invoice invoice = null;
+            if (rs.next()) {
+                invoice = new Invoice();
+                invoice.setId(rs.getLong("id"));
+
+                User user = new User();
+                user.setId(rs.getLong("user_id"));
+                invoice.setUser(user);
+
+                Periodical periodical = new Periodical();
+                periodical.setId(rs.getLong("periodical_id"));
+                invoice.setPeriodical(periodical);
+
+                invoice.setSubscriptionPeriod(rs.getInt("period"));
+                invoice.setTotalSum(rs.getDouble("total_sum"));
+                invoice.setCreationDate(getCreationDateFromResults(rs));
+                invoice.setPaymentDate(getPaymentDateFromResults(rs));
+                invoice.setStatus(Invoice.Status.valueOf(rs.getString("status").toUpperCase()));
+            }
+
+            return invoice;
+
+        } catch (SQLException e) {
+            throw new CustomSqlException(e);
+        }
+    }
+
+    @Override
     public List<Invoice> findAllByUserId(long userId) {
         String sqlStatement = "SELECT * FROM invoices " +
                 "JOIN users ON (invoices.user_id = users.id) " +
@@ -80,18 +118,13 @@ public class MysqlInvoiceDao implements InvoiceDao {
     @Override
     public void createNew(Invoice invoice) {
         String sqlStatement = "INSERT INTO invoices " +
-                "(user_id, periodical_id, period, total_sum, creation_date, status) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+                "(user_id, periodical_id, period, total_sum, creation_date, payment_date, status) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
 
-            st.setLong(1, invoice.getUser().getId());
-            st.setLong(2, invoice.getPeriodical().getId());
-            st.setInt(3, invoice.getSubscriptionPeriod());
-            st.setDouble(4, invoice.getTotalSum());
-            st.setTimestamp(5, new Timestamp(invoice.getCreationDate().toEpochMilli()));
-            st.setString(6, invoice.getStatus().toString().toLowerCase());
+            setCreateUpdateStatementFromInvoice(st, invoice);
 
             st.executeUpdate();
 
@@ -100,18 +133,49 @@ public class MysqlInvoiceDao implements InvoiceDao {
         }
     }
 
-    @Override
-    public Invoice findOneById(long id) {
-        throw new UnsupportedOperationException();
+    private void setCreateUpdateStatementFromInvoice(PreparedStatement st, Invoice invoice) throws SQLException {
+        st.setLong(1, invoice.getUser().getId());
+        st.setLong(2, invoice.getPeriodical().getId());
+        st.setInt(3, invoice.getSubscriptionPeriod());
+        st.setDouble(4, invoice.getTotalSum());
+        st.setTimestamp(5, new Timestamp(invoice.getCreationDate().toEpochMilli()));
+        st.setTimestamp(6, getPaymentDate(invoice));
+        st.setString(7, invoice.getStatus().toString().toLowerCase());
+    }
+
+    private Timestamp getPaymentDate(Invoice invoice) {
+        Timestamp timestamp = null;
+        Instant paymentDate = invoice.getPaymentDate();
+
+
+        if (paymentDate != null) {
+            timestamp = new Timestamp(paymentDate.toEpochMilli());
+        }
+
+        return timestamp;
+    }
+
+    public void update(Invoice invoice) {
+        String sqlStatement = "UPDATE invoices " +
+                "SET user_id=?, periodical_id=?, period=?, total_sum=?, creation_date=?, " +
+                "payment_date=?, status=? " +
+                "WHERE id=?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+
+            setCreateUpdateStatementFromInvoice(st, invoice);
+            st.setLong(8, invoice.getId());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new CustomSqlException( e);
+        }
     }
 
     @Override
     public List<Invoice> findAll() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void update(Invoice entity) {
         throw new UnsupportedOperationException();
     }
 

@@ -28,11 +28,11 @@ public class PersistOneInvoice implements RequestProcessor {
         String redirectUri = ApplicationResources.PERIODICAL_LIST_HREF;
 
         long periodicalId = Long.valueOf(request.getParameter("periodicalId"));
-        long userIdFromUri = Utils.getIdFromUri(request.getRequestURI());
+        long userIdFromUri = Utils.getFirstIdFromUri(request.getRequestURI());
         long userIdFromSession = Utils.getUserIdFromSession(request);
 
         if (userIdFromUri != userIdFromSession) {
-            message = new FrontendMessage("validation.invoiceCreationIncorrectUserId",
+            message = new FrontendMessage("validation.invoiceOperation.incorrectUserId",
                     FrontendMessage.MessageType.ERROR);
 
         } else {

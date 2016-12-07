@@ -47,3 +47,8 @@ footer {
 table.text-center th {
     text-align: center;
 }
+
+.theadSublabel {
+    font-size: 80%;
+    font-style: italic;
+}

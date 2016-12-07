@@ -1,3 +1,5 @@
+<fmt:setBundle basename="webProject.i18n.admin.invoice" var="langInvoice"/>
+
 <div id="userInvoiceList" class="col-md-12 table-responsive">
     <h1><fmt:message key="userInvoiceList.title.top" bundle="${langInvoice}"/></h1>
     <table class="table table-hover table-bordered table-striped text-center">
@@ -5,7 +7,11 @@
         <tr class="text-center">
             <th><fmt:message key="id.label" bundle="${langInvoice}"/></th>
             <th><fmt:message key="periodicalName.label" bundle="${langInvoice}"/></th>
-            <th><fmt:message key="period.label" bundle="${langInvoice}"/></th>
+            <th><fmt:message key="period.label" bundle="${langInvoice}"/><br/>
+                <label class="theadSublabel">
+                    (<fmt:message key="period.inmonth.label" bundle="${langInvoice}"/>)
+                </label>
+            </th>
             <th><fmt:message key="oneMonthCost.label" bundle="${langInvoice}"/></th>
             <th><fmt:message key="totalSum.label" bundle="${langInvoice}"/></th>
             <th><fmt:message key="creationDate.label" bundle="${langInvoice}"/></th>

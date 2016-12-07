@@ -19,7 +19,7 @@ public class DisplayOnePeriodical implements RequestProcessor {
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
 
-        long periodicalId = Utils.getIdFromUri(request.getRequestURI());
+        long periodicalId = Utils.getFirstIdFromUri(request.getRequestURI());
 
         Periodical periodical;
         try {

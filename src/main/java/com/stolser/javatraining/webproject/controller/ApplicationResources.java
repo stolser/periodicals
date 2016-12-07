@@ -17,6 +17,7 @@ public class ApplicationResources {
     public static final String ONE_USER_INFO_VIEW_NAME = "users/oneUserInfo";
     public static final String PERIODICAL_LIST_HREF = "/adminPanel/periodicals";
 
+    public static final String CURRENT_USER_ACCOUNT_HREF = "/adminPanel/users/currentUser";
     public static final String PERIODICAL_CREATE_NEW_HREF = "/adminPanel/periodicals/createNew";
     public static final String PERIODICAL_UPDATE_HREF = "/adminPanel/periodicals/update";
     public static final String PERIODICAL_DELETE_DISCARDED = "/adminPanel/periodicals/discarded/delete";

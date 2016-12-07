@@ -7,5 +7,6 @@ import com.stolser.javatraining.webproject.model.entity.user.User;
 import java.util.List;
 
 public interface SubscriptionDao extends GenericDao<Subscription> {
-    List<Subscription> findSubscriptionsByUser(User user);
+    Subscription findOneByUserIdAndPeriodicalId(long userId, long periodicalId);
+    List<Subscription> findAllByUser(User user);
 }
