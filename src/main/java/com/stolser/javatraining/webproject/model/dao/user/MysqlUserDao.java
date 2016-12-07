@@ -65,7 +65,7 @@ public class MysqlUserDao implements UserDao {
             return user;
 
         } catch (SQLException e) {
-            LOGGER.debug("Exception during retrieving a user with userName = {}", userName, e);
+            LOGGER.error("Exception during retrieving a user with userName = {}", userName, e);
             throw new CustomSqlException(e);
         }
     }
@@ -86,7 +86,7 @@ public class MysqlUserDao implements UserDao {
             return users;
 
         } catch (SQLException e) {
-            LOGGER.debug("Exception during retrieving all users", e);
+            LOGGER.error("Exception during retrieving all users", e);
             throw new CustomSqlException(e);
         }
     }

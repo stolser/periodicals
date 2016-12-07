@@ -38,7 +38,7 @@ public class PayOneInvoice implements RequestProcessor {
                 message = new FrontendMessage("validation.invoiceWasPaid.success",
                         FrontendMessage.MessageType.SUCCESS);
             } catch (Exception e) {
-                LOGGER.debug("Exception during paying the invoice with id {}.", invoiceId, e);
+                LOGGER.error("Exception during paying the invoice with id {}.", invoiceId, e);
 
                 message = new FrontendMessage("validation.generalExceptionOccurred",
                         FrontendMessage.MessageType.ERROR);

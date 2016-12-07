@@ -25,7 +25,7 @@ public class DisplayAllPeriodicals implements RequestProcessor {
 
         } catch (CustomSqlException e) {
             String message = Utils.getExceptionMessageForRequestProcessor(request, e);
-            LOGGER.debug(message, e);
+            LOGGER.error(message, e);
 
             throw new RuntimeException(message);
         }

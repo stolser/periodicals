@@ -47,7 +47,7 @@ public class FrontController extends HttpServlet {
             viewName = command.getViewName(request, response);
 
         } catch (Exception e) {
-            LOGGER.debug("Exception during request processing: {}", e.getMessage(), e);
+            LOGGER.error("Exception during request processing: {}", e.getMessage(), e);
             request.setAttribute(MESSAGE_ATTRIBUTE, e.getLocalizedMessage());
 
             viewName = ApplicationResources.getErrorViewName(e);

@@ -55,7 +55,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     public boolean payInvoice(long invoiceId) {
         Connection conn = ConnectionPoolProvider.getPool().getConnection();
 
-        LOGGER.debug("InvoiceServiceImpl: connection has been got. Paying an invoice with " +
+        LOGGER.error("InvoiceServiceImpl: connection has been got. Paying an invoice with " +
                 "id = {}", invoiceId);
 
         try {

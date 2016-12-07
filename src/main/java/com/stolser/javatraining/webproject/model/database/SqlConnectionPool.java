@@ -53,11 +53,11 @@ class SqlConnectionPool implements ConnectionPool {
 
             newConn = dataSource.getConnection();
         } catch (SQLException e) {
-            LOGGER.debug(CONNECTION_EXCEPTION_TEXT, e);
+            LOGGER.error(CONNECTION_EXCEPTION_TEXT, e);
             throw new CustomSqlException(e);
         }
 
-        LOGGER.debug("A new connection is got from {}", this);
+        LOGGER.error("A new connection is got from {}", this);
 
         return newConn;
     }

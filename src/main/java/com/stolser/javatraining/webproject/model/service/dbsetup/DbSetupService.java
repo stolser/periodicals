@@ -51,14 +51,14 @@ public class DbSetupService {
              Statement st = conn.createStatement()) {
 
             st.executeUpdate(createUsersTable);
-            LOGGER.debug("'users' table has been dropped and created again.");
+            LOGGER.error("'users' table has been dropped and created again.");
 
             st.executeUpdate(createLoginsTable);
-            LOGGER.debug("'logins' table has been dropped and created again.");
+            LOGGER.error("'logins' table has been dropped and created again.");
 
         } catch (SQLException e) {
             String message = "Exception during creating 'Users' table.";
-            LOGGER.debug(message);
+            LOGGER.error(message);
 
             throw new CustomSqlException(message);
         }

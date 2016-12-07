@@ -84,7 +84,7 @@ public class LoginServlet extends HttpServlet {
             md = MessageDigest.getInstance("MD5");
 
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.debug("Exception during getting MessageDigest for 'MD5'", e);
+            LOGGER.error("Exception during getting MessageDigest for 'MD5'", e);
             throw new RuntimeException();
         }
 

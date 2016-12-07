@@ -42,7 +42,7 @@ public class UserService {
             return user;
 
         } catch (SQLException e) {
-            LOGGER.debug("Exception during closing a connection.");
+            LOGGER.error("Exception during closing a connection.");
             throw new CustomSqlException(e);
         }
     }
@@ -56,7 +56,7 @@ public class UserService {
             return login;
 
         } catch (SQLException e) {
-            LOGGER.debug("Exception during closing a connection.");
+            LOGGER.error("Exception during closing a connection.");
             throw new CustomSqlException(e);
         }
     }
@@ -75,7 +75,7 @@ public class UserService {
 
             return user;
         } catch (SQLException e) {
-            LOGGER.debug("Exception during closing a connection.");
+            LOGGER.error("Exception during closing a connection.");
             throw new CustomSqlException(e);
         }
     }
@@ -92,7 +92,7 @@ public class UserService {
             return allUser;
 
         } catch (SQLException e) {
-            LOGGER.debug("Exception during closing a connection.");
+            LOGGER.error("Exception during closing a connection.");
             throw new CustomSqlException(e);
         }
     }

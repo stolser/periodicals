@@ -40,7 +40,7 @@ public class MysqlLoginDao implements LoginDao {
             return login;
 
         } catch (SQLException e) {
-            LOGGER.debug("Exception during retrieving a login with userName = {}", userName, e);
+            LOGGER.error("Exception during retrieving a login with userName = {}", userName, e);
             throw new CustomSqlException(e);
         }
     }

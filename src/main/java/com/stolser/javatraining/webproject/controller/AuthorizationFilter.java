@@ -33,7 +33,7 @@ public class AuthorizationFilter implements Filter {
             String username = ((User)((HttpServletRequest) request).getSession()
                     .getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME)).getUserName();
 
-            LOGGER.debug(String.format("Access denied for user '%s' to '%s'!!!\n",
+            LOGGER.error(String.format("Access denied for user '%s' to '%s'!!!\n",
                     username, requestURI));
 
             ((HttpServletResponse) response).sendRedirect("/accessDenied.jsp");

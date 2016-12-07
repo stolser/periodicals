@@ -41,7 +41,7 @@ public class MysqlRoleDao implements RoleDao {
             }
 
         } catch (SQLException e) {
-            LOGGER.debug("Exception during retrieving roles for user with userName = {}",
+            LOGGER.error("Exception during retrieving roles for user with userName = {}",
                     userName, e);
             throw new CustomSqlException(e);
         }

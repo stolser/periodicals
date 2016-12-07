@@ -24,11 +24,11 @@ public class ConnectionPoolProvider {
             properties.load(input);
 
         } catch (FileNotFoundException e) {
-            LOGGER.debug("Exception during opening the db-config file with path = {}.",
+            LOGGER.error("Exception during opening the db-config file with path = {}.",
                     DB_CONFIG_FILENAME);
             throw new RuntimeException();
         } catch (IOException e) {
-            LOGGER.debug("Exception during loading db-config properties from the file " +
+            LOGGER.error("Exception during loading db-config properties from the file " +
                     "(path = {})", DB_CONFIG_FILENAME);
             throw new RuntimeException();
         }

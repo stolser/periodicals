@@ -22,7 +22,7 @@ public class DeleteDiscardedPeriodicals implements RequestProcessor {
 
         } catch (Exception e) {
             String message = Utils.getExceptionMessageForRequestProcessor(request, e);
-            LOGGER.debug(message, e);
+            LOGGER.error(message, e);
 
             throw new RuntimeException(message, e);
         }
