@@ -3,6 +3,8 @@ package com.stolser.javatraining.webproject.controller.command.invoice;
 import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.Utils;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.validator.RequestUserIdValidator;
+import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceService;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceServiceImpl;
@@ -17,12 +19,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ACCOUNT_HREF;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.GENERAL_MESSAGES_FRONT_BLOCK_NAME;
+import static com.stolser.javatraining.webproject.controller.validator.Validator.STATUS_CODE_SUCCESS;
 
 public class PayOneInvoice implements RequestProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PayOneInvoice.class);
     private List<FrontendMessage> generalMessages = new ArrayList<>();
-    private BooleanSupplier userIsValid;
     private BooleanSupplier invoiceExistsInDb;
     private BooleanSupplier invoiceIsNew;
     private long invoiceId;
@@ -35,9 +38,6 @@ public class PayOneInvoice implements RequestProcessor {
         request = httpRequest;
         response = httpResponse;
 
-        System.out.println("paying invoice.");
-        System.out.println("messages");
-
         specifyValidationRules();
 
         if (validationPassed()) {
@@ -48,7 +48,9 @@ public class PayOneInvoice implements RequestProcessor {
 
         addMessagesToSession();
 
-        return sendRedirect();
+        Utils.sendRedirect(request, response, CURRENT_USER_ACCOUNT_HREF);
+
+        return null;
     }
 
     private void specifyValidationRules() {
@@ -56,20 +58,6 @@ public class PayOneInvoice implements RequestProcessor {
                 .replaceFirst("/adminPanel/users/\\d+/", ""));
         invoiceService = InvoiceServiceImpl.getInstance();
         final Invoice invoiceInDb = invoiceService.findOneById(invoiceId);
-
-        userIsValid = () -> {
-            long userIdFromUri = Utils.getFirstIdFromUri(request.getRequestURI());
-            long userIdFromSession = Utils.getUserIdFromSession(request);
-
-            if (userIdFromUri == userIdFromSession) {
-                return true;
-            } else {
-                generalMessages.add(new FrontendMessage("validation.invoiceOperation.incorrectUserId",
-                        FrontendMessage.MessageType.ERROR));
-
-                return false;
-            }
-        };
 
         invoiceExistsInDb = () -> {
             if (invoiceInDb != null) {
@@ -95,8 +83,16 @@ public class PayOneInvoice implements RequestProcessor {
     }
 
     private boolean validationPassed() {
-        return userIsValid.getAsBoolean()
-                && invoiceExistsInDb.getAsBoolean()
+        ValidationResult result = new RequestUserIdValidator().validate(null, request);
+
+        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
+            generalMessages.add(new FrontendMessage(result.getMessageKey(),
+                    FrontendMessage.MessageType.ERROR));
+
+            return false;
+        }
+
+        return invoiceExistsInDb.getAsBoolean()
                 && invoiceIsNew.getAsBoolean();
     }
 
@@ -123,21 +119,5 @@ public class PayOneInvoice implements RequestProcessor {
         Map<String, List<FrontendMessage>> frontMessageMap = new HashMap<>();
         frontMessageMap.put(GENERAL_MESSAGES_FRONT_BLOCK_NAME, generalMessages);
         Utils.addMessagesToSession(request, frontMessageMap);
-    }
-
-    private String sendRedirect() {
-        String redirectUri = CURRENT_USER_ACCOUNT_HREF;
-        try {
-            response.sendRedirect(redirectUri);
-
-            return null;
-
-        } catch (Exception e) {
-            String message = String.format("User id = %d. Exception during redirection to '%s'.",
-                    Utils.getUserIdFromSession(request), redirectUri);
-            LOGGER.error(message, e);
-
-            throw new RuntimeException(message, e);
-        }
     }
 }

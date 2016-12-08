@@ -49,15 +49,11 @@ class SqlConnectionPool implements ConnectionPool {
         Connection newConn;
 
         try {
-            System.out.println("Before getting a conn from the dataSource...");
-
             newConn = dataSource.getConnection();
         } catch (SQLException e) {
             LOGGER.error(CONNECTION_EXCEPTION_TEXT, e);
             throw new CustomSqlException(e);
         }
-
-        LOGGER.error("A new connection is got from {}", this);
 
         return newConn;
     }

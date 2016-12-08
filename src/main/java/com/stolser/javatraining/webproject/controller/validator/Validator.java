@@ -18,5 +18,7 @@ public interface Validator {
     String PERIODICAL_CATEGORY_PATTERN_REGEX = "[а-яА-ЯіІїЇєЄёЁ\\w\\s-]{2,45}";
     String PERIODICAL_COST_PATTERN_REGEX = "(0|[1-9]{1}\\d{0,3})(\\.\\d{0,2})?";
 
+    String MESSAGE_KYE_INCORRECT_USER_ID = "validation.invoiceOperation.incorrectUserId";
+
     ValidationResult validate(String paramValue, HttpServletRequest request);
 }

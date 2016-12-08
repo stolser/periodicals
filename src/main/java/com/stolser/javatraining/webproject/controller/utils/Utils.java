@@ -7,6 +7,7 @@ import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.model.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -74,6 +75,19 @@ public class Utils {
     public static void addMessagesToSession(HttpServletRequest request,
                                             Map<String, List<FrontendMessage>> frontMessageMap) {
         request.getSession().setAttribute(MESSAGES_ATTR_NAME, frontMessageMap);
+    }
+
+    public static void sendRedirect(HttpServletRequest request, HttpServletResponse response,
+                                      String redirectUri) {
+        try {
+            response.sendRedirect(redirectUri);
+
+        } catch (Exception e) {
+            String message = String.format("User id = %d. Exception during redirection to '%s'.",
+                    Utils.getUserIdFromSession(request), redirectUri);
+
+            throw new RuntimeException(message, e);
+        }
     }
 
 }
