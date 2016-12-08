@@ -15,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 
 public class InvoiceServiceImpl implements InvoiceService {
@@ -86,9 +88,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                 newSubscription.setUser(userFromDb);
                 newSubscription.setPeriodical(periodical);
                 newSubscription.setDeliveryAddress(userFromDb.getAddress());
-                newSubscription.setEndDate(Instant.now().plus(subscriptionPeriod * 30, ChronoUnit.DAYS));
-//                newSubscription.setEndDate(Instant.now().plusMillis(subscriptionPeriod *
-//                30 * 24 * 3600 * 1000));
+                newSubscription.setEndDate(getEndDate(Instant.now(), subscriptionPeriod));
                 newSubscription.setStatus(Subscription.Status.ACTIVE);
 
                 subscriptionDao.createNew(newSubscription);
@@ -97,10 +97,9 @@ public class InvoiceServiceImpl implements InvoiceService {
                 Instant newEndDate;
 
                 if (existingSubscription.getStatus().equals(Subscription.Status.INACTIVE)) {
-                    newEndDate = Instant.now().plus(subscriptionPeriod * 30, ChronoUnit.DAYS);
+                    newEndDate = getEndDate(Instant.now(), subscriptionPeriod);
                 } else {
-                    newEndDate = existingSubscription.getEndDate().plus(subscriptionPeriod * 30,
-                            ChronoUnit.DAYS);
+                    newEndDate = getEndDate(existingSubscription.getEndDate(), subscriptionPeriod);
                 }
 
                 existingSubscription.setEndDate(newEndDate);
@@ -132,6 +131,13 @@ public class InvoiceServiceImpl implements InvoiceService {
                 }
             }
         }
+    }
+
+    private Instant getEndDate(Instant startInstant, int subscriptionPeriod) {
+        LocalDateTime startDate = LocalDateTime.ofInstant(startInstant, ZoneId.systemDefault());
+
+
+        return startDate.plusMonths(subscriptionPeriod).toInstant(ZoneOffset.UTC);
     }
 
     @Override
