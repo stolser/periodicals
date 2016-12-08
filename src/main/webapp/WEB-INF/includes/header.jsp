@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="general.jsp" %>
 <fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
 <fmt:setBundle basename="webProject.i18n.validation" var="langValidation"/>
 
@@ -26,7 +27,7 @@
                 <fmt:message key="myAccount.label" bundle="${general}"/></a>
             <p><a href="<c:url value="/Logout"/>">
                 <fmt:message key="signout.label" bundle="${general}"/></a></p>
-            <%} else {%>
+            <%} else if(!"/login.jsp".equals(request.getRequestURI())) {%>
             <p><a href="/login.jsp"><fmt:message key="signin.label" bundle="${general}"/></a></p>
             <%}%>
         </div>

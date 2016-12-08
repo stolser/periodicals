@@ -17,8 +17,8 @@ public class UpdatePeriodical implements RequestProcessor {
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
-        String idString = request.getRequestURI().replace("/adminPanel/periodicals/update/", "");
-        long periodicalId = Integer.valueOf(idString);
+//        String idString = request.getRequestURI().replace("/adminPanel/periodicals/update/", "");
+        long periodicalId = Utils.getFirstIdFromUri(request.getRequestURI());
 
         Periodical periodical;
         try {

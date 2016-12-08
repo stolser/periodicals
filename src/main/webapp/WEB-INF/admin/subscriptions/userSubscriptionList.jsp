@@ -14,15 +14,13 @@
         </thead>
         <tbody>
         <c:forEach items="${userSubscriptions}" var="subscription" varStatus="rowStatus">
-            <tr
-                    <c:if test="${subscription.status == 'ACTIVE'}">class="success"</c:if>
-                    <c:if test="${subscription.status == 'INACTIVE'}">class="danger"</c:if>>
+            <tr class="${subscription.status == 'ACTIVE' ? 'success' : 'danger'}">
                 <td><c:out value="${subscription.id}"/></td>
                 <td><a href="/adminPanel/periodicals/<c:out value="${subscription.periodical.id}"/>">
                     <c:out value="${subscription.periodical.name}"/></a></td>
                 <td><c:out value="${subscription.deliveryAddress}"/></td>
                 <td><custom:format-datetime value="${subscription.endDate}"/></td>
-                <td><c:out value="${subscription.status}"/></td>
+                <td><fmt:message key="${subscription.status}" bundle="${langSubscription}"/></td>
             </tr>
 
         </c:forEach>

@@ -1,4 +1,4 @@
-<%@include file="../../includes/general.jsp" %>
+<%--<%@include file="../../includes/general.jsp" %>--%>
 <%@include file="../../includes/header.jsp" %>
 <fmt:setBundle basename="webProject.i18n.admin.periodical" var="langPeriodical"/>
 <%--<fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>--%>
@@ -8,59 +8,60 @@
         <h1><c:out value="${periodical.name}"/></h1>
         <h3><fmt:message key="title.top" bundle="${langPeriodical}"/></h3>
 
-        <form id="periodicalInfo" class="form-horizontal">
-            <div class="form-group">
-                <label class="col-sm-3 control-label">
-                    <fmt:message key="name.label" bundle="${langPeriodical}"/></label>
-                <div class="col-sm-9">
-                    <p class="form-control-static"><c:out value="${periodical.name}"/></p>
-                </div>
+        <div class="row">
+            <label class="col-sm-3 control-label">
+                <fmt:message key="name.label" bundle="${langPeriodical}"/></label>
+            <div class="col-sm-9">
+                <p class="form-control-static"><c:out value="${periodical.name}"/></p>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">
-                    <fmt:message key="category.label" bundle="${langPeriodical}"/></label>
-                <div class="col-sm-9">
-                    <p class="form-control-static"><c:out value="${periodical.category}"/></p>
-                </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3 control-label">
+                <fmt:message key="category.label" bundle="${langPeriodical}"/></label>
+            <div class="col-sm-9">
+                <p class="form-control-static"><c:out value="${periodical.category}"/></p>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">
-                    <fmt:message key="publisher.label" bundle="${langPeriodical}"/></label>
-                <div class="col-sm-9">
-                    <p class="form-control-static"><c:out value="${periodical.publisher}"/></p>
-                </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3 control-label">
+                <fmt:message key="publisher.label" bundle="${langPeriodical}"/></label>
+            <div class="col-sm-9">
+                <p class="form-control-static"><c:out value="${periodical.publisher}"/></p>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">
-                    <fmt:message key="description.label" bundle="${langPeriodical}"/></label>
-                <div class="col-sm-9">
-                    <p class="form-control-static"><c:out value="${periodical.description}"/></p>
-                </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3 control-label">
+                <fmt:message key="description.label" bundle="${langPeriodical}"/></label>
+            <div class="col-sm-9">
+                <p class="form-control-static"><c:out value="${periodical.description}"/></p>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">
-                    <fmt:message key="oneMonthCost.label" bundle="${langPeriodical}"/></label>
-                <div class="col-sm-9">
-                    <p class="form-control-static"><c:out value="${periodical.oneMonthCost}"/></p>
-                </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3 control-label">
+                <fmt:message key="oneMonthCost.label" bundle="${langPeriodical}"/></label>
+            <div class="col-sm-9">
+                <p class="form-control-static"><c:out value="${periodical.oneMonthCost}"/></p>
             </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-3 control-label">
+                <fmt:message key="status.label" bundle="${langPeriodical}"/></label>
+            <div class="col-sm-9">
+                <p class="form-control-static"><c:out value="${periodical.status}"/></p>
+            </div>
+        </div>
 
-            <custom:if-authorized mustHaveRoles="subscriber">
-                <c:if test="${periodical.status == 'VISIBLE'}">
-                    <div class="col-md-12 text-center">
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#subscriptionModal">
-                            <fmt:message key="subscribeBtn.label" bundle="${langPeriodical}"/>
-                        </button>
-                    </div>
-                </c:if>
-
-            </custom:if-authorized>
-
-        </form>
-
-        <!-- Modal window -->
         <custom:if-authorized mustHaveRoles="subscriber">
+            <c:if test="${periodical.status == 'VISIBLE'}">
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#subscriptionModal">
+                        <fmt:message key="subscribeBtn.label" bundle="${langPeriodical}"/>
+                    </button>
+                </div>
+            </c:if>
+
+            <!-- Modal window -->
             <div class="modal fade" id="subscriptionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -82,9 +83,10 @@
                                         <div class="input-group date" id="subscriptionPeriod">
                                             <input name="subscriptionPeriod" class="form-control"
                                                    type="number" min="1" max="12" value="1">
-                                    <div class="input-group-addon">
-                                        <fmt:message key="subscriptionModal.month.label" bundle="${langPeriodical}"/>
-                                    </div>
+                                            <div class="input-group-addon">
+                                                <fmt:message key="subscriptionModal.month.label"
+                                                             bundle="${langPeriodical}"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

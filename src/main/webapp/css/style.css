@@ -44,11 +44,13 @@ footer {
     color: darkgreen;
 }
 
-table.text-center th {
-    text-align: center;
-}
-
 .theadSublabel {
     font-size: 80%;
     font-style: italic;
+}
+
+.table > tbody > tr > td,
+.table > thead > tr > th {
+    vertical-align: middle;
+    text-align: center;
 }

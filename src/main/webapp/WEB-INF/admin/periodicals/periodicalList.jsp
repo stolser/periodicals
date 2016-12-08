@@ -1,5 +1,5 @@
 <%@ page import="com.stolser.javatraining.webproject.controller.ApplicationResources" %>
-<%@include file="../../includes/general.jsp" %>
+<%--<%@include file="../../includes/general.jsp" %>--%>
 <%@include file="../../includes/header.jsp" %>
 <fmt:setBundle basename="webProject.i18n.admin.periodical" var="langPeriodical"/>
 <fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
@@ -21,19 +21,18 @@
             <tbody>
             <c:forEach items="${allPeriodicals}" var="periodical" varStatus="rowStatus">
                 <c:if test="${(periodical.status == 'VISIBLE') || thisUser.hasRole('admin')}">
-                    <tr
-                            <c:if test="${periodical.status == 'VISIBLE'}">class="success"</c:if>
-                            <c:if test="${periodical.status == 'INVISIBLE'}">class="warning"</c:if>
-                            <c:if test="${periodical.status == 'DISCARDED'}">class="danger"</c:if>>
+                    <tr class="${periodical.status == 'VISIBLE' ? 'success' :
+                    (periodical.status == 'INVISIBLE' ? 'warning' : 'danger')}">
                         <td><c:out value="${periodical.id}"/></td>
                         <td>
-                            <a href="${thisUser.hasRole('admin') ? '/adminPanel/periodicals/update/'
-                            : '/adminPanel/periodicals/'}<c:out value="${periodical.id}"/>">
+                            <a href="${thisUser.hasRole('admin')
+                            ? ('/adminPanel/periodicals/'.concat(periodical.id).concat('/update/'))
+                            : ('/adminPanel/periodicals/'.concat(periodical.id))}">
                                 <c:out value="${periodical.name}"/></a></td>
                         <td><c:out value="${periodical.category}"/></td>
                         <td><c:out value="${periodical.publisher}"/></td>
                         <td><c:out value="${periodical.oneMonthCost}"/></td>
-                        <td><c:out value="${periodical.status}"/></td>
+                        <td><fmt:message key="${periodical.status}" bundle="${langPeriodical}"/></td>
                     </tr>
                 </c:if>
 
@@ -62,7 +61,7 @@
             </div>
         </custom:if-authorized>
         <custom:if-authorized mustHaveRoles="*" mustNotHaveRoles="admin">
-            <p>You are NOT an admin, so you <b>cannot</b> create or delete periodicals!!!</p>
+            <p><fmt:message key="youCannotUpdatePeriodicals.text" bundle="${langPeriodical}"/></p>
         </custom:if-authorized>
     </div>
 

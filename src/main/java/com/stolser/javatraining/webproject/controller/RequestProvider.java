@@ -23,7 +23,7 @@ public class RequestProvider {
         requestMapping.put("GET:/adminPanel/periodicals/?", new DisplayAllPeriodicals());
         requestMapping.put("POST:/adminPanel/periodicals/?", new PersistOnePeriodical());
         requestMapping.put("GET:/adminPanel/periodicals/createNew/?", new CreateNewPeriodical());
-        requestMapping.put("GET:/adminPanel/periodicals/update/\\d+", new UpdatePeriodical());
+        requestMapping.put("GET:/adminPanel/periodicals/\\d+/update/?", new UpdatePeriodical());
         requestMapping.put("GET:/adminPanel/periodicals/discarded/delete/?", new DeleteDiscardedPeriodicals());
         requestMapping.put("POST:/adminPanel/users/\\d+/invoices/?", new PersistOneInvoice());
         requestMapping.put("POST:/adminPanel/users/\\d+/invoices/\\d+/pay/?", new PayOneInvoice());

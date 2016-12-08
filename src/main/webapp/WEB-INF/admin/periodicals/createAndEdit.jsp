@@ -1,5 +1,5 @@
 <%@ page import="com.stolser.javatraining.webproject.controller.ApplicationResources" %>
-<%@include file="../../includes/general.jsp" %>
+<%--<%@include file="../../includes/general.jsp" %>--%>
 <%@include file="../../includes/header.jsp" %>
 <fmt:setBundle basename="webProject.i18n.admin.periodical" var="langPeriodical"/>
 <fmt:setBundle basename="webProject.i18n.validation" var="validation"/>
