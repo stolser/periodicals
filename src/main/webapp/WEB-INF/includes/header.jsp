@@ -45,10 +45,14 @@
     <c:if test="${(not empty messages) && (not empty messages['topMessages'])}">
     <div class="row">
         <div class="col-md-12">
-            <div class="topMessages alert ${messages['topMessages'].type == 'SUCCESS' ? 'alert-success' :
-        (messages['topMessages'].type == 'ERROR' ? 'alert-danger' : '')}" role="alert">
-                <fmt:message key="${messages['topMessages'].messageKey}" bundle="${langValidation}"/>
-            </div>
+            <c:forEach items="${messages['topMessages']}" var="message">
+                <div class="topMessages alert
+                ${message.type == 'SUCCESS' ? 'alert-success' :
+                    (message.type == 'INFO' ? 'alert-info' :
+                    (message.type == 'ERROR' ? 'alert-danger' : ''))}" role="alert">
+                    <fmt:message key="${message.messageKey}" bundle="${langValidation}"/>
+                </div>
+            </c:forEach>
         </div>
     </div>
     </c:if>

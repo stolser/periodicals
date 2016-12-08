@@ -15,16 +15,20 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.GENERAL_MESSAGES_FRONT_BLOCK_NAME;
 
 public class PersistOneInvoice implements RequestProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistOneInvoice.class);
+    private List<FrontendMessage> generalMessages = new ArrayList<>();
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
         Map<String, FrontendMessage> messages = new HashMap<>();
-        FrontendMessage message;
         String redirectUri = ApplicationResources.PERIODICAL_LIST_HREF;
 
         long periodicalId = Long.valueOf(request.getParameter("periodicalId"));
@@ -32,8 +36,8 @@ public class PersistOneInvoice implements RequestProcessor {
         long userIdFromSession = Utils.getUserIdFromSession(request);
 
         if (userIdFromUri != userIdFromSession) {
-            message = new FrontendMessage("validation.invoiceOperation.incorrectUserId",
-                    FrontendMessage.MessageType.ERROR);
+            generalMessages.add(new FrontendMessage("validation.invoiceOperation.incorrectUserId",
+                    FrontendMessage.MessageType.ERROR));
 
         } else {
             User user = new User();
@@ -41,11 +45,11 @@ public class PersistOneInvoice implements RequestProcessor {
             Periodical periodical = PeriodicalService.getInstance().findOneById(periodicalId);
 
             if (periodical == null) {
-                message = new FrontendMessage("validation.periodicalIsNull",
-                        FrontendMessage.MessageType.ERROR);
+                generalMessages.add(new FrontendMessage("validation.periodicalIsNull",
+                        FrontendMessage.MessageType.ERROR));
             } else if (!Periodical.Status.VISIBLE.equals(periodical.getStatus())) {
-                message = new FrontendMessage("validation.periodicalIsNotVisible",
-                        FrontendMessage.MessageType.ERROR);
+                generalMessages.add(new FrontendMessage("validation.periodicalIsNotVisible",
+                        FrontendMessage.MessageType.ERROR));
             } else {
                 int subscriptionPeriod = Integer.valueOf(request.getParameter("subscriptionPeriod"));
 
@@ -65,8 +69,8 @@ public class PersistOneInvoice implements RequestProcessor {
                 newInvoice.setStatus(Invoice.Status.NEW);
 
                 InvoiceServiceImpl.getInstance().createNew(newInvoice);
-                message = new FrontendMessage("validation.invoiceCreated.success",
-                        FrontendMessage.MessageType.SUCCESS);
+                generalMessages.add(new FrontendMessage("validation.invoiceCreated.success",
+                        FrontendMessage.MessageType.SUCCESS));
                 redirectUri = String.format("%s/%d",
                         ApplicationResources.PERIODICAL_LIST_HREF, periodicalId);
 
@@ -75,8 +79,9 @@ public class PersistOneInvoice implements RequestProcessor {
         }
 
         try {
-            messages.put("topMessages", message);
-            request.getSession().setAttribute(ApplicationResources.MESSAGES_ATTR_NAME, messages);
+            Map<String, List<FrontendMessage>> frontMessageMap = new HashMap<>();
+            frontMessageMap.put(GENERAL_MESSAGES_FRONT_BLOCK_NAME, generalMessages);
+            Utils.addMessagesToSession(request, frontMessageMap);
             response.sendRedirect(redirectUri);
 
             return null;

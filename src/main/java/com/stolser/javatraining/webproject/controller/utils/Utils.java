@@ -1,13 +1,18 @@
 package com.stolser.javatraining.webproject.controller.utils;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
+import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.model.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.MESSAGES_ATTR_NAME;
 
 public class Utils {
     public static long getUserIdFromSession(HttpServletRequest request) {
@@ -64,6 +69,11 @@ public class Utils {
         }
 
         throw new IllegalArgumentException(String.format("Uri (%s) must contain id.", uri));
+    }
+
+    public static void addMessagesToSession(HttpServletRequest request,
+                                            Map<String, List<FrontendMessage>> frontMessageMap) {
+        request.getSession().setAttribute(MESSAGES_ATTR_NAME, frontMessageMap);
     }
 
 }

@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ATTR_NAME;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.ORIGINAL_URI_ATTR_NAME;
 
@@ -52,7 +53,7 @@ public class LoginServlet extends HttpServlet {
                     String originalUri = (String) request.getSession().getAttribute(ORIGINAL_URI_ATTR_NAME);
                     redirectUri = (originalUri != null) ? originalUri : "/adminPanel";
                     request.getSession().removeAttribute(ORIGINAL_URI_ATTR_NAME);
-                    request.getSession().removeAttribute(ApplicationResources.MESSAGES_ATTR_NAME);
+                    request.getSession().removeAttribute(MESSAGES_ATTR_NAME);
 
                 } else {
                     messages.put("signInUsername", new FrontendMessage("error.userIsBlocked",
@@ -73,7 +74,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         request.getSession().setAttribute("username", username);
-        request.getSession().setAttribute(ApplicationResources.MESSAGES_ATTR_NAME, messages);
+        request.getSession().setAttribute(MESSAGES_ATTR_NAME, messages);
         response.sendRedirect(redirectUri);
 
     }

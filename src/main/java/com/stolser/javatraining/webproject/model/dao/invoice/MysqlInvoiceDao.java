@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MysqlInvoiceDao implements InvoiceDao {
+    private static final String SELECT_FROM_INVOICES_WHERE_ID = "SELECT * FROM invoices WHERE id = ?";
+
     private Connection conn;
 
     public MysqlInvoiceDao(Connection conn) {
@@ -19,8 +21,7 @@ public class MysqlInvoiceDao implements InvoiceDao {
 
     @Override
     public Invoice findOneById(long invoiceId) {
-        String sqlStatement = "SELECT * FROM invoices " +
-                "WHERE id = ?";
+        String sqlStatement = SELECT_FROM_INVOICES_WHERE_ID;
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
