@@ -37,7 +37,9 @@ public class UserService {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
 
             User user = factory.getUserDao(conn).findOneById(id);
-            user.setRoles(factory.getRoleDao(conn).findRolesByUserName(user.getUserName()));
+            if (user != null) {
+                user.setRoles(factory.getRoleDao(conn).findRolesByUserName(user.getUserName()));
+            }
 
             return user;
 
@@ -69,7 +71,9 @@ public class UserService {
             RoleDao roleDao = factory.getRoleDao(conn);
             User user = userDao.findUserByUserName(userName);
 
-            user.setRoles(roleDao.findRolesByUserName(userName));
+            if (user != null) {
+                user.setRoles(roleDao.findRolesByUserName(userName));
+            }
 
             System.out.println("user form the db: " + user);
 

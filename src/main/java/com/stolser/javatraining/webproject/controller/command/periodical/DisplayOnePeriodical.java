@@ -25,9 +25,9 @@ public class DisplayOnePeriodical implements RequestProcessor {
         try {
             periodical = PeriodicalService.getInstance().findOneById(periodicalId);
 
-            if (periodical == null) {
+            if ((periodical == null) || (!Periodical.Status.VISIBLE.equals(periodical.getStatus()))) {
                 throw new NoSuchElementException(
-                        String.format("There is no periodical with id + %d in the db.", periodicalId));
+                        String.format("There is no periodical with id %d in the db.", periodicalId));
             }
 
         } catch (CustomSqlException e) {

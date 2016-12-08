@@ -20,7 +20,7 @@ public class Utils {
         User user = (User) request.getSession()
                 .getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
 
-        return user.getId();
+        return (user != null) ? user.getId() : 0;
     }
 
     public static User getCurrentUserFromFromDb(HttpServletRequest request) {

@@ -26,8 +26,8 @@
                 <td><a href="/adminPanel/periodicals/<c:out value="${invoice.periodical.id}"/>">
                     <c:out value="${invoice.periodical.name}"/></a></td>
                 <td><c:out value="${invoice.subscriptionPeriod}"/></td>
-                <td><c:out value="${invoice.periodical.oneMonthCost}"/></td>
-                <td><c:out value="${invoice.totalSum}"/></td>
+                <td><c:out value="${invoice.periodical.oneMonthCost > 0.0 ? invoice.periodical.oneMonthCost : 'free'}"/></td>
+                <td><c:out value="${invoice.totalSum > 0.0 ? invoice.totalSum : 'free'}"/></td>
                 <td><custom:format-datetime value="${invoice.creationDate}"/></td>
                 <td><custom:format-datetime value="${invoice.paymentDate}"/></td>
                 <td class="text-center"><fmt:message key="${invoice.status}" bundle="${langInvoice}"/>
