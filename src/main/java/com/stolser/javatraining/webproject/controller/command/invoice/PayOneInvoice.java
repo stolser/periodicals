@@ -4,6 +4,8 @@ import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.Utils;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
+import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
+import com.stolser.javatraining.webproject.model.service.invoice.InvoiceService;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,17 +34,38 @@ public class PayOneInvoice implements RequestProcessor {
             message = new FrontendMessage("validation.invoiceOperation.incorrectUserId",
                     FrontendMessage.MessageType.ERROR);
         } else {
-            try {
-                InvoiceServiceImpl.getInstance().payInvoice(invoiceId);
+            InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
+            Invoice invoiceInDb = invoiceService.findOneById(invoiceId);
 
-                message = new FrontendMessage("validation.invoiceWasPaid.success",
-                        FrontendMessage.MessageType.SUCCESS);
-            } catch (Exception e) {
-                LOGGER.error("Exception during paying the invoice with id {}.", invoiceId, e);
-
-                message = new FrontendMessage("validation.generalExceptionOccurred",
+            if (invoiceInDb == null) {
+                message = new FrontendMessage("validation.invoice.noSuchInvoice",
                         FrontendMessage.MessageType.ERROR);
+            } else {
+
+                if (!Invoice.Status.NEW.equals(invoiceInDb.getStatus())) {
+                    message = new FrontendMessage("validation.invoice.invoiceIsNotNew",
+                            FrontendMessage.MessageType.ERROR);
+                } else {
+
+                    try {
+                        if (invoiceService.payInvoice(invoiceId)) {
+                            message = new FrontendMessage("validation.invoiceWasPaid.success",
+                                    FrontendMessage.MessageType.SUCCESS);
+                        } else {
+                            message = new FrontendMessage("validation.invoice.payInvoiceError",
+                                    FrontendMessage.MessageType.ERROR);
+                        }
+
+                    } catch (Exception e) {
+                        LOGGER.error("Exception during paying the invoice with id {}.", invoiceId, e);
+
+                        message = new FrontendMessage("validation.invoice.payInvoiceError",
+                                FrontendMessage.MessageType.ERROR);
+                    }
+                }
+
             }
+
         }
 
         messages.put("topMessages", message);

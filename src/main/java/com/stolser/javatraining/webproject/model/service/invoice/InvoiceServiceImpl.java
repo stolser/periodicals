@@ -40,6 +40,31 @@ public class InvoiceServiceImpl implements InvoiceService {
         return InstanceHolder.INSTANCE;
     }
 
+
+    @Override
+    public Invoice findOneById(long invoiceId) {
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+
+            return factory.getInvoiceDao(conn).findOneById(invoiceId);
+
+        } catch (Exception e) {
+            throw new CustomSqlException(e);
+        }
+    }
+
+    @Override
+    public List<Invoice> findAllByUserId(long userId) {
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+            System.out.println("InvoiceServiceImpl: connection has been got. Retrieving all invoices for " +
+                    "user with id = " + userId);
+
+            return factory.getInvoiceDao(conn).findAllByUserId(userId);
+
+        } catch (Exception e) {
+            throw new CustomSqlException(e);
+        }
+    }
+
     @Override
     public boolean createNew(Invoice invoice) {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
@@ -53,6 +78,13 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
     }
 
+    /**
+     * Update the status of this invoice to 'PAID' and update an existing subscription
+     * (or create a new one) inside one transaction.
+     * @param invoiceId invoice id to be paid
+     * @return true if after committing this invoice in the db has status 'PAID' and
+     * false otherwise.
+     */
     @Override
     public boolean payInvoice(long invoiceId) {
         Connection conn = ConnectionPoolProvider.getPool().getConnection();
@@ -109,8 +141,13 @@ public class InvoiceServiceImpl implements InvoiceService {
             }
 
             conn.commit();
+            conn.setAutoCommit(true);
 
-            return true;
+            if (Invoice.Status.PAID.equals(invoiceDao.findOneById(invoiceId).getStatus())) {
+                return true;
+            } else {
+                return false;
+            }
 
         } catch (Exception e) {
             try {
@@ -138,19 +175,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 
         return startDate.plusMonths(subscriptionPeriod).toInstant(ZoneOffset.UTC);
-    }
-
-    @Override
-    public List<Invoice> findAllByUserId(long id) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-            System.out.println("InvoiceServiceImpl: connection has been got. Retrieving all invoices for " +
-                    "user with id = " + id);
-
-            return factory.getInvoiceDao(conn).findAllByUserId(id);
-
-        } catch (Exception e) {
-            throw new CustomSqlException(e);
-        }
     }
 
 

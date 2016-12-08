@@ -5,7 +5,8 @@ import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import java.util.List;
 
 public interface InvoiceService {
+    Invoice findOneById(long invoiceId);
+    List<Invoice> findAllByUserId(long userId);
     boolean createNew(Invoice newInvoice);
     boolean payInvoice(long invoiceId);
-    List<Invoice> findAllByUserId(long id);
 }
