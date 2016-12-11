@@ -43,8 +43,6 @@ public class FrontController extends HttpServlet {
         try {
             RequestProcessor processor = new RequestProvider(request).getRequestProcessor();
 
-            System.out.println("request_processor = " + processor.getClass().getName());
-
             viewName = processor.getViewName(request, response);
 
         } catch (Exception e) {

@@ -15,7 +15,7 @@
                     <div class="form-group validated required">
                         <label class="control-label" for="userName">
                             <fmt:message key="login.username.label" bundle="${login}"/></label>
-                        <input type="text" class="form-control ajax-validated" id="userName"
+                        <input type="text" class="form-control" id="userName"
                                placeholder="<fmt:message key="login.username.label" bundle="${login}"/>"
                                name="signInUsername"
                                value="${sessionScope.username}"/>

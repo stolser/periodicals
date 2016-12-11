@@ -58,6 +58,10 @@ $(document).ready(function () {
         activateOrDisableSubmitBtn($(this));
     });
 
+    $(".disabled").click(function (event) {
+        makeUnclickable(event);
+    });
+
     function activateOrDisableSubmitBtn($thisInput) {
         console.log("$thisInput = " + $thisInput);
         var $thisForm = $thisInput.closest("form"); // the <form> element inside which this input resides;
@@ -79,14 +83,12 @@ $(document).ready(function () {
             }).length == 0)) {
             console.log("activating the submit btn...");
 
-            $submitBtn.removeClass("disabled");
-            $submitBtn.addClass("active");
+            activateElement($submitBtn);
 
         } else {
             console.log("Deactivating the submit btn...");
 
-            $submitBtn.removeClass("active");
-            $submitBtn.addClass("disabled");
+            disActivateElement($submitBtn);
         }
     }
 
@@ -97,3 +99,20 @@ $(document).ready(function () {
     });
 
 });
+
+function activateElement(element) {
+    element.removeClass("disabled");
+    element.addClass("active");
+    element.unbind("click", makeUnclickable(event));
+
+}
+
+function disActivateElement(element) {
+    element.removeClass("active");
+    element.addClass("disabled");
+    element.click(makeUnclickable(event));
+}
+
+var makeUnclickable = function (event) {
+    event.preventDefault();
+};

@@ -1,7 +1,5 @@
 package com.stolser.javatraining.webproject.controller.request_processor.periodical;
 
-import com.stolser.javatraining.webproject.controller.ApplicationResources;
-import com.stolser.javatraining.webproject.controller.CustomRedirectException;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
@@ -13,9 +11,12 @@ import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalSe
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 public class PersistOnePeriodical implements RequestProcessor {
 
@@ -23,49 +24,72 @@ public class PersistOnePeriodical implements RequestProcessor {
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
-        Periodical periodicalToSave;
-
-        periodicalToSave = HttpUtils.getPeriodicalFromRequest(request);
+        Periodical periodicalToSave = HttpUtils.getPeriodicalFromRequest(request);
+        String entityOperationType = request.getParameter(ENTITY_OPERATION_TYPE_PARAM_NAME);
+        String redirectUri = getRedirectUriByOperationType(entityOperationType, periodicalToSave);
+        List<FrontendMessage> generalMessages = new ArrayList<>();
 
         if (periodicalToSaveIsNotValid(periodicalToSave, request)) {
-            request.getSession().setAttribute(ApplicationResources.PERIODICAL_ATTR_NAME, periodicalToSave);
+            request.getSession().setAttribute(PERIODICAL_ATTR_NAME, periodicalToSave);
 
-            String entityOperationType = request.getParameter(ApplicationResources.ENTITY_OPERATION_TYPE_PARAM_NAME);
-            String redirectUri = null;
-
-            try {
-
-                switch (entityOperationType) {
-                    case "create":
-                        redirectUri = ApplicationResources.PERIODICAL_CREATE_NEW_HREF;
-                        response.sendRedirect(redirectUri);
-                        return null;
-
-                    case "update":
-                        redirectUri = ApplicationResources.PERIODICAL_UPDATE_HREF + "/" +
-                                periodicalToSave.getId();
-                        response.sendRedirect(redirectUri);
-                        return null;
-
-                    default:
-                        throw new IllegalArgumentException(INCORRECT_OPERATION_DURING_PERSISTING_A_PERIODICAL);
-                }
-
-            } catch (IOException e) {
-                String message = HttpUtils.getRedirectionExceptionMessage(request,
-                        redirectUri);
-
-                throw new CustomRedirectException(message, e);
-            }
+            HttpUtils.sendRedirect(request, response, redirectUri);
+            return null;
+        } else {
+            generalMessages.add(new FrontendMessage("validation.passedSuccessfully.success",
+                    FrontendMessage.MessageType.INFO));
         }
 
 //        request.getSession().removeAttribute("periodical");
 //        request.getSession().removeAttribute(ApplicationResources.MESSAGES_ATTR_NAME);
-        PeriodicalService.getInstance().save(periodicalToSave);
+        PeriodicalService periodicalService = PeriodicalService.getInstance();
+        Periodical persistedPeriodical = periodicalService.save(periodicalToSave);
 
-        System.out.println("Persisted periodical: " + periodicalToSave);
+        if (persistedPeriodical != null) {
+            switch (entityOperationType) {
+                case "create":
+                    generalMessages.add(new FrontendMessage("periodicalCreatedNew.success",
+                            FrontendMessage.MessageType.SUCCESS));
+                    break;
 
-        return new DisplayAllPeriodicals().getViewName(request, response);
+                case "update":
+                    generalMessages.add(new FrontendMessage("periodicalUpdated.success",
+                            FrontendMessage.MessageType.SUCCESS));
+                    break;
+            }
+
+            HttpUtils.addGeneralMessagesToSession(request, generalMessages);
+
+            System.out.println("Persisted periodical: " + periodicalToSave);
+
+            return new DisplayAllPeriodicals().getViewName(request, response);
+
+        } else {
+            generalMessages.add(new FrontendMessage("periodicalPersisting.error",
+                    FrontendMessage.MessageType.ERROR));
+            HttpUtils.addGeneralMessagesToSession(request, generalMessages);
+
+            request.getSession().setAttribute(PERIODICAL_ATTR_NAME, periodicalToSave);
+            HttpUtils.sendRedirect(request, response, redirectUri);
+            return null;
+        }
+    }
+
+    private String getRedirectUriByOperationType(String entityOperationType, Periodical periodicalToSave) {
+        String redirectUri;
+        switch (entityOperationType) {
+            case "create":
+                redirectUri = PERIODICAL_CREATE_NEW_HREF;
+                break;
+
+            case "update":
+                redirectUri = PERIODICAL_UPDATE_HREF + "/" +
+                        periodicalToSave.getId();
+                break;
+
+            default:
+                throw new IllegalArgumentException(INCORRECT_OPERATION_DURING_PERSISTING_A_PERIODICAL);
+        }
+        return redirectUri;
     }
 
     private boolean periodicalToSaveIsNotValid(Periodical periodicalToSave, HttpServletRequest request) {
@@ -109,7 +133,7 @@ public class PersistOnePeriodical implements RequestProcessor {
                     FrontendMessage.MessageType.ERROR));
         }
 
-        request.getSession().setAttribute(ApplicationResources.MESSAGES_ATTR_NAME, messages);
+        request.getSession().setAttribute(MESSAGES_ATTR_NAME, messages);
 
         return isNotValid;
     }

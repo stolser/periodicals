@@ -46,13 +46,13 @@
     <div class="col-md-12">
         <custom:if-authorized mustHaveRoles="admin">
             <div class="row">
-                <div class="col-md-6 text-left">
+                <div class="col-sm-6 col-xs-6 text-left">
                     <a href="<% out.print(ApplicationResources.PERIODICAL_CREATE_NEW_HREF); %>"
                        class="btn btn-primary active" role="button">
                         <fmt:message key="newPeriodicalBt.label" bundle="${langPeriodical}"/>
                     </a>
                 </div>
-                <div class="col-md-6 text-right">
+                <div class="col-sm-6 col-xs-6 text-right">
                     <a href="<% out.print(ApplicationResources.PERIODICAL_DELETE_DISCARDED); %>"
                        class="btn btn-danger active" role="button">
                         <fmt:message key="deleteDiscardedBt.label" bundle="${langPeriodical}"/>

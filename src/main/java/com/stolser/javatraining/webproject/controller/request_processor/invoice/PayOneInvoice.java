@@ -3,8 +3,8 @@ package com.stolser.javatraining.webproject.controller.request_processor.invoice
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
-import com.stolser.javatraining.webproject.controller.validator.user.RequestUserIdValidator;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
+import com.stolser.javatraining.webproject.controller.validator.user.RequestUserIdValidator;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceService;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceServiceImpl;
@@ -14,13 +14,10 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ACCOUNT_HREF;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.GENERAL_MESSAGES_FRONT_BLOCK_NAME;
 import static com.stolser.javatraining.webproject.controller.validator.Validator.STATUS_CODE_SUCCESS;
 
 public class PayOneInvoice implements RequestProcessor {
@@ -46,8 +43,7 @@ public class PayOneInvoice implements RequestProcessor {
             tryToPayThisInvoice();
         }
 
-        addMessagesToSession();
-
+        HttpUtils.addGeneralMessagesToSession(httpRequest, generalMessages);
         HttpUtils.sendRedirect(request, response, CURRENT_USER_ACCOUNT_HREF);
 
         return null;
@@ -113,11 +109,5 @@ public class PayOneInvoice implements RequestProcessor {
             generalMessages.add(new FrontendMessage("validation.invoice.payInvoiceError",
                     FrontendMessage.MessageType.ERROR));
         }
-    }
-
-    private void addMessagesToSession() {
-        Map<String, List<FrontendMessage>> frontMessageMap = new HashMap<>();
-        frontMessageMap.put(GENERAL_MESSAGES_FRONT_BLOCK_NAME, generalMessages);
-        HttpUtils.addMessagesToSession(request, frontMessageMap);
     }
 }

@@ -18,7 +18,7 @@
 <body>
 <div class="container">
     <div id="header" class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 col-sm-6 col-xs-6">
             <% if (session.getAttribute("thisUser") != null) {%>
             <p><span class="userFullName"><c:out value="${thisUser.lastName}"/>
             <c:out value="${thisUser.firstName}"/></span><br/>
@@ -31,7 +31,7 @@
             <p><a href="/login.jsp"><fmt:message key="signin.label" bundle="${general}"/></a></p>
             <%}%>
         </div>
-        <div class="col-md-2 col-md-offset-6">
+        <div class="col-md-2 col-md-offset-6 col-sm-4 col-sm-offset-2 col-xs-6">
             <form>
                 <select class="form-control" id="language" name="language" onchange="submit()">
                     <option value="en_EN" ${language == 'en_EN' ? 'selected' : ''}>English</option>

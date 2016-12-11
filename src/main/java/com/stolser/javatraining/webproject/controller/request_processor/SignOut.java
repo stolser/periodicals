@@ -1,12 +1,10 @@
 package com.stolser.javatraining.webproject.controller.request_processor;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
-import com.stolser.javatraining.webproject.controller.CustomRedirectException;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class SignOut implements RequestProcessor {
 
@@ -17,15 +15,7 @@ public class SignOut implements RequestProcessor {
 
         String redirectUri = ApplicationResources.LOGIN_HREF;
 
-        try {
-            response.sendRedirect(redirectUri);
-            return null;
-
-        } catch (IOException e) {
-            String message = HttpUtils.getRedirectionExceptionMessage(request,
-                    redirectUri);
-
-            throw new CustomRedirectException(message, e);
-        }
+        HttpUtils.sendRedirect(request, response, redirectUri);
+        return null;
     }
 }

@@ -8,11 +8,13 @@ import com.stolser.javatraining.webproject.model.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.GENERAL_MESSAGES_FRONT_BLOCK_NAME;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.MESSAGES_ATTR_NAME;
 
 public class HttpUtils {
@@ -75,6 +77,13 @@ public class HttpUtils {
     public static void addMessagesToSession(HttpServletRequest request,
                                             Map<String, List<FrontendMessage>> frontMessageMap) {
         request.getSession().setAttribute(MESSAGES_ATTR_NAME, frontMessageMap);
+    }
+
+    public static void addGeneralMessagesToSession(HttpServletRequest request,
+                                                   List<FrontendMessage> generalMessages) {
+        Map<String, List<FrontendMessage>> frontMessageMap = new HashMap<>();
+        frontMessageMap.put(GENERAL_MESSAGES_FRONT_BLOCK_NAME, generalMessages);
+        HttpUtils.addMessagesToSession(request, frontMessageMap);
     }
 
     public static void sendRedirect(HttpServletRequest request, HttpServletResponse response,
