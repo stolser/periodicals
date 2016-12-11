@@ -1,4 +1,3 @@
-<%@ page import="com.stolser.javatraining.webproject.controller.ApplicationResources" %>
 <%--<%@include file="../../includes/general.jsp" %>--%>
 <%@include file="../../includes/header.jsp" %>
 <fmt:setBundle basename="webProject.i18n.admin.periodical" var="langPeriodical"/>
@@ -75,7 +74,7 @@
                 <label for="periodicalDescription" class="col-sm-3 control-label">
                     <fmt:message key="description.label" bundle="${langPeriodical}"/></label>
                 <div class="col-sm-9">
-                    <textarea id="periodicalDescription" class="form-control" rows="3"
+                    <textarea id="periodicalDescription" class="form-control" rows="4"
                               name="periodicalDescription"
                               placeholder="<fmt:message key="description.label" bundle="${langPeriodical}"/>">
                         <c:out value="${periodical.description}"/>
@@ -104,10 +103,10 @@
                 <div class="col-sm-9">
                     <select id="periodicalStatus" class="form-control"
                             name="periodicalStatus">
-                        <c:forEach items="${statuses}" var="status">
+                        <c:forEach items="${periodicalStatuses}" var="status">
                             <option ${status == periodical.status ? 'selected' : ''}
                                     value="<c:out value='${status}'/>">
-                                <c:out value='${status}'/>
+                                <fmt:message key="${status}" bundle="${langPeriodical}"/>
                             </option>
                         </c:forEach>
                     </select>
@@ -118,11 +117,23 @@
                        name="entityOperationType"
                        value="<c:out value="${entityOperationType}"/>"/>
             </div>
-            <p class="requiredFieldsMessage"><fmt:message key="requiredFieldsMessage" bundle="${general}"/></p>
+            <div class="form-group">
+                <div class="col-md-9 col-md-offset-3">
+                    <p class="requiredFieldsMessage">
+                        <fmt:message key="requiredFieldsMessage" bundle="${general}"/></p>
+                </div>
+            </div>
 
-            <button type="submit"
-                    class="btn btn-lg btn-primary disabled">
-                <fmt:message key="savePeriodicalBtn.label" bundle="${langPeriodical}"/></button>
+            <div class="row text-center">
+                <button type="submit"
+                        class="btn btn-primary disabled">
+                    <fmt:message key="savePeriodicalBtn.label" bundle="${langPeriodical}"/>
+                </button>
+                <a href="/backend/periodicals/${(entityOperationType == 'update') ? periodical.id : ''}"
+                   class="btn btn-default" role="button">
+                    <fmt:message key="cancelBtn.label" bundle="${general}"/>
+                </a>
+            </div>
         </form>
 
     </div>

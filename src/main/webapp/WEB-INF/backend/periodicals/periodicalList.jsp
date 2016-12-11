@@ -25,9 +25,7 @@
                     (periodical.status == 'INVISIBLE' ? 'warning' : 'danger')}">
                         <td><c:out value="${periodical.id}"/></td>
                         <td>
-                            <a href="${thisUser.hasRole('admin')
-                            ? ('/backend/periodicals/'.concat(periodical.id).concat('/update/'))
-                            : ('/backend/periodicals/'.concat(periodical.id))}">
+                            <a href="/backend/periodicals/${periodical.id}">
                                 <c:out value="${periodical.name}"/></a></td>
                         <td><c:out value="${periodical.category}"/></td>
                         <td><c:out value="${periodical.publisher}"/></td>

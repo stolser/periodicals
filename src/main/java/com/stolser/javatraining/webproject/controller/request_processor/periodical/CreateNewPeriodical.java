@@ -30,11 +30,11 @@ public class CreateNewPeriodical implements RequestProcessor {
         Map<String, FrontendMessage> messages = (Map<String, FrontendMessage>) session
                 .getAttribute(ApplicationResources.MESSAGES_ATTR_NAME);
 
-        session.removeAttribute(ApplicationResources.MESSAGES_ATTR_NAME);
+//        session.removeAttribute(ApplicationResources.MESSAGES_ATTR_NAME);
 
         request.setAttribute(ApplicationResources.MESSAGES_ATTR_NAME, messages);
         request.setAttribute("periodical", periodicalIntoRequest);
-        request.setAttribute("statuses", Periodical.Status.values());
+        request.setAttribute("periodicalStatuses", Periodical.Status.values());
         request.setAttribute("entityOperationType", "create");
 
         return ApplicationResources.CREATE_EDIT_PERIODICAL_VIEW_NAME;

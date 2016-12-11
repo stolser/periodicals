@@ -82,8 +82,7 @@ public class PersistOnePeriodical implements RequestProcessor {
                 break;
 
             case "update":
-                redirectUri = PERIODICAL_UPDATE_HREF + "/" +
-                        periodicalToSave.getId();
+                redirectUri = PERIODICAL_LIST_HREF + "/" + periodicalToSave.getId() + "/update";
                 break;
 
             default:

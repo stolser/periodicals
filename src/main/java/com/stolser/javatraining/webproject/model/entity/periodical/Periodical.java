@@ -46,11 +46,11 @@ public class Periodical {
     }
 
     public String getDescription() {
-        return description;
+        return description.trim();
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description.trim();
     }
 
     public double getOneMonthCost() {

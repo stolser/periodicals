@@ -27,7 +27,7 @@ public class UpdatePeriodical implements RequestProcessor {
 
         request.setAttribute(PERIODICAL_ATTR_NAME, periodical);
         request.setAttribute(ENTITY_OPERATION_TYPE_PARAM_NAME, "update");
-        request.setAttribute("statuses", Periodical.Status.values());
+        request.setAttribute("periodicalStatuses", Periodical.Status.values());
 
         return CREATE_EDIT_PERIODICAL_VIEW_NAME;
     }

@@ -51,16 +51,26 @@
             </div>
         </div>
 
-        <custom:if-authorized mustHaveRoles="subscriber">
-            <c:if test="${periodical.status == 'VISIBLE'}">
-                <div class="col-md-12 text-center">
+        <div class="row text-center">
+            <custom:if-authorized mustHaveRoles="subscriber">
+                <c:if test="${periodical.status == 'VISIBLE'}">
                     <button type="button" class="btn btn-primary" data-toggle="modal"
                             data-target="#subscriptionModal">
                         <fmt:message key="subscribeBtn.label" bundle="${langPeriodical}"/>
                     </button>
-                </div>
-            </c:if>
+                </c:if>
+            </custom:if-authorized>
 
+            <custom:if-authorized mustHaveRoles="admin">
+                <a href="<c:url
+                value="${'/backend/periodicals/'.concat(periodical.id).concat('/update/')}"/>"
+                   class="btn btn-warning"
+                   role="button">
+                    <fmt:message key="editBtn.label" bundle="${langPeriodical}"/></a>
+            </custom:if-authorized>
+        </div>
+
+        <custom:if-authorized mustHaveRoles="subscriber">
             <!-- Modal window -->
             <div class="modal fade" id="subscriptionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
@@ -75,10 +85,10 @@
                                 </h4>
                             </div>
                             <div class="row modal-body">
-                                <div class="col-md-8">
+                                <div class="col-xs-8">
                                     <fmt:message key="subscriptionModal.bodyText" bundle="${langPeriodical}"/>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-xs-4">
                                     <div class="form-group">
                                         <div class="input-group date" id="subscriptionPeriod">
                                             <input name="subscriptionPeriod" class="form-control"
@@ -93,11 +103,11 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">
-                                    <fmt:message key="subscriptionModal.closeBtn.label" bundle="${langPeriodical}"/>
-                                </button>
                                 <button type="submit" class="btn btn-primary">
                                     <fmt:message key="subscriptionModal.subscribeBtn.label" bundle="${langPeriodical}"/>
+                                </button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                    <fmt:message key="cancelBtn.label" bundle="${general}"/>
                                 </button>
                                 <input name="periodicalId" type="text" class="hidden"
                                        value="<c:out value="${periodical.id}"/>"/>

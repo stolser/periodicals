@@ -26,7 +26,6 @@ public class ApplicationResources {
     public static final String ACCESS_DENIED_HRF = "/accessDenied.jsp";
     public static final String CURRENT_USER_ACCOUNT_HREF = "/backend/users/currentUser";
     public static final String PERIODICAL_CREATE_NEW_HREF = "/backend/periodicals/createNew";
-    public static final String PERIODICAL_UPDATE_HREF = "/backend/periodicals/update";
 
     public static final String PERIODICAL_DELETE_DISCARDED = "/backend/periodicals/discarded/delete";
     public static final String PERIODICAL_CREATE_UPDATE_REST = "/backend/periodicals";
