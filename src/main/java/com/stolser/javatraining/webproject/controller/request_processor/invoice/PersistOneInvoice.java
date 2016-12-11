@@ -1,10 +1,10 @@
-package com.stolser.javatraining.webproject.controller.command.invoice;
+package com.stolser.javatraining.webproject.controller.request_processor.invoice;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
-import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.utils.Utils;
+import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.utils.RequestResponseUtils;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
-import com.stolser.javatraining.webproject.controller.validator.RequestUserIdValidator;
+import com.stolser.javatraining.webproject.controller.validator.user.RequestUserIdValidator;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
@@ -58,7 +58,7 @@ public class PersistOneInvoice implements RequestProcessor {
         String redirectUri = String.format("%s/%d",
                 ApplicationResources.PERIODICAL_LIST_HREF, periodicalId);
 
-        Utils.sendRedirect(request, response, redirectUri);
+        RequestResponseUtils.sendRedirect(request, response, redirectUri);
 
         return null;
     }
@@ -136,7 +136,7 @@ public class PersistOneInvoice implements RequestProcessor {
 
     private Invoice getNewInvoice() {
         double totalSum = subscriptionPeriod * periodicalInDb.getOneMonthCost();
-        long userIdFromUri = Utils.getFirstIdFromUri(request.getRequestURI());
+        long userIdFromUri = RequestResponseUtils.getFirstIdFromUri(request.getRequestURI());
         Invoice newInvoice = new Invoice();
         User user = new User();
         user.setId(userIdFromUri);
@@ -153,6 +153,6 @@ public class PersistOneInvoice implements RequestProcessor {
     private void addMessagesToSession() {
         Map<String, List<FrontendMessage>> frontMessageMap = new HashMap<>();
         frontMessageMap.put(GENERAL_MESSAGES_FRONT_BLOCK_NAME, generalMessages);
-        Utils.addMessagesToSession(request, frontMessageMap);
+        RequestResponseUtils.addMessagesToSession(request, frontMessageMap);
     }
 }

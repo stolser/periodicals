@@ -1,8 +1,8 @@
-package com.stolser.javatraining.webproject.controller.command.periodical;
+package com.stolser.javatraining.webproject.controller.request_processor.periodical;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
-import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.utils.Utils;
+import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.utils.RequestResponseUtils;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
@@ -26,7 +26,7 @@ public class PersistOnePeriodical implements RequestProcessor {
 
 
         try {
-            periodicalToSave = Utils.getPeriodicalFromRequest(request);
+            periodicalToSave = RequestResponseUtils.getPeriodicalFromRequest(request);
 
             if (periodicalToSaveIsNotValid(periodicalToSave, request)) {
                 request.getSession().setAttribute("periodical", periodicalToSave);
@@ -53,7 +53,7 @@ public class PersistOnePeriodical implements RequestProcessor {
             PeriodicalService.getInstance().save(periodicalToSave);
 
         } catch (Exception e) {
-            String message = Utils.getExceptionMessageForRequestProcessor(request, e);
+            String message = RequestResponseUtils.getExceptionMessageForRequestProcessor(request, e);
             LOGGER.error(message, e);
 
             throw new RuntimeException(message, e);

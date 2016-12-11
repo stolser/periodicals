@@ -19,7 +19,7 @@
 
     <filter-mapping>
         <filter-name>CharsetFilter</filter-name>
-        <url-pattern>/adminPanel/*</url-pattern>
+        <url-pattern>/backend/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
         <dispatcher>FORWARD</dispatcher>
         <dispatcher>INCLUDE</dispatcher>
@@ -33,7 +33,7 @@
 
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/adminPanel/*</url-pattern>
+        <url-pattern>/backend/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
@@ -44,7 +44,7 @@
 
     <filter-mapping>
         <filter-name>AuthorizationFilter</filter-name>
-        <url-pattern>/adminPanel/*</url-pattern>
+        <url-pattern>/backend/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
@@ -82,7 +82,7 @@
 
     <servlet-mapping>
         <servlet-name>FrontController</servlet-name>
-        <url-pattern>/adminPanel/*</url-pattern>
+        <url-pattern>/backend/*</url-pattern>
     </servlet-mapping>
 
 

@@ -1,7 +1,7 @@
-package com.stolser.javatraining.webproject.controller.command.user;
+package com.stolser.javatraining.webproject.controller.request_processor.user;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
-import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.model.service.user.UserService;
 

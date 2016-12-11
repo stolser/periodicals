@@ -26,8 +26,8 @@
                         <td><c:out value="${periodical.id}"/></td>
                         <td>
                             <a href="${thisUser.hasRole('admin')
-                            ? ('/adminPanel/periodicals/'.concat(periodical.id).concat('/update/'))
-                            : ('/adminPanel/periodicals/'.concat(periodical.id))}">
+                            ? ('/backend/periodicals/'.concat(periodical.id).concat('/update/'))
+                            : ('/backend/periodicals/'.concat(periodical.id))}">
                                 <c:out value="${periodical.name}"/></a></td>
                         <td><c:out value="${periodical.category}"/></td>
                         <td><c:out value="${periodical.publisher}"/></td>

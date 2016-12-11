@@ -1,14 +1,13 @@
-package com.stolser.javatraining.webproject.controller.validator;
+package com.stolser.javatraining.webproject.controller.validator.user;
 
+import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
+import com.stolser.javatraining.webproject.controller.validator.Validator;
 import com.stolser.javatraining.webproject.model.entity.user.Login;
 import com.stolser.javatraining.webproject.model.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class SignInUsernameValidator implements Validator {
-
-    public SignInUsernameValidator() {
-    }
 
     @Override
     public ValidationResult validate(String usernameValue, HttpServletRequest request) {

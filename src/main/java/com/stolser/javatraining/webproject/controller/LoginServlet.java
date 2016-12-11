@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
                 if (thisUser.getStatus() == User.Status.ACTIVE) {
                     request.getSession().setAttribute(CURRENT_USER_ATTR_NAME, thisUser);
                     String originalUri = (String) request.getSession().getAttribute(ORIGINAL_URI_ATTR_NAME);
-                    redirectUri = (originalUri != null) ? originalUri : "/adminPanel";
+                    redirectUri = (originalUri != null) ? originalUri : "/backend/";
                     request.getSession().removeAttribute(ORIGINAL_URI_ATTR_NAME);
                     request.getSession().removeAttribute(MESSAGES_ATTR_NAME);
 

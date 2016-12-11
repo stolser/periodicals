@@ -13,11 +13,11 @@ public class Authorization {
         Set<String> admin = new HashSet<>(Collections.singletonList("admin"));
         Set<String> subscriber = new HashSet<>(Collections.singletonList("subscriber"));
 
-        permissionMapping.put("/adminPanel/users(/\\d*)?", admin);
-        permissionMapping.put("/adminPanel/periodicals/createNew/?", admin);
-        permissionMapping.put("/adminPanel/periodicals/update/\\d+", admin);
-        permissionMapping.put("/adminPanel/periodicals/discarded/delete/?", admin);
-        permissionMapping.put("/adminPanel/invoices/?", subscriber);
+        permissionMapping.put("/backend/users(/\\d*)?", admin);
+        permissionMapping.put("/backend/periodicals/createNew/?", admin);
+        permissionMapping.put("/backend/periodicals/update/\\d+", admin);
+        permissionMapping.put("/backend/periodicals/discarded/delete/?", admin);
+        permissionMapping.put("/backend/invoices/?", subscriber);
     }
 
     private HttpServletRequest request;

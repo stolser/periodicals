@@ -1,7 +1,7 @@
-package com.stolser.javatraining.webproject.controller.command.periodical;
+package com.stolser.javatraining.webproject.controller.request_processor.periodical;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
-import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 

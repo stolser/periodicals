@@ -1,8 +1,8 @@
-package com.stolser.javatraining.webproject.controller.command.periodical;
+package com.stolser.javatraining.webproject.controller.request_processor.periodical;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
-import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.utils.Utils;
+import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.utils.RequestResponseUtils;
 import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
@@ -17,8 +17,8 @@ public class UpdatePeriodical implements RequestProcessor {
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
-//        String idString = request.getRequestURI().replace("/adminPanel/periodicals/update/", "");
-        long periodicalId = Utils.getFirstIdFromUri(request.getRequestURI());
+//        String idString = request.getRequestURI().replace("/backend/periodicals/update/", "");
+        long periodicalId = RequestResponseUtils.getFirstIdFromUri(request.getRequestURI());
 
         Periodical periodical;
         try {
@@ -26,7 +26,7 @@ public class UpdatePeriodical implements RequestProcessor {
             request.setAttribute("periodical", periodical);
 
         } catch (CustomSqlException e) {
-            String message = Utils.getExceptionMessageForRequestProcessor(request, e);
+            String message = RequestResponseUtils.getExceptionMessageForRequestProcessor(request, e);
             LOGGER.error(message, e);
 
             throw new RuntimeException(message, e);

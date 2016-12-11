@@ -23,7 +23,7 @@
             <p><span class="userFullName"><c:out value="${thisUser.lastName}"/>
             <c:out value="${thisUser.firstName}"/></span><br/>
                 <span class="userEmail"><c:out value="${thisUser.email}"/></span></p>
-            <a href="<c:url value="/adminPanel/users/currentUser"/>" class="btn btn-primary" role="button">
+            <a href="<c:url value="/backend/users/currentUser"/>" class="btn btn-primary" role="button">
                 <fmt:message key="myAccount.label" bundle="${general}"/></a>
             <p><a href="<c:url value="/Logout"/>">
                 <fmt:message key="signout.label" bundle="${general}"/></a></p>

@@ -9,7 +9,7 @@
     <div class="col-md-8 col-md-offset-2">
         <h2><fmt:message key="page_404.sub_title" bundle="${general}"/></h2>
         <p><fmt:message key="page_404.description" bundle="${general}"/>
-            <a href="/adminPanel/"><fmt:message key="page_404.homepage.label" bundle="${general}"/></a>.</p>
+            <a href="/backend/"><fmt:message key="page_404.homepage.label" bundle="${general}"/></a>.</p>
     </div>
 
 </div>

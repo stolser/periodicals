@@ -1,8 +1,8 @@
-package com.stolser.javatraining.webproject.controller.command.periodical;
+package com.stolser.javatraining.webproject.controller.request_processor.periodical;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
-import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.utils.Utils;
+import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.utils.RequestResponseUtils;
 import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
@@ -24,7 +24,7 @@ public class DisplayAllPeriodicals implements RequestProcessor {
             allPeriodicals = PeriodicalService.getInstance().findAll();
 
         } catch (CustomSqlException e) {
-            String message = Utils.getExceptionMessageForRequestProcessor(request, e);
+            String message = RequestResponseUtils.getExceptionMessageForRequestProcessor(request, e);
             LOGGER.error(message, e);
 
             throw new RuntimeException(message);

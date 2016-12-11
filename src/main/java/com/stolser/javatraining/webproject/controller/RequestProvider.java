@@ -1,12 +1,12 @@
 package com.stolser.javatraining.webproject.controller;
 
-import com.stolser.javatraining.webproject.controller.command.DisplayAdminPanelMainPage;
-import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.command.invoice.PayOneInvoice;
-import com.stolser.javatraining.webproject.controller.command.invoice.PersistOneInvoice;
-import com.stolser.javatraining.webproject.controller.command.periodical.*;
-import com.stolser.javatraining.webproject.controller.command.user.DisplayAllUsers;
-import com.stolser.javatraining.webproject.controller.command.user.DisplayCurrentUser;
+import com.stolser.javatraining.webproject.controller.request_processor.BackendMainPage;
+import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.request_processor.invoice.PayOneInvoice;
+import com.stolser.javatraining.webproject.controller.request_processor.invoice.PersistOneInvoice;
+import com.stolser.javatraining.webproject.controller.request_processor.periodical.*;
+import com.stolser.javatraining.webproject.controller.request_processor.user.DisplayAllUsers;
+import com.stolser.javatraining.webproject.controller.request_processor.user.DisplayCurrentUser;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -16,17 +16,17 @@ public class RequestProvider {
     private static final Map<String, RequestProcessor> requestMapping = new HashMap<>();
 
     static {
-        requestMapping.put("GET:/adminPanel/?", new DisplayAdminPanelMainPage());
-        requestMapping.put("GET:/adminPanel/users/?", new DisplayAllUsers());
-        requestMapping.put("GET:/adminPanel/users/currentUser/?", new DisplayCurrentUser());
-        requestMapping.put("GET:/adminPanel/periodicals/\\d+", new DisplayOnePeriodical());
-        requestMapping.put("GET:/adminPanel/periodicals/?", new DisplayAllPeriodicals());
-        requestMapping.put("POST:/adminPanel/periodicals/?", new PersistOnePeriodical());
-        requestMapping.put("GET:/adminPanel/periodicals/createNew/?", new CreateNewPeriodical());
-        requestMapping.put("GET:/adminPanel/periodicals/\\d+/update/?", new UpdatePeriodical());
-        requestMapping.put("GET:/adminPanel/periodicals/discarded/delete/?", new DeleteDiscardedPeriodicals());
-        requestMapping.put("POST:/adminPanel/users/\\d+/invoices/?", new PersistOneInvoice());
-        requestMapping.put("POST:/adminPanel/users/\\d+/invoices/\\d+/pay/?", new PayOneInvoice());
+        requestMapping.put("GET:/backend/?", new BackendMainPage());
+        requestMapping.put("GET:/backend/users/?", new DisplayAllUsers());
+        requestMapping.put("GET:/backend/users/currentUser/?", new DisplayCurrentUser());
+        requestMapping.put("GET:/backend/periodicals/\\d+", new DisplayOnePeriodical());
+        requestMapping.put("GET:/backend/periodicals/?", new DisplayAllPeriodicals());
+        requestMapping.put("POST:/backend/periodicals/?", new PersistOnePeriodical());
+        requestMapping.put("GET:/backend/periodicals/createNew/?", new CreateNewPeriodical());
+        requestMapping.put("GET:/backend/periodicals/\\d+/update/?", new UpdatePeriodical());
+        requestMapping.put("GET:/backend/periodicals/discarded/delete/?", new DeleteDiscardedPeriodicals());
+        requestMapping.put("POST:/backend/users/\\d+/invoices/?", new PersistOneInvoice());
+        requestMapping.put("POST:/backend/users/\\d+/invoices/\\d+/pay/?", new PayOneInvoice());
 
     }
 

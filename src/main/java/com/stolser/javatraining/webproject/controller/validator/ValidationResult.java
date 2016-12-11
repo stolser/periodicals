@@ -13,15 +13,8 @@ public class ValidationResult {
         return statusCode;
     }
 
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-    }
-
     public String getMessageKey() {
         return messageKey;
     }
 
-    public void setMessageKey(String messageKey) {
-        this.messageKey = messageKey;
-    }
 }

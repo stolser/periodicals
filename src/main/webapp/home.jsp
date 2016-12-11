@@ -6,7 +6,7 @@
     <h1><fmt:message key="home.topMessage" bundle="${frontGeneral}"/></h1>
     <% if (session.getAttribute("thisUser") != null) {%>
     <p><fmt:message key="visitYour.text" bundle="${frontGeneral}"/>
-        <a href="<c:url value="/adminPanel/users/currentUser"/>">
+        <a href="<c:url value="/backend/users/currentUser"/>">
             <fmt:message key="accountPage.text" bundle="${frontGeneral}"/>
         </a>.</p>
     <%} else {%>

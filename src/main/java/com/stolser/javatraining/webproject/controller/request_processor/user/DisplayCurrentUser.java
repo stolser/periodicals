@@ -1,8 +1,8 @@
-package com.stolser.javatraining.webproject.controller.command.user;
+package com.stolser.javatraining.webproject.controller.request_processor.user;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
-import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.utils.Utils;
+import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.utils.RequestResponseUtils;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Subscription;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceServiceImpl;
@@ -18,7 +18,7 @@ public class DisplayCurrentUser implements RequestProcessor {
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
-        long currentUserId = Utils.getUserIdFromSession(request);
+        long currentUserId = RequestResponseUtils.getUserIdFromSession(request);
         List<Invoice> invoices = InvoiceServiceImpl.getInstance().findAllByUserId(currentUserId);
         List<Subscription> subscriptions = SubscriptionService.getInstance().findAllByUserId(currentUserId);
 

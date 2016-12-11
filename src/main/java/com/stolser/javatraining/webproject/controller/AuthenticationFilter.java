@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.controller;
 
-import com.stolser.javatraining.webproject.controller.utils.Utils;
+import com.stolser.javatraining.webproject.controller.utils.RequestResponseUtils;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import javax.servlet.*;
@@ -21,7 +21,7 @@ public class AuthenticationFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String requestURI = request.getRequestURI();
-        User thisUser = Utils.getCurrentUserFromFromDb(request);
+        User thisUser = RequestResponseUtils.getCurrentUserFromFromDb(request);
 
         if (thisUser == null) {
             request.getSession().setAttribute(ApplicationResources.ORIGINAL_URI_ATTR_NAME, requestURI);

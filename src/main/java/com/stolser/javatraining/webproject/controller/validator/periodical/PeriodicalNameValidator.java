@@ -1,5 +1,7 @@
-package com.stolser.javatraining.webproject.controller.validator;
+package com.stolser.javatraining.webproject.controller.validator.periodical;
 
+import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
+import com.stolser.javatraining.webproject.controller.validator.Validator;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
 
@@ -7,9 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Pattern;
 
 public class PeriodicalNameValidator implements Validator {
-
-    public PeriodicalNameValidator() {
-    }
 
     @Override
     public ValidationResult validate(String periodicalName, HttpServletRequest request) {

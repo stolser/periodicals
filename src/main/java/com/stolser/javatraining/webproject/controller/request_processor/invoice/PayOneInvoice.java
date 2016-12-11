@@ -1,9 +1,9 @@
-package com.stolser.javatraining.webproject.controller.command.invoice;
+package com.stolser.javatraining.webproject.controller.request_processor.invoice;
 
-import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.utils.Utils;
+import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.utils.RequestResponseUtils;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
-import com.stolser.javatraining.webproject.controller.validator.RequestUserIdValidator;
+import com.stolser.javatraining.webproject.controller.validator.user.RequestUserIdValidator;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceService;
@@ -48,14 +48,14 @@ public class PayOneInvoice implements RequestProcessor {
 
         addMessagesToSession();
 
-        Utils.sendRedirect(request, response, CURRENT_USER_ACCOUNT_HREF);
+        RequestResponseUtils.sendRedirect(request, response, CURRENT_USER_ACCOUNT_HREF);
 
         return null;
     }
 
     private void specifyValidationRules() {
-        invoiceId = Utils.getFirstIdFromUri(request.getRequestURI()
-                .replaceFirst("/adminPanel/users/\\d+/", ""));
+        invoiceId = RequestResponseUtils.getFirstIdFromUri(request.getRequestURI()
+                .replaceFirst("/backend/users/\\d+/", ""));
         invoiceService = InvoiceServiceImpl.getInstance();
         final Invoice invoiceInDb = invoiceService.findOneById(invoiceId);
 
@@ -108,7 +108,7 @@ public class PayOneInvoice implements RequestProcessor {
 
         } catch (Exception e) {
             LOGGER.error("User id = {}. Exception during paying the invoice with id {}.",
-                    Utils.getUserIdFromSession(request), invoiceId, e);
+                    RequestResponseUtils.getUserIdFromSession(request), invoiceId, e);
 
             generalMessages.add(new FrontendMessage("validation.invoice.payInvoiceError",
                     FrontendMessage.MessageType.ERROR));
@@ -118,6 +118,6 @@ public class PayOneInvoice implements RequestProcessor {
     private void addMessagesToSession() {
         Map<String, List<FrontendMessage>> frontMessageMap = new HashMap<>();
         frontMessageMap.put(GENERAL_MESSAGES_FRONT_BLOCK_NAME, generalMessages);
-        Utils.addMessagesToSession(request, frontMessageMap);
+        RequestResponseUtils.addMessagesToSession(request, frontMessageMap);
     }
 }

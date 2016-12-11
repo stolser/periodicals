@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.controller;
 
-import com.stolser.javatraining.webproject.controller.command.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.view.ViewResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class FrontController extends HttpServlet {
         try {
             RequestProcessor command = new RequestProvider(request).getRequestProcessor();
 
-            System.out.println("command = " + command.getClass().getName());
+            System.out.println("request_processor = " + command.getClass().getName());
 
             viewName = command.getViewName(request, response);
 

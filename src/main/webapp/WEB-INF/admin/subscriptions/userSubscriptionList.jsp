@@ -16,7 +16,7 @@
         <c:forEach items="${userSubscriptions}" var="subscription" varStatus="rowStatus">
             <tr class="${subscription.status == 'ACTIVE' ? 'success' : 'danger'}">
                 <td><c:out value="${subscription.id}"/></td>
-                <td><a href="/adminPanel/periodicals/<c:out value="${subscription.periodical.id}"/>">
+                <td><a href="/backend/periodicals/<c:out value="${subscription.periodical.id}"/>">
                     <c:out value="${subscription.periodical.name}"/></a></td>
                 <td><c:out value="${subscription.deliveryAddress}"/></td>
                 <td><custom:format-datetime value="${subscription.endDate}"/></td>

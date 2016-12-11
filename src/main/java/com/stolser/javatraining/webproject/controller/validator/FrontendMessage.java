@@ -20,16 +20,8 @@ public class FrontendMessage {
         return messageKey;
     }
 
-    public void setMessageKey(String messageKey) {
-        this.messageKey = messageKey;
-    }
-
     public MessageType getType() {
         return type;
-    }
-
-    public void setType(MessageType type) {
-        this.type = type;
     }
 
     @Override

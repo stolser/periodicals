@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.MESSAGES_ATTR_NAME;
 
-public class Utils {
+public class RequestResponseUtils {
     public static long getUserIdFromSession(HttpServletRequest request) {
         User user = (User) request.getSession()
                 .getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
@@ -31,7 +31,7 @@ public class Utils {
 
     public static String getExceptionMessageForRequestProcessor(HttpServletRequest request, Exception e) {
         String message = String.format("User id = %d. " +
-                "Original: %s. ", Utils.getUserIdFromSession(request), e.getMessage());
+                "Original: %s. ", RequestResponseUtils.getUserIdFromSession(request), e.getMessage());
 
         return message;
     }
@@ -84,7 +84,7 @@ public class Utils {
 
         } catch (Exception e) {
             String message = String.format("User id = %d. Exception during redirection to '%s'.",
-                    Utils.getUserIdFromSession(request), redirectUri);
+                    RequestResponseUtils.getUserIdFromSession(request), redirectUri);
 
             throw new RuntimeException(message, e);
         }

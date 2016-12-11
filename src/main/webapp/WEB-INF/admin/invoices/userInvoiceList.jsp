@@ -23,7 +23,7 @@
         <c:forEach items="${userInvoices}" var="invoice" varStatus="rowStatus">
             <tr class="${invoice.status == 'PAID' ? 'success' : 'danger'}">
                 <td><c:out value="${invoice.id}"/></td>
-                <td><a href="/adminPanel/periodicals/<c:out value="${invoice.periodical.id}"/>">
+                <td><a href="/backend/periodicals/<c:out value="${invoice.periodical.id}"/>">
                     <c:out value="${invoice.periodical.name}"/></a></td>
                 <td><c:out value="${invoice.subscriptionPeriod}"/></td>
                 <td><c:out value="${invoice.periodical.oneMonthCost > 0.0 ? invoice.periodical.oneMonthCost : 'free'}"/></td>
@@ -33,7 +33,7 @@
                 <td class="text-center"><fmt:message key="${invoice.status}" bundle="${langInvoice}"/>
                     <c:if test="${invoice.status == 'NEW'}">
                         <form method="post"
-                              action="/adminPanel/users/${thisUser.id}/invoices/${invoice.id}/pay">
+                              action="/backend/users/${thisUser.id}/invoices/${invoice.id}/pay">
                             <button type="submit" class="btn btn-primary btn-block">
                                 <fmt:message key="payInvoiceBtn.label" bundle="${langInvoice}"/>
                             </button>

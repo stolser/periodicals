@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface Validator {
     int STATUS_CODE_SUCCESS = 200;
     int STATUS_CODE_VALIDATION_FAILED = 412;
+
     String MESSAGE_KEY_SUCCESS = "validation.ok";
     String MESSAGE_KEY_NO_SUCH_USER_NAME = "validation.noSuchUserName";
     String MESSAGE_KEY_USER_IS_BLOCKED = "validation.userIsBlocked";
@@ -13,6 +14,7 @@ public interface Validator {
     String MESSAGE_KEY_PERIODICAL_PUBLISHER_ERROR = "periodicalPublisher.validationError";
     String MESSAGE_KEY_PERIODICAL_CATEGORY_ERROR = "periodicalCategory.validationError";
     String MESSAGE_KEY_PERIODICAL_COST_ERROR = "periodicalCost.validationError";
+
     String PERIODICAL_NAME_PATTERN_REGEX = "[а-яА-ЯіІїЇєЄёЁ\\w\\s!&?$#@-]{2,45}";
     String PERIODICAL_PUBLISHER_PATTERN_REGEX = "[а-яА-ЯіІїЇєЄёЁ\\w\\s-]{2,45}";
     String PERIODICAL_CATEGORY_PATTERN_REGEX = "[а-яА-ЯіІїЇєЄёЁ\\w\\s-]{2,45}";
