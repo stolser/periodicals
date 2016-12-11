@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.controller.validator.user;
 
-import com.stolser.javatraining.webproject.controller.utils.RequestResponseUtils;
+import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
 
@@ -11,8 +11,8 @@ public class RequestUserIdValidator implements Validator {
     public ValidationResult validate(String paramValue, HttpServletRequest request) {
         int statusCode;
         String messageKey;
-        long userIdFromUri = RequestResponseUtils.getFirstIdFromUri(request.getRequestURI());
-        long userIdFromSession = RequestResponseUtils.getUserIdFromSession(request);
+        long userIdFromUri = HttpUtils.getFirstIdFromUri(request.getRequestURI());
+        long userIdFromSession = HttpUtils.getUserIdFromSession(request);
 
         if (userIdFromUri == userIdFromSession) {
             statusCode = STATUS_CODE_SUCCESS;

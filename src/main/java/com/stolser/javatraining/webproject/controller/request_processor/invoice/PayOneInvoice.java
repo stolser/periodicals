@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.controller.request_processor.invoice;
 
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.utils.RequestResponseUtils;
+import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.validator.user.RequestUserIdValidator;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
@@ -48,13 +48,13 @@ public class PayOneInvoice implements RequestProcessor {
 
         addMessagesToSession();
 
-        RequestResponseUtils.sendRedirect(request, response, CURRENT_USER_ACCOUNT_HREF);
+        HttpUtils.sendRedirect(request, response, CURRENT_USER_ACCOUNT_HREF);
 
         return null;
     }
 
     private void specifyValidationRules() {
-        invoiceId = RequestResponseUtils.getFirstIdFromUri(request.getRequestURI()
+        invoiceId = HttpUtils.getFirstIdFromUri(request.getRequestURI()
                 .replaceFirst("/backend/users/\\d+/", ""));
         invoiceService = InvoiceServiceImpl.getInstance();
         final Invoice invoiceInDb = invoiceService.findOneById(invoiceId);
@@ -108,7 +108,7 @@ public class PayOneInvoice implements RequestProcessor {
 
         } catch (Exception e) {
             LOGGER.error("User id = {}. Exception during paying the invoice with id {}.",
-                    RequestResponseUtils.getUserIdFromSession(request), invoiceId, e);
+                    HttpUtils.getUserIdFromSession(request), invoiceId, e);
 
             generalMessages.add(new FrontendMessage("validation.invoice.payInvoiceError",
                     FrontendMessage.MessageType.ERROR));
@@ -118,6 +118,6 @@ public class PayOneInvoice implements RequestProcessor {
     private void addMessagesToSession() {
         Map<String, List<FrontendMessage>> frontMessageMap = new HashMap<>();
         frontMessageMap.put(GENERAL_MESSAGES_FRONT_BLOCK_NAME, generalMessages);
-        RequestResponseUtils.addMessagesToSession(request, frontMessageMap);
+        HttpUtils.addMessagesToSession(request, frontMessageMap);
     }
 }

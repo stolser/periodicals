@@ -10,7 +10,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><fmt:message key="login.signin.title" bundle="${login}"/></h3>
                 <form method="POST" name="loginform" id="loginform"
-                      action="/Login"
+                      action="/signIn"
                       accept-charset="UTF-8" role="form">
                     <div class="form-group validated required">
                         <label class="control-label" for="userName">

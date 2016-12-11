@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.controller.auth;
 
+import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,8 +30,7 @@ public class Authorization {
 
     public boolean checkPermissions() {
         String requestURI = request.getRequestURI();
-        user = (User) request.getSession().getAttribute("thisUser");
-
+        user = (User) request.getSession().getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
 
         Optional<Map.Entry<String, Set<String>>> thisPermissionMapping =
                 permissionMapping.entrySet()

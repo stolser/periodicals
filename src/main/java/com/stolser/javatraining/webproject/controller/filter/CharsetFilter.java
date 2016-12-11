@@ -1,4 +1,4 @@
-package com.stolser.javatraining.webproject.controller;
+package com.stolser.javatraining.webproject.controller.filter;
 
 import javax.servlet.*;
 import java.io.IOException;

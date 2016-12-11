@@ -1,6 +1,6 @@
-package com.stolser.javatraining.webproject.controller;
+package com.stolser.javatraining.webproject.controller.auth;
 
-import com.stolser.javatraining.webproject.controller.auth.Authorization;
+import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +13,7 @@ import java.io.IOException;
 //@WebFilter(urlPatterns = {"/admin/*"})
 public class AuthorizationFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationFilter.class);
+    private static final String ACCESS_DENIED_FOR_USER = "Access denied for user '%s' to '%s'!!!\n";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -26,17 +27,16 @@ public class AuthorizationFilter implements Filter {
         String requestURI = ((HttpServletRequest) request).getRequestURI();
 
         if (requestIsAuthorized(request)) {
-            System.out.println("permission is granted to '" + requestURI + "'");
             chain.doFilter(request, response);
 
         } else {
             String username = ((User)((HttpServletRequest) request).getSession()
                     .getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME)).getUserName();
 
-            LOGGER.error(String.format("Access denied for user '%s' to '%s'!!!\n",
+            LOGGER.error(String.format(ACCESS_DENIED_FOR_USER,
                     username, requestURI));
 
-            ((HttpServletResponse) response).sendRedirect("/accessDenied.jsp");
+            ((HttpServletResponse) response).sendRedirect(ApplicationResources.ACCESS_DENIED_HRF);
 
         }
     }

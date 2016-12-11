@@ -21,8 +21,9 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ATTR_NAME;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.ORIGINAL_URI_ATTR_NAME;
 
-public class LoginServlet extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginServlet.class);
+public class SignInServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SignInServlet.class);
+    private static final String EXCEPTION_DURING_GETTING_MESSAGE_DIGEST_FOR_MD5 = "Exception during getting MessageDigest for 'MD5'";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -30,8 +31,8 @@ public class LoginServlet extends HttpServlet {
 
         Map<String, FrontendMessage> messages = new HashMap<>();
         String redirectUri;
-        String username = request.getParameter("signInUsername");
-        String password = request.getParameter("password");
+        String username = request.getParameter(SIGN_IN_USERNAME_PARAM_NAME);
+        String password = request.getParameter(PASSWORD_PARAM_NAME);
 
         if ((username != null) && (password != null)
                 && (!"".equals(username)) && (!"".equals(password))) {
@@ -41,10 +42,11 @@ public class LoginServlet extends HttpServlet {
             Login login = userService.findOneLoginByUserName(username);
 
             if (login == null) {
-                messages.put("signInUsername", new FrontendMessage("validation.noSuchUserName",
+                messages.put(SIGN_IN_USERNAME_PARAM_NAME,
+                        new FrontendMessage("validation.noSuchUserName",
                         FrontendMessage.MessageType.ERROR));
 
-                redirectUri = "/login.jsp";
+                redirectUri = LOGIN_HREF;
             } else if (passwordHash.equals(login.getPasswordHash())) {
                 User thisUser = userService.findOneUserByUserName(username);
 
@@ -52,28 +54,29 @@ public class LoginServlet extends HttpServlet {
                     request.getSession().setAttribute(CURRENT_USER_ATTR_NAME, thisUser);
                     String originalUri = (String) request.getSession().getAttribute(ORIGINAL_URI_ATTR_NAME);
                     redirectUri = (originalUri != null) ? originalUri : "/backend/";
+
                     request.getSession().removeAttribute(ORIGINAL_URI_ATTR_NAME);
                     request.getSession().removeAttribute(MESSAGES_ATTR_NAME);
 
                 } else {
-                    messages.put("signInUsername", new FrontendMessage("error.userIsBlocked",
+                    messages.put(SIGN_IN_USERNAME_PARAM_NAME, new FrontendMessage("error.userIsBlocked",
                             FrontendMessage.MessageType.ERROR));
 
-                    redirectUri = "/login.jsp";
+                    redirectUri = LOGIN_HREF;
                 }
 
             } else {
-                messages.put("password", new FrontendMessage("error.wrongPassword",
+                messages.put(PASSWORD_PARAM_NAME, new FrontendMessage("error.wrongPassword",
                         FrontendMessage.MessageType.ERROR));
 
-                redirectUri = "/login.jsp";
+                redirectUri = LOGIN_HREF;
             }
 
         } else {
-            redirectUri = "/login.jsp";
+            redirectUri = LOGIN_HREF;
         }
 
-        request.getSession().setAttribute("username", username);
+        request.getSession().setAttribute(USERNAME_ATTR_NAME, username);
         request.getSession().setAttribute(MESSAGES_ATTR_NAME, messages);
         response.sendRedirect(redirectUri);
 
@@ -85,7 +88,7 @@ public class LoginServlet extends HttpServlet {
             md = MessageDigest.getInstance("MD5");
 
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.error("Exception during getting MessageDigest for 'MD5'", e);
+            LOGGER.error(EXCEPTION_DURING_GETTING_MESSAGE_DIGEST_FOR_MD5, e);
             throw new RuntimeException();
         }
 

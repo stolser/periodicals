@@ -1,6 +1,7 @@
 package com.stolser.javatraining.webproject.controller;
 
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.view.ViewResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,14 +41,15 @@ public class FrontController extends HttpServlet {
         System.out.println("processRequest(): requestURI = " + requestURI);
 
         try {
-            RequestProcessor command = new RequestProvider(request).getRequestProcessor();
+            RequestProcessor processor = new RequestProvider(request).getRequestProcessor();
 
-            System.out.println("request_processor = " + command.getClass().getName());
+            System.out.println("request_processor = " + processor.getClass().getName());
 
-            viewName = command.getViewName(request, response);
+            viewName = processor.getViewName(request, response);
 
         } catch (Exception e) {
-            LOGGER.error("Exception during request processing: {}", e.getMessage(), e);
+            LOGGER.error("User id = {}. requestURI = {}",
+                    HttpUtils.getUserIdFromSession(request), requestURI, e);
             request.setAttribute(MESSAGE_ATTRIBUTE, e.getLocalizedMessage());
 
             viewName = ApplicationResources.getErrorViewName(e);

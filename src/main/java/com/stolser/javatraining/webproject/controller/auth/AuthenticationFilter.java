@@ -1,12 +1,14 @@
-package com.stolser.javatraining.webproject.controller;
+package com.stolser.javatraining.webproject.controller.auth;
 
-import com.stolser.javatraining.webproject.controller.utils.RequestResponseUtils;
+import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 public class AuthenticationFilter implements Filter {
 
@@ -21,14 +23,14 @@ public class AuthenticationFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String requestURI = request.getRequestURI();
-        User thisUser = RequestResponseUtils.getCurrentUserFromFromDb(request);
+        User thisUser = HttpUtils.getCurrentUserFromFromDb(request);
 
         if (thisUser == null) {
-            request.getSession().setAttribute(ApplicationResources.ORIGINAL_URI_ATTR_NAME, requestURI);
-            response.sendRedirect("/login.jsp");
+            request.getSession().setAttribute(ORIGINAL_URI_ATTR_NAME, requestURI);
+            response.sendRedirect(LOGIN_HREF);
 
         } else if (!User.Status.ACTIVE.equals(thisUser.getStatus())) {
-            response.sendRedirect("/Logout");
+            response.sendRedirect("/backend/signOut");
 
         } else {
             chain.doFilter(servletRequest, servletResponse);

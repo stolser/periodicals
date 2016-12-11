@@ -25,7 +25,7 @@
                 <span class="userEmail"><c:out value="${thisUser.email}"/></span></p>
             <a href="<c:url value="/backend/users/currentUser"/>" class="btn btn-primary" role="button">
                 <fmt:message key="myAccount.label" bundle="${general}"/></a>
-            <p><a href="<c:url value="/Logout"/>">
+            <p><a href="<c:url value="/backend/signOut"/>">
                 <fmt:message key="signout.label" bundle="${general}"/></a></p>
             <%} else if(!"/login.jsp".equals(request.getRequestURI())) {%>
             <p><a href="/login.jsp"><fmt:message key="signin.label" bundle="${general}"/></a></p>

@@ -14,7 +14,7 @@
 
     <filter>
         <filter-name>CharsetFilter</filter-name>
-        <filter-class>com.stolser.javatraining.webproject.controller.CharsetFilter</filter-class>
+        <filter-class>com.stolser.javatraining.webproject.controller.filter.CharsetFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -28,7 +28,7 @@
 
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
-        <filter-class>com.stolser.javatraining.webproject.controller.AuthenticationFilter</filter-class>
+        <filter-class>com.stolser.javatraining.webproject.controller.auth.AuthenticationFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -39,7 +39,7 @@
 
     <filter>
         <filter-name>AuthorizationFilter</filter-name>
-        <filter-class>com.stolser.javatraining.webproject.controller.AuthorizationFilter</filter-class>
+        <filter-class>com.stolser.javatraining.webproject.controller.auth.AuthorizationFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -49,21 +49,12 @@
     </filter-mapping>
 
     <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.stolser.javatraining.webproject.controller.LoginServlet</servlet-class>
+        <servlet-name>SignInServlet</servlet-name>
+        <servlet-class>com.stolser.javatraining.webproject.controller.SignInServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/Login</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>com.stolser.javatraining.webproject.controller.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/Logout</url-pattern>
+        <servlet-name>SignInServlet</servlet-name>
+        <url-pattern>/signIn</url-pattern>
     </servlet-mapping>
 
     <servlet>

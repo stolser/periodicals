@@ -1,63 +1,67 @@
 package com.stolser.javatraining.webproject.controller.request_processor.periodical;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
+import com.stolser.javatraining.webproject.controller.CustomRedirectException;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.utils.RequestResponseUtils;
+import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
 import com.stolser.javatraining.webproject.controller.validator.ValidatorFactory;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class PersistOnePeriodical implements RequestProcessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PersistOnePeriodical.class);
+
+    private static final String INCORRECT_OPERATION_DURING_PERSISTING_A_PERIODICAL = "Incorrect entityOperationType during persisting a periodical.";
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
         Periodical periodicalToSave;
 
+        periodicalToSave = HttpUtils.getPeriodicalFromRequest(request);
 
-        try {
-            periodicalToSave = RequestResponseUtils.getPeriodicalFromRequest(request);
+        if (periodicalToSaveIsNotValid(periodicalToSave, request)) {
+            request.getSession().setAttribute(ApplicationResources.PERIODICAL_ATTR_NAME, periodicalToSave);
 
-            if (periodicalToSaveIsNotValid(periodicalToSave, request)) {
-                request.getSession().setAttribute("periodical", periodicalToSave);
+            String entityOperationType = request.getParameter(ApplicationResources.ENTITY_OPERATION_TYPE_PARAM_NAME);
+            String redirectUri = null;
 
-                String entityOperationType = request.getParameter("entityOperationType");
+            try {
+
                 switch (entityOperationType) {
                     case "create":
-                        response.sendRedirect(ApplicationResources.PERIODICAL_CREATE_NEW_HREF);
-                        break;
+                        redirectUri = ApplicationResources.PERIODICAL_CREATE_NEW_HREF;
+                        response.sendRedirect(redirectUri);
+                        return null;
+
                     case "update":
-                        response.sendRedirect(ApplicationResources.PERIODICAL_UPDATE_HREF + "/" +
-                                periodicalToSave.getId());
-                        break;
+                        redirectUri = ApplicationResources.PERIODICAL_UPDATE_HREF + "/" +
+                                periodicalToSave.getId();
+                        response.sendRedirect(redirectUri);
+                        return null;
+
                     default:
-                        throw new IllegalArgumentException("Incorrect entityOperationType " +
-                                "during persisting a periodical.");
+                        throw new IllegalArgumentException(INCORRECT_OPERATION_DURING_PERSISTING_A_PERIODICAL);
                 }
 
-                return null;
+            } catch (IOException e) {
+                String message = HttpUtils.getRedirectionExceptionMessage(request,
+                        redirectUri);
+
+                throw new CustomRedirectException(message, e);
             }
-
-            request.getSession().removeAttribute("periodical");
-            request.getSession().removeAttribute(ApplicationResources.MESSAGES_ATTR_NAME);
-            PeriodicalService.getInstance().save(periodicalToSave);
-
-        } catch (Exception e) {
-            String message = RequestResponseUtils.getExceptionMessageForRequestProcessor(request, e);
-            LOGGER.error(message, e);
-
-            throw new RuntimeException(message, e);
         }
+
+//        request.getSession().removeAttribute("periodical");
+//        request.getSession().removeAttribute(ApplicationResources.MESSAGES_ATTR_NAME);
+        PeriodicalService.getInstance().save(periodicalToSave);
 
         System.out.println("Persisted periodical: " + periodicalToSave);
 

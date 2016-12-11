@@ -30,7 +30,7 @@
                 </c:forEach>
             </ul>
 
-            <p><a href="<c:url value="/Logout"/>">
+            <p><a href="<c:url value="/backend/signOut"/>">
                 <fmt:message key="signout.label" bundle="${general}"/></a></p>
 
 
@@ -38,11 +38,11 @@
     </div>
 
     <c:if test="${not empty userInvoices}">
-        <%@include file="/WEB-INF/admin/invoices/userInvoiceList.jsp" %>
+        <%@include file="/WEB-INF/backend/invoices/userInvoiceList.jsp" %>
     </c:if>
 
     <c:if test="${not empty userSubscriptions}">
-        <%@include file="/WEB-INF/admin/subscriptions/userSubscriptionList.jsp" %>
+        <%@include file="/WEB-INF/backend/subscriptions/userSubscriptionList.jsp" %>
     </c:if>
 
 </div>

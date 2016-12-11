@@ -1,3 +1,4 @@
+<%@ page import="com.stolser.javatraining.webproject.controller.ApplicationResources" %>
 <footer>
 
 </footer>
@@ -15,4 +16,5 @@
 </body>
 </html>
 
-<% session.removeAttribute("messages");%>
+<% session.removeAttribute(ApplicationResources.MESSAGES_ATTR_NAME);%>
+<% session.removeAttribute(ApplicationResources.PERIODICAL_ATTR_NAME);%>

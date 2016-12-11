@@ -170,12 +170,14 @@ public class PeriodicalService {
         }
     }
 
-    public void deleteAllDiscarded() throws SQLException {
+    public void deleteAllDiscarded() {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
             System.out.println("PeriodicalService.deleteAllDiscarded(): connection has been got.");
 
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             periodicalDao.deleteAllDiscarded();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

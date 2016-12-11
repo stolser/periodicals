@@ -2,34 +2,19 @@ package com.stolser.javatraining.webproject.controller.request_processor.periodi
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.utils.RequestResponseUtils;
-import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class DisplayAllPeriodicals implements RequestProcessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DisplayAllPeriodicals.class);
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
 
-        List<Periodical> allPeriodicals;
-        try {
-            allPeriodicals = PeriodicalService.getInstance().findAll();
-
-        } catch (CustomSqlException e) {
-            String message = RequestResponseUtils.getExceptionMessageForRequestProcessor(request, e);
-            LOGGER.error(message, e);
-
-            throw new RuntimeException(message);
-        }
-
+        List<Periodical> allPeriodicals = PeriodicalService.getInstance().findAll();
         request.setAttribute("allPeriodicals", allPeriodicals);
 
         return ApplicationResources.PERIODICAL_LIST_VIEW_NAME;

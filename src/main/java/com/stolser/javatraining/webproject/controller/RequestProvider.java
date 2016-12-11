@@ -1,6 +1,7 @@
 package com.stolser.javatraining.webproject.controller;
 
 import com.stolser.javatraining.webproject.controller.request_processor.BackendMainPage;
+import com.stolser.javatraining.webproject.controller.request_processor.SignOut;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.request_processor.invoice.PayOneInvoice;
 import com.stolser.javatraining.webproject.controller.request_processor.invoice.PersistOneInvoice;
@@ -27,6 +28,7 @@ public class RequestProvider {
         requestMapping.put("GET:/backend/periodicals/discarded/delete/?", new DeleteDiscardedPeriodicals());
         requestMapping.put("POST:/backend/users/\\d+/invoices/?", new PersistOneInvoice());
         requestMapping.put("POST:/backend/users/\\d+/invoices/\\d+/pay/?", new PayOneInvoice());
+        requestMapping.put("GET:/backend/signOut/?", new SignOut());
 
     }
 
