@@ -63,7 +63,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ValidationServlet</servlet-name>
-        <url-pattern>/Validation</url-pattern>
+        <url-pattern>/backend/validation</url-pattern>
     </servlet-mapping>
 
     <servlet>

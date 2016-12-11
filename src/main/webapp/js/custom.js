@@ -11,7 +11,7 @@ $(document).ready(function () {
         console.log("paramName = " + paramName + "; paramValue = " + paramValue +
             "entityId = " + entityId + "; entityOperationType = " + entityOperationType);
 
-        $.post("/Validation", {
+        $.post("/backend/validation", {
             'paramName': paramName,
             'paramValue': paramValue,
             'entityId': entityId,

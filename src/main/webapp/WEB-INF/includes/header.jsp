@@ -19,20 +19,7 @@
 <body>
 <div class="container">
     <div id="header" class="row">
-        <div class="col-md-4 col-sm-6 col-xs-6">
-            <% if (session.getAttribute("thisUser") != null) {%>
-            <p><span class="userFullName"><c:out value="${thisUser.lastName}"/>
-            <c:out value="${thisUser.firstName}"/></span><br/>
-                <span class="userEmail"><c:out value="${thisUser.email}"/></span></p>
-            <a href="<c:url value="/backend/users/currentUser"/>" class="btn btn-primary" role="button">
-                <fmt:message key="myAccount.label" bundle="${general}"/></a>
-            <p><a href="<c:url value="/backend/signOut"/>">
-                <fmt:message key="signout.label" bundle="${general}"/></a></p>
-            <%} else if(!"/login.jsp".equals(request.getRequestURI())) {%>
-            <p><a href="/login.jsp"><fmt:message key="signin.label" bundle="${general}"/></a></p>
-            <%}%>
-        </div>
-        <div class="col-md-2 col-md-offset-6 col-sm-4 col-sm-offset-2 col-xs-6">
+        <div class="col-xs-6 col-md-2 col-md-push-8">
             <form>
                 <select class="form-control" id="language" name="language" onchange="submit()">
                     <option value="en_EN" ${language == 'en_EN' ? 'selected' : ''}>English</option>
@@ -41,8 +28,45 @@
                 </select>
             </form>
         </div>
+        <div class="col-xs-6 col-md-2 col-md-push-8 text-right">
+            <% if (session.getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME) != null) {%>
+            <p class="text-right"><span class="userFullName"><c:out value="${thisUser.lastName}"/>
+            <c:out value="${thisUser.firstName}"/></span><br/>
+                <span class="userEmail"><c:out value="${thisUser.email}"/></span></p>
+            <a href="<c:url value="/backend/users/currentUser"/>" class="btn btn-primary" role="button">
+                <fmt:message key="myAccount.label" bundle="${general}"/></a>
+
+            <%} else if (!"/login.jsp".equals(request.getRequestURI())) {%>
+            <p><a href="/login.jsp"><fmt:message key="signin.label" bundle="${general}"/></a></p>
+            <%}%>
+        </div>
+
+        <div class="col-xs-12 col-md-8 col-md-pull-4">
+            <% if (session.getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME) != null) {%>
+            <nav class="navbar navbar-default navbar-static-top">
+                <div class="container-fluid">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/backend/users/currentUser">
+                            <fmt:message key="myAccount.label" bundle="${general}"/></a></li>
+                        <li><a href="/backend/periodicals">
+                            <fmt:message key="menu.periodicals.label" bundle="${general}"/></a></li>
+                        <custom:if-authorized mustHaveRoles="admin">
+                            <li><a href="/backend/users">
+                                <fmt:message key="menu.users.label" bundle="${general}"/></a></li>
+                        </custom:if-authorized>
+                        <li><a href="/backend/signOut">
+                            <fmt:message key="signout.label" bundle="${general}"/></a></li>
+                    </ul>
+                </div>
+            </nav>
+            <%}%>
+        </div>
+
+
+
 
     </div>
+
 
     <c:if test="${(not empty messages) && (not empty messages['topMessages'])}">
     <div class="row">
