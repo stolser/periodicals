@@ -57,9 +57,9 @@
                 </div>
             </div>
         </custom:if-authorized>
-        <custom:if-authorized mustHaveRoles="*" mustNotHaveRoles="admin">
-            <p><fmt:message key="youCannotUpdatePeriodicals.text" bundle="${langPeriodical}"/></p>
-        </custom:if-authorized>
+        <%--<custom:if-authorized mustHaveRoles="*" mustNotHaveRoles="admin">--%>
+            <%--<p><fmt:message key="youCannotUpdatePeriodicals.text" bundle="${langPeriodical}"/></p>--%>
+        <%--</custom:if-authorized>--%>
     </div>
 
 </div>

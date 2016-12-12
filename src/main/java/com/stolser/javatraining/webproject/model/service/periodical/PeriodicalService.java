@@ -84,6 +84,16 @@ public class PeriodicalService {
         }
     }
 
+    public List<Periodical> findAllByStatus(Periodical.Status status) {
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+
+            return factory.getPeriodicalDao(conn).findAllByStatus(status);
+
+        } catch (SQLException e) {
+            throw new CustomSqlException(e);
+        }
+    }
+
     /**
      * If the id of this periodical is 0, creates a new one. Otherwise tries to update an existing periodical in
      * the db with this id.

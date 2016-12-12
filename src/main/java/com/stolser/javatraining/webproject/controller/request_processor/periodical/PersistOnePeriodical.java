@@ -41,10 +41,41 @@ public class PersistOnePeriodical implements RequestProcessor {
             return null;
         }
 
-        statusChangeFromActiveToInactive(periodicalToSave, generalMessages);
-
         PeriodicalService periodicalService = PeriodicalService.getInstance();
-        Periodical persistedPeriodical = periodicalService.save(periodicalToSave);
+        Periodical periodicalInDb = periodicalService.findOneById(periodicalToSave.getId());
+        Periodical.Status oldStatus = periodicalInDb.getStatus();
+        Periodical.Status newStatus = periodicalToSave.getStatus();
+
+        if (oldStatus.equals(VISIBLE) && newStatus.equals(INVISIBLE)) {
+            if (periodicalService.hasActiveSubscriptions(periodicalToSave.getId())) {
+                generalMessages.add(new FrontendMessage("validation.periodicalHasActiveSubscriptions.warning",
+                        FrontendMessage.MessageType.WARNING));
+            }
+        }
+
+        if ((oldStatus.equals(VISIBLE) || oldStatus.equals(INVISIBLE))
+                && newStatus.equals(DISCARDED)
+                && periodicalService.hasActiveSubscriptions(periodicalToSave.getId())) {
+
+            generalMessages.add(new FrontendMessage("validation.periodicalHasActiveSubscriptions.error",
+                    FrontendMessage.MessageType.ERROR));
+
+            HttpUtils.addGeneralMessagesToSession(request, generalMessages);
+            HttpUtils.sendRedirect(request, response, redirectUri);
+            return null;
+        }
+
+        Periodical persistedPeriodical;
+        if ((oldStatus.equals(VISIBLE) || oldStatus.equals(INVISIBLE))
+                && newStatus.equals(DISCARDED)) {
+
+            persistedPeriodical = periodicalService.save(periodicalToSave);
+            // update status by periodicalService.discardThis(periodicalToSave) in a transaction
+            // with conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            // If inside Dao periodical hasActiveSubscriptions --> new CustomSqlException();
+        } else {
+            persistedPeriodical = periodicalService.save(periodicalToSave);
+        }
 
         if (persistedPeriodical != null) {
             switch (entityOperationType) {
@@ -73,23 +104,6 @@ public class PersistOnePeriodical implements RequestProcessor {
             HttpUtils.sendRedirect(request, response, redirectUri);
             return null;
         }
-    }
-
-    private boolean statusChangeFromActiveToInactive(Periodical periodicalToSave,
-                                                     List<FrontendMessage> generalMessages) {
-        PeriodicalService periodicalService = PeriodicalService.getInstance();
-        Periodical periodicalInDb = periodicalService.findOneById(periodicalToSave.getId());
-        Periodical.Status oldStatus = periodicalInDb.getStatus();
-        Periodical.Status newStatus = periodicalToSave.getStatus();
-
-        if (oldStatus.equals(VISIBLE) && newStatus.equals(INVISIBLE)) {
-            if (periodicalService.hasActiveSubscriptions(periodicalToSave.getId())) {
-                generalMessages.add(new FrontendMessage("validation.periodicalHasActiveSubscriptions",
-                        FrontendMessage.MessageType.WARNING));
-            }
-        }
-
-        return true;
     }
 
     private String getRedirectUriByOperationType(String entityOperationType, Periodical periodicalToSave) {
