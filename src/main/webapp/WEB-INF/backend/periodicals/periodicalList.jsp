@@ -14,7 +14,9 @@
                 <th><fmt:message key="category.label" bundle="${langPeriodical}"/></th>
                 <th><fmt:message key="publisher.label" bundle="${langPeriodical}"/></th>
                 <th><fmt:message key="oneMonthCost.label" bundle="${langPeriodical}"/></th>
-                <th><fmt:message key="status.label" bundle="${langPeriodical}"/></th>
+                <custom:if-authorized mustHaveRoles="admin">
+                    <th><fmt:message key="status.label" bundle="${langPeriodical}"/></th>
+                </custom:if-authorized>
             </tr>
             </thead>
             <tbody>
@@ -29,7 +31,9 @@
                         <td><c:out value="${periodical.category}"/></td>
                         <td><c:out value="${periodical.publisher}"/></td>
                         <td><c:out value="${periodical.oneMonthCost}"/></td>
-                        <td><fmt:message key="${periodical.status}" bundle="${langPeriodical}"/></td>
+                        <custom:if-authorized mustHaveRoles="admin">
+                            <td><fmt:message key="${periodical.status}" bundle="${langPeriodical}"/></td>
+                        </custom:if-authorized>
                     </tr>
                 </c:if>
 
@@ -58,7 +62,7 @@
             </div>
         </custom:if-authorized>
         <%--<custom:if-authorized mustHaveRoles="*" mustNotHaveRoles="admin">--%>
-            <%--<p><fmt:message key="youCannotUpdatePeriodicals.text" bundle="${langPeriodical}"/></p>--%>
+        <%--<p><fmt:message key="youCannotUpdatePeriodicals.text" bundle="${langPeriodical}"/></p>--%>
         <%--</custom:if-authorized>--%>
     </div>
 

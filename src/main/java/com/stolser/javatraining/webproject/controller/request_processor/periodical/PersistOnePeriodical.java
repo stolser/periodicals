@@ -43,18 +43,23 @@ public class PersistOnePeriodical implements RequestProcessor {
 
         PeriodicalService periodicalService = PeriodicalService.getInstance();
         Periodical periodicalInDb = periodicalService.findOneById(periodicalToSave.getId());
-        Periodical.Status oldStatus = periodicalInDb.getStatus();
+
+        Periodical.Status oldStatus = null;
+        if (periodicalInDb != null) {
+            oldStatus = periodicalInDb.getStatus();
+        }
+
         Periodical.Status newStatus = periodicalToSave.getStatus();
 
-        if (oldStatus.equals(VISIBLE) && newStatus.equals(INVISIBLE)) {
+        if (VISIBLE.equals(oldStatus) && INVISIBLE.equals(newStatus)) {
             if (periodicalService.hasActiveSubscriptions(periodicalToSave.getId())) {
                 generalMessages.add(new FrontendMessage("validation.periodicalHasActiveSubscriptions.warning",
                         FrontendMessage.MessageType.WARNING));
             }
         }
 
-        if ((oldStatus.equals(VISIBLE) || oldStatus.equals(INVISIBLE))
-                && newStatus.equals(DISCARDED)
+        if ((VISIBLE.equals(oldStatus) || INVISIBLE.equals(oldStatus))
+                && DISCARDED.equals(newStatus)
                 && periodicalService.hasActiveSubscriptions(periodicalToSave.getId())) {
 
             generalMessages.add(new FrontendMessage("validation.periodicalHasActiveSubscriptions.error",
@@ -66,8 +71,8 @@ public class PersistOnePeriodical implements RequestProcessor {
         }
 
         Periodical persistedPeriodical;
-        if ((oldStatus.equals(VISIBLE) || oldStatus.equals(INVISIBLE))
-                && newStatus.equals(DISCARDED)) {
+        if ((VISIBLE.equals(oldStatus) || INVISIBLE.equals(oldStatus))
+                && DISCARDED.equals(newStatus)) {
 
             persistedPeriodical = periodicalService.save(periodicalToSave);
             // update status by periodicalService.discardThis(periodicalToSave) in a transaction
