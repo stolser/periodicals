@@ -19,7 +19,7 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
     @Override
     public Subscription findOneByUserIdAndPeriodicalId(long userId, long periodicalId) {
         String sqlStatement = "SELECT * FROM subscriptions " +
-                "WHERE user_id=? AND periodical_id=?";
+                "WHERE user_id = ? AND periodical_id = ?";
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
@@ -30,22 +30,7 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
 
             Subscription subscription = null;
             if (rs.next()) {
-                subscription = new Subscription();
-                subscription.setId(rs.getLong("id"));
-
-                User user = new User();
-                user.setId(rs.getLong("user_id"));
-                subscription.setUser(user);
-
-                Periodical periodical = new Periodical();
-                periodical.setId(rs.getLong("periodical_id"));
-                subscription.setPeriodical(periodical);
-
-                subscription.setDeliveryAddress(rs.getString("delivery_address"));
-                subscription.setEndDate(rs.getTimestamp("end_date").toInstant());
-                subscription.setStatus(Subscription.Status.valueOf(
-                        rs.getString("status").toUpperCase()));
-
+                subscription = newSubscriptionFromRs(rs);
             }
 
             return subscription;
@@ -53,6 +38,52 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
         } catch (SQLException e) {
             throw new CustomSqlException(e);
         }
+    }
+
+    @Override
+    public List<Subscription> findAllByPeriodicalIdAndStatus(long periodicalId,
+                                                             Subscription.Status status) {
+        String sqlStatement = "SELECT * FROM subscriptions " +
+                "JOIN periodicals ON (subscriptions.periodical_id = periodicals.id) " +
+                "WHERE periodicals.id = ? AND subscriptions.status = ?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            st.setLong(1, periodicalId);
+            st.setString(2, status.toString().toLowerCase());
+
+            ResultSet rs = st.executeQuery();
+
+            List<Subscription> subscriptions = new ArrayList<>();
+            while (rs.next()) {
+                subscriptions.add(newSubscriptionFromRs(rs));
+            }
+
+            return subscriptions;
+
+        } catch (SQLException e) {
+            throw new CustomSqlException(e);
+        }
+    }
+
+    private Subscription newSubscriptionFromRs(ResultSet rs) throws SQLException {
+        Subscription subscription = new Subscription();
+        subscription.setId(rs.getLong("subscriptions.id"));
+
+        User user = new User();
+        user.setId(rs.getLong("subscriptions.user_id"));
+        subscription.setUser(user);
+
+        Periodical periodical = new Periodical();
+        periodical.setId(rs.getLong("subscriptions.periodical_id"));
+        subscription.setPeriodical(periodical);
+
+        subscription.setDeliveryAddress(rs.getString("subscriptions.delivery_address"));
+        subscription.setEndDate(rs.getTimestamp("subscriptions.end_date").toInstant());
+        subscription.setStatus(Subscription.Status.valueOf(
+                rs.getString("subscriptions.status").toUpperCase()));
+
+        return subscription;
     }
 
     @Override

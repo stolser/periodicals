@@ -103,6 +103,34 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     }
 
     @Override
+    public List<Periodical> findAllByStatus(Periodical.Status status) {
+        String sqlStatement = "SELECT * FROM periodicals " +
+                "WHERE status = ?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            st.setString(1, status.toString().toLowerCase());
+            ResultSet rs = st.executeQuery();
+
+            List<Periodical> periodicals = new ArrayList<>();
+            Periodical periodical;
+            while (rs.next()) {
+                periodical = getNextPeriodicalFromResults(rs);
+
+                periodicals.add(periodical);
+            }
+
+            return periodicals;
+
+        } catch (SQLException e) {
+            String message = String.format("Exception during retrieving periodicals with" +
+                    "status '%s'.", status);
+
+            throw new CustomSqlException(message, e);
+        }
+    }
+
+    @Override
     public void createNew(Periodical periodical) {
         String sqlStatement = "INSERT INTO periodicals " +
                 "(name, category, publisher, description, one_month_cost, status) " +

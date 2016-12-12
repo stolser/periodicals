@@ -65,8 +65,6 @@
         </div>
 
 
-
-
     </div>
 
 
@@ -77,7 +75,8 @@
                 <div class="topMessages alert
                 ${message.type == 'SUCCESS' ? 'alert-success' :
                     (message.type == 'INFO' ? 'alert-info' :
-                    (message.type == 'ERROR' ? 'alert-danger' : ''))}" role="alert">
+                    (message.type == 'ERROR' ? 'alert-danger' :
+                    (message.type == 'WARNING' ? 'alert-warning' : '')))}" role="alert">
                     <fmt:message key="${message.messageKey}" bundle="${langValidation}"/>
                 </div>
             </c:forEach>

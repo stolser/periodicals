@@ -8,7 +8,7 @@
     </div>
     <div class="col-md-8 col-md-offset-2">
         <h2><fmt:message key="page_404.sub_title" bundle="${general}"/></h2>
-        <p><fmt:message key="page_404.description" bundle="${general}"/>
+        <p><fmt:message key="sql-error-page.description" bundle="${general}"/>
             <a href="/backend/users/currentUser"><fmt:message key="page_404.homepage.label" bundle="${general}"/></a>.</p>
     </div>
 

@@ -3,8 +3,10 @@ package com.stolser.javatraining.webproject.model.service.periodical;
 import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
 import com.stolser.javatraining.webproject.model.dao.periodical.PeriodicalDao;
+import com.stolser.javatraining.webproject.model.dao.subscription.SubscriptionDao;
 import com.stolser.javatraining.webproject.model.database.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
+import com.stolser.javatraining.webproject.model.entity.periodical.Subscription;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -50,9 +52,7 @@ public class PeriodicalService {
 
             return periodical;
         } catch (SQLException e) {
-            String message = String.format("Exception during closing a connection. " +
-                    "Original: %s. ", e.getMessage());
-            throw new CustomSqlException(message);
+            throw new CustomSqlException(e);
         }
     }
 
@@ -66,9 +66,7 @@ public class PeriodicalService {
 
             return periodical;
         } catch (SQLException e) {
-            String message = String.format("Exception during closing a connection. " +
-                    "Original: %s. ", e.getMessage());
-            throw new CustomSqlException(message);
+            throw new CustomSqlException(e);
         }
     }
 
@@ -81,9 +79,8 @@ public class PeriodicalService {
             return periodicals;
 
         } catch (SQLException e) {
-            String message = String.format("Exception during closing a connection. " +
-                    "Original: %s. ", e.getMessage());
-            throw new CustomSqlException(message);
+            throw new CustomSqlException(e);
+
         }
     }
 
@@ -110,9 +107,8 @@ public class PeriodicalService {
             return getPeriodicalFromDbByName(periodical.getName());
 
         } catch (SQLException e) {
-            String message = String.format("Exception during closing a connection. " +
-                    "Original: %s. ", e.getMessage());
-            throw new CustomSqlException(message);
+            throw new CustomSqlException(e);
+
         }
 
     }
@@ -172,12 +168,24 @@ public class PeriodicalService {
 
     public void deleteAllDiscarded() {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-            System.out.println("PeriodicalService.deleteAllDiscarded(): connection has been got.");
 
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             periodicalDao.deleteAllDiscarded();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new CustomSqlException(e);
+        }
+    }
+
+    public boolean hasActiveSubscriptions(long periodicalId) {
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+
+            SubscriptionDao subscriptionDao = factory.getSubscriptionDao(conn);
+
+            return subscriptionDao.findAllByPeriodicalIdAndStatus(periodicalId,
+                    Subscription.Status.ACTIVE).size() > 0;
+
+        } catch (SQLException e) {
+            throw new CustomSqlException(e);
         }
     }
 

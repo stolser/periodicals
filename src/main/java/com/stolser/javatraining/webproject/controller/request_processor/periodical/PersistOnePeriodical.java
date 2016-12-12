@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static com.stolser.javatraining.webproject.model.entity.periodical.Periodical.Status.*;
 
 public class PersistOnePeriodical implements RequestProcessor {
 
@@ -24,23 +25,24 @@ public class PersistOnePeriodical implements RequestProcessor {
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+        List<FrontendMessage> generalMessages = new ArrayList<>();
         Periodical periodicalToSave = HttpUtils.getPeriodicalFromRequest(request);
         String entityOperationType = request.getParameter(ENTITY_OPERATION_TYPE_PARAM_NAME);
         String redirectUri = getRedirectUriByOperationType(entityOperationType, periodicalToSave);
-        List<FrontendMessage> generalMessages = new ArrayList<>();
 
-        if (periodicalToSaveIsNotValid(periodicalToSave, request)) {
-            request.getSession().setAttribute(PERIODICAL_ATTR_NAME, periodicalToSave);
+        request.getSession().setAttribute(PERIODICAL_ATTR_NAME, periodicalToSave);
 
-            HttpUtils.sendRedirect(request, response, redirectUri);
-            return null;
-        } else {
+        if (periodicalToSaveIsValid(periodicalToSave, request)) {
             generalMessages.add(new FrontendMessage("validation.passedSuccessfully.success",
                     FrontendMessage.MessageType.INFO));
+
+        } else {
+            HttpUtils.sendRedirect(request, response, redirectUri);
+            return null;
         }
 
-//        request.getSession().removeAttribute("periodical");
-//        request.getSession().removeAttribute(ApplicationResources.MESSAGES_ATTR_NAME);
+        statusChangeFromActiveToInactive(periodicalToSave, generalMessages);
+
         PeriodicalService periodicalService = PeriodicalService.getInstance();
         Periodical persistedPeriodical = periodicalService.save(periodicalToSave);
 
@@ -68,10 +70,26 @@ public class PersistOnePeriodical implements RequestProcessor {
                     FrontendMessage.MessageType.ERROR));
             HttpUtils.addGeneralMessagesToSession(request, generalMessages);
 
-            request.getSession().setAttribute(PERIODICAL_ATTR_NAME, periodicalToSave);
             HttpUtils.sendRedirect(request, response, redirectUri);
             return null;
         }
+    }
+
+    private boolean statusChangeFromActiveToInactive(Periodical periodicalToSave,
+                                                     List<FrontendMessage> generalMessages) {
+        PeriodicalService periodicalService = PeriodicalService.getInstance();
+        Periodical periodicalInDb = periodicalService.findOneById(periodicalToSave.getId());
+        Periodical.Status oldStatus = periodicalInDb.getStatus();
+        Periodical.Status newStatus = periodicalToSave.getStatus();
+
+        if (oldStatus.equals(VISIBLE) && newStatus.equals(INVISIBLE)) {
+            if (periodicalService.hasActiveSubscriptions(periodicalToSave.getId())) {
+                generalMessages.add(new FrontendMessage("validation.periodicalHasActiveSubscriptions",
+                        FrontendMessage.MessageType.WARNING));
+            }
+        }
+
+        return true;
     }
 
     private String getRedirectUriByOperationType(String entityOperationType, Periodical periodicalToSave) {
@@ -91,8 +109,8 @@ public class PersistOnePeriodical implements RequestProcessor {
         return redirectUri;
     }
 
-    private boolean periodicalToSaveIsNotValid(Periodical periodicalToSave, HttpServletRequest request) {
-        boolean isNotValid = false;
+    private boolean periodicalToSaveIsValid(Periodical periodicalToSave, HttpServletRequest request) {
+        boolean isValid = true;
         Map<String, FrontendMessage> messages = new HashMap<>();
         ValidatorFactory factory = ValidatorFactory.getInstance();
 
@@ -100,7 +118,7 @@ public class PersistOnePeriodical implements RequestProcessor {
                 .validate(periodicalToSave.getName(), request);
 
         if (result.getStatusCode() != Validator.STATUS_CODE_SUCCESS) {
-            isNotValid = true;
+            isValid = false;
             messages.put("periodicalName", new FrontendMessage(result.getMessageKey(),
                     FrontendMessage.MessageType.ERROR));
         }
@@ -109,7 +127,7 @@ public class PersistOnePeriodical implements RequestProcessor {
                 .validate(periodicalToSave.getCategory(), request);
 
         if (result.getStatusCode() != Validator.STATUS_CODE_SUCCESS) {
-            isNotValid = true;
+            isValid = false;
             messages.put("periodicalCategory", new FrontendMessage(result.getMessageKey(),
                     FrontendMessage.MessageType.ERROR));
         }
@@ -118,7 +136,7 @@ public class PersistOnePeriodical implements RequestProcessor {
                 .validate(periodicalToSave.getPublisher(), request);
 
         if (result.getStatusCode() != Validator.STATUS_CODE_SUCCESS) {
-            isNotValid = true;
+            isValid = false;
             messages.put("periodicalPublisher", new FrontendMessage(result.getMessageKey(),
                     FrontendMessage.MessageType.ERROR));
         }
@@ -127,14 +145,16 @@ public class PersistOnePeriodical implements RequestProcessor {
                 .validate(String.valueOf(periodicalToSave.getOneMonthCost()), request);
 
         if (result.getStatusCode() != Validator.STATUS_CODE_SUCCESS) {
-            isNotValid = true;
+            isValid = false;
             messages.put("periodicalCost", new FrontendMessage(result.getMessageKey(),
                     FrontendMessage.MessageType.ERROR));
         }
 
-        request.getSession().setAttribute(MESSAGES_ATTR_NAME, messages);
+        if (messages.size() > 0) {
+            request.getSession().setAttribute(MESSAGES_ATTR_NAME, messages);
+        }
 
-        return isNotValid;
+        return isValid;
     }
 
 }

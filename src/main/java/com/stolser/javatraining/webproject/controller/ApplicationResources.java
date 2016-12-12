@@ -1,5 +1,7 @@
 package com.stolser.javatraining.webproject.controller;
 
+import com.stolser.javatraining.webproject.model.CustomSqlException;
+
 import java.util.Locale;
 
 public class ApplicationResources {
@@ -10,8 +12,9 @@ public class ApplicationResources {
     public static final String MESSAGE_ATTRIBUTE = "messageAttr";
     public static final String CURRENT_USER_ATTR_NAME = "thisUser";
     public static final String PERIODICAL_ATTR_NAME = "periodical";
-    public static final String ORIGINAL_URI_ATTR_NAME = "originalUri";
+    public static final String PERIODICAL_STATUSES_ATTR_NAME = "periodicalStatuses";
 
+    public static final String ORIGINAL_URI_ATTR_NAME = "originalUri";
     public static final String USERNAME_ATTR_NAME = "username";
     public static final String VALIDATION_BUNDLE_PATH = "webProject/i18n/validation";
     public static final String PERIODICAL_LIST_VIEW_NAME = "periodicals/periodicalList";
@@ -19,15 +22,15 @@ public class ApplicationResources {
     public static final String CREATE_EDIT_PERIODICAL_VIEW_NAME = "periodicals/createAndEdit";
     public static final String USER_LIST_VIEW_NAME = "users/userList";
     public static final String ONE_USER_INFO_VIEW_NAME = "users/oneUserInfo";
-    public static final String BACKEND_MAIN_PAGE_VIEW_NAME = "main";
 
+    public static final String BACKEND_MAIN_PAGE_VIEW_NAME = "main";
     public static final String ADMIN_PANEL_HREF = "/backend/adminPanel";
     public static final String PERIODICAL_LIST_HREF = "/backend/periodicals";
     public static final String LOGIN_HREF = "/login.jsp";
     public static final String ACCESS_DENIED_HRF = "/accessDenied.jsp";
     public static final String CURRENT_USER_ACCOUNT_HREF = "/backend/users/currentUser";
-    public static final String PERIODICAL_CREATE_NEW_HREF = "/backend/periodicals/createNew";
 
+    public static final String PERIODICAL_CREATE_NEW_HREF = "/backend/periodicals/createNew";
     public static final String PERIODICAL_DELETE_DISCARDED = "/backend/periodicals/discarded/delete";
     public static final String PERIODICAL_CREATE_UPDATE_REST = "/backend/periodicals";
     public static final String ADMIN_ROLE_NAME = "admin";
@@ -41,9 +44,18 @@ public class ApplicationResources {
     public static final String PERIODICAL_COST_PARAM_NAME = "periodicalCost";
     public static final String ENTITY_OPERATION_TYPE_PARAM_NAME = "entityOperationType";
 
+    private static final String DEFAULT_ERROR_PAGE_VIEW_NAME = "errors/page-404";
+    private static final String SQL_ERROR_PAGE_VIEW_NAME = "errors/sql-error-page";
+
 
     public static String getErrorViewName(Exception exception) {
-        return "errors/page-404";
+        String viewName = DEFAULT_ERROR_PAGE_VIEW_NAME;
+
+        if (exception instanceof CustomSqlException) {
+            viewName = SQL_ERROR_PAGE_VIEW_NAME;
+        }
+
+        return viewName;
     }
 
     public enum SystemLocale {
