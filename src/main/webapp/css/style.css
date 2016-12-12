@@ -1,5 +1,6 @@
 #header {
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 #header .userFullName {
@@ -24,17 +25,17 @@ footer {
 }
 
 .validated .messages.error {
-    color: red;
+    color: #a94442;
 }
 
 .required > .control-label::before {
     content: "*";
-    color: red;
+    color: #a94442;
 }
 
 .requiredFieldsMessage {
     font-size: 80%;
-    color: red;
+    color: #a94442;
     font-style: italic;
 }
 

@@ -1,5 +1,16 @@
+var makeUnclickable = function () {
+    // if( !event ) event = window.event;
+    event.preventDefault();
+};
+
 $(document).ready(function () {
     console.log("jQuery is ready!");
+
+    $(document).on("keypress", ":input:not(textarea)", function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+        }
+    });
 
     $(".ajax-validated").focusout(function () {
         var $validatedElem = $(this);
@@ -58,61 +69,52 @@ $(document).ready(function () {
         activateOrDisableSubmitBtn($(this));
     });
 
-    $(".disabled").click(function (event) {
-        makeUnclickable(event);
-    });
-
-    function activateOrDisableSubmitBtn($thisInput) {
-        console.log("$thisInput = " + $thisInput);
-        var $thisForm = $thisInput.closest("form"); // the <form> element inside which this input resides;
-        console.log("$thisForm = " + $thisForm);
-
-        var $thisFormInputs = $thisForm.find("input");  // all the input in the current form;
-        var $errorMsg = $thisFormInputs.nextAll(".messages.error"); // elements containing error-messages;
-
-        var $submitBtn = $thisForm.find(":submit");
-        console.log("$submitBtn = " + $submitBtn.html());
-
-        if (($errorMsg.length == 0) // there is no error-messages;
-            && ($thisFormInputs.filter(function () {
-                // returns empty form-elements that reside inside elements with class='required';
-                var $closest = $(this).closest(".required");
-                console.log("$parent.length = " + $closest.length);
-
-                return ($closest.length > 0) && ($(this).val() == "");
-            }).length == 0)) {
-            console.log("activating the submit btn...");
-
-            activateElement($submitBtn);
-
-        } else {
-            console.log("Deactivating the submit btn...");
-
-            disActivateElement($submitBtn);
-        }
-    }
-
-    $(document).on("keypress", ":input:not(textarea)", function (event) {
-        if (event.keyCode == 13) {
-            event.preventDefault();
-        }
-    });
+    $(".disabled").click(makeUnclickable);
 
 });
 
+function activateOrDisableSubmitBtn($thisInput) {
+    console.log("$thisInput = " + $thisInput);
+    var $thisForm = $thisInput.closest("form"); // the <form> element inside which this input resides;
+    console.log("$thisForm = " + $thisForm);
+
+    var $thisFormInputs = $thisForm.find("input");  // all the input in the current form;
+    var $errorMsg = $thisFormInputs.nextAll(".messages.error"); // elements containing error-messages;
+
+    var $submitBtn = $thisForm.find(":submit");
+    console.log("$submitBtn = " + $submitBtn.html());
+
+    if (($errorMsg.length == 0) // there is no error-messages;
+        && ($thisFormInputs.filter(function () {
+            // returns empty form-elements that reside inside elements with class='required';
+            var $closest = $(this).closest(".required");
+            console.log("$parent.length = " + $closest.length);
+
+            return ($closest.length > 0) && ($(this).val() == "");
+        }).length == 0)) {
+        console.log("activating the submit btn...");
+
+        activateElement($submitBtn);
+
+    } else {
+        console.log("Deactivating the submit btn...");
+
+        disActivateElement($submitBtn);
+    }
+}
+
 function activateElement(element) {
+    // event = window.event;
     element.removeClass("disabled");
     element.addClass("active");
-    element.unbind("click", makeUnclickable(event));
+    element.unbind('click', makeUnclickable);
 
 }
 
 function disActivateElement(element) {
     element.removeClass("active");
     element.addClass("disabled");
-    element.click(makeUnclickable(event));
+    element.click(makeUnclickable);
 }
 
-var makeUnclickable = function (event) {
-    event.preventDefault();
-};
+

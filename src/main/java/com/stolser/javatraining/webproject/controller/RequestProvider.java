@@ -3,6 +3,7 @@ package com.stolser.javatraining.webproject.controller;
 import com.stolser.javatraining.webproject.controller.request_processor.BackendMainPage;
 import com.stolser.javatraining.webproject.controller.request_processor.SignOut;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.request_processor.admin.DisplayAdminPanel;
 import com.stolser.javatraining.webproject.controller.request_processor.invoice.PayOneInvoice;
 import com.stolser.javatraining.webproject.controller.request_processor.invoice.PersistOneInvoice;
 import com.stolser.javatraining.webproject.controller.request_processor.periodical.*;
@@ -29,6 +30,7 @@ public class RequestProvider {
         requestMapping.put("POST:/backend/users/\\d+/invoices/?", new PersistOneInvoice());
         requestMapping.put("POST:/backend/users/\\d+/invoices/\\d+/pay/?", new PayOneInvoice());
         requestMapping.put("GET:/backend/signOut/?", new SignOut());
+        requestMapping.put("GET:/backend/adminPanel/?", new DisplayAdminPanel());
 
     }
 
