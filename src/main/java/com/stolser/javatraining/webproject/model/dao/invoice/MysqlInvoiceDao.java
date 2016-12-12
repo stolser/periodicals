@@ -171,7 +171,7 @@ public class MysqlInvoiceDao implements InvoiceDao {
             st.executeUpdate();
 
         } catch (SQLException e) {
-            throw new CustomSqlException( e);
+            throw new CustomSqlException(e);
         }
     }
 

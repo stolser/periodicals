@@ -16,8 +16,16 @@
         <c:forEach items="${userSubscriptions}" var="subscription" varStatus="rowStatus">
             <tr class="${subscription.status == 'ACTIVE' ? 'success' : 'danger'}">
                 <td><c:out value="${subscription.id}"/></td>
-                <td><a href="/backend/periodicals/<c:out value="${subscription.periodical.id}"/>">
-                    <c:out value="${subscription.periodical.name}"/></a></td>
+                <td><c:choose>
+                    <c:when test="${(subscription.periodical.status == 'VISIBLE') ||
+                                thisUser.hasRole('admin')}">
+                        <a href="/backend/periodicals/${subscription.periodical.id}">
+                            <c:out value="${subscription.periodical.name}"/></a>
+                    </c:when>
+                    <c:otherwise>
+                        <c:out value="${subscription.periodical.name}"/>
+                    </c:otherwise>
+                </c:choose></td>
                 <td><c:out value="${subscription.deliveryAddress}"/></td>
                 <td><custom:format-datetime value="${subscription.endDate}"/></td>
                 <td><fmt:message key="${subscription.status}" bundle="${langSubscription}"/></td>

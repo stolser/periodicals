@@ -6,6 +6,8 @@ var makeUnclickable = function () {
 $(document).ready(function () {
     console.log("jQuery is ready!");
 
+    highlightSelectedMenu();
+
     $(document).on("keypress", ":input:not(textarea)", function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
@@ -115,6 +117,17 @@ function disActivateElement(element) {
     element.removeClass("active");
     element.addClass("disabled");
     element.click(makeUnclickable);
+}
+
+function highlightSelectedMenu() {
+    var pathname = $(location).attr('pathname');
+    var $menuLinks = $(".navbar li > a");
+
+    $menuLinks.removeClass('active');
+
+    $menuLinks.filter(function () {
+        return ($(this).attr('href') == pathname);
+    }).parent("li").addClass('active');
 }
 
 

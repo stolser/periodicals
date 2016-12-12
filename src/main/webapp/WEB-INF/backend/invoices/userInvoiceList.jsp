@@ -23,8 +23,16 @@
         <c:forEach items="${userInvoices}" var="invoice" varStatus="rowStatus">
             <tr class="${invoice.status == 'PAID' ? 'success' : 'danger'}">
                 <td><c:out value="${invoice.id}"/></td>
-                <td><a href="/backend/periodicals/<c:out value="${invoice.periodical.id}"/>">
-                    <c:out value="${invoice.periodical.name}"/></a></td>
+                <td><c:choose>
+                    <c:when test="${(invoice.periodical.status == 'VISIBLE') ||
+                                thisUser.hasRole('admin')}">
+                        <a href="/backend/periodicals/${invoice.periodical.id}">
+                            <c:out value="${invoice.periodical.name}"/></a>
+                    </c:when>
+                    <c:otherwise>
+                        <c:out value="${invoice.periodical.name}"/>
+                    </c:otherwise>
+                </c:choose></td>
                 <td><c:out value="${invoice.subscriptionPeriod}"/></td>
                 <td><c:out value="${invoice.periodical.oneMonthCost > 0.0 ? invoice.periodical.oneMonthCost : 'free'}"/></td>
                 <td><c:out value="${invoice.totalSum > 0.0 ? invoice.totalSum : 'free'}"/></td>
