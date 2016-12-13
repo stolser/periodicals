@@ -20,11 +20,13 @@
             </tr>
             </thead>
             <tbody>
+            <c:set var="onlyVisibleIndex" value="0"/>
             <c:forEach items="${allPeriodicals}" var="periodical" varStatus="loop">
                 <c:if test="${(periodical.status == 'VISIBLE') || thisUser.hasRole('admin')}">
+                    <c:set var="onlyVisibleIndex" value="${onlyVisibleIndex + 1}"/>
                     <tr class="${periodical.status == 'VISIBLE' ? 'success' :
                     (periodical.status == 'INVISIBLE' ? 'warning' : 'danger')}">
-                        <td><c:out value="${loop.index + 1}"/></td>
+                        <td><c:out value="${onlyVisibleIndex}"/></td>
                         <td>
                             <a href="/backend/periodicals/${periodical.id}">
                                 <c:out value="${periodical.name}"/></a></td>

@@ -21,9 +21,6 @@ public class AuthorizationTag extends TagSupport {
         user = (User) pageContext.getSession()
                 .getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
 
-        System.out.println("mustHaveRoles = '" + mustHaveRoles + "'");
-        System.out.println("mustNotHaveRoles = '" + mustNotHaveRoles + "'");
-
         if ((user != null)
                 && userHasLegitRoles()
                 && userHasNoProhibitedRoles()) {
