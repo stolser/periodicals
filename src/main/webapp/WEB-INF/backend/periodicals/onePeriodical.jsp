@@ -19,7 +19,8 @@
             <label class="col-sm-3 control-label">
                 <fmt:message key="category.label" bundle="${langPeriodical}"/></label>
             <div class="col-sm-9">
-                <p class="form-control-static"><c:out value="${periodical.category}"/></p>
+                <p class="form-control-static">
+                    <fmt:message key="${periodical.category.messageKey}" bundle="${langPeriodical}"/></p>
             </div>
         </div>
         <div class="row">

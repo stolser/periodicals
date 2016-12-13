@@ -42,16 +42,14 @@
                 <label for="periodicalCategory" class="col-sm-3 control-label">
                     <fmt:message key="category.label" bundle="${langPeriodical}"/></label>
                 <div class="col-sm-9">
-                    <input id="periodicalCategory" type="text" class="form-control ajax-validated"
-                           name="periodicalCategory"
-                           value="<c:out value="${periodical.category}"/>"
-                           placeholder="<fmt:message key="category.label" bundle="${langPeriodical}"/>"/>
-                    <c:if test="${(not empty messages) && (not empty messages['periodicalCategory'])}">
-                        <label class="messages
-                            <c:out value="${messages['periodicalCategory'].type == 'ERROR' ? 'error' : ''}"/>">
-                            <fmt:message key="${messages['periodicalCategory'].messageKey}" bundle="${validation}"/>
-                        </label>
-                    </c:if>
+                    <select id="periodicalCategory" class="form-control"
+                            name="periodicalCategory">
+                        <c:forEach items="${periodicalCategories}" var="category">
+                            <option value="<c:out value='${category}'/>">
+                                <fmt:message key="${category.messageKey}" bundle="${langPeriodical}"/>
+                            </option>
+                        </c:forEach>
+                    </select>
                 </div>
             </div>
             <div class="form-group validated required">

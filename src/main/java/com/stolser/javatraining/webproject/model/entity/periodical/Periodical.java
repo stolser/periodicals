@@ -3,7 +3,7 @@ package com.stolser.javatraining.webproject.model.entity.periodical;
 public class Periodical {
     private long id;
     private String name;
-    private String category;
+    private PeriodicalCategory category;
     private String publisher;
     private String description;
     private double oneMonthCost;
@@ -29,11 +29,11 @@ public class Periodical {
         this.name = name;
     }
 
-    public String getCategory() {
+    public PeriodicalCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(PeriodicalCategory category) {
         this.category = category;
     }
 

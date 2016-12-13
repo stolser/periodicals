@@ -143,7 +143,7 @@ public class PersistOnePeriodical implements RequestProcessor {
         }
 
         result = factory.newValidator("periodicalCategory")
-                .validate(periodicalToSave.getCategory(), request);
+                .validate(periodicalToSave.getCategory().toString(), request);
 
         if (result.getStatusCode() != Validator.STATUS_CODE_SUCCESS) {
             isValid = false;

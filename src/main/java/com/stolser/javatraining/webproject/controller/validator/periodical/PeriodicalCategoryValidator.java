@@ -2,9 +2,11 @@ package com.stolser.javatraining.webproject.controller.validator.periodical;
 
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
+import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.regex.Pattern;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class PeriodicalCategoryValidator implements Validator {
 
@@ -13,7 +15,11 @@ public class PeriodicalCategoryValidator implements Validator {
         int statusCode;
         String messageKey;
 
-        if (Pattern.matches(PERIODICAL_CATEGORY_PATTERN_REGEX, paramValue)) {
+        if (Arrays.stream(PeriodicalCategory.values())
+                .map(Enum::toString)
+                .collect(Collectors.toList())
+                .contains(paramValue)) {
+
             statusCode = STATUS_CODE_SUCCESS;
             messageKey = MESSAGE_KEY_SUCCESS;
         } else {

@@ -13,6 +13,7 @@ public class ApplicationResources {
     public static final String CURRENT_USER_ATTR_NAME = "thisUser";
     public static final String PERIODICAL_ATTR_NAME = "periodical";
     public static final String PERIODICAL_STATUSES_ATTR_NAME = "periodicalStatuses";
+    public static final String PERIODICAL_CATEGORIES_ATTR_NAME = "periodicalCategories";
 
     public static final String ORIGINAL_URI_ATTR_NAME = "originalUri";
     public static final String USERNAME_ATTR_NAME = "username";

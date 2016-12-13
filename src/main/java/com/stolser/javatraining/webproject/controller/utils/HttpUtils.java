@@ -3,6 +3,7 @@ package com.stolser.javatraining.webproject.controller.utils;
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
+import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.model.service.user.UserService;
 
@@ -52,7 +53,8 @@ public class HttpUtils {
 
         periodical.setId(Long.valueOf(request.getParameter("entityId")));
         periodical.setName(request.getParameter("periodicalName"));
-        periodical.setCategory(request.getParameter("periodicalCategory"));
+        periodical.setCategory(PeriodicalCategory.valueOf(
+                request.getParameter("periodicalCategory").toUpperCase()));
         periodical.setPublisher(request.getParameter("periodicalPublisher"));
         periodical.setDescription(request.getParameter("periodicalDescription").trim());
         periodical.setOneMonthCost(Double.valueOf(request.getParameter("periodicalCost")));

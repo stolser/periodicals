@@ -4,11 +4,15 @@ import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
+import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.PERIODICAL_CATEGORIES_ATTR_NAME;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.PERIODICAL_STATUSES_ATTR_NAME;
 
 public class CreateNewPeriodical implements RequestProcessor {
 
@@ -34,7 +38,8 @@ public class CreateNewPeriodical implements RequestProcessor {
 
         request.setAttribute(ApplicationResources.MESSAGES_ATTR_NAME, messages);
         request.setAttribute("periodical", periodicalIntoRequest);
-        request.setAttribute("periodicalStatuses", Periodical.Status.values());
+        request.setAttribute(PERIODICAL_STATUSES_ATTR_NAME, Periodical.Status.values());
+        request.setAttribute(PERIODICAL_CATEGORIES_ATTR_NAME, PeriodicalCategory.values());
         request.setAttribute("entityOperationType", "create");
 
         return ApplicationResources.CREATE_EDIT_PERIODICAL_VIEW_NAME;

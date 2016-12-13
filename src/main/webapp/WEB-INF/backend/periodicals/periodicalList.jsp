@@ -28,7 +28,8 @@
                         <td>
                             <a href="/backend/periodicals/${periodical.id}">
                                 <c:out value="${periodical.name}"/></a></td>
-                        <td><c:out value="${periodical.category}"/></td>
+                        <td><fmt:message key="${periodical.category.messageKey}"
+                                         bundle="${langPeriodical}"/></td>
                         <td><c:out value="${periodical.publisher}"/></td>
                         <td><c:out value="${periodical.oneMonthCost > 0.0
                         ? periodical.oneMonthCost : 'free'}"/></td>

@@ -2,6 +2,7 @@ package com.stolser.javatraining.webproject.model.dao.subscription;
 
 import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
+import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.periodical.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
@@ -104,7 +105,8 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
                 Periodical periodical = new Periodical();
                 periodical.setId(rs.getLong("periodicals.id"));
                 periodical.setName(rs.getString("periodicals.name"));
-                periodical.setCategory(rs.getString("periodicals.category"));
+                periodical.setCategory(PeriodicalCategory.valueOf(
+                        rs.getString("periodicals.category").toUpperCase()));
                 periodical.setPublisher(rs.getString("periodicals.publisher"));
                 periodical.setDescription(rs.getString("periodicals.description"));
                 periodical.setOneMonthCost(rs.getDouble("periodicals.one_month_cost"));

@@ -3,6 +3,7 @@ package com.stolser.javatraining.webproject.controller.request_processor.periodi
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
+import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ public class UpdatePeriodical implements RequestProcessor {
         request.setAttribute(PERIODICAL_ATTR_NAME, periodical);
         request.setAttribute(ENTITY_OPERATION_TYPE_PARAM_NAME, "update");
         request.setAttribute(PERIODICAL_STATUSES_ATTR_NAME, Periodical.Status.values());
+        request.setAttribute(PERIODICAL_CATEGORIES_ATTR_NAME, PeriodicalCategory.values());
 
         return CREATE_EDIT_PERIODICAL_VIEW_NAME;
     }

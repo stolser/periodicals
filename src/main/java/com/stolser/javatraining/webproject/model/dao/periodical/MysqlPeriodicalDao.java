@@ -2,6 +2,7 @@ package com.stolser.javatraining.webproject.model.dao.periodical;
 
 import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
+import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -93,7 +94,8 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
 
         periodical.setId(rs.getLong("id"));
         periodical.setName(rs.getString("name"));
-        periodical.setCategory(rs.getString("category"));
+        periodical.setCategory(PeriodicalCategory.valueOf(
+                rs.getString("category").toUpperCase()));
         periodical.setPublisher(rs.getString("publisher"));
         periodical.setDescription(rs.getString("description"));
         periodical.setOneMonthCost(rs.getDouble("one_month_cost"));
@@ -153,7 +155,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
 
     private void setStatementFromPeriodical(PreparedStatement st, Periodical periodical) throws SQLException {
         st.setString(1, periodical.getName());
-        st.setString(2, periodical.getCategory());
+        st.setString(2, periodical.getCategory().toString());
         st.setString(3, periodical.getPublisher());
         st.setString(4, periodical.getDescription());
         st.setDouble(5, periodical.getOneMonthCost());
