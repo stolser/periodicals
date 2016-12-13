@@ -9,7 +9,7 @@
         <table class="table table-hover table-bordered table-striped text-center">
             <thead>
             <tr>
-                <th><fmt:message key="id.label" bundle="${langPeriodical}"/></th>
+                <th><fmt:message key="number.label" bundle="${general}"/></th>
                 <th><fmt:message key="name.label" bundle="${langPeriodical}"/></th>
                 <th><fmt:message key="category.label" bundle="${langPeriodical}"/></th>
                 <th><fmt:message key="publisher.label" bundle="${langPeriodical}"/></th>
@@ -20,17 +20,18 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${allPeriodicals}" var="periodical" varStatus="rowStatus">
+            <c:forEach items="${allPeriodicals}" var="periodical" varStatus="loop">
                 <c:if test="${(periodical.status == 'VISIBLE') || thisUser.hasRole('admin')}">
                     <tr class="${periodical.status == 'VISIBLE' ? 'success' :
                     (periodical.status == 'INVISIBLE' ? 'warning' : 'danger')}">
-                        <td><c:out value="${periodical.id}"/></td>
+                        <td><c:out value="${loop.index + 1}"/></td>
                         <td>
                             <a href="/backend/periodicals/${periodical.id}">
                                 <c:out value="${periodical.name}"/></a></td>
                         <td><c:out value="${periodical.category}"/></td>
                         <td><c:out value="${periodical.publisher}"/></td>
-                        <td><c:out value="${periodical.oneMonthCost}"/></td>
+                        <td><c:out value="${periodical.oneMonthCost > 0.0
+                        ? periodical.oneMonthCost : 'free'}"/></td>
                         <custom:if-authorized mustHaveRoles="admin">
                             <td><fmt:message key="${periodical.status}" bundle="${langPeriodical}"/></td>
                         </custom:if-authorized>

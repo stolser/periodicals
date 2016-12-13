@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">-->
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/custom.css">
     <script src="/js/jquery-3.1.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/custom.js"></script>
@@ -31,10 +31,11 @@
         <div class="col-xs-6 col-md-2 col-md-push-8 text-right">
             <% if (session.getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME) != null) {%>
             <p class="text-right"><span class="userFullName"><c:out value="${thisUser.lastName}"/>
-            <c:out value="${thisUser.firstName}"/></span><br/>
-                <span class="userEmail"><c:out value="${thisUser.email}"/></span></p>
-            <a href="<c:url value="/backend/users/currentUser"/>" class="btn btn-primary" role="button">
-                <fmt:message key="myAccount.label" bundle="${general}"/></a>
+            <c:out value="${thisUser.firstName}"/></span></p>
+            <p><a href="<c:url value="/backend/users/currentUser"/>" class="btn btn-primary" role="button">
+                <fmt:message key="myAccount.label" bundle="${general}"/></a></p>
+            <p><a href="<c:url value="/backend/signOut"/>">
+                <fmt:message key="signout.label" bundle="${general}"/></a></p>
 
             <%} else if (!"/login.jsp".equals(request.getRequestURI())) {%>
             <p><a href="/login.jsp"><fmt:message key="signin.label" bundle="${general}"/></a></p>
@@ -43,30 +44,10 @@
 
         <div class="col-xs-12 col-md-8 col-md-pull-4">
             <% if (session.getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME) != null) {%>
-            <nav class="navbar navbar-default navbar-static-top">
-                <div class="container-fluid">
-                    <ul class="nav navbar-nav">
-                        <custom:if-authorized mustHaveRoles="admin">
-                            <li><a href="/backend/adminPanel">
-                                <fmt:message key="menu.adminPanel.label" bundle="${general}"/></a></li>
-                        </custom:if-authorized>
-                        <li><a href="/backend/periodicals">
-                            <fmt:message key="menu.periodicals.label" bundle="${general}"/></a></li>
-                        <custom:if-authorized mustHaveRoles="admin">
-                            <li><a href="/backend/users">
-                                <fmt:message key="menu.users.label" bundle="${general}"/></a></li>
-                        </custom:if-authorized>
-                        <li><a href="/backend/signOut">
-                            <fmt:message key="signout.label" bundle="${general}"/></a></li>
-                    </ul>
-                </div>
-            </nav>
+            <%@include file="/WEB-INF/includes/topMenu.jsp" %>
             <%}%>
         </div>
-
-
     </div>
-
 
     <c:if test="${(not empty messages) && (not empty messages['topMessages'])}">
     <div class="row">

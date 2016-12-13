@@ -1,11 +1,10 @@
-<fmt:setBundle basename="webProject.i18n.admin.invoice" var="langInvoice"/>
-
 <div id="userInvoiceList" class="col-md-12 table-responsive">
-    <h1><fmt:message key="userInvoiceList.title.top" bundle="${langInvoice}"/></h1>
+    <h2><fmt:message key="userInvoiceList.sub-title" bundle="${langInvoice}"/></h2>
+    <p><fmt:message key="userInvoiceList.description.top" bundle="${langInvoice}"/></p>
     <table class="table table-hover table-bordered table-striped text-center">
         <thead>
         <tr class="text-center">
-            <th><fmt:message key="id.label" bundle="${langInvoice}"/></th>
+            <th><fmt:message key="number.label" bundle="${general}"/></th>
             <th><fmt:message key="periodicalName.label" bundle="${langInvoice}"/></th>
             <th><fmt:message key="period.label" bundle="${langInvoice}"/><br/>
                 <label class="theadSublabel">
@@ -19,10 +18,11 @@
             <th><fmt:message key="status.label" bundle="${langInvoice}"/></th>
         </tr>
         </thead>
+
         <tbody>
-        <c:forEach items="${userInvoices}" var="invoice" varStatus="rowStatus">
+        <c:forEach items="${userInvoices}" var="invoice" varStatus="loop">
             <tr class="${invoice.status == 'PAID' ? 'success' : 'danger'}">
-                <td><c:out value="${invoice.id}"/></td>
+                <td><c:out value="${loop.index + 1}"/></td>
                 <td><c:choose>
                     <c:when test="${(invoice.periodical.status == 'VISIBLE') ||
                                 thisUser.hasRole('admin')}">

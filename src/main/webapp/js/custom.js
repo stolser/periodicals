@@ -8,6 +8,8 @@ $(document).ready(function () {
 
     highlightSelectedMenu();
 
+    activateUserAccountTabs();
+
     $(document).on("keypress", ":input:not(textarea)", function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
@@ -128,6 +130,14 @@ function highlightSelectedMenu() {
     $menuLinks.filter(function () {
         return ($(this).attr('href') == pathname);
     }).parent("li").addClass('active');
+}
+
+function activateUserAccountTabs() {
+    $(".userAccountTabs .nav-tabs > .active").removeClass('active');
+    $(".userAccountTabs .nav-tabs > li").first().addClass('active');
+    
+    $(".userAccountTabs .tab-content .active").removeClass('active');
+    $(".userAccountTabs .tab-content .tab-pane").first().addClass('active');
 }
 
 
