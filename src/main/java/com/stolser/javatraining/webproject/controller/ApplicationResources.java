@@ -13,7 +13,16 @@ public class ApplicationResources {
     public static final String CURRENT_USER_ATTR_NAME = "thisUser";
     public static final String PERIODICAL_ATTR_NAME = "periodical";
     public static final String PERIODICAL_STATUSES_ATTR_NAME = "periodicalStatuses";
-    public static final String PERIODICAL_CATEGORIES_ATTR_NAME = "periodicalCategories";
+    public static final String PERIODICAL_CATEGORIES_ATTR_NAME = "periodicalStatuses";
+
+    public static final String SIGN_IN_USERNAME_PARAM_NAME = "signInUsername";
+    public static final String PASSWORD_PARAM_NAME = "password";
+    public static final String PERIODICAL_ID_PARAM_NAME = "periodicalId";
+    public static final String PERIODICAL_NAME_PARAM_NAME = "periodicalName";
+    public static final String PERIODICAL_CATEGORY_PARAM_NAME = "periodicalCategory";
+    public static final String PERIODICAL_PUBLISHER_PARAM_NAME = "periodicalPublisher";
+    public static final String PERIODICAL_COST_PARAM_NAME = "periodicalCost";
+    public static final String ENTITY_OPERATION_TYPE_PARAM_NAME = "entityOperationType";
 
     public static final String ORIGINAL_URI_ATTR_NAME = "originalUri";
     public static final String USERNAME_ATTR_NAME = "username";
@@ -37,16 +46,11 @@ public class ApplicationResources {
     public static final String ADMIN_ROLE_NAME = "admin";
     public static final String SUBSCRIBER_ROLE_NAME = "subscriber";
     public static final String GUEST_ROLE_NAME = "guest";
-    public static final String SIGN_IN_USERNAME_PARAM_NAME = "signInUsername";
-    public static final String PASSWORD_PARAM_NAME = "password";
-    public static final String PERIODICAL_NAME_PARAM_NAME = "periodicalName";
-    public static final String PERIODICAL_CATEGORY_PARAM_NAME = "periodicalCategory";
-    public static final String PERIODICAL_PUBLISHER_PARAM_NAME = "periodicalPublisher";
-    public static final String PERIODICAL_COST_PARAM_NAME = "periodicalCost";
-    public static final String ENTITY_OPERATION_TYPE_PARAM_NAME = "entityOperationType";
 
     private static final String DEFAULT_ERROR_PAGE_VIEW_NAME = "errors/page-404";
     private static final String SQL_ERROR_PAGE_VIEW_NAME = "errors/sql-error-page";
+
+    public static final String MSG_VALIDATION_PASSED_SUCCESS = "validation.passedSuccessfully.success";
 
 
     public static String getErrorViewName(Exception exception) {

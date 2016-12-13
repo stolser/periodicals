@@ -64,29 +64,10 @@ public class RequestProvider {
         System.out.println("mapping = " + mapping);
 
         if (mapping.isPresent()) {
-            return getRequestProcessorInstance(mapping.get().getValue());
+            return mapping.get().getValue();
         } else {
             throw new NoSuchElementException(
                     String.format("There no mapping for such a request: '%s'.", requestURI));
         }
-    }
-
-    /**
-     * If a request processor can be cached (a class is small and does not have instance fields),
-     * then this method returns a cached instance. Otherwise it returns a new instance.
-     * If any RequestProcessor class becomes too large and needs to be refactored
-     * and as a result of refactoring it acquires some fields, another if-block must be added here.
-     */
-    private RequestProcessor getRequestProcessorInstance(RequestProcessor cachedProcessor) {
-
-        if (cachedProcessor instanceof PersistOneInvoice) {
-            return new PersistOneInvoice();
-        }
-
-        if (cachedProcessor instanceof PayOneInvoice) {
-            return new PayOneInvoice();
-        }
-
-        return cachedProcessor;
     }
 }

@@ -1,113 +1,93 @@
 package com.stolser.javatraining.webproject.controller.request_processor.invoice;
 
-import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
-import com.stolser.javatraining.webproject.controller.validator.user.RequestUserIdValidator;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
+import com.stolser.javatraining.webproject.controller.validator.user.RequestUserIdValidator;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceServiceImpl;
 import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.BooleanSupplier;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.GENERAL_MESSAGES_FRONT_BLOCK_NAME;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 import static com.stolser.javatraining.webproject.controller.validator.Validator.STATUS_CODE_SUCCESS;
 
 public class PersistOneInvoice implements RequestProcessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PersistOneInvoice.class);
-    private List<FrontendMessage> generalMessages = new ArrayList<>();
-    private HttpServletRequest request;
-    private HttpServletResponse response;
-    private BooleanSupplier periodicalExistsInDb;
-    private BooleanSupplier periodicalIsVisible;
-    private BooleanSupplier subscriptionPeriodIsValid;
-    private Periodical periodicalInDb;
-    private int subscriptionPeriod;
-    private long periodicalId;
 
     @Override
-    public String getViewName(HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
-        request = httpRequest;
-        response = httpResponse;
-        periodicalId = Long.valueOf(request.getParameter("periodicalId"));
-        periodicalInDb = PeriodicalService.getInstance().findOneById(periodicalId);
+    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+        List<FrontendMessage> generalMessages = new ArrayList<>();
+        long periodicalId = Long.valueOf(request.getParameter(PERIODICAL_ID_PARAM_NAME));
+        Periodical periodicalInDb = PeriodicalService.getInstance().findOneById(periodicalId);
 
-        specifyValidationRules();
-
-        if (validationPassed()) {
-            generalMessages.add(new FrontendMessage("validation.passedSuccessfully.success",
+        if (validationPassed(periodicalInDb, request, generalMessages)) {
+            generalMessages.add(new FrontendMessage(MSG_VALIDATION_PASSED_SUCCESS,
                     FrontendMessage.MessageType.INFO));
-            tryToPersistNewInvoice(getNewInvoice());
+            tryToPersistNewInvoice(getNewInvoice(periodicalInDb, request), generalMessages);
         }
 
-        addMessagesToSession();
+        HttpUtils.addGeneralMessagesToSession(request, generalMessages);
 
         String redirectUri = String.format("%s/%d",
-                ApplicationResources.PERIODICAL_LIST_HREF, periodicalId);
+                PERIODICAL_LIST_HREF, periodicalId);
 
         HttpUtils.sendRedirect(request, response, redirectUri);
 
         return null;
     }
 
-    private void specifyValidationRules() {
-        periodicalExistsInDb = () -> {
-            if (periodicalInDb != null) {
+    private boolean periodicalExistsInDb(Periodical periodicalInDb, List<FrontendMessage> generalMessages) {
+        if (periodicalInDb != null) {
+            return true;
+        } else {
+            generalMessages.add(new FrontendMessage("validation.periodicalIsNull",
+                    FrontendMessage.MessageType.ERROR));
+
+            return false;
+        }
+    }
+
+    private boolean periodicalIsVisible(Periodical periodicalInDb, List<FrontendMessage> generalMessages) {
+        if (Periodical.Status.VISIBLE.equals(periodicalInDb.getStatus())) {
+            return true;
+        } else {
+            generalMessages.add(new FrontendMessage("validation.periodicalIsNotVisible",
+                    FrontendMessage.MessageType.ERROR));
+
+            return false;
+        }
+    }
+
+    private boolean subscriptionPeriodIsValid(HttpServletRequest request,
+                                              List<FrontendMessage> generalMessages) {
+        FrontendMessage message = new FrontendMessage("validation.subscriptionPeriodIsNotValid",
+                FrontendMessage.MessageType.ERROR);
+
+        try {
+            int subscriptionPeriod = Integer.valueOf(request.getParameter("subscriptionPeriod"));
+
+            if ((subscriptionPeriod >= 1) && (subscriptionPeriod <= 12)) {
                 return true;
             } else {
-                generalMessages.add(new FrontendMessage("validation.periodicalIsNull",
-                        FrontendMessage.MessageType.ERROR));
-
-                return false;
-            }
-        };
-
-        periodicalIsVisible = () -> {
-            if (Periodical.Status.VISIBLE.equals(periodicalInDb.getStatus())) {
-                return true;
-            } else {
-                generalMessages.add(new FrontendMessage("validation.periodicalIsNotVisible",
-                        FrontendMessage.MessageType.ERROR));
-
-                return false;
-            }
-        };
-
-        subscriptionPeriodIsValid = () -> {
-            FrontendMessage message = new FrontendMessage("validation.subscriptionPeriodIsNotValid",
-                    FrontendMessage.MessageType.ERROR);
-
-            try {
-                subscriptionPeriod = Integer.valueOf(request.getParameter("subscriptionPeriod"));
-
-                if ((subscriptionPeriod >= 1) && (subscriptionPeriod <= 12)) {
-                    return true;
-                } else {
-                    generalMessages.add(message);
-
-                    return false;
-                }
-            } catch (NumberFormatException e) {
                 generalMessages.add(message);
                 return false;
             }
-        };
+        } catch (NumberFormatException e) {
+            generalMessages.add(message);
+            return false;
+        }
     }
 
-    private boolean validationPassed() {
+    private boolean validationPassed(Periodical periodicalInDb, HttpServletRequest request,
+                                     List<FrontendMessage> generalMessages) {
         ValidationResult result = new RequestUserIdValidator().validate(null, request);
 
         if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
@@ -117,12 +97,12 @@ public class PersistOneInvoice implements RequestProcessor {
             return false;
         }
 
-        return periodicalExistsInDb.getAsBoolean()
-                && periodicalIsVisible.getAsBoolean()
-                && subscriptionPeriodIsValid.getAsBoolean();
+        return periodicalExistsInDb(periodicalInDb, generalMessages)
+                && periodicalIsVisible(periodicalInDb, generalMessages)
+                && subscriptionPeriodIsValid(request, generalMessages);
     }
 
-    private void tryToPersistNewInvoice(Invoice invoiceToPersist) {
+    private void tryToPersistNewInvoice(Invoice invoiceToPersist, List<FrontendMessage> generalMessages) {
         try {
             InvoiceServiceImpl.getInstance().createNew(invoiceToPersist);
 
@@ -134,7 +114,9 @@ public class PersistOneInvoice implements RequestProcessor {
         }
     }
 
-    private Invoice getNewInvoice() {
+    private Invoice getNewInvoice(Periodical periodicalInDb, HttpServletRequest request) {
+        int subscriptionPeriod = Integer.valueOf(request.getParameter("subscriptionPeriod"));
+
         double totalSum = subscriptionPeriod * periodicalInDb.getOneMonthCost();
         long userIdFromUri = HttpUtils.getFirstIdFromUri(request.getRequestURI());
         Invoice newInvoice = new Invoice();
@@ -148,11 +130,5 @@ public class PersistOneInvoice implements RequestProcessor {
         newInvoice.setStatus(Invoice.Status.NEW);
 
         return newInvoice;
-    }
-
-    private void addMessagesToSession() {
-        Map<String, List<FrontendMessage>> frontMessageMap = new HashMap<>();
-        frontMessageMap.put(GENERAL_MESSAGES_FRONT_BLOCK_NAME, generalMessages);
-        HttpUtils.addMessagesToSession(request, frontMessageMap);
     }
 }

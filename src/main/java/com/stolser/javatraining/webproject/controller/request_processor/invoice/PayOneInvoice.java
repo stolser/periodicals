@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.controller.request_processor.invoice;
 
+import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
@@ -15,70 +16,56 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ACCOUNT_HREF;
 import static com.stolser.javatraining.webproject.controller.validator.Validator.STATUS_CODE_SUCCESS;
 
 public class PayOneInvoice implements RequestProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PayOneInvoice.class);
-    private List<FrontendMessage> generalMessages = new ArrayList<>();
-    private BooleanSupplier invoiceExistsInDb;
-    private BooleanSupplier invoiceIsNew;
-    private long invoiceId;
-    private InvoiceService invoiceService;
-    private HttpServletRequest request;
-    private HttpServletResponse response;
 
     @Override
-    public String getViewName(HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
-        request = httpRequest;
-        response = httpResponse;
+    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+        List<FrontendMessage> generalMessages = new ArrayList<>();
+        long invoiceId = HttpUtils.getFirstIdFromUri(request.getRequestURI()
+                .replaceFirst("/backend/users/\\d+/", ""));
+        Invoice invoiceInDb = InvoiceServiceImpl.getInstance().findOneById(invoiceId);
 
-        specifyValidationRules();
-
-        if (validationPassed()) {
-            generalMessages.add(new FrontendMessage("validation.passedSuccessfully.success",
+        if (validationPassed(invoiceInDb, request, generalMessages)) {
+            generalMessages.add(new FrontendMessage(ApplicationResources.MSG_VALIDATION_PASSED_SUCCESS,
                     FrontendMessage.MessageType.INFO));
-            tryToPayThisInvoice();
+            tryToPayThisInvoice(invoiceId, request, generalMessages);
         }
 
-        HttpUtils.addGeneralMessagesToSession(httpRequest, generalMessages);
+        HttpUtils.addGeneralMessagesToSession(request, generalMessages);
         HttpUtils.sendRedirect(request, response, CURRENT_USER_ACCOUNT_HREF);
 
         return null;
     }
 
-    private void specifyValidationRules() {
-        invoiceId = HttpUtils.getFirstIdFromUri(request.getRequestURI()
-                .replaceFirst("/backend/users/\\d+/", ""));
-        invoiceService = InvoiceServiceImpl.getInstance();
-        final Invoice invoiceInDb = invoiceService.findOneById(invoiceId);
+    private boolean invoiceExistsInDb(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
+        if (invoiceInDb != null) {
+            return true;
+        } else {
+            generalMessages.add(new FrontendMessage("validation.invoice.noSuchInvoice",
+                    FrontendMessage.MessageType.ERROR));
 
-        invoiceExistsInDb = () -> {
-            if (invoiceInDb != null) {
-                return true;
-            } else {
-                generalMessages.add(new FrontendMessage("validation.invoice.noSuchInvoice",
-                        FrontendMessage.MessageType.ERROR));
-
-                return false;
-            }
-        };
-
-        invoiceIsNew = () -> {
-            if (Invoice.Status.NEW.equals(invoiceInDb.getStatus())) {
-                return true;
-            } else {
-                generalMessages.add(new FrontendMessage("validation.invoice.invoiceIsNotNew",
-                        FrontendMessage.MessageType.ERROR));
-
-                return false;
-            }
-        };
+            return false;
+        }
     }
 
-    private boolean validationPassed() {
+    private boolean invoiceIsNew(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
+        if (Invoice.Status.NEW.equals(invoiceInDb.getStatus())) {
+            return true;
+        } else {
+            generalMessages.add(new FrontendMessage("validation.invoice.invoiceIsNotNew",
+                    FrontendMessage.MessageType.ERROR));
+
+            return false;
+        }
+    }
+
+    private boolean validationPassed(Invoice invoiceInDb, HttpServletRequest request,
+                                     List<FrontendMessage> generalMessages) {
         ValidationResult result = new RequestUserIdValidator().validate(null, request);
 
         if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
@@ -88,11 +75,14 @@ public class PayOneInvoice implements RequestProcessor {
             return false;
         }
 
-        return invoiceExistsInDb.getAsBoolean()
-                && invoiceIsNew.getAsBoolean();
+        return invoiceExistsInDb(invoiceInDb, generalMessages)
+                && invoiceIsNew(invoiceInDb, generalMessages);
     }
 
-    private void tryToPayThisInvoice() {
+    private void tryToPayThisInvoice(long invoiceId, HttpServletRequest request,
+                                     List<FrontendMessage> generalMessages) {
+        InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
+
         try {
             if (invoiceService.payInvoice(invoiceId)) {
                 generalMessages.add(new FrontendMessage("validation.invoiceWasPaid.success",

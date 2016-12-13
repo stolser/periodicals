@@ -33,7 +33,7 @@ public class PersistOnePeriodical implements RequestProcessor {
         request.getSession().setAttribute(PERIODICAL_ATTR_NAME, periodicalToSave);
 
         if (periodicalToSaveIsValid(periodicalToSave, request)) {
-            generalMessages.add(new FrontendMessage("validation.passedSuccessfully.success",
+            generalMessages.add(new FrontendMessage(MSG_VALIDATION_PASSED_SUCCESS,
                     FrontendMessage.MessageType.INFO));
 
         } else {
