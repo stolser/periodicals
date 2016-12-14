@@ -74,8 +74,21 @@ public class PersistOnePeriodical implements RequestProcessor {
         if ((VISIBLE.equals(oldStatus) || INVISIBLE.equals(oldStatus))
                 && DISCARDED.equals(newStatus)) {
 
-            persistedPeriodical = periodicalService.save(periodicalToSave);
-            // update status by periodicalService.discardThis(periodicalToSave) in a transaction
+//            persistedPeriodical = periodicalService.save(periodicalToSave);
+
+            if (periodicalService.discard(periodicalToSave)) {
+                persistedPeriodical = periodicalService.findOneById(periodicalToSave.getId());
+
+            } else {
+                generalMessages.add(new FrontendMessage("validation.periodicalHasActiveSubscriptions.error",
+                        FrontendMessage.MessageType.ERROR));
+
+                HttpUtils.addGeneralMessagesToSession(request, generalMessages);
+                HttpUtils.sendRedirect(request, response, redirectUri);
+                return null;
+            }
+
+            // update status by periodicalService.discard(periodicalToDiscard) in a transaction
             // with conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             // If inside Dao periodical hasActiveSubscriptions --> new CustomSqlException();
         } else {

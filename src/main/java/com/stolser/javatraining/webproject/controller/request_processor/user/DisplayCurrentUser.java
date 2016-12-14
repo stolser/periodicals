@@ -57,7 +57,7 @@ public class DisplayCurrentUser implements RequestProcessor {
     private void sortSubscriptions(List<Subscription> subscriptions) {
         Collections.sort(subscriptions, (first, second) -> {
             if (first.getStatus() == second.getStatus()) {
-                return second.getEndDate().compareTo(first.getEndDate());
+                return first.getEndDate().compareTo(second.getEndDate());
             } else {
                 return (first.getStatus() == Subscription.Status.ACTIVE) ? -1 : 1;
             }

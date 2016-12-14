@@ -7,8 +7,10 @@ import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.user.RequestUserIdValidator;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
+import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceService;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceServiceImpl;
+import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +44,22 @@ public class PayOneInvoice implements RequestProcessor {
         return null;
     }
 
+    private boolean validationPassed(Invoice invoiceInDb, HttpServletRequest request,
+                                     List<FrontendMessage> generalMessages) {
+        ValidationResult result = new RequestUserIdValidator().validate(null, request);
+
+        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
+            generalMessages.add(new FrontendMessage(result.getMessageKey(),
+                    FrontendMessage.MessageType.ERROR));
+
+            return false;
+        }
+
+        return invoiceExistsInDb(invoiceInDb, generalMessages)
+                && invoiceIsNew(invoiceInDb, generalMessages)
+                && periodicalIsVisible(invoiceInDb, generalMessages);
+    }
+
     private boolean invoiceExistsInDb(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
         if (invoiceInDb != null) {
             return true;
@@ -64,19 +82,18 @@ public class PayOneInvoice implements RequestProcessor {
         }
     }
 
-    private boolean validationPassed(Invoice invoiceInDb, HttpServletRequest request,
-                                     List<FrontendMessage> generalMessages) {
-        ValidationResult result = new RequestUserIdValidator().validate(null, request);
+    private boolean periodicalIsVisible(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
+        long periodicalId = invoiceInDb.getPeriodical().getId();
+        Periodical periodicalInDb = PeriodicalService.getInstance().findOneById(periodicalId);
 
-        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
-            generalMessages.add(new FrontendMessage(result.getMessageKey(),
+        if (Periodical.Status.VISIBLE.equals(periodicalInDb.getStatus())) {
+            return true;
+        } else {
+            generalMessages.add(new FrontendMessage("validation.periodicalIsNotVisible",
                     FrontendMessage.MessageType.ERROR));
 
             return false;
         }
-
-        return invoiceExistsInDb(invoiceInDb, generalMessages)
-                && invoiceIsNew(invoiceInDb, generalMessages);
     }
 
     private void tryToPayThisInvoice(long invoiceId, HttpServletRequest request,
