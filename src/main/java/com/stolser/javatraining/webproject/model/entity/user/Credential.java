@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.model.entity.user;
 
-public class Login {
+public class Credential {
     private long id;
     private String userName;
     private String passwordHash;

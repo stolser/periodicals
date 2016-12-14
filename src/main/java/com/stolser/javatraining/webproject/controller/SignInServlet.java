@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.controller;
 
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
-import com.stolser.javatraining.webproject.model.entity.user.Login;
+import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.model.service.user.UserService;
 import org.slf4j.Logger;
@@ -39,15 +39,15 @@ public class SignInServlet extends HttpServlet {
             String passwordHash = getPasswordHash(password);
             UserService userService = UserService.getInstance();
 
-            Login login = userService.findOneLoginByUserName(username);
+            Credential credential = userService.findOneCredentialByUserName(username);
 
-            if (login == null) {
+            if (credential == null) {
                 messages.put(SIGN_IN_USERNAME_PARAM_NAME,
                         new FrontendMessage("validation.noSuchUserName",
                         FrontendMessage.MessageType.ERROR));
 
                 redirectUri = LOGIN_HREF;
-            } else if (passwordHash.equals(login.getPasswordHash())) {
+            } else if (passwordHash.equals(credential.getPasswordHash())) {
                 User thisUser = userService.findOneUserByUserName(username);
 
                 if (thisUser.getStatus() == User.Status.ACTIVE) {

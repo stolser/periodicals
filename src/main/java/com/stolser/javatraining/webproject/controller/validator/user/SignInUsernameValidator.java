@@ -2,7 +2,7 @@ package com.stolser.javatraining.webproject.controller.validator.user;
 
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
-import com.stolser.javatraining.webproject.model.entity.user.Login;
+import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,9 +14,9 @@ public class SignInUsernameValidator implements Validator {
         int statusCode;
         String messageKey;
 
-        Login login = UserService.getInstance().findOneLoginByUserName(usernameValue);
+        Credential credential = UserService.getInstance().findOneCredentialByUserName(usernameValue);
 
-        if (login != null) {
+        if (credential != null) {
             statusCode = STATUS_CODE_SUCCESS;
             messageKey = MESSAGE_KEY_SUCCESS;
         } else {

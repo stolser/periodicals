@@ -24,7 +24,7 @@ public class MysqlUserDao implements UserDao {
     @Override
     public User findOneById(long id) {
         String sqlStatement = "SELECT * FROM users " +
-                "JOIN logins ON (users.id = logins.user_id) " +
+                "JOIN credentials ON (users.id = credentials.user_id) " +
                 "WHERE users.id = ?";
 
         try {
@@ -47,9 +47,9 @@ public class MysqlUserDao implements UserDao {
 
     @Override
     public User findUserByUserName(String userName) {
-        String sqlStatement = "SELECT * FROM logins " +
-                "INNER JOIN users ON (logins.user_id = users.id) " +
-                "WHERE logins.user_name = ?";
+        String sqlStatement = "SELECT * FROM credentials " +
+                "INNER JOIN users ON (credentials.user_id = users.id) " +
+                "WHERE credentials.user_name = ?";
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
@@ -72,8 +72,8 @@ public class MysqlUserDao implements UserDao {
 
     @Override
     public List<User> findAll() {
-        String sqlStatement = "SELECT * FROM logins " +
-                "RIGHT OUTER JOIN users ON (logins.user_id = users.id) ";
+        String sqlStatement = "SELECT * FROM credentials " +
+                "RIGHT OUTER JOIN users ON (credentials.user_id = users.id) ";
 
         try {
             ResultSet rs = conn.createStatement().executeQuery(sqlStatement);
@@ -96,7 +96,7 @@ public class MysqlUserDao implements UserDao {
 
         user = new User();
         user.setId(rs.getLong("users.id"));
-        user.setUserName(rs.getString("logins.user_name"));
+        user.setUserName(rs.getString("credentials.user_name"));
         user.setFirstName(rs.getString("first_name"));
         user.setLastName(rs.getString("last_name"));
         user.setBirthday(new Date(rs.getDate("birthday").getTime()));

@@ -24,9 +24,9 @@ public class MysqlRoleDao implements RoleDao {
         String sqlStatement = "SELECT user_roles.name " +
                 "FROM users INNER JOIN user_roles " +
                 "ON (users.id = user_roles.user_id) " +
-                "INNER JOIN logins " +
-                "ON (logins.user_id = users.id) " +
-                "WHERE logins.user_name = ?";
+                "INNER JOIN credentials " +
+                "ON (credentials.user_id = users.id) " +
+                "WHERE credentials.user_name = ?";
 
         Set<String> roles = new HashSet<>();
 

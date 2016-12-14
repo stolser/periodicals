@@ -2,11 +2,11 @@ package com.stolser.javatraining.webproject.model.service.user;
 
 import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
-import com.stolser.javatraining.webproject.model.dao.login.LoginDao;
+import com.stolser.javatraining.webproject.model.dao.credential.CredentialDao;
 import com.stolser.javatraining.webproject.model.dao.role.RoleDao;
 import com.stolser.javatraining.webproject.model.dao.user.UserDao;
 import com.stolser.javatraining.webproject.model.database.ConnectionPoolProvider;
-import com.stolser.javatraining.webproject.model.entity.user.Login;
+import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,13 +49,13 @@ public class UserService {
         }
     }
 
-    public Login findOneLoginByUserName(String userName) {
+    public Credential findOneCredentialByUserName(String userName) {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-            LoginDao loginDao = factory.getLoginDao(conn);
+            CredentialDao credentialDao = factory.getCredentialDao(conn);
 
-            Login login = loginDao.findLoginByUserName(userName);
+            Credential credential = credentialDao.findCredentialByUserName(userName);
 
-            return login;
+            return credential;
 
         } catch (SQLException e) {
             LOGGER.error("Exception during closing a connection.");
