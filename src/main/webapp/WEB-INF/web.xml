@@ -76,22 +76,4 @@
         <url-pattern>/backend/*</url-pattern>
     </servlet-mapping>
 
-
-    <!--    <listener>
-            <listener-class>org.apache.shiro.web.env.EnvironmentLoaderListener</listener-class>
-        </listener>
-
-        <filter>
-            <filter-name>ShiroFilter</filter-name>
-            <filter-class>org.apache.shiro.web.servlet.ShiroFilter</filter-class>
-        </filter>
-
-        <filter-mapping>
-            <filter-name>ShiroFilter</filter-name>
-            <url-pattern>/*</url-pattern>
-            <dispatcher>REQUEST</dispatcher>
-            &lt;!&ndash;<dispatcher>FORWARD</dispatcher>&ndash;&gt;
-            &lt;!&ndash;<dispatcher>INCLUDE</dispatcher>&ndash;&gt;
-            <dispatcher>ERROR</dispatcher>
-        </filter-mapping>-->
 </web-app>

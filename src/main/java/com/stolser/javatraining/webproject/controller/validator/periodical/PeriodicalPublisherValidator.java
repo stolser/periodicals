@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.controller.validator.periodical;
 
+import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
 
@@ -13,12 +14,12 @@ public class PeriodicalPublisherValidator implements Validator {
         int statusCode;
         String messageKey;
 
-        if (Pattern.matches(PERIODICAL_PUBLISHER_PATTERN_REGEX, paramValue)) {
-            statusCode = STATUS_CODE_SUCCESS;
-            messageKey = MESSAGE_KEY_SUCCESS;
+        if (Pattern.matches(ApplicationResources.PERIODICAL_PUBLISHER_PATTERN_REGEX, paramValue)) {
+            statusCode = ApplicationResources.STATUS_CODE_SUCCESS;
+            messageKey = ApplicationResources.MSG_SUCCESS;
         } else {
-            statusCode = STATUS_CODE_VALIDATION_FAILED;
-            messageKey = MESSAGE_KEY_PERIODICAL_PUBLISHER_ERROR;
+            statusCode = ApplicationResources.STATUS_CODE_VALIDATION_FAILED;
+            messageKey = ApplicationResources.MSG_PERIODICAL_PUBLISHER_ERROR;
         }
 
         return new ValidationResult(statusCode, messageKey);

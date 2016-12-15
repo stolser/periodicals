@@ -18,7 +18,7 @@ public class DeleteDiscardedPeriodicals implements RequestProcessor {
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
-        String redirectUri = ApplicationResources.PERIODICAL_LIST_HREF;
+        String redirectUri = ApplicationResources.PERIODICAL_LIST_URI;
         List<FrontendMessage> generalMessages = new ArrayList<>();
 
         try {
@@ -33,10 +33,10 @@ public class DeleteDiscardedPeriodicals implements RequestProcessor {
             if (periodicalsToDelete.size() > 0) {
                 periodicalService.deleteAllDiscarded();
 
-                generalMessages.add(new FrontendMessage("validation.discardedPeriodicalsDeleted.success",
+                generalMessages.add(new FrontendMessage(ApplicationResources.MSG_PERIODICALS_DELETED_SUCCESS,
                         FrontendMessage.MessageType.SUCCESS));
             } else {
-                generalMessages.add(new FrontendMessage("validation.thereIsNoPeriodicalsToDelete.warning",
+                generalMessages.add(new FrontendMessage(ApplicationResources.MSG_NO_PERIODICALS_TO_DELETE,
                         FrontendMessage.MessageType.WARNING));
             }
 

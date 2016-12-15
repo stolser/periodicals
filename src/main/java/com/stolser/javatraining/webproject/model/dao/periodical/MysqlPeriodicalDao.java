@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.model.dao.periodical;
 
+import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
@@ -9,6 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MysqlPeriodicalDao implements PeriodicalDao {
+    private static final String INCORRECT_FIELD_NAME = "There is no case for such a fieldName." +
+            "Fix it!";
+    private static final String EXCEPTION_DURING_RETRIEVING_PERIODICAL =
+            "Exception during retrieving a periodical with %s = %s. ";
+    private static final String SELECT_ALL_BY_ID = "SELECT * FROM periodicals " +
+            "WHERE id = ?";
+    private static final String SELECT_ALL_BY_NAME = "SELECT * FROM periodicals " +
+            "WHERE name = ?";
+    private static final String EXCEPTION_DURING_RETRIEVING_ALL_PERIODICALS = "Exception during retrieving all periodicals.";
+    private static final String RETRIEVING_ALL_BY_STATUS = "Exception during retrieving periodicals with" +
+            "status '%s'.";
+    private static final String EXCEPTION_DURING_INSERTING = "Exception during inserting %s into 'periodicals'.";
+    private static final String EXCEPTION_DURING_UPDATING = "Exception during updating %s.";
+    private static final String EXCEPTION_DURING_DELETING_DISCARDED_PERIODICALS = "Exception during deleting discarded periodicals.";
     private Connection conn;
 
     public MysqlPeriodicalDao(Connection conn) {
@@ -17,49 +32,42 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
 
     @Override
     public Periodical findOneById(long id) {
-        String sqlStatement = "SELECT * FROM periodicals " +
-                "WHERE id = ?";
+        String sqlStatement = SELECT_ALL_BY_ID;
 
-        return getPeriodicalFromDb(sqlStatement, id, "id");
+        return getPeriodicalFromDb(sqlStatement, id, ApplicationResources.DB_PERIODICALS_ID);
     }
 
     @Override
     public Periodical findOneByName(String name) {
-        String sqlStatement = "SELECT * FROM periodicals " +
-                "WHERE name = ?";
+        String sqlStatement = SELECT_ALL_BY_NAME;
 
-        return getPeriodicalFromDb(sqlStatement, name, "name");
+        return getPeriodicalFromDb(sqlStatement, name, ApplicationResources.DB_PERIODICALS_NAME);
     }
 
     private Periodical getPeriodicalFromDb(String sqlStatement, Object fieldValue,
                                            String fieldName) {
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
+
             switch (fieldName) {
-                case "id":
+                case ApplicationResources.DB_PERIODICALS_ID:
                     st.setLong(1, (Long) fieldValue);
                     break;
-                case "name":
+                case ApplicationResources.DB_PERIODICALS_NAME:
                     st.setString(1, (String) fieldValue);
                     break;
                 default:
-                    throw new IllegalArgumentException("There is no case for such a fieldName." +
-                            "Fix it!");
+                    throw new IllegalArgumentException(INCORRECT_FIELD_NAME);
             }
 
             ResultSet rs = st.executeQuery();
 
-            Periodical periodical = null;
-            if (rs.next()) {
-                periodical = getNextPeriodicalFromResults(rs);
-            }
-
-            return periodical;
+            return rs.next() ? getNextPeriodicalFromResults(rs) : null;
 
         } catch (SQLException e) {
-            String message = String.format("Exception during retrieving a periodical with %s = %s. " +
-                    "Original: %s. ", fieldName, fieldValue, e.getMessage());
-            throw new CustomSqlException(message);
+            String message = String.format(EXCEPTION_DURING_RETRIEVING_PERIODICAL,
+                    fieldName, fieldValue);
+            throw new CustomSqlException(message, e);
         }
     }
 
@@ -69,12 +77,12 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
+
             ResultSet rs = st.executeQuery();
 
             List<Periodical> periodicals = new ArrayList<>();
-            Periodical periodical;
             while (rs.next()) {
-                periodical = getNextPeriodicalFromResults(rs);
+                Periodical periodical = getNextPeriodicalFromResults(rs);
 
                 periodicals.add(periodical);
             }
@@ -82,8 +90,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
             return periodicals;
 
         } catch (SQLException e) {
-            String message = String.format("Exception during retrieving all periodicals. " +
-                    "Original: %s. ", e.getMessage());
+            String message = EXCEPTION_DURING_RETRIEVING_ALL_PERIODICALS;
 
             throw new CustomSqlException(message, e);
         }
@@ -92,14 +99,15 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     private Periodical getNextPeriodicalFromResults(ResultSet rs) throws SQLException {
         Periodical periodical = new Periodical();
 
-        periodical.setId(rs.getLong("id"));
-        periodical.setName(rs.getString("name"));
+        periodical.setId(rs.getLong(ApplicationResources.DB_PERIODICALS_ID));
+        periodical.setName(rs.getString(ApplicationResources.DB_PERIODICALS_NAME));
         periodical.setCategory(PeriodicalCategory.valueOf(
-                rs.getString("category").toUpperCase()));
-        periodical.setPublisher(rs.getString("publisher"));
-        periodical.setDescription(rs.getString("description"));
-        periodical.setOneMonthCost(rs.getDouble("one_month_cost"));
-        periodical.setStatus(Periodical.Status.valueOf(rs.getString("status").toUpperCase()));
+                rs.getString(ApplicationResources.DB_PERIODICALS_CATEGORY).toUpperCase()));
+        periodical.setPublisher(rs.getString(ApplicationResources.DB_PERIODICALS_PUBLISHER));
+        periodical.setDescription(rs.getString(ApplicationResources.DB_PERIODICALS_DESCRIPTION));
+        periodical.setOneMonthCost(rs.getDouble(ApplicationResources.DB_PERIODICALS_ONE_MONTH_COST));
+        periodical.setStatus(Periodical.Status.valueOf(
+                rs.getString(ApplicationResources.DB_PERIODICALS_STATUS).toUpperCase()));
 
         return periodical;
     }
@@ -112,12 +120,12 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
             st.setString(1, status.toString().toLowerCase());
+
             ResultSet rs = st.executeQuery();
 
             List<Periodical> periodicals = new ArrayList<>();
-            Periodical periodical;
             while (rs.next()) {
-                periodical = getNextPeriodicalFromResults(rs);
+                Periodical periodical = getNextPeriodicalFromResults(rs);
 
                 periodicals.add(periodical);
             }
@@ -125,8 +133,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
             return periodicals;
 
         } catch (SQLException e) {
-            String message = String.format("Exception during retrieving periodicals with" +
-                    "status '%s'.", status);
+            String message = String.format(RETRIEVING_ALL_BY_STATUS, status);
 
             throw new CustomSqlException(message, e);
         }
@@ -140,14 +147,13 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
-
             setStatementFromPeriodical(st, periodical);
 
             st.executeUpdate();
 
         } catch (SQLException e) {
-            String message = String.format("Exception during inserting %s into 'periodicals'. " +
-                    "Original: %s. ", periodical, e.getMessage());
+            String message = String.format(EXCEPTION_DURING_INSERTING,
+                    periodical);
 
             throw new CustomSqlException(message, e);
         }
@@ -170,15 +176,13 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
-
             setStatementFromPeriodical(st, periodical);
             st.setLong(7, periodical.getId());
 
             st.executeUpdate();
 
         } catch (SQLException e) {
-            String message = String.format("Exception during updating %s. " +
-                    "Original: %s. ", periodical, e.getMessage());
+            String message = String.format(EXCEPTION_DURING_UPDATING, periodical);
 
             throw new CustomSqlException(message, e);
         }
@@ -187,16 +191,16 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     @Override
     public void deleteAllDiscarded() {
         String sqlStatement = "DELETE FROM periodicals " +
-                "WHERE status = 'discarded'";
+                "WHERE status = ?";
 
         try {
-            Statement st = conn.createStatement();
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            st.setString( 1, Periodical.Status.DISCARDED.name());
 
-            st.executeUpdate(sqlStatement);
+            st.executeUpdate();
 
         } catch (SQLException e) {
-            String message = String.format("Exception during deleting discarded periodicals" +
-                    "Original: %s. ", e.getMessage());
+            String message = EXCEPTION_DURING_DELETING_DISCARDED_PERIODICALS;
 
             throw new CustomSqlException(message, e);
         }

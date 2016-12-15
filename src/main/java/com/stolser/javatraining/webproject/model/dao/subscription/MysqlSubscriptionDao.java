@@ -10,7 +10,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+
 public class MysqlSubscriptionDao implements SubscriptionDao {
+    private static final String EXCEPTION_MSG_FINDING_ALL_PERIODICALS_BY_USER_ID =
+            "Exception during finding all periodicals for userId = %d, " +
+            "periodicalId = %d";
+    private static final String EXCEPTION_MSG_FINDING_ALL_BY_ID =
+            "Exception during finding all periodicals for periodicalId = %d, " +
+            "status = %s";
+    private static final String EXCEPTION_MSG_RETRIEVING_SUBSCRIPTIONS_FOR_USER =
+            "Exception during retrieving subscriptions for a user: %s.";
+    private static final String EXCEPTION_MSG_CREATING_SUBSCRIPTION =
+            "Exception during creating a subscription %s.";
+    private static final String EXCEPTION_MSG_UPDATING = "Exception during updating %s.";
     private Connection conn;
 
     public MysqlSubscriptionDao(Connection conn) {
@@ -29,15 +42,13 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
 
             ResultSet rs = st.executeQuery();
 
-            Subscription subscription = null;
-            if (rs.next()) {
-                subscription = newSubscriptionFromRs(rs);
-            }
-
-            return subscription;
+            return rs.next() ? newSubscriptionFromRs(rs) : null;
 
         } catch (SQLException e) {
-            throw new CustomSqlException(e);
+            String message = String.format(EXCEPTION_MSG_FINDING_ALL_PERIODICALS_BY_USER_ID,
+                    userId, periodicalId);
+
+            throw new CustomSqlException(message, e);
         }
     }
 
@@ -51,7 +62,7 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
             st.setLong(1, periodicalId);
-            st.setString(2, status.toString().toLowerCase());
+            st.setString(2, status.name().toLowerCase());
 
             ResultSet rs = st.executeQuery();
 
@@ -63,26 +74,28 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
             return subscriptions;
 
         } catch (SQLException e) {
-            throw new CustomSqlException(e);
+            String message = String.format(EXCEPTION_MSG_FINDING_ALL_BY_ID, periodicalId, status);
+
+            throw new CustomSqlException(message, e);
         }
     }
 
     private Subscription newSubscriptionFromRs(ResultSet rs) throws SQLException {
         Subscription subscription = new Subscription();
-        subscription.setId(rs.getLong("subscriptions.id"));
+        subscription.setId(rs.getLong(DB_SUBSCRIPTIONS_ID));
 
         User user = new User();
-        user.setId(rs.getLong("subscriptions.user_id"));
+        user.setId(rs.getLong(DB_SUBSCRIPTIONS_USER_ID));
         subscription.setUser(user);
 
         Periodical periodical = new Periodical();
-        periodical.setId(rs.getLong("subscriptions.periodical_id"));
+        periodical.setId(rs.getLong(DB_SUBSCRIPTIONS_PERIODICAL_ID));
         subscription.setPeriodical(periodical);
 
-        subscription.setDeliveryAddress(rs.getString("subscriptions.delivery_address"));
-        subscription.setEndDate(rs.getTimestamp("subscriptions.end_date").toInstant());
+        subscription.setDeliveryAddress(rs.getString(DB_SUBSCRIPTIONS_DELIVERY_ADDRESS));
+        subscription.setEndDate(rs.getTimestamp(DB_SUBSCRIPTIONS_END_DATE).toInstant());
         subscription.setStatus(Subscription.Status.valueOf(
-                rs.getString("subscriptions.status").toUpperCase()));
+                rs.getString(DB_SUBSCRIPTIONS_STATUS).toUpperCase()));
 
         return subscription;
     }
@@ -103,24 +116,24 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
             List<Subscription> subscriptions = new ArrayList<>();
             while (rs.next()) {
                 Periodical periodical = new Periodical();
-                periodical.setId(rs.getLong("periodicals.id"));
-                periodical.setName(rs.getString("periodicals.name"));
+                periodical.setId(rs.getLong(DB_PERIODICALS_ID));
+                periodical.setName(rs.getString(DB_PERIODICALS_NAME));
                 periodical.setCategory(PeriodicalCategory.valueOf(
-                        rs.getString("periodicals.category").toUpperCase()));
-                periodical.setPublisher(rs.getString("periodicals.publisher"));
-                periodical.setDescription(rs.getString("periodicals.description"));
-                periodical.setOneMonthCost(rs.getDouble("periodicals.one_month_cost"));
+                        rs.getString(DB_PERIODICALS_CATEGORY).toUpperCase()));
+                periodical.setPublisher(rs.getString(DB_PERIODICALS_PUBLISHER));
+                periodical.setDescription(rs.getString(DB_PERIODICALS_DESCRIPTION));
+                periodical.setOneMonthCost(rs.getDouble(DB_PERIODICALS_ONE_MONTH_COST));
                 periodical.setStatus(Periodical.Status.valueOf(
-                        rs.getString("periodicals.status").toUpperCase()));
+                        rs.getString(DB_PERIODICALS_STATUS).toUpperCase()));
 
                 Subscription subscription = new Subscription();
                 subscription.setId(rs.getLong("subscriptions.id"));
                 subscription.setUser(user);
                 subscription.setPeriodical(periodical);
-                subscription.setDeliveryAddress(rs.getString("subscriptions.delivery_address"));
-                subscription.setEndDate(rs.getTimestamp("subscriptions.end_date").toInstant());
+                subscription.setDeliveryAddress(rs.getString(DB_SUBSCRIPTIONS_DELIVERY_ADDRESS));
+                subscription.setEndDate(rs.getTimestamp(DB_SUBSCRIPTIONS_END_DATE).toInstant());
                 subscription.setStatus(Subscription.Status.valueOf(
-                        rs.getString("subscriptions.status").toUpperCase()));
+                        rs.getString(DB_SUBSCRIPTIONS_STATUS).toUpperCase()));
 
                 subscriptions.add(subscription);
             }
@@ -128,21 +141,11 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
             return subscriptions;
 
         } catch (SQLException e) {
-            String message = String.format("Exception during retrieving subscriptions for a user: %s. " +
-                    "Original: %s. ", user, e.getMessage());
+            String message = String.format(EXCEPTION_MSG_RETRIEVING_SUBSCRIPTIONS_FOR_USER,
+                    user);
 
             throw new CustomSqlException(message, e);
         }
-    }
-
-    @Override
-    public Subscription findOneById(long id) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public List<Subscription> findAll() {
-        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -159,8 +162,8 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
             st.executeUpdate();
 
         } catch (SQLException e) {
-            String message = String.format("Exception during creating a subscription %s. " +
-                    "Original: %s. ", subscription, e.getMessage());
+            String message = String.format(EXCEPTION_MSG_CREATING_SUBSCRIPTION,
+                    subscription);
 
             throw new CustomSqlException(message, e);
         }
@@ -190,11 +193,20 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
             st.executeUpdate();
 
         } catch (SQLException e) {
-            String message = String.format("Exception during updating %s . " +
-                    "Original: %s. ", subscription, e.getMessage());
+            String message = String.format(EXCEPTION_MSG_UPDATING, subscription);
 
             throw new CustomSqlException(message, e);
         }
+    }
+
+    @Override
+    public Subscription findOneById(long id) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<Subscription> findAll() {
+        throw new UnsupportedOperationException();
     }
 
     @Override

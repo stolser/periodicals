@@ -27,10 +27,10 @@ public class AuthenticationFilter implements Filter {
 
         if (thisUser == null) {
             request.getSession().setAttribute(ORIGINAL_URI_ATTR_NAME, requestURI);
-            response.sendRedirect(LOGIN_HREF);
+            response.sendRedirect(SIGN_IN_URI);
 
         } else if (!User.Status.ACTIVE.equals(thisUser.getStatus())) {
-            response.sendRedirect("/backend/signOut");
+            response.sendRedirect(SIGN_OUT_URI);
 
         } else {
             chain.doFilter(servletRequest, servletResponse);

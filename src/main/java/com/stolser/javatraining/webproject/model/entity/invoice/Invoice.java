@@ -82,4 +82,12 @@ public class Invoice {
     public void setSubscriptionPeriod(int subscriptionPeriod) {
         this.subscriptionPeriod = subscriptionPeriod;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Invoice{id=%d, user=%s, periodical=%s, subscriptionPeriod=%d, " +
+                "totalSum=%s, creationDate=%s, paymentDate=%s, status=%s}",
+                id, user, periodical, subscriptionPeriod, totalSum,
+                creationDate, paymentDate, status);
+    }
 }

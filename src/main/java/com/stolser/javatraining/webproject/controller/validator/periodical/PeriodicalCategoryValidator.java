@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.controller.validator.periodical;
 
+import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
@@ -20,11 +21,11 @@ public class PeriodicalCategoryValidator implements Validator {
                 .collect(Collectors.toList())
                 .contains(paramValue)) {
 
-            statusCode = STATUS_CODE_SUCCESS;
-            messageKey = MESSAGE_KEY_SUCCESS;
+            statusCode = ApplicationResources.STATUS_CODE_SUCCESS;
+            messageKey = ApplicationResources.MSG_SUCCESS;
         } else {
-            statusCode = STATUS_CODE_VALIDATION_FAILED;
-            messageKey = MESSAGE_KEY_PERIODICAL_CATEGORY_ERROR;
+            statusCode = ApplicationResources.STATUS_CODE_VALIDATION_FAILED;
+            messageKey = ApplicationResources.MSG_PERIODICAL_CATEGORY_ERROR;
         }
 
         return new ValidationResult(statusCode, messageKey);

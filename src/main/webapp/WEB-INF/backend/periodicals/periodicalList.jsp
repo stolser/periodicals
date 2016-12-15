@@ -52,7 +52,7 @@
         <custom:if-authorized mustHaveRoles="admin">
             <div class="row">
                 <div class="col-sm-6 col-xs-6 text-left">
-                    <a href="<% out.print(ApplicationResources.PERIODICAL_CREATE_NEW_HREF); %>"
+                    <a href="<% out.print(ApplicationResources.PERIODICAL_CREATE_NEW_URI); %>"
                        class="btn btn-primary active" role="button">
                         <fmt:message key="newPeriodicalBt.label" bundle="${langPeriodical}"/>
                     </a>

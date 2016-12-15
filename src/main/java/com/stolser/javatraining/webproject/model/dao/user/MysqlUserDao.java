@@ -2,8 +2,6 @@ package com.stolser.javatraining.webproject.model.dao.user;
 
 import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +11,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+
 public class MysqlUserDao implements UserDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MysqlUserDao.class);
+    private static final String EXCEPTION_DURING_FINDING_ALL_USERS = "Exception during finding all users.";
+    private static final String EXCEPTION_DURING_FINDING_USER_BY_NAME =
+            "Exception during finding a user with userName = %s.";
+    private static final String EXCEPTION_DURING_FINDING_USER_BY_ID =
+            "Exception during finding a user with id = %d.";
     private Connection conn;
 
     public MysqlUserDao(Connection conn) {
@@ -33,15 +37,12 @@ public class MysqlUserDao implements UserDao {
 
             ResultSet rs = st.executeQuery();
 
-            User user = null;
-            if (rs.next()) {
-                user = getUserFromResults(rs);
-            }
-
-            return user;
+            return rs.next() ? getUserFromResults(rs) : null;
 
         } catch (SQLException e) {
-            throw new CustomSqlException(e);
+            String message = String.format(EXCEPTION_DURING_FINDING_USER_BY_ID, id);
+
+            throw new CustomSqlException(message, e);
         }
     }
 
@@ -57,16 +58,12 @@ public class MysqlUserDao implements UserDao {
 
             ResultSet rs = st.executeQuery();
 
-            User user = null;
-            if (rs.next()) {
-                user = getUserFromResults(rs);
-            }
-
-            return user;
+            return rs.next() ? getUserFromResults(rs) : null;
 
         } catch (SQLException e) {
-            LOGGER.error("Exception during retrieving a user with userName = {}", userName, e);
-            throw new CustomSqlException(e);
+            String message = String.format(EXCEPTION_DURING_FINDING_USER_BY_NAME, userName);
+
+            throw new CustomSqlException(message, e);
         }
     }
 
@@ -86,8 +83,9 @@ public class MysqlUserDao implements UserDao {
             return users;
 
         } catch (SQLException e) {
-            LOGGER.error("Exception during retrieving all users", e);
-            throw new CustomSqlException(e);
+            String message = String.format(EXCEPTION_DURING_FINDING_ALL_USERS);
+
+            throw new CustomSqlException(message, e);
         }
     }
 
@@ -95,14 +93,14 @@ public class MysqlUserDao implements UserDao {
         User user;
 
         user = new User();
-        user.setId(rs.getLong("users.id"));
-        user.setUserName(rs.getString("credentials.user_name"));
-        user.setFirstName(rs.getString("first_name"));
-        user.setLastName(rs.getString("last_name"));
-        user.setBirthday(new Date(rs.getDate("birthday").getTime()));
-        user.setEmail(rs.getString("email"));
-        user.setAddress(rs.getString("address"));
-        user.setStatus(User.Status.valueOf(rs.getString("status").toUpperCase()));
+        user.setId(rs.getLong(DB_USERS_ID));
+        user.setUserName(rs.getString(DB_CREDENTIALS_USER_NAME));
+        user.setFirstName(rs.getString(DB_USERS_FIRST_NAME));
+        user.setLastName(rs.getString(DB_USERS_LAST_NAME));
+        user.setBirthday(new Date(rs.getDate(DB_USERS_BIRTHDAY).getTime()));
+        user.setEmail(rs.getString(DB_USERS_EMAIL));
+        user.setAddress(rs.getString(DB_USERS_ADDRESS));
+        user.setStatus(User.Status.valueOf(rs.getString(DB_USERS_STATUS).toUpperCase()));
 
         return user;
     }

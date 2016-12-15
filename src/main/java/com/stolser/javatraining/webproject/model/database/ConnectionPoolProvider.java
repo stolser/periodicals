@@ -9,10 +9,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+
 public class ConnectionPoolProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionPoolProvider.class);
-    private static final String DB_CONFIG_FILENAME =
-            "src\\main\\resources\\webProject\\config\\dbConfig.properties";
+    private static final String EXCEPTION_DURING_OPENING_DB_CONFIG_FILE =
+            "Exception during opening the db-config file with path = {}.";
+    private static final String EXCEPTION_DURING_LOADING_DB_CONFIG_PROPERTIES =
+            "Exception during loading db-config properties from the file " +
+            "(path = {})";
     private static final ConnectionPool INSTANCE;
 
     static {
@@ -24,20 +29,19 @@ public class ConnectionPoolProvider {
             properties.load(input);
 
         } catch (FileNotFoundException e) {
-            LOGGER.error("Exception during opening the db-config file with path = {}.",
+            LOGGER.error(EXCEPTION_DURING_OPENING_DB_CONFIG_FILE,
                     DB_CONFIG_FILENAME);
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         } catch (IOException e) {
-            LOGGER.error("Exception during loading db-config properties from the file " +
-                    "(path = {})", DB_CONFIG_FILENAME);
+            LOGGER.error(EXCEPTION_DURING_LOADING_DB_CONFIG_PROPERTIES, DB_CONFIG_FILENAME);
             throw new RuntimeException();
         }
 
-        String url = properties.getProperty("database.url");
-        String dbName = properties.getProperty("database.dbName");
-        String userName = properties.getProperty("database.userName");
-        String userPassword = properties.getProperty("database.userPassword");
-        int maxConnNumber = Integer.valueOf(properties.getProperty("database.maxConnNumber"));
+        String url = properties.getProperty(DB_CONFIG_PARAM_URL);
+        String dbName = properties.getProperty(DB_CONFIG_PARAM_DB_NAME);
+        String userName = properties.getProperty(DB_CONFIG_PARAM_USER_NAME);
+        String userPassword = properties.getProperty(DB_CONFIG_PARAM_USER_PASSWORD);
+        int maxConnNumber = Integer.valueOf(properties.getProperty(DB_CONFIG_PARAM_MAX_CONN_NUMBER));
 
         INSTANCE = SqlConnectionPool.getBuilder(url, dbName)
                 .setUserName(userName)

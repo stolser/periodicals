@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
-import static com.stolser.javatraining.webproject.controller.validator.Validator.STATUS_CODE_SUCCESS;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.STATUS_CODE_SUCCESS;
 
 public class PersistOneInvoice implements RequestProcessor {
 
@@ -37,7 +37,7 @@ public class PersistOneInvoice implements RequestProcessor {
         HttpUtils.addGeneralMessagesToSession(request, generalMessages);
 
         String redirectUri = String.format("%s/%d",
-                PERIODICAL_LIST_HREF, periodicalId);
+                PERIODICAL_LIST_URI, periodicalId);
 
         HttpUtils.sendRedirect(request, response, redirectUri);
 
@@ -48,7 +48,7 @@ public class PersistOneInvoice implements RequestProcessor {
         if (periodicalInDb != null) {
             return true;
         } else {
-            generalMessages.add(new FrontendMessage("validation.periodicalIsNull",
+            generalMessages.add(new FrontendMessage(MSG_VALIDATION_PERIODICAL_IS_NULL,
                     FrontendMessage.MessageType.ERROR));
 
             return false;
@@ -59,7 +59,7 @@ public class PersistOneInvoice implements RequestProcessor {
         if (Periodical.Status.VISIBLE.equals(periodicalInDb.getStatus())) {
             return true;
         } else {
-            generalMessages.add(new FrontendMessage("validation.periodicalIsNotVisible",
+            generalMessages.add(new FrontendMessage(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE,
                     FrontendMessage.MessageType.ERROR));
 
             return false;
@@ -68,11 +68,11 @@ public class PersistOneInvoice implements RequestProcessor {
 
     private boolean subscriptionPeriodIsValid(HttpServletRequest request,
                                               List<FrontendMessage> generalMessages) {
-        FrontendMessage message = new FrontendMessage("validation.subscriptionPeriodIsNotValid",
+        FrontendMessage message = new FrontendMessage(MSG_VALIDATION_SUBSCRIPTION_PERIOD_IS_NOT_VALID,
                 FrontendMessage.MessageType.ERROR);
 
         try {
-            int subscriptionPeriod = Integer.valueOf(request.getParameter("subscriptionPeriod"));
+            int subscriptionPeriod = Integer.valueOf(request.getParameter(SUBSCRIPTION_PERIOD_PARAM_NAME));
 
             if ((subscriptionPeriod >= 1) && (subscriptionPeriod <= 12)) {
                 return true;
@@ -106,22 +106,23 @@ public class PersistOneInvoice implements RequestProcessor {
         try {
             InvoiceServiceImpl.getInstance().createNew(invoiceToPersist);
 
-            generalMessages.add(new FrontendMessage("validation.invoiceCreated.success",
+            generalMessages.add(new FrontendMessage(MSG_INVOICE_CREATION_SUCCESS,
                     FrontendMessage.MessageType.SUCCESS));
         } catch (Exception e) {
-            generalMessages.add(new FrontendMessage("validation.invoicePersistingFailed",
+            generalMessages.add(new FrontendMessage(MSG_INVOICE_PERSISTING_FAILED,
                     FrontendMessage.MessageType.ERROR));
         }
     }
 
     private Invoice getNewInvoice(Periodical periodicalInDb, HttpServletRequest request) {
-        int subscriptionPeriod = Integer.valueOf(request.getParameter("subscriptionPeriod"));
+        int subscriptionPeriod = Integer.valueOf(request.getParameter(SUBSCRIPTION_PERIOD_PARAM_NAME));
 
         double totalSum = subscriptionPeriod * periodicalInDb.getOneMonthCost();
         long userIdFromUri = HttpUtils.getFirstIdFromUri(request.getRequestURI());
-        Invoice newInvoice = new Invoice();
         User user = new User();
         user.setId(userIdFromUri);
+
+        Invoice newInvoice = new Invoice();
         newInvoice.setUser(user);
         newInvoice.setPeriodical(periodicalInDb);
         newInvoice.setSubscriptionPeriod(subscriptionPeriod);

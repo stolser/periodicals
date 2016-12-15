@@ -1,6 +1,5 @@
 package com.stolser.javatraining.webproject.controller.request_processor.user;
 
-import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
@@ -13,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.List;
+
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 public class DisplayCurrentUser implements RequestProcessor {
 
@@ -29,15 +30,15 @@ public class DisplayCurrentUser implements RequestProcessor {
             });
 
             sortInvoices(invoices);
-            request.setAttribute("userInvoices", invoices);
+            request.setAttribute(USER_INVOICES_PARAM_NAME, invoices);
         }
 
         if (subscriptions.size() > 0) {
             sortSubscriptions(subscriptions);
-            request.setAttribute("userSubscriptions", subscriptions);
+            request.setAttribute(USER_SUBSCRIPTIONS_PARAM_NAME, subscriptions);
         }
 
-        return ApplicationResources.ONE_USER_INFO_VIEW_NAME;
+        return ONE_USER_INFO_VIEW_NAME;
     }
 
     private void sortInvoices(List<Invoice> invoices) {

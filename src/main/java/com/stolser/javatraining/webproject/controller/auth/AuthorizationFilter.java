@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//@WebFilter(urlPatterns = {"/admin/*"})
 public class AuthorizationFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationFilter.class);
     private static final String ACCESS_DENIED_FOR_USER = "Access denied for user '%s' to '%s'!!!\n";
@@ -36,8 +35,7 @@ public class AuthorizationFilter implements Filter {
             LOGGER.error(String.format(ACCESS_DENIED_FOR_USER,
                     username, requestURI));
 
-            ((HttpServletResponse) response).sendRedirect(ApplicationResources.ACCESS_DENIED_HRF);
-
+            ((HttpServletResponse) response).sendRedirect(ApplicationResources.ACCESS_DENIED_URI);
         }
     }
 

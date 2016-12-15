@@ -2,16 +2,17 @@ package com.stolser.javatraining.webproject.model.dao.credential;
 
 import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+
 public class MysqlCredentialDao implements CredentialDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MysqlCredentialDao.class);
+    private static final String EXCEPTION_DURING_EXECUTION_STATEMENT =
+            "Exception during execution statement '%s' for userName = %s.";
     private Connection conn;
 
     public MysqlCredentialDao(Connection conn) {
@@ -32,16 +33,17 @@ public class MysqlCredentialDao implements CredentialDao {
             Credential credential = null;
             if (rs.next()) {
                 credential = new Credential();
-                credential.setId(rs.getLong("id"));
-                credential.setUserName(rs.getString("user_name"));
-                credential.setPasswordHash(rs.getString("password_hash"));
+                credential.setId(rs.getLong(DB_CREDENTIALS_ID));
+                credential.setUserName(rs.getString(DB_CREDENTIALS_USER_NAME));
+                credential.setPasswordHash(rs.getString(DB_CREDENTIALS_PASSWORD_HASH));
             }
 
             return credential;
 
         } catch (SQLException e) {
-            LOGGER.error("Exception during retrieving a credential with userName = {}", userName, e);
-            throw new CustomSqlException(e);
+            String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT,
+                    sqlStatement, userName);
+            throw new CustomSqlException(message, e);
         }
     }
 

@@ -13,18 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.MESSAGE_ATTRIBUTE;
-
-//@WebServlet(urlPatterns = {"/admin/*"})
 public class FrontController extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(FrontController.class);
+    private static final String USER_ID_REQUEST_URI = "User id = {}. requestURI = {}";
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         processRequest(request, response);
-
     }
 
     @Override
@@ -38,7 +34,6 @@ public class FrontController extends HttpServlet {
         String viewName;
 
         String requestURI = request.getRequestURI();
-        System.out.println("processRequest(): requestURI = " + requestURI);
 
         try {
             RequestProcessor processor = new RequestProvider(request).getRequestProcessor();
@@ -46,9 +41,9 @@ public class FrontController extends HttpServlet {
             viewName = processor.getViewName(request, response);
 
         } catch (Exception e) {
-            LOGGER.error("User id = {}. requestURI = {}",
+            LOGGER.error(USER_ID_REQUEST_URI,
                     HttpUtils.getUserIdFromSession(request), requestURI, e);
-            request.setAttribute(MESSAGE_ATTRIBUTE, e.getLocalizedMessage());
+//            request.setAttribute(MESSAGE_ATTRIBUTE, e.getLocalizedMessage());
 
             viewName = ApplicationResources.getErrorViewName(e);
         }
@@ -62,11 +57,10 @@ public class FrontController extends HttpServlet {
         if (viewName != null) {
             String page = ViewResolver.getPageByViewName(viewName);
 
-            System.out.println("forwarding to '" + page + "'");
+//            System.out.println("forwarding to '" + page + "'");
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(page);
             dispatcher.forward(request, response);
         }
     }
-
 }

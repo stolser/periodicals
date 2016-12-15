@@ -1,6 +1,5 @@
 package com.stolser.javatraining.webproject.controller.validator;
 
-import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,7 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.MESSAGES_ATTR_NAME;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 public class ValidationServlet extends HttpServlet {
 
@@ -24,9 +23,9 @@ public class ValidationServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        String paramName = request.getParameter("paramName");
-        String paramValue = request.getParameter("paramValue");
-        System.out.println("paramName = " + paramName + "; paramValue = " + paramValue);
+        String paramName = request.getParameter(PARAM_NAME);
+        String paramValue = request.getParameter(PARAM_VALUE);
+//        System.out.println("paramName = " + paramName + "; paramValue = " + paramValue);
 
         removeMessagesForCurrentParam(session, paramName);
 
@@ -35,29 +34,29 @@ public class ValidationServlet extends HttpServlet {
 
         Locale locale = getLocaleFromSession(session);
 
-        ResourceBundle bundle = ResourceBundle.getBundle(ApplicationResources.VALIDATION_BUNDLE_PATH, locale);
-        System.out.println("locale = " + locale + "; bundle = " + bundle);
+        ResourceBundle bundle = ResourceBundle.getBundle(VALIDATION_BUNDLE_PATH, locale);
+//        System.out.println("locale = " + locale + "; bundle = " + bundle);
 
         String localizedMessage = bundle.getString(result.getMessageKey());
         int statusCode = result.getStatusCode();
 
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType(JSON_CONTENT_TYPE);
+        response.setCharacterEncoding(CHARACTER_ENCODING);
 
         PrintWriter writer = response.getWriter();
         JSONObject jsonResponse = new JSONObject();
 
-        System.out.println("statusCode = " + statusCode);
-        System.out.println("localizedMessage = " + localizedMessage);
+//        System.out.println("statusCode = " + statusCode);
+//        System.out.println("localizedMessage = " + localizedMessage);
 
         try {
-            jsonResponse.put("statusCode", statusCode);
-            jsonResponse.put("validationMessage", localizedMessage);
+            jsonResponse.put(STATUS_CODE_JSON_RESPONSE, statusCode);
+            jsonResponse.put(VALIDATION_MESSAGE_JSON_RESPONSE, localizedMessage);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        System.out.println("jsonResponse.toString() = " + jsonResponse.toString());
+//        System.out.println("jsonResponse.toString() = " + jsonResponse.toString());
 
         writer.println(jsonResponse.toString());
         writer.flush();
@@ -73,13 +72,13 @@ public class ValidationServlet extends HttpServlet {
     }
 
     private Locale getLocaleFromSession(HttpSession session) {
-        Object localeAttr = session.getAttribute("language");
+        Object localeAttr = session.getAttribute(LANGUAGE_ATTR_NAME);
         Locale locale;
 
         if (localeAttr instanceof Locale) {
             locale = (Locale) localeAttr;
         } else {
-            locale = ApplicationResources.SystemLocale.valueOf(((String) localeAttr).toUpperCase())
+            locale = SystemLocale.valueOf(((String) localeAttr).toUpperCase())
                     .getLocale();
         }
 

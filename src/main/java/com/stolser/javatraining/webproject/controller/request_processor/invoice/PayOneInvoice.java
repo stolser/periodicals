@@ -1,6 +1,5 @@
 package com.stolser.javatraining.webproject.controller.request_processor.invoice;
 
-import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
@@ -19,11 +18,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ACCOUNT_HREF;
-import static com.stolser.javatraining.webproject.controller.validator.Validator.STATUS_CODE_SUCCESS;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.STATUS_CODE_SUCCESS;
 
 public class PayOneInvoice implements RequestProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PayOneInvoice.class);
+    private static final String EXCEPTION_DURING_PAYING_THE_INVOICE_WITH_ID = "User id = {}. Exception during paying the invoice with id {}.";
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
@@ -33,13 +33,13 @@ public class PayOneInvoice implements RequestProcessor {
         Invoice invoiceInDb = InvoiceServiceImpl.getInstance().findOneById(invoiceId);
 
         if (validationPassed(invoiceInDb, request, generalMessages)) {
-            generalMessages.add(new FrontendMessage(ApplicationResources.MSG_VALIDATION_PASSED_SUCCESS,
+            generalMessages.add(new FrontendMessage(MSG_VALIDATION_PASSED_SUCCESS,
                     FrontendMessage.MessageType.INFO));
             tryToPayThisInvoice(invoiceId, request, generalMessages);
         }
 
         HttpUtils.addGeneralMessagesToSession(request, generalMessages);
-        HttpUtils.sendRedirect(request, response, CURRENT_USER_ACCOUNT_HREF);
+        HttpUtils.sendRedirect(request, response, CURRENT_USER_ACCOUNT_URI);
 
         return null;
     }
@@ -64,7 +64,7 @@ public class PayOneInvoice implements RequestProcessor {
         if (invoiceInDb != null) {
             return true;
         } else {
-            generalMessages.add(new FrontendMessage("validation.invoice.noSuchInvoice",
+            generalMessages.add(new FrontendMessage(MSG_VALIDATION_NO_SUCH_INVOICE,
                     FrontendMessage.MessageType.ERROR));
 
             return false;
@@ -75,7 +75,7 @@ public class PayOneInvoice implements RequestProcessor {
         if (Invoice.Status.NEW.equals(invoiceInDb.getStatus())) {
             return true;
         } else {
-            generalMessages.add(new FrontendMessage("validation.invoice.invoiceIsNotNew",
+            generalMessages.add(new FrontendMessage(MSG_VALIDATION_INVOICE_IS_NOT_NEW,
                     FrontendMessage.MessageType.ERROR));
 
             return false;
@@ -89,7 +89,7 @@ public class PayOneInvoice implements RequestProcessor {
         if (Periodical.Status.VISIBLE.equals(periodicalInDb.getStatus())) {
             return true;
         } else {
-            generalMessages.add(new FrontendMessage("validation.periodicalIsNotVisible",
+            generalMessages.add(new FrontendMessage(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE,
                     FrontendMessage.MessageType.ERROR));
 
             return false;
@@ -102,18 +102,18 @@ public class PayOneInvoice implements RequestProcessor {
 
         try {
             if (invoiceService.payInvoice(invoiceId)) {
-                generalMessages.add(new FrontendMessage("validation.invoiceWasPaid.success",
+                generalMessages.add(new FrontendMessage(MSG_INVOICE_PAYMENT_SUCCESS,
                         FrontendMessage.MessageType.SUCCESS));
             } else {
-                generalMessages.add(new FrontendMessage("validation.invoice.payInvoiceError",
+                generalMessages.add(new FrontendMessage(MSG_INVOICE_PAYMENT_ERROR,
                         FrontendMessage.MessageType.ERROR));
             }
 
         } catch (Exception e) {
-            LOGGER.error("User id = {}. Exception during paying the invoice with id {}.",
+            LOGGER.error(EXCEPTION_DURING_PAYING_THE_INVOICE_WITH_ID,
                     HttpUtils.getUserIdFromSession(request), invoiceId, e);
 
-            generalMessages.add(new FrontendMessage("validation.invoice.payInvoiceError",
+            generalMessages.add(new FrontendMessage(MSG_INVOICE_PAYMENT_ERROR,
                     FrontendMessage.MessageType.ERROR));
         }
     }

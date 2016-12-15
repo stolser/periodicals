@@ -25,11 +25,11 @@ public class Authorization {
     private HttpServletRequest request;
     private User user;
 
-    public Authorization(HttpServletRequest request) {
+    Authorization(HttpServletRequest request) {
         this.request = request;
     }
 
-    public boolean checkPermissions() {
+    boolean checkPermissions() {
         String requestURI = request.getRequestURI();
         user = (User) request.getSession().getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
 
@@ -50,13 +50,13 @@ public class Authorization {
     private boolean userHasLegitRole(Set<String> legitRoles) {
         Set<String> userRoles = user.getRoles();
         Set<String> userLegitRoles = new HashSet<>(legitRoles);
-        System.out.println("------ User's roles:");
-        userRoles.forEach(System.out::println);
+//        System.out.println("------ User's roles:");
+//        userRoles.forEach(System.out::println);
 
         userLegitRoles.retainAll(userRoles);
 
-        System.out.println("------ legit user's roles: ");
-        userLegitRoles.forEach(System.out::println);
+//        System.out.println("------ legit user's roles: ");
+//        userLegitRoles.forEach(System.out::println);
 
         return (userLegitRoles.size() != 0);
     }

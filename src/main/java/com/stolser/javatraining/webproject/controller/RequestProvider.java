@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 
 public class RequestProvider {
     private static final Map<String, RequestProcessor> requestMapping = new HashMap<>();
+    private static final String NO_MAPPING_FOR_SUCH_REQUEST = "There no mapping for such a request: '%s'.";
 
     static {
         requestMapping.put("GET:/backend/?", new BackendMainPage());
@@ -43,7 +44,7 @@ public class RequestProvider {
     public RequestProcessor getRequestProcessor() throws NoSuchElementException {
         String requestMethod = request.getMethod().toUpperCase();
         String requestURI = request.getRequestURI();
-        System.out.println("getRequestProcessor(): requestURI = '" + requestURI + "'");
+//        System.out.println("getRequestProcessor(): requestURI = '" + requestURI + "'");
 
         Optional<Map.Entry<String, RequestProcessor>> mapping = requestMapping.entrySet()
                 .stream()
@@ -55,19 +56,19 @@ public class RequestProvider {
                 })
                 .filter(entry -> {
                     String urlPattern = entry.getKey().split(":")[1];
-                    System.out.println("urlPattern = '" + urlPattern + "'");
+//                    System.out.println("urlPattern = '" + urlPattern + "'");
 
                     return Pattern.matches(urlPattern, requestURI);
                 })
                 .findFirst();
 
-        System.out.println("mapping = " + mapping);
+//        System.out.println("mapping = " + mapping);
 
         if (mapping.isPresent()) {
             return mapping.get().getValue();
         } else {
             throw new NoSuchElementException(
-                    String.format("There no mapping for such a request: '%s'.", requestURI));
+                    String.format(NO_MAPPING_FOR_SUCH_REQUEST, requestURI));
         }
     }
 }

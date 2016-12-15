@@ -1,8 +1,7 @@
 package com.stolser.javatraining.webproject.model.dao.role;
 
+import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.model.CustomSqlException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MysqlRoleDao implements RoleDao {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MysqlRoleDao.class);
+    private static final String RETRIEVING_ROLES_FOR_USER = "Exception during retrieving roles for user with userName = '%s'";
     private Connection conn;
 
     public MysqlRoleDao(Connection conn) {
@@ -37,16 +36,16 @@ public class MysqlRoleDao implements RoleDao {
             ResultSet rs = st.executeQuery();
 
             while(rs.next()) {
-                roles.add(rs.getString("user_roles.name"));
+                roles.add(rs.getString(ApplicationResources.DB_USER_ROLES_NAME));
             }
 
         } catch (SQLException e) {
-            LOGGER.error("Exception during retrieving roles for user with userName = {}",
-                    userName, e);
-            throw new CustomSqlException(e);
+            String message = String.format(RETRIEVING_ROLES_FOR_USER,
+                    userName);
+            
+            throw new CustomSqlException(message, e);
         }
 
         return roles;
-
     }
 }

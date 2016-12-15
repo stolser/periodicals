@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.controller.validator.user;
 
+import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
@@ -17,11 +18,11 @@ public class SignInUsernameValidator implements Validator {
         Credential credential = UserService.getInstance().findOneCredentialByUserName(usernameValue);
 
         if (credential != null) {
-            statusCode = STATUS_CODE_SUCCESS;
-            messageKey = MESSAGE_KEY_SUCCESS;
+            statusCode = ApplicationResources.STATUS_CODE_SUCCESS;
+            messageKey = ApplicationResources.MSG_SUCCESS;
         } else {
-            statusCode = STATUS_CODE_VALIDATION_FAILED;
-            messageKey = MESSAGE_KEY_NO_SUCH_USER_NAME;
+            statusCode = ApplicationResources.STATUS_CODE_VALIDATION_FAILED;
+            messageKey = ApplicationResources.MSG_NO_SUCH_USER_NAME;
         }
 
         return new ValidationResult(statusCode, messageKey);

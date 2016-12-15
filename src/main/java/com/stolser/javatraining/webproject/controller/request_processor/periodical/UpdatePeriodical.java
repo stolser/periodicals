@@ -24,10 +24,8 @@ public class UpdatePeriodical implements RequestProcessor {
             throw new NoSuchElementException(String.format(NO_PERIODICAL_WITH_ID_IN_DB, periodicalId));
         }
 
-        System.out.println("found periodical: " + periodical);
-
         request.setAttribute(PERIODICAL_ATTR_NAME, periodical);
-        request.setAttribute(ENTITY_OPERATION_TYPE_PARAM_NAME, "update");
+        request.setAttribute(ENTITY_OPERATION_TYPE_PARAM_ATTR_NAME, "update");
         request.setAttribute(PERIODICAL_STATUSES_ATTR_NAME, Periodical.Status.values());
         request.setAttribute(PERIODICAL_CATEGORIES_ATTR_NAME, PeriodicalCategory.values());
 

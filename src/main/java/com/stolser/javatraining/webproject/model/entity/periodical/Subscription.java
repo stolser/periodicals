@@ -63,4 +63,10 @@ public class Subscription {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Subscription{id=%d, user=%s, periodical=%s, deliveryAddress='%s', " +
+                "endDate=%s, status=%s}", id, user, periodical, deliveryAddress, endDate, status);
+    }
 }

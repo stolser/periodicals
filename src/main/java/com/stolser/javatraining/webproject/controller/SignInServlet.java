@@ -34,8 +34,7 @@ public class SignInServlet extends HttpServlet {
         String username = request.getParameter(SIGN_IN_USERNAME_PARAM_NAME);
         String password = request.getParameter(PASSWORD_PARAM_NAME);
 
-        if ((username != null) && (password != null)
-                && (!"".equals(username)) && (!"".equals(password))) {
+        if (usernameAndPasswordIsNotEmpty(username, password)) {
             String passwordHash = getPasswordHash(password);
             UserService userService = UserService.getInstance();
 
@@ -43,39 +42,39 @@ public class SignInServlet extends HttpServlet {
 
             if (credential == null) {
                 messages.put(SIGN_IN_USERNAME_PARAM_NAME,
-                        new FrontendMessage("validation.noSuchUserName",
+                        new FrontendMessage(MSG_NO_SUCH_USER_NAME,
                         FrontendMessage.MessageType.ERROR));
 
-                redirectUri = LOGIN_HREF;
+                redirectUri = SIGN_IN_URI;
             } else if (passwordHash.equals(credential.getPasswordHash())) {
                 User thisUser = userService.findOneUserByUserName(username);
 
                 if (thisUser.getStatus() == User.Status.ACTIVE) {
                     request.getSession().setAttribute(CURRENT_USER_ATTR_NAME, thisUser);
                     String originalUri = (String) request.getSession().getAttribute(ORIGINAL_URI_ATTR_NAME);
-                    String defaultUri = thisUser.hasRole(ADMIN_ROLE_NAME) ? ADMIN_PANEL_HREF
-                            : CURRENT_USER_ACCOUNT_HREF ;
+                    String defaultUri = thisUser.hasRole(ADMIN_ROLE_NAME) ? ADMIN_PANEL_URI
+                            : CURRENT_USER_ACCOUNT_URI;
                     redirectUri = (originalUri != null) ? originalUri : defaultUri;
 
                     request.getSession().removeAttribute(ORIGINAL_URI_ATTR_NAME);
                     request.getSession().removeAttribute(MESSAGES_ATTR_NAME);
 
                 } else {
-                    messages.put(SIGN_IN_USERNAME_PARAM_NAME, new FrontendMessage("error.userIsBlocked",
+                    messages.put(SIGN_IN_USERNAME_PARAM_NAME, new FrontendMessage(MSG_ERROR_USER_IS_BLOCKED,
                             FrontendMessage.MessageType.ERROR));
 
-                    redirectUri = LOGIN_HREF;
+                    redirectUri = SIGN_IN_URI;
                 }
 
             } else {
-                messages.put(PASSWORD_PARAM_NAME, new FrontendMessage("error.wrongPassword",
+                messages.put(PASSWORD_PARAM_NAME, new FrontendMessage(MSG_ERROR_WRONG_PASSWORD,
                         FrontendMessage.MessageType.ERROR));
 
-                redirectUri = LOGIN_HREF;
+                redirectUri = SIGN_IN_URI;
             }
 
         } else {
-            redirectUri = LOGIN_HREF;
+            redirectUri = SIGN_IN_URI;
         }
 
         request.getSession().setAttribute(USERNAME_ATTR_NAME, username);
@@ -84,10 +83,14 @@ public class SignInServlet extends HttpServlet {
 
     }
 
+    private boolean usernameAndPasswordIsNotEmpty(String username, String password) {
+        return (username != null) && (password != null) && (!"".equals(username)) && (!"".equals(password));
+    }
+
     private String getPasswordHash(String password) {
         MessageDigest md;
         try {
-            md = MessageDigest.getInstance("MD5");
+            md = MessageDigest.getInstance(ALGORITHM_NAME);
 
         } catch (NoSuchAlgorithmException e) {
             LOGGER.error(EXCEPTION_DURING_GETTING_MESSAGE_DIGEST_FOR_MD5, e);
@@ -102,8 +105,6 @@ public class SignInServlet extends HttpServlet {
             builder.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16)
                     .substring(1));
         }
-
-        System.out.println("Digest(in hex format):: " + builder.toString());
 
         return builder.toString();
     }
