@@ -16,9 +16,10 @@ public interface PeriodicalService {
 
     Periodical save(Periodical periodical);
 
+    int updateAndSetDiscarded(Periodical periodical);
+
     void deleteAllDiscarded();
 
     boolean hasActiveSubscriptions(long periodicalId);
 
-    boolean discard(Periodical periodicalToDiscard);
 }

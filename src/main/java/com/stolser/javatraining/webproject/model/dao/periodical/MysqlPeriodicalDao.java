@@ -4,6 +4,7 @@ import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
+import com.stolser.javatraining.webproject.model.entity.periodical.Subscription;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -169,7 +170,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     }
 
     @Override
-    public void update(Periodical periodical) {
+    public int update(Periodical periodical) {
         String sqlStatement = "UPDATE periodicals " +
                 "SET name=?, category=?, publisher=?, description=?, one_month_cost=?, status=? " +
                 "WHERE id=?";
@@ -179,7 +180,43 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
             setStatementFromPeriodical(st, periodical);
             st.setLong(7, periodical.getId());
 
-            st.executeUpdate();
+            return st.executeUpdate();
+
+        } catch (SQLException e) {
+            String message = String.format(EXCEPTION_DURING_UPDATING, periodical);
+
+            throw new CustomSqlException(message, e);
+        }
+    }
+
+    /**
+     * Updates a periodical and sets a new status 'discarded' only if there is no active subscriptions
+     * of this periodical.
+     * @return the number of affected rows: 0 - if the condition was not satisfied and updated
+     * has not happened; 1 - if the status of this periodical has been changed to 'discarded'
+     */
+    @Override
+    public int updateAndSetDiscarded(Periodical periodical) {
+        String sqlStatement = "UPDATE periodicals AS p " +
+                "SET name=?, category=?, publisher=?, description=?, one_month_cost=?, status=? " +
+                "WHERE id=? AND 0 = (SELECT count(*) FROM subscriptions AS s " +
+                "WHERE s.periodical_id = p.id AND s.status = ?)";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            setStatementFromPeriodical(st, periodical);
+            st.setLong(7, periodical.getId());
+            st.setString(8, Subscription.Status.ACTIVE.name().toLowerCase());
+
+//            try {
+//                Thread.sleep(5_000);
+                                    /*for testing racing conditions. If a subscriber creates
+              a subscription during this time then this periodical cannot be discarded any more.*/
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+
+            return st.executeUpdate();
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_UPDATING, periodical);

@@ -16,7 +16,7 @@
             <tr class="${subscription.status == 'ACTIVE' ? 'success' : 'active'}">
                 <td><c:out value="${loop.index + 1}"/></td>
                 <td><c:choose>
-                    <c:when test="${(subscription.periodical.status == 'VISIBLE') ||
+                    <c:when test="${(subscription.periodical.status == 'ACTIVE') ||
                                 thisUser.hasRole('admin')}">
                         <a href="/backend/periodicals/${subscription.periodical.id}">
                             <c:out value="${subscription.periodical.name}"/></a>

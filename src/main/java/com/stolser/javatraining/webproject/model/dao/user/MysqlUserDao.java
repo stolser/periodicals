@@ -111,7 +111,7 @@ public class MysqlUserDao implements UserDao {
     }
 
     @Override
-    public void update(User entity) {
+    public int update(User entity) {
         throw new UnsupportedOperationException();
     }
 

@@ -117,7 +117,6 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
         } catch (SQLException e) {
             throw new CustomSqlException(e);
-
         }
 
     }
@@ -168,10 +167,19 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
     private void updatePeriodical(Periodical periodical) throws SQLException {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-            System.out.println("PeriodicalServiceImpl.updatePeriodical(): connection has been got.");
-
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             periodicalDao.update(periodical);
+        }
+    }
+
+    @Override
+    public int updateAndSetDiscarded(Periodical periodical) {
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+            PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
+
+            return periodicalDao.updateAndSetDiscarded(periodical);
+        } catch (SQLException e) {
+            throw new CustomSqlException(e);
         }
     }
 
@@ -199,53 +207,4 @@ public class PeriodicalServiceImpl implements PeriodicalService {
             throw new CustomSqlException(e);
         }
     }
-
-    @Override
-    public boolean discard(Periodical periodicalToDiscard) {
-        Connection conn = ConnectionPoolProvider.getPool().getConnection();
-        int oldIsolationLevel = Connection.TRANSACTION_READ_COMMITTED;
-
-        try {
-            oldIsolationLevel = conn.getTransactionIsolation();
-            conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-            conn.setAutoCommit(false);
-
-            if (!hasActiveSubscriptions(periodicalToDiscard.getId())) {
-                try {
-                    Thread.sleep(5_000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                save(periodicalToDiscard);
-                conn.commit();
-                return true;
-            } else {
-                return false;
-            }
-
-        } catch (Exception e) {
-            try {
-                conn.rollback();
-
-            } catch (SQLException e1) {
-                throw new CustomSqlException(e);
-            }
-
-            throw new CustomSqlException(e);
-        } finally {
-            if (conn != null) {
-                try {
-                    // todo: is it necessary?
-                    conn.setAutoCommit(true);
-                    conn.setTransactionIsolation(oldIsolationLevel);
-                    conn.close();
-
-                } catch (SQLException e) {
-                    throw new CustomSqlException(e);
-                }
-            }
-        }
-    }
-
 }

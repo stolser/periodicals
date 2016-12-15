@@ -53,7 +53,9 @@ public class SignInServlet extends HttpServlet {
                     String originalUri = (String) request.getSession().getAttribute(ORIGINAL_URI_ATTR_NAME);
                     String defaultUri = thisUser.hasRole(ADMIN_ROLE_NAME) ? ADMIN_PANEL_URI
                             : CURRENT_USER_ACCOUNT_URI;
-                    redirectUri = (originalUri != null) ? originalUri : defaultUri;
+
+                    redirectUri = (originalUri != null) && (!SIGN_IN_URI.equals(originalUri))
+                            ? originalUri : defaultUri;
 
                     request.getSession().removeAttribute(ORIGINAL_URI_ATTR_NAME);
                     request.getSession().removeAttribute(MESSAGES_ATTR_NAME);

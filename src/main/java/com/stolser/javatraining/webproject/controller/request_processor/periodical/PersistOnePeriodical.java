@@ -58,39 +58,20 @@ public class PersistOnePeriodical implements RequestProcessor {
         PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
         Periodical periodicalInDb = periodicalService.findOneById(periodicalToSave.getId());
 
-        Periodical.Status oldStatus = null;
-        if (periodicalInDb != null) {
-            oldStatus = periodicalInDb.getStatus();
-        }
-
+        Periodical.Status oldStatus = (periodicalInDb != null) ? periodicalInDb.getStatus() : null;
         Periodical.Status newStatus = periodicalToSave.getStatus();
 
-        if (VISIBLE.equals(oldStatus) && INVISIBLE.equals(newStatus)) {
+        if (statusFromActiveToInactive(oldStatus, newStatus)) {
             if (periodicalService.hasActiveSubscriptions(periodicalToSave.getId())) {
                 generalMessages.add(new FrontendMessage(MSG_PERIODICAL_HAS_ACTIVE_SUBSCRIPTIONS_WARNING,
                         FrontendMessage.MessageType.WARNING));
             }
         }
 
-        if ((VISIBLE.equals(oldStatus) || INVISIBLE.equals(oldStatus))
-                && DISCARDED.equals(newStatus)
-                && periodicalService.hasActiveSubscriptions(periodicalToSave.getId())) {
-
-            generalMessages.add(new FrontendMessage(MSG_PERIODICAL_HAS_ACTIVE_SUBSCRIPTIONS_ERROR,
-                    FrontendMessage.MessageType.ERROR));
-
-            HttpUtils.addGeneralMessagesToSession(request, generalMessages);
-            HttpUtils.sendRedirect(request, response, redirectUri);
-            return null;
-        }
-
         Periodical persistedPeriodical;
-        if ((VISIBLE.equals(oldStatus) || INVISIBLE.equals(oldStatus))
-                && DISCARDED.equals(newStatus)) {
+        if (statusFromActiveOrInactiveToDiscarded(oldStatus, newStatus)) {
 
-//            persistedPeriodical = periodicalService.save(periodicalToSave);
-
-            if (periodicalService.discard(periodicalToSave)) {
+            if (tryToDiscardPeriodical(periodicalToSave)) {
                 persistedPeriodical = periodicalService.findOneById(periodicalToSave.getId());
 
             } else {
@@ -102,9 +83,6 @@ public class PersistOnePeriodical implements RequestProcessor {
                 return null;
             }
 
-            // update status by periodicalService.discard(periodicalToDiscard) in a transaction
-            // with conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-            // If inside Dao periodical hasActiveSubscriptions --> new CustomSqlException();
         } else {
             persistedPeriodical = periodicalService.save(periodicalToSave);
         }
@@ -136,6 +114,20 @@ public class PersistOnePeriodical implements RequestProcessor {
             HttpUtils.sendRedirect(request, response, redirectUri);
             return null;
         }
+    }
+
+    private boolean tryToDiscardPeriodical(Periodical periodicalToSave) {
+        int result = PeriodicalServiceImpl.getInstance().updateAndSetDiscarded(periodicalToSave);
+        return result >= 1;
+    }
+
+    private boolean statusFromActiveOrInactiveToDiscarded(Periodical.Status oldStatus, Periodical.Status newStatus) {
+        return (ACTIVE.equals(oldStatus) || INACTIVE.equals(oldStatus))
+                && DISCARDED.equals(newStatus);
+    }
+
+    private boolean statusFromActiveToInactive(Periodical.Status oldStatus, Periodical.Status newStatus) {
+        return ACTIVE.equals(oldStatus) && INACTIVE.equals(newStatus);
     }
 
     private String getRedirectUriByOperationType(String entityOperationType, Periodical periodicalToSave) {

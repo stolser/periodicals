@@ -56,7 +56,7 @@ public class PersistOneInvoice implements RequestProcessor {
     }
 
     private boolean periodicalIsVisible(Periodical periodicalInDb, List<FrontendMessage> generalMessages) {
-        if (Periodical.Status.VISIBLE.equals(periodicalInDb.getStatus())) {
+        if (Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())) {
             return true;
         } else {
             generalMessages.add(new FrontendMessage(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE,

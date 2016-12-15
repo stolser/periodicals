@@ -93,11 +93,10 @@ public class MysqlInvoiceDao implements InvoiceDao {
     }
 
     @Override
-    public void update(Invoice invoice) {
+    public int update(Invoice invoice) {
         String sqlStatement = "UPDATE invoices " +
                 "SET user_id=?, periodical_id=?, period=?, total_sum=?, creation_date=?, " +
-                "payment_date=?, status=? " +
-                "WHERE id=?";
+                "payment_date=?, status=? WHERE id=?";
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
@@ -105,7 +104,7 @@ public class MysqlInvoiceDao implements InvoiceDao {
             setCreateUpdateStatementFromInvoice(st, invoice);
             st.setLong(8, invoice.getId());
 
-            st.executeUpdate();
+            return st.executeUpdate();
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_INVOICE,

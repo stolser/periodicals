@@ -25,7 +25,7 @@ public class DisplayOnePeriodical implements RequestProcessor {
         if (periodical == null) {
             throw new NoSuchElementException(String.format(NO_PERIODICAL_WITH_ID_IN_DB, periodicalId));
 
-        } else if(!Periodical.Status.VISIBLE.equals(periodical.getStatus())
+        } else if(!Periodical.Status.ACTIVE.equals(periodical.getStatus())
                 && !thisUser.hasRole(ADMIN_ROLE_NAME)) {
             HttpUtils.sendRedirect(request, response, ACCESS_DENIED_URI);
 

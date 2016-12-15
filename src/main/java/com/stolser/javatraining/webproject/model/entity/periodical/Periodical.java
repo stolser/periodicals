@@ -10,7 +10,7 @@ public class Periodical {
     private Status status;
 
     public enum Status {
-        VISIBLE, INVISIBLE, DISCARDED;
+        ACTIVE, INACTIVE, DISCARDED;
     }
 
     public long getId() {

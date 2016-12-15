@@ -8,5 +8,8 @@ import java.util.List;
 public interface PeriodicalDao extends GenericDao<Periodical> {
     Periodical findOneByName(String name);
     List<Periodical> findAllByStatus(Periodical.Status status);
+
+    int updateAndSetDiscarded(Periodical periodical);
+
     void deleteAllDiscarded();
 }

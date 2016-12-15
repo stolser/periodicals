@@ -35,7 +35,7 @@ public interface GenericDao<E> {
      * @param entity an object to be updated
      * @return an updated entity
      */
-    void update(E entity);
+    int update(E entity);
 
     /**
      * Deletes the entity with the given id.

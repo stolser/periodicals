@@ -52,7 +52,7 @@
 
         <div class="row text-center">
             <custom:if-authorized mustHaveRoles="subscriber">
-                <c:if test="${periodical.status == 'VISIBLE'}">
+                <c:if test="${periodical.status == 'ACTIVE'}">
                     <button type="button" class="btn btn-primary" data-toggle="modal"
                             data-target="#subscriptionModal">
                         <fmt:message key="subscribeBtn.label" bundle="${langPeriodical}"/>

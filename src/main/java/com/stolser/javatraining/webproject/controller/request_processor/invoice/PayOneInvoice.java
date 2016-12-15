@@ -86,7 +86,7 @@ public class PayOneInvoice implements RequestProcessor {
         long periodicalId = invoiceInDb.getPeriodical().getId();
         Periodical periodicalInDb = PeriodicalServiceImpl.getInstance().findOneById(periodicalId);
 
-        if (Periodical.Status.VISIBLE.equals(periodicalInDb.getStatus())) {
+        if (Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())) {
             return true;
         } else {
             generalMessages.add(new FrontendMessage(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE,

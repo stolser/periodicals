@@ -24,7 +24,7 @@
             <tr class="${invoice.status == 'PAID' ? 'success' : 'danger'}">
                 <td><c:out value="${loop.index + 1}"/></td>
                 <td><c:choose>
-                    <c:when test="${(invoice.periodical.status == 'VISIBLE') ||
+                    <c:when test="${(invoice.periodical.status == 'ACTIVE') ||
                                 thisUser.hasRole('admin')}">
                         <a href="/backend/periodicals/${invoice.periodical.id}">
                             <c:out value="${invoice.periodical.name}"/></a>
