@@ -23,7 +23,8 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 
 public class PayOneInvoice implements RequestProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PayOneInvoice.class);
-    private static final String EXCEPTION_DURING_PAYING_THE_INVOICE_WITH_ID = "User id = {}. Exception during paying the invoice with id {}.";
+    private static final String EXCEPTION_DURING_PAYING_THE_INVOICE_WITH_ID =
+            "User id = {}. Exception during paying invoice {}.";
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
@@ -35,7 +36,7 @@ public class PayOneInvoice implements RequestProcessor {
         if (validationPassed(invoiceInDb, request, generalMessages)) {
             generalMessages.add(new FrontendMessage(MSG_VALIDATION_PASSED_SUCCESS,
                     FrontendMessage.MessageType.INFO));
-            tryToPayThisInvoice(invoiceId, request, generalMessages);
+            tryToPayThisInvoice(invoiceInDb, request, generalMessages);
         }
 
         HttpUtils.addGeneralMessagesToSession(request, generalMessages);
@@ -89,6 +90,7 @@ public class PayOneInvoice implements RequestProcessor {
         if (Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())) {
             return true;
         } else {
+
             generalMessages.add(new FrontendMessage(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE,
                     FrontendMessage.MessageType.ERROR));
 
@@ -96,12 +98,12 @@ public class PayOneInvoice implements RequestProcessor {
         }
     }
 
-    private void tryToPayThisInvoice(long invoiceId, HttpServletRequest request,
+    private void tryToPayThisInvoice(Invoice invoiceInDb, HttpServletRequest request,
                                      List<FrontendMessage> generalMessages) {
         InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
 
         try {
-            if (invoiceService.payInvoice(invoiceId)) {
+            if (invoiceService.payInvoice(invoiceInDb)) {
                 generalMessages.add(new FrontendMessage(MSG_INVOICE_PAYMENT_SUCCESS,
                         FrontendMessage.MessageType.SUCCESS));
             } else {
@@ -111,7 +113,7 @@ public class PayOneInvoice implements RequestProcessor {
 
         } catch (Exception e) {
             LOGGER.error(EXCEPTION_DURING_PAYING_THE_INVOICE_WITH_ID,
-                    HttpUtils.getUserIdFromSession(request), invoiceId, e);
+                    HttpUtils.getUserIdFromSession(request), invoiceInDb, e);
 
             generalMessages.add(new FrontendMessage(MSG_INVOICE_PAYMENT_ERROR,
                     FrontendMessage.MessageType.ERROR));

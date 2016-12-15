@@ -8,5 +8,5 @@ public interface InvoiceService {
     Invoice findOneById(long invoiceId);
     List<Invoice> findAllByUserId(long userId);
     boolean createNew(Invoice newInvoice);
-    boolean payInvoice(long invoiceId);
+    boolean payInvoice(Invoice invoiceToPay);
 }

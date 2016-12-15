@@ -81,73 +81,43 @@ public class InvoiceServiceImpl implements InvoiceService {
     /**
      * Update the status of this invoice to 'PAID' and update an existing subscription
      * (or create a new one) inside one transaction.
-     * @param invoiceId invoice id to be paid
+     * @param invoiceToPay invoice id to be paid
      * @return true if after committing this invoice in the db has status 'PAID' and
      * false otherwise.
      */
     @Override
-    public boolean payInvoice(long invoiceId) {
+    public boolean payInvoice(Invoice invoiceToPay) {
         Connection conn = ConnectionPoolProvider.getPool().getConnection();
 
-        LOGGER.error("InvoiceServiceImpl: connection has been got. Paying an invoice with " +
-                "id = {}", invoiceId);
-
         try {
-            InvoiceDao invoiceDao = factory.getInvoiceDao(conn);
-            Invoice invoice = invoiceDao.findOneById(invoiceId);
-            if ((invoice == null) || !invoice.getStatus().equals(Invoice.Status.NEW)) {
-                return false;
-//                throw new NoSuchElementException("There is no invoice in the db with id = " + invoiceId);
-            }
+            invoiceToPay.setStatus(Invoice.Status.PAID);
+            invoiceToPay.setPaymentDate(Instant.now());
 
-            invoice.setStatus(Invoice.Status.PAID);
-            invoice.setPaymentDate(Instant.now());
-
-            User userFromDb = factory.getUserDao(conn).findOneById(invoice.getUser().getId());
-            Periodical periodical = invoice.getPeriodical();
+            User userFromDb = factory.getUserDao(conn).findOneById(invoiceToPay.getUser().getId());
+            Periodical periodical = invoiceToPay.getPeriodical();
 
             SubscriptionDao subscriptionDao = factory.getSubscriptionDao(conn);
             Subscription existingSubscription = subscriptionDao
                     .findOneByUserIdAndPeriodicalId(userFromDb.getId(), periodical.getId());
 
-            int subscriptionPeriod = invoice.getSubscriptionPeriod();
+            int subscriptionPeriod = invoiceToPay.getSubscriptionPeriod();
+
+            InvoiceDao invoiceDao = factory.getInvoiceDao(conn);
 
             conn.setAutoCommit(false);
-            invoiceDao.update(invoice);
+            invoiceDao.update(invoiceToPay);
 
-            if (existingSubscription == null) {
-                Subscription newSubscription = new Subscription();
-                newSubscription.setUser(userFromDb);
-                newSubscription.setPeriodical(periodical);
-                newSubscription.setDeliveryAddress(userFromDb.getAddress());
-                newSubscription.setEndDate(getEndDate(Instant.now(), subscriptionPeriod));
-                newSubscription.setStatus(Subscription.Status.ACTIVE);
-
-                subscriptionDao.createNew(newSubscription);
+            if (userDoesNotHaveSubscriptionOnThisPeriodical(existingSubscription)) {
+                createAndPersistNewSubscription(userFromDb, periodical, subscriptionPeriod, subscriptionDao);
 
             } else {
-                Instant newEndDate;
-
-                if (existingSubscription.getStatus().equals(Subscription.Status.INACTIVE)) {
-                    newEndDate = getEndDate(Instant.now(), subscriptionPeriod);
-                } else {
-                    newEndDate = getEndDate(existingSubscription.getEndDate(), subscriptionPeriod);
-                }
-
-                existingSubscription.setEndDate(newEndDate);
-                existingSubscription.setStatus(Subscription.Status.ACTIVE);
-
-                subscriptionDao.update(existingSubscription);
+                updateExistingSubscription(existingSubscription, subscriptionPeriod, subscriptionDao);
             }
 
             conn.commit();
             conn.setAutoCommit(true);
 
-            if (Invoice.Status.PAID.equals(invoiceDao.findOneById(invoiceId).getStatus())) {
-                return true;
-            } else {
-                return false;
-            }
+            return true;
 
         } catch (Exception e) {
             try {
@@ -168,6 +138,38 @@ public class InvoiceServiceImpl implements InvoiceService {
                 }
             }
         }
+    }
+
+    private void updateExistingSubscription(Subscription existingSubscription,
+                                            int subscriptionPeriod, SubscriptionDao subscriptionDao) {
+        Instant newEndDate;
+
+        if (Subscription.Status.INACTIVE.equals(existingSubscription.getStatus())) {
+            newEndDate = getEndDate(Instant.now(), subscriptionPeriod);
+        } else {
+            newEndDate = getEndDate(existingSubscription.getEndDate(), subscriptionPeriod);
+        }
+
+        existingSubscription.setEndDate(newEndDate);
+        existingSubscription.setStatus(Subscription.Status.ACTIVE);
+
+        subscriptionDao.update(existingSubscription);
+    }
+
+    private void createAndPersistNewSubscription(User userFromDb, Periodical periodical,
+                                                 int subscriptionPeriod, SubscriptionDao subscriptionDao) {
+        Subscription newSubscription = new Subscription();
+        newSubscription.setUser(userFromDb);
+        newSubscription.setPeriodical(periodical);
+        newSubscription.setDeliveryAddress(userFromDb.getAddress());
+        newSubscription.setEndDate(getEndDate(Instant.now(), subscriptionPeriod));
+        newSubscription.setStatus(Subscription.Status.ACTIVE);
+
+        subscriptionDao.createNew(newSubscription);
+    }
+
+    private boolean userDoesNotHaveSubscriptionOnThisPeriodical(Subscription existingSubscription) {
+        return existingSubscription == null;
     }
 
     private Instant getEndDate(Instant startInstant, int subscriptionPeriod) {
