@@ -9,7 +9,7 @@ import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceService;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceServiceImpl;
-import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
+import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,7 +84,7 @@ public class PayOneInvoice implements RequestProcessor {
 
     private boolean periodicalIsVisible(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
         long periodicalId = invoiceInDb.getPeriodical().getId();
-        Periodical periodicalInDb = PeriodicalService.getInstance().findOneById(periodicalId);
+        Periodical periodicalInDb = PeriodicalServiceImpl.getInstance().findOneById(periodicalId);
 
         if (Periodical.Status.VISIBLE.equals(periodicalInDb.getStatus())) {
             return true;

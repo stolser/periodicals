@@ -4,7 +4,7 @@ import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
-import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
+import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Pattern;
@@ -42,7 +42,7 @@ public class PeriodicalNameValidator implements Validator {
     }
 
     private boolean nameIsNotUnique(String entityOperationType, long periodicalId, String periodicalName) {
-        Periodical periodicalWithSuchNameInDb = PeriodicalService.getInstance().findOneByName(periodicalName);
+        Periodical periodicalWithSuchNameInDb = PeriodicalServiceImpl.getInstance().findOneByName(periodicalName);
         /*
          * if this is 'create' --> there must not be any periodical with the same name in the db;
          * if this is 'update' --> we exclude this periodical from validation;

@@ -4,6 +4,7 @@ import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.model.service.user.UserService;
+import com.stolser.javatraining.webproject.model.service.user.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,8 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ATTR_NAME;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.ORIGINAL_URI_ATTR_NAME;
 
 public class SignInServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(SignInServlet.class);
@@ -36,7 +35,7 @@ public class SignInServlet extends HttpServlet {
 
         if (usernameAndPasswordIsNotEmpty(username, password)) {
             String passwordHash = getPasswordHash(password);
-            UserService userService = UserService.getInstance();
+            UserService userService = UserServiceImpl.getInstance();
 
             Credential credential = userService.findOneCredentialByUserName(username);
 

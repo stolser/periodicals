@@ -55,8 +55,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public List<Invoice> findAllByUserId(long userId) {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-            System.out.println("InvoiceServiceImpl: connection has been got. Retrieving all invoices for " +
-                    "user with id = " + userId);
+//            System.out.println("InvoiceServiceImpl: connection has been got. Retrieving all invoices for " +
+//                    "user with id = " + userId);
 
             return factory.getInvoiceDao(conn).findAllByUserId(userId);
 
@@ -68,7 +68,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public boolean createNew(Invoice invoice) {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-            System.out.println("InvoiceServiceImpl: connection has been got. Creating a new invoice.");
+//            System.out.println("InvoiceServiceImpl: connection has been got. Creating a new invoice.");
 
             factory.getInvoiceDao(conn).createNew(invoice);
 
@@ -172,7 +172,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     private Instant getEndDate(Instant startInstant, int subscriptionPeriod) {
         LocalDateTime startDate = LocalDateTime.ofInstant(startInstant, ZoneId.systemDefault());
-
 
         return startDate.plusMonths(subscriptionPeriod).toInstant(ZoneOffset.UTC);
     }

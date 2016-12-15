@@ -2,7 +2,7 @@ package com.stolser.javatraining.webproject.controller.request_processor.user;
 
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.model.service.user.UserService;
+import com.stolser.javatraining.webproject.model.service.user.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +15,7 @@ public class DisplayAllUsers implements RequestProcessor {
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
-        List<User> allUsers = UserService.getInstance().findAll();
+        List<User> allUsers = UserServiceImpl.getInstance().findAll();
 
         request.setAttribute(ALL_USERS_ATTR_NAME, allUsers);
 

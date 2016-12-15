@@ -9,7 +9,7 @@ import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceServiceImpl;
-import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
+import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +26,7 @@ public class PersistOneInvoice implements RequestProcessor {
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
         List<FrontendMessage> generalMessages = new ArrayList<>();
         long periodicalId = Long.valueOf(request.getParameter(PERIODICAL_ID_PARAM_NAME));
-        Periodical periodicalInDb = PeriodicalService.getInstance().findOneById(periodicalId);
+        Periodical periodicalInDb = PeriodicalServiceImpl.getInstance().findOneById(periodicalId);
 
         if (validationPassed(periodicalInDb, request, generalMessages)) {
             generalMessages.add(new FrontendMessage(MSG_VALIDATION_PASSED_SUCCESS,

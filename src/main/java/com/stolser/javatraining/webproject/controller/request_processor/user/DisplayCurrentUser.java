@@ -5,8 +5,8 @@ import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Subscription;
 import com.stolser.javatraining.webproject.model.service.invoice.InvoiceServiceImpl;
-import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
-import com.stolser.javatraining.webproject.model.service.subscription.SubscriptionService;
+import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalServiceImpl;
+import com.stolser.javatraining.webproject.model.service.subscription.SubscriptionServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,12 +21,12 @@ public class DisplayCurrentUser implements RequestProcessor {
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
         long currentUserId = HttpUtils.getUserIdFromSession(request);
         List<Invoice> invoices = InvoiceServiceImpl.getInstance().findAllByUserId(currentUserId);
-        List<Subscription> subscriptions = SubscriptionService.getInstance().findAllByUserId(currentUserId);
+        List<Subscription> subscriptions = SubscriptionServiceImpl.getInstance().findAllByUserId(currentUserId);
 
         if (invoices.size() > 0) {
             invoices.forEach(invoice -> {
                 long periodicalId = invoice.getPeriodical().getId();
-                invoice.setPeriodical(PeriodicalService.getInstance().findOneById(periodicalId));
+                invoice.setPeriodical(PeriodicalServiceImpl.getInstance().findOneById(periodicalId));
             });
 
             sortInvoices(invoices);

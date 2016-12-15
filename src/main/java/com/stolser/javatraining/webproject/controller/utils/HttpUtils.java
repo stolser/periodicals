@@ -4,7 +4,7 @@ import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.model.service.user.UserService;
+import com.stolser.javatraining.webproject.model.service.user.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +32,7 @@ public class HttpUtils {
     public static User getCurrentUserFromFromDb(HttpServletRequest request) {
         long userId = getUserIdFromSession(request);
 
-        return UserService.getInstance().findOneById(userId);
+        return UserServiceImpl.getInstance().findOneById(userId);
     }
 
     public static String getRedirectionExceptionMessage(HttpServletRequest request,

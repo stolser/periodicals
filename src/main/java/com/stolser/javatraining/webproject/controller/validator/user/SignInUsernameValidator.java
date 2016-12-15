@@ -4,7 +4,7 @@ import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
-import com.stolser.javatraining.webproject.model.service.user.UserService;
+import com.stolser.javatraining.webproject.model.service.user.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,7 +15,7 @@ public class SignInUsernameValidator implements Validator {
         int statusCode;
         String messageKey;
 
-        Credential credential = UserService.getInstance().findOneCredentialByUserName(usernameValue);
+        Credential credential = UserServiceImpl.getInstance().findOneCredentialByUserName(usernameValue);
 
         if (credential != null) {
             statusCode = ApplicationResources.STATUS_CODE_SUCCESS;

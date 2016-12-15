@@ -4,7 +4,7 @@ import com.stolser.javatraining.webproject.controller.request_processor.RequestP
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
-import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
+import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ public class UpdatePeriodical implements RequestProcessor {
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
         long periodicalId = HttpUtils.getFirstIdFromUri(request.getRequestURI());
 
-        Periodical periodical = PeriodicalService.getInstance().findOneById(periodicalId);
+        Periodical periodical = PeriodicalServiceImpl.getInstance().findOneById(periodicalId);
         if (periodical == null) {
             throw new NoSuchElementException(String.format(NO_PERIODICAL_WITH_ID_IN_DB, periodicalId));
         }

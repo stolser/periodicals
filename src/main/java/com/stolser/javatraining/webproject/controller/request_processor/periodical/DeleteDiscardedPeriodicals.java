@@ -7,6 +7,7 @@ import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
+import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +27,7 @@ public class DeleteDiscardedPeriodicals implements RequestProcessor {
             todo: Get all related invoices and subscriptions and serialize them;
             */
 
-            PeriodicalService periodicalService = PeriodicalService.getInstance();
+            PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
             List<Periodical> periodicalsToDelete = periodicalService
                     .findAllByStatus(Periodical.Status.DISCARDED);
 

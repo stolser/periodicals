@@ -19,6 +19,12 @@ class SqlConnectionPool implements ConnectionPool {
     private static final int MAX_TOTAL_CONNECTIONS = 10;
     private static final String CONNECTION_EXCEPTION_TEXT =
             "Exception during getting a connection from a dataSource.";
+    private static final String URL_SHOULD_NOT_BE_NULL = "url should not be null.";
+    private static final String DB_NAME_SHOULD_NOT_BE_NULL = "dbName should not be null.";
+    private static final String DRIVER_CLASS_NAME_SHOULD_NOT_BE_NULL = "driverClassName should not be null.";
+    private static final String USER_NAME_SHOULD_NOT_BE_NULL = "userName should not be null.";
+    private static final String PASSWORD_SHOULD_NOT_BE_NULL = "password should not be null.";
+    private static final String MAX_CONNECTIONS_SHOULD_BE_A_POSITIVE_NUMBER = "maxConnections should be a positive number.";
     private BasicDataSource dataSource;
     private String description;
 
@@ -83,8 +89,8 @@ class SqlConnectionPool implements ConnectionPool {
         private boolean useSSL;
 
         private Builder(String url, String dbName) {
-            checkNotNull(url, "url should not be null.");
-            checkNotNull(url, "dbName should not be null.");
+            checkNotNull(url, URL_SHOULD_NOT_BE_NULL);
+            checkNotNull(url, DB_NAME_SHOULD_NOT_BE_NULL);
             this.url = url;
             this.dbName = dbName;
             this.driverClassName = DRIVER_NAME_DEFAULT;
@@ -94,19 +100,19 @@ class SqlConnectionPool implements ConnectionPool {
         }
 
         public Builder setDriverClassName(String driverClassName) {
-            checkNotNull(driverClassName, "driverClassName should not be null.");
+            checkNotNull(driverClassName, DRIVER_CLASS_NAME_SHOULD_NOT_BE_NULL);
             this.driverClassName = driverClassName;
             return this;
         }
 
         public Builder setUserName(String userName) {
-            checkNotNull(userName, "userName should not be null.");
+            checkNotNull(userName, USER_NAME_SHOULD_NOT_BE_NULL);
             this.userName = userName;
             return this;
         }
 
         public Builder setPassword(String password) {
-            checkNotNull(password, "password should not be null.");
+            checkNotNull(password, PASSWORD_SHOULD_NOT_BE_NULL);
             this.password = password;
             return this;
         }
@@ -117,7 +123,7 @@ class SqlConnectionPool implements ConnectionPool {
         }
 
         public Builder setMaxConnections(int maxConnections) {
-            checkArgument(maxConnections > 0, "maxConnections should be a positive number.");
+            checkArgument(maxConnections > 0, MAX_CONNECTIONS_SHOULD_BE_A_POSITIVE_NUMBER);
             this.maxConnections = maxConnections;
             return this;
         }

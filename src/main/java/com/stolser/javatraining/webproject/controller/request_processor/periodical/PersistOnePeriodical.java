@@ -7,6 +7,7 @@ import com.stolser.javatraining.webproject.controller.validator.ValidationResult
 import com.stolser.javatraining.webproject.controller.validator.ValidatorFactory;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
+import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +55,7 @@ public class PersistOnePeriodical implements RequestProcessor {
             return null;
         }
 
-        PeriodicalService periodicalService = PeriodicalService.getInstance();
+        PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
         Periodical periodicalInDb = periodicalService.findOneById(periodicalToSave.getId());
 
         Periodical.Status oldStatus = null;
