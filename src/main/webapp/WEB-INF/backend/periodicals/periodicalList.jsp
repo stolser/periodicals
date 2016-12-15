@@ -1,4 +1,3 @@
-<%--<%@include file="../../includes/general.jsp" %>--%>
 <%@include file="../../includes/header.jsp" %>
 <fmt:setBundle basename="webProject.i18n.admin.periodical" var="langPeriodical"/>
 <fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
