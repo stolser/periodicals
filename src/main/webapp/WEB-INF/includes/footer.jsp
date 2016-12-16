@@ -1,4 +1,3 @@
-<%@ page import="com.stolser.javatraining.webproject.controller.ApplicationResources" %>
 <footer>
 
 </footer>

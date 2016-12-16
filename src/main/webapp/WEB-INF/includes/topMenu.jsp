@@ -1,4 +1,4 @@
-<fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
+<fmt:setBundle basename="webProject.i18n.backend.general" var="general"/>
 
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">

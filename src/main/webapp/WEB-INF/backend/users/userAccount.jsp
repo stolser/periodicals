@@ -1,8 +1,8 @@
 <%@include file="/WEB-INF/includes/header.jsp" %>
-<fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
-<fmt:setBundle basename="webProject.i18n.admin.user" var="langUser"/>
-<fmt:setBundle basename="webProject.i18n.admin.subscription" var="langSubscription"/>
-<fmt:setBundle basename="webProject.i18n.admin.invoice" var="langInvoice"/>
+<fmt:setBundle basename="webProject.i18n.backend.general" var="general"/>
+<fmt:setBundle basename="webProject.i18n.backend.user" var="langUser"/>
+<fmt:setBundle basename="webProject.i18n.backend.subscription" var="langSubscription"/>
+<fmt:setBundle basename="webProject.i18n.backend.invoice" var="langInvoice"/>
 
 <div class="row">
     <h1 class="col-md-12"><fmt:message key="user.yourAccount.title" bundle="${langUser}"/></h1>

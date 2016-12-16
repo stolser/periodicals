@@ -10,6 +10,9 @@ import java.io.IOException;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Makes sure that this request comes from a signed in user and the session has not expired.
+ */
 public class AuthenticationFilter implements Filter {
 
     @Override

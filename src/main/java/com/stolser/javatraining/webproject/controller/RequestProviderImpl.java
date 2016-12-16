@@ -48,8 +48,9 @@ final class RequestProviderImpl implements RequestProvider {
     @Override
     public RequestProcessor getRequestProcessor(HttpServletRequest request) {
         String requestMethod = request.getMethod().toUpperCase();
-        System.out.println("requestMethod = " + requestMethod);
         String requestURI = request.getRequestURI();
+
+        System.out.println("requestMethod = " + requestMethod);
         System.out.println("getRequestProcessor(): requestURI = '" + requestURI + "'");
 
         Optional<Map.Entry<String, RequestProcessor>> mapping = requestMapping.entrySet()

@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+/**
+ * Processes a request to the Admin Panel page.
+ */
 public class DisplayAdminPanel implements RequestProcessor {
 
     @Override

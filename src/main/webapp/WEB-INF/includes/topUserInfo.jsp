@@ -1,4 +1,4 @@
-<fmt:setBundle basename="webProject.i18n.admin.general" var="langGeneral"/>
+<fmt:setBundle basename="webProject.i18n.backend.general" var="langGeneral"/>
 
 <p class="text-right"><span class="userFullName"><c:out value="${thisUser.lastName}"/>
             <c:out value="${thisUser.firstName}"/></span></p>

@@ -10,14 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Checks whether a current user has enough permissions to get a requested resource or perform
+ * an operation.
+ */
 public class AuthorizationFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationFilter.class);
     private static final String ACCESS_DENIED_FOR_USER = "Access denied for user '%s' to '%s'!!!\n";
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
+    public void init(FilterConfig filterConfig) throws ServletException {}
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -40,11 +42,9 @@ public class AuthorizationFilter implements Filter {
     }
 
     private boolean requestIsAuthorized(ServletRequest request) {
-        return new Authorization((HttpServletRequest) request).checkPermissions();
+        return Authorization.getInstance().checkPermissions((HttpServletRequest) request);
     }
 
     @Override
-    public void destroy() {
-
-    }
+    public void destroy() {}
 }

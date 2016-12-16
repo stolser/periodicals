@@ -52,7 +52,7 @@ public class ApplicationResources {
     public static final String CREATE_EDIT_PERIODICAL_VIEW_NAME = "periodicals/createAndEdit";
     public static final String USER_LIST_VIEW_NAME = "users/userList";
     public static final String ONE_USER_INFO_VIEW_NAME = "users/userAccount";
-    public static final String BACKEND_MAIN_PAGE_VIEW_NAME = "main";
+    public static final String BACKEND_MAIN_PAGE_VIEW_NAME = "home";
 
     public static final String ADMIN_PANEL_URI = "/backend/adminPanel";
     public static final String PERIODICAL_LIST_URI = "/backend/periodicals";
@@ -124,8 +124,7 @@ public class ApplicationResources {
     public static final String MSG_ERROR_USER_IS_BLOCKED = "error.userIsBlocked";
     public static final String MSG_ERROR_WRONG_PASSWORD = "error.wrongPassword";
 
-    public static final String DB_CONFIG_FILENAME =
-            "src\\main\\resources\\webProject\\config\\dbConfig.properties";
+    public static final String DB_CONFIG_FILENAME = "webProject/config/dbConfig.properties";
     public static final String DB_CONFIG_PARAM_URL = "database.url";
     public static final String DB_CONFIG_PARAM_DB_NAME = "database.dbName";
     public static final String DB_CONFIG_PARAM_USER_NAME = "database.userName";

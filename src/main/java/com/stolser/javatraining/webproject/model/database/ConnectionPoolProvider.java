@@ -3,7 +3,6 @@ package com.stolser.javatraining.webproject.model.database;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +24,7 @@ public class ConnectionPoolProvider {
         InputStream input;
         Properties properties = new Properties();
         try {
-            input = new FileInputStream(filename);
+            input = ConnectionPoolProvider.class.getClassLoader().getResourceAsStream(filename);
             properties.load(input);
 
         } catch (FileNotFoundException e) {

@@ -1,6 +1,6 @@
 <%@include file="../../includes/header.jsp" %>
-<fmt:setBundle basename="webProject.i18n.admin.user" var="langUser"/>
-<fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
+<fmt:setBundle basename="webProject.i18n.backend.user" var="langUser"/>
+<fmt:setBundle basename="webProject.i18n.backend.general" var="general"/>
 
 <div class="row">
     <div class="col-md-12 table-responsive">

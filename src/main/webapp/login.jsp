@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/includes/header.jsp" %>
 <fmt:setBundle basename="webProject.i18n.credential.credential" var="credential"/>
 <fmt:setBundle basename="webProject.i18n.validation" var="validation"/>
-<fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
+<fmt:setBundle basename="webProject.i18n.backend.general" var="general"/>
 
 <div class="row">
     <div class="col-xs-8 col-xs-offset-2 col-md-4 col-md-offset-4">

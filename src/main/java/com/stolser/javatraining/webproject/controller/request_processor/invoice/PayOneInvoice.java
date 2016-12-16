@@ -21,10 +21,15 @@ import java.util.List;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.STATUS_CODE_SUCCESS;
 
+/**
+ * Processes a request to pay one invoice. In one transaction the status of the invoice is changed
+ * to 'paid' and a subscription is updated (created a new one or the status and the end date are updated).
+ */
 public class PayOneInvoice implements RequestProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PayOneInvoice.class);
     private static final String EXCEPTION_DURING_PAYING_THE_INVOICE_WITH_ID =
             "User id = {}. Exception during paying invoice {}.";
+
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {

@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/includes/header.jsp" %>
-<fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
+<fmt:setBundle basename="webProject.i18n.backend.general" var="general"/>
 
 <div class="row text-center">
     <div class="col-md-12">
