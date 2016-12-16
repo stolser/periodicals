@@ -126,7 +126,7 @@ public class MysqlInvoiceDao implements InvoiceDao {
         invoice.setPeriodical(periodical);
 
         invoice.setSubscriptionPeriod(rs.getInt(DB_INVOICES_PERIOD));
-        invoice.setTotalSum(rs.getDouble(DB_INVOICES_TOTAL_SUM));
+        invoice.setTotalSum(rs.getLong(DB_INVOICES_TOTAL_SUM));
         invoice.setCreationDate(getCreationDateFromResults(rs));
         invoice.setPaymentDate(getPaymentDateFromResults(rs));
         invoice.setStatus(Invoice.Status.valueOf(rs.getString(DB_INVOICES_STATUS).toUpperCase()));

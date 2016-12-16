@@ -122,7 +122,7 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
                         rs.getString(DB_PERIODICALS_CATEGORY).toUpperCase()));
                 periodical.setPublisher(rs.getString(DB_PERIODICALS_PUBLISHER));
                 periodical.setDescription(rs.getString(DB_PERIODICALS_DESCRIPTION));
-                periodical.setOneMonthCost(rs.getDouble(DB_PERIODICALS_ONE_MONTH_COST));
+                periodical.setOneMonthCost(rs.getLong(DB_PERIODICALS_ONE_MONTH_COST));
                 periodical.setStatus(Periodical.Status.valueOf(
                         rs.getString(DB_PERIODICALS_STATUS).toUpperCase()));
 

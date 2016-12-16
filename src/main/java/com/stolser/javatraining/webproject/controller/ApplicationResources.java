@@ -73,8 +73,7 @@ public class ApplicationResources {
 
     public static final String PERIODICAL_NAME_PATTERN_REGEX = "[а-яА-ЯіІїЇєЄёЁ\\w\\s!&?$#@-]{2,45}";
     public static final String PERIODICAL_PUBLISHER_PATTERN_REGEX = "[а-яА-ЯіІїЇєЄёЁ\\w\\s-]{2,45}";
-    public static final String PERIODICAL_CATEGORY_PATTERN_REGEX = "[а-яА-ЯіІїЇєЄёЁ\\w\\s-]{2,45}";
-    public static final String PERIODICAL_COST_PATTERN_REGEX = "(0|[1-9]{1}\\d{0,3})(\\.\\d{0,2})?";
+    public static final String PERIODICAL_COST_PATTERN_REGEX = "0|[1-9]{1}\\d{0,8}";
 
     private static final String DEFAULT_ERROR_PAGE_VIEW_NAME = "errors/page-404";
     private static final String SQL_ERROR_PAGE_VIEW_NAME = "errors/sql-error-page";

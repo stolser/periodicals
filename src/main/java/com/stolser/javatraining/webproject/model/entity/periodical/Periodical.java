@@ -6,7 +6,7 @@ public class Periodical {
     private PeriodicalCategory category;
     private String publisher;
     private String description;
-    private double oneMonthCost;
+    private long oneMonthCost;
     private Status status;
 
     public enum Status {
@@ -53,11 +53,11 @@ public class Periodical {
         this.description = description;
     }
 
-    public double getOneMonthCost() {
+    public long getOneMonthCost() {
         return oneMonthCost;
     }
 
-    public void setOneMonthCost(double oneMonthCost) {
+    public void setOneMonthCost(long oneMonthCost) {
         this.oneMonthCost = oneMonthCost;
     }
 
@@ -76,7 +76,7 @@ public class Periodical {
                 : this.description.substring(0, 15);
 
         return String.format("Periodical{id=%d, name='%s', category='%s', publisher='%s', " +
-                "description='%s', oneMonthCost=%.2f, status=%s}", id, name, category, publisher,
+                "description='%s', oneMonthCost='%d', status='%s'}", id, name, category, publisher,
                 description, oneMonthCost, status);
     }
 }

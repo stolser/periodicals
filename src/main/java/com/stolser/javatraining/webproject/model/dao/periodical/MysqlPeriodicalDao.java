@@ -10,6 +10,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+
 public class MysqlPeriodicalDao implements PeriodicalDao {
     private static final String INCORRECT_FIELD_NAME = "There is no case for such a fieldName." +
             "Fix it!";
@@ -37,14 +39,14 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     public Periodical findOneById(long id) {
         String sqlStatement = SELECT_ALL_BY_ID;
 
-        return getPeriodicalFromDb(sqlStatement, id, ApplicationResources.DB_PERIODICALS_ID);
+        return getPeriodicalFromDb(sqlStatement, id, DB_PERIODICALS_ID);
     }
 
     @Override
     public Periodical findOneByName(String name) {
         String sqlStatement = SELECT_ALL_BY_NAME;
 
-        return getPeriodicalFromDb(sqlStatement, name, ApplicationResources.DB_PERIODICALS_NAME);
+        return getPeriodicalFromDb(sqlStatement, name, DB_PERIODICALS_NAME);
     }
 
     private Periodical getPeriodicalFromDb(String sqlStatement, Object fieldValue,
@@ -53,10 +55,10 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
 
             switch (fieldName) {
-                case ApplicationResources.DB_PERIODICALS_ID:
+                case DB_PERIODICALS_ID:
                     st.setLong(1, (Long) fieldValue);
                     break;
-                case ApplicationResources.DB_PERIODICALS_NAME:
+                case DB_PERIODICALS_NAME:
                     st.setString(1, (String) fieldValue);
                     break;
                 default:
@@ -102,15 +104,15 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     private Periodical getNextPeriodicalFromResults(ResultSet rs) throws SQLException {
         Periodical periodical = new Periodical();
 
-        periodical.setId(rs.getLong(ApplicationResources.DB_PERIODICALS_ID));
-        periodical.setName(rs.getString(ApplicationResources.DB_PERIODICALS_NAME));
+        periodical.setId(rs.getLong(DB_PERIODICALS_ID));
+        periodical.setName(rs.getString(DB_PERIODICALS_NAME));
         periodical.setCategory(PeriodicalCategory.valueOf(
-                rs.getString(ApplicationResources.DB_PERIODICALS_CATEGORY).toUpperCase()));
-        periodical.setPublisher(rs.getString(ApplicationResources.DB_PERIODICALS_PUBLISHER));
-        periodical.setDescription(rs.getString(ApplicationResources.DB_PERIODICALS_DESCRIPTION));
-        periodical.setOneMonthCost(rs.getDouble(ApplicationResources.DB_PERIODICALS_ONE_MONTH_COST));
+                rs.getString(DB_PERIODICALS_CATEGORY).toUpperCase()));
+        periodical.setPublisher(rs.getString(DB_PERIODICALS_PUBLISHER));
+        periodical.setDescription(rs.getString(DB_PERIODICALS_DESCRIPTION));
+        periodical.setOneMonthCost(rs.getLong(DB_PERIODICALS_ONE_MONTH_COST));
         periodical.setStatus(Periodical.Status.valueOf(
-                rs.getString(ApplicationResources.DB_PERIODICALS_STATUS).toUpperCase()));
+                rs.getString(DB_PERIODICALS_STATUS).toUpperCase()));
 
         return periodical;
     }
@@ -190,7 +192,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         st.setString(2, periodical.getCategory().name().toLowerCase());
         st.setString(3, periodical.getPublisher());
         st.setString(4, periodical.getDescription());
-        st.setDouble(5, periodical.getOneMonthCost());
+        st.setLong(5, periodical.getOneMonthCost());
         st.setString(6, periodical.getStatus().name().toLowerCase());
     }
 

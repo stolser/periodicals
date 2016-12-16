@@ -117,7 +117,7 @@ public class PersistOneInvoice implements RequestProcessor {
     private Invoice getNewInvoice(Periodical periodicalInDb, HttpServletRequest request) {
         int subscriptionPeriod = Integer.valueOf(request.getParameter(SUBSCRIPTION_PERIOD_PARAM_NAME));
 
-        double totalSum = subscriptionPeriod * periodicalInDb.getOneMonthCost();
+        long totalSum = subscriptionPeriod * periodicalInDb.getOneMonthCost();
         long userIdFromUri = HttpUtils.getFirstIdFromUri(request.getRequestURI());
         User user = new User();
         user.setId(userIdFromUri);

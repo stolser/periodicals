@@ -10,7 +10,7 @@ public class Invoice {
     private User user;
     private Periodical periodical;
     private int subscriptionPeriod;
-    private double totalSum;
+    private long totalSum;
     private Instant creationDate;
     private Instant paymentDate;
     private Status status;
@@ -35,11 +35,11 @@ public class Invoice {
         this.user = user;
     }
 
-    public double getTotalSum() {
+    public long getTotalSum() {
         return totalSum;
     }
 
-    public void setTotalSum(double totalSum) {
+    public void setTotalSum(long totalSum) {
         this.totalSum = totalSum;
     }
 

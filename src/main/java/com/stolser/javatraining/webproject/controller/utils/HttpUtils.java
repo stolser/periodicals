@@ -60,7 +60,7 @@ public class HttpUtils {
                 request.getParameter(PERIODICAL_CATEGORY_PARAM_NAME).toUpperCase()));
         periodical.setPublisher(request.getParameter(PERIODICAL_PUBLISHER_PARAM_NAME));
         periodical.setDescription(request.getParameter(PERIODICAL_DESCRIPTION_PARAM_NAME).trim());
-        periodical.setOneMonthCost(Double.valueOf(request.getParameter(PERIODICAL_COST_PARAM_NAME)));
+        periodical.setOneMonthCost(Long.valueOf(request.getParameter(PERIODICAL_COST_PARAM_NAME)));
         periodical.setStatus(Periodical.Status.valueOf(
                 (request.getParameter(PERIODICAL_STATUS_PARAM_NAME)).toUpperCase()));
 

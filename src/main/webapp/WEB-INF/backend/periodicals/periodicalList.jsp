@@ -33,8 +33,20 @@
                         <td><fmt:message key="${periodical.category.messageKey}"
                                          bundle="${langPeriodical}"/></td>
                         <td><c:out value="${periodical.publisher}"/></td>
-                        <td><c:out value="${periodical.oneMonthCost > 0.0
-                        ? periodical.oneMonthCost : 'free'}"/></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${periodical.oneMonthCost > 0}">
+                                    <label class="oneMonthCostValue">
+                                        <c:out value="${periodical.oneMonthCost}"/>
+                                    </label>
+                                    <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <label class="priceFreeLabel">
+                                        <fmt:message key="priceFree.label" bundle="${langGeneral}"/></label>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                         <custom:if-authorized mustHaveRoles="admin">
                             <td><fmt:message key="${periodical.status}" bundle="${langPeriodical}"/></td>
                         </custom:if-authorized>

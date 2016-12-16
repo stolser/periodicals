@@ -55,3 +55,11 @@ footer {
     vertical-align: middle;
     text-align: center;
 }
+
+.priceFreeLabel {
+    color: #a94442;
+}
+
+.oneMonthCostValue {
+    font-weight: bold;
+}

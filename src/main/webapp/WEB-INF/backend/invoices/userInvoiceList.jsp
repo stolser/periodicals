@@ -1,3 +1,5 @@
+<fmt:setBundle basename="webProject.i18n.backend.periodical" var="langPeriodical"/>
+
 <div id="userInvoiceList" class="col-md-12 table-responsive">
     <h2><fmt:message key="userInvoiceList.sub-title" bundle="${langInvoice}"/></h2>
     <p><fmt:message key="userInvoiceList.description.top" bundle="${langInvoice}"/></p>
@@ -34,8 +36,33 @@
                     </c:otherwise>
                 </c:choose></td>
                 <td><c:out value="${invoice.subscriptionPeriod}"/></td>
-                <td><c:out value="${invoice.periodical.oneMonthCost > 0.0 ? invoice.periodical.oneMonthCost : 'free'}"/></td>
-                <td><c:out value="${invoice.totalSum > 0.0 ? invoice.totalSum : 'free'}"/></td>
+                <td>
+                    <c:choose>
+                        <c:when test="${invoice.periodical.oneMonthCost > 0}">
+                            <label class="oneMonthCostValue">
+                                <c:out value="${invoice.periodical.oneMonthCost}"/>
+                            </label>
+                            <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>
+                        </c:when>
+                        <c:otherwise><label class="priceFreeLabel">
+                            <fmt:message key="priceFree.label" bundle="${langGeneral}"/></label>
+                        </c:otherwise>
+                    </c:choose>
+                </td>
+                <td>
+                    <c:choose>
+                        <c:when test="${invoice.totalSum > 0}">
+                            <label class="oneMonthCostValue">
+                                <c:out value="${invoice.totalSum}"/>
+                            </label>
+                            <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>
+                        </c:when>
+                        <c:otherwise>
+                            <label class="priceFreeLabel">
+                                <fmt:message key="priceFree.label" bundle="${langGeneral}"/></label>
+                        </c:otherwise>
+                    </c:choose>
+                </td>
                 <td><custom:format-datetime value="${invoice.creationDate}"/></td>
                 <td><custom:format-datetime value="${invoice.paymentDate}"/></td>
                 <td class="text-center"><fmt:message key="${invoice.status}" bundle="${langInvoice}"/>

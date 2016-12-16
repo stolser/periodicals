@@ -39,7 +39,21 @@
             <label class="col-sm-3 control-label">
                 <fmt:message key="oneMonthCost.label" bundle="${langPeriodical}"/></label>
             <div class="col-sm-9">
-                <p class="form-control-static"><c:out value="${periodical.oneMonthCost}"/></p>
+                <p class="form-control-static">
+                    <c:choose>
+                        <c:when test="${periodical.oneMonthCost > 0}">
+                            <label class="oneMonthCostValue">
+                                <c:out value="${periodical.oneMonthCost}"/>
+                            </label>
+                            <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>
+                        </c:when>
+                        <c:otherwise>
+                            <label class="priceFreeLabel">
+                                <fmt:message key="priceFree.label" bundle="${langGeneral}"/>
+                            </label>
+                        </c:otherwise>
+                    </c:choose>
+                </p>
             </div>
         </div>
         <div class="row">

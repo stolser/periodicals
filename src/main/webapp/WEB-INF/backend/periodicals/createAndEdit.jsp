@@ -72,7 +72,7 @@
                     <fmt:message key="description.label" bundle="${langPeriodical}"/></label>
                 <div class="col-sm-9">
                     <textarea id="periodicalDescription" class="form-control" rows="4"
-                              name="periodicalDescription"
+                              name="periodicalDescription" maxlength="999"
                               placeholder="<fmt:message key="description.label" bundle="${langPeriodical}"/>">
                         <c:out value="${periodical.description}"/>
                     </textarea>
@@ -82,8 +82,8 @@
                 <label for="periodicalCost" class="col-sm-3 control-label">
                     <fmt:message key="oneMonthCost.label" bundle="${langPeriodical}"/></label>
                 <div class="col-sm-9">
-                    <input id="periodicalCost" type="text" class="form-control ajax-validated"
-                           name="periodicalCost"
+                    <input id="periodicalCost" type="number" class="form-control ajax-validated"
+                           name="periodicalCost" min="0" max="999999999"
                            value="<c:out value="${periodical.oneMonthCost}"/>"
                            placeholder="<fmt:message key="oneMonthCost.label" bundle="${langPeriodical}"/>"/>
                     <c:if test="${(not empty messages) && (not empty messages['periodicalCost'])}">
