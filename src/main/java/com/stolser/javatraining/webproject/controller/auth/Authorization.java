@@ -17,7 +17,7 @@ public class Authorization {
         permissionMapping.put("/backend/users(/\\d*)?", admin);
         permissionMapping.put("/backend/periodicals/createNew/?", admin);
         permissionMapping.put("/backend/periodicals/\\d+/update/?", admin);
-        permissionMapping.put("/backend/periodicals/discarded/delete/?", admin);
+        permissionMapping.put("/backend/periodicals/discarded/?", admin);
         permissionMapping.put("/backend/adminPanel/?", admin);
         permissionMapping.put("/backend/invoices/?", subscriber);
     }

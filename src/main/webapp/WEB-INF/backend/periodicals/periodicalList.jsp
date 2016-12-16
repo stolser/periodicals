@@ -18,6 +18,7 @@
                 </custom:if-authorized>
             </tr>
             </thead>
+
             <tbody>
             <c:set var="onlyVisibleIndex" value="0"/>
             <c:forEach items="${allPeriodicals}" var="periodical" varStatus="loop">
@@ -39,12 +40,9 @@
                         </custom:if-authorized>
                     </tr>
                 </c:if>
-
             </c:forEach>
             </tbody>
-
         </table>
-
     </div>
 
     <div class="col-md-12">
@@ -52,21 +50,19 @@
             <div class="row">
                 <div class="col-sm-6 col-xs-6 text-left">
                     <a href="<% out.print(ApplicationResources.PERIODICAL_CREATE_NEW_URI); %>"
-                       class="btn btn-primary active" role="button">
+                       class="btn btn-primary" role="button">
                         <fmt:message key="newPeriodicalBt.label" bundle="${langPeriodical}"/>
                     </a>
                 </div>
                 <div class="col-sm-6 col-xs-6 text-right">
-                    <a href="<% out.print(ApplicationResources.PERIODICAL_DELETE_DISCARDED); %>"
-                       class="btn btn-danger active" role="button">
-                        <fmt:message key="deleteDiscardedBt.label" bundle="${langPeriodical}"/>
-                    </a>
+                    <form method="post" action="<% out.print(ApplicationResources.PERIODICAL_DELETE_DISCARDED_URI); %>">
+                        <button type="submit" class="btn btn-danger">
+                            <fmt:message key="deleteDiscardedBt.label" bundle="${langPeriodical}"/>
+                        </button>
+                    </form>
                 </div>
             </div>
         </custom:if-authorized>
-        <%--<custom:if-authorized mustHaveRoles="*" mustNotHaveRoles="admin">--%>
-        <%--<p><fmt:message key="youCannotUpdatePeriodicals.text" bundle="${langPeriodical}"/></p>--%>
-        <%--</custom:if-authorized>--%>
     </div>
 
 </div>

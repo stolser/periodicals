@@ -51,20 +51,19 @@ public class ApplicationResources {
     public static final String CREATE_EDIT_PERIODICAL_VIEW_NAME = "periodicals/createAndEdit";
     public static final String USER_LIST_VIEW_NAME = "users/userList";
     public static final String ONE_USER_INFO_VIEW_NAME = "users/userAccount";
-
     public static final String BACKEND_MAIN_PAGE_VIEW_NAME = "main";
+
     public static final String ADMIN_PANEL_URI = "/backend/adminPanel";
     public static final String PERIODICAL_LIST_URI = "/backend/periodicals";
     public static final String SIGN_IN_URI = "/login.jsp";
     public static final String SIGN_OUT_URI = "/backend/signOut";
     public static final String ACCESS_DENIED_URI = "/accessDenied.jsp";
-
     public static final String CURRENT_USER_ACCOUNT_URI = "/backend/users/currentUser";
     public static final String PERIODICAL_CREATE_NEW_URI = "/backend/periodicals/createNew";
-    public static final String PERIODICAL_DELETE_DISCARDED = "/backend/periodicals/discarded/delete";
-    public static final String PERIODICAL_CREATE_UPDATE_REST = "/backend/periodicals";
-    public static final String ADMIN_ROLE_NAME = "admin";
+    public static final String PERIODICAL_DELETE_DISCARDED_URI = "/backend/periodicals/discarded";
+    public static final String PERIODICAL_CREATE_UPDATE_URI = "/backend/periodicals";
 
+    public static final String ADMIN_ROLE_NAME = "admin";
     public static final String SUBSCRIBER_ROLE_NAME = "subscriber";
     public static final String GUEST_ROLE_NAME = "guest";
 

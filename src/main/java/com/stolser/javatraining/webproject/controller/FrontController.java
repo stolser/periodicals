@@ -1,6 +1,5 @@
 package com.stolser.javatraining.webproject.controller;
 
-import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.view.ViewResolver;
 import org.slf4j.Logger;
@@ -16,6 +15,7 @@ import java.io.IOException;
 public class FrontController extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(FrontController.class);
     private static final String USER_ID_REQUEST_URI = "User id = {}. requestURI = {}";
+    private static RequestProvider requestProvider = RequestProviderImpl.getInstance();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,17 +33,12 @@ public class FrontController extends HttpServlet {
             throws ServletException, IOException {
         String viewName;
 
-        String requestURI = request.getRequestURI();
-
         try {
-            RequestProcessor processor = new RequestProvider(request).getRequestProcessor();
-
-            viewName = processor.getViewName(request, response);
+            viewName = requestProvider.getRequestProcessor(request).getViewName(request, response);
 
         } catch (Exception e) {
             LOGGER.error(USER_ID_REQUEST_URI,
-                    HttpUtils.getUserIdFromSession(request), requestURI, e);
-//            request.setAttribute(MESSAGE_ATTRIBUTE, e.getLocalizedMessage());
+                    HttpUtils.getUserIdFromSession(request), request.getRequestURI(), e);
 
             viewName = ApplicationResources.getErrorViewName(e);
         }
