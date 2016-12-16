@@ -1,5 +1,6 @@
-package com.stolser.javatraining.webproject.model.entity.periodical;
+package com.stolser.javatraining.webproject.model.entity.subscription;
 
+import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import java.time.Instant;

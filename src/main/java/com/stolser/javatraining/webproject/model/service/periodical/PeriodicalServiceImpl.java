@@ -6,10 +6,13 @@ import com.stolser.javatraining.webproject.model.dao.periodical.PeriodicalDao;
 import com.stolser.javatraining.webproject.model.dao.subscription.SubscriptionDao;
 import com.stolser.javatraining.webproject.model.database.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
-import com.stolser.javatraining.webproject.model.entity.periodical.Subscription;
+import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
+import com.stolser.javatraining.webproject.model.entity.periodical.statistics.NumberByCategory;
+import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -203,6 +206,31 @@ public class PeriodicalServiceImpl implements PeriodicalService {
             return subscriptionDao.findAllByPeriodicalIdAndStatus(periodicalId,
                     Subscription.Status.ACTIVE).size() > 0;
 
+        } catch (SQLException e) {
+            throw new CustomSqlException(e);
+        }
+    }
+
+    @Override
+    public List<NumberByCategory> getQuantitativeStatistics() {
+        List<NumberByCategory> statistics = new ArrayList<>();
+
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+            PeriodicalDao dao = factory.getPeriodicalDao(conn);
+
+            for (PeriodicalCategory category : PeriodicalCategory.values()) {
+                int active = dao.findNumberWithCategoryAndStatus(category, Periodical.Status.ACTIVE);
+                int inActive = dao.findNumberWithCategoryAndStatus(category, Periodical.Status.INACTIVE);
+                int discarded = dao.findNumberWithCategoryAndStatus(category, Periodical.Status.DISCARDED);
+
+                NumberByCategory nextItem = NumberByCategory.newBuilder(category)
+                        .setActive(active).setInActive(inActive).setDiscarded(discarded)
+                        .build();
+
+                statistics.add(nextItem);
+            }
+
+            return statistics;
         } catch (SQLException e) {
             throw new CustomSqlException(e);
         }

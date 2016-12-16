@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.model.service.subscription;
 
-import com.stolser.javatraining.webproject.model.entity.periodical.Subscription;
+import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 
 import java.util.List;
 

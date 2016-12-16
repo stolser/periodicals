@@ -4,7 +4,7 @@ import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.model.CustomSqlException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
-import com.stolser.javatraining.webproject.model.entity.periodical.Subscription;
+import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,11 +20,13 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     private static final String SELECT_ALL_BY_NAME = "SELECT * FROM periodicals " +
             "WHERE name = ?";
     private static final String EXCEPTION_DURING_RETRIEVING_ALL_PERIODICALS = "Exception during retrieving all periodicals.";
-    private static final String RETRIEVING_ALL_BY_STATUS = "Exception during retrieving periodicals with" +
+    private static final String RETRIEVING_ALL_BY_STATUS = "Exception during retrieving periodicals with " +
             "status '%s'.";
     private static final String EXCEPTION_DURING_INSERTING = "Exception during inserting %s into 'periodicals'.";
     private static final String EXCEPTION_DURING_UPDATING = "Exception during updating %s.";
     private static final String EXCEPTION_DURING_DELETING_DISCARDED_PERIODICALS = "Exception during deleting discarded periodicals.";
+    private static final String EXCEPTION_DURING_GETTING_NUMBER_OF_PERIODICALS =
+            "Exception during getting number of periodicals with category = '%s' and status = '%s'.";
     private Connection conn;
 
     public MysqlPeriodicalDao(Connection conn) {
@@ -120,7 +122,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
-            st.setString(1, status.toString().toLowerCase());
+            st.setString(1, status.name().toLowerCase());
 
             ResultSet rs = st.executeQuery();
 
@@ -135,6 +137,29 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
 
         } catch (SQLException e) {
             String message = String.format(RETRIEVING_ALL_BY_STATUS, status);
+
+            throw new CustomSqlException(message, e);
+        }
+    }
+
+    @Override
+    public int findNumberWithCategoryAndStatus(PeriodicalCategory category,
+                                               Periodical.Status status) {
+        String sqlStatement = "SELECT COUNT(id) FROM periodicals " +
+                "WHERE category = ? AND status = ?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            st.setString(1, category.name().toLowerCase());
+            st.setString(2, status.name().toLowerCase());
+
+            ResultSet rs = st.executeQuery();
+            rs.next();
+
+            return rs.getInt(1);
+
+        } catch (SQLException e) {
+            String message = String.format(EXCEPTION_DURING_GETTING_NUMBER_OF_PERIODICALS, category, status);
 
             throw new CustomSqlException(message, e);
         }
@@ -162,7 +187,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
 
     private void setStatementFromPeriodical(PreparedStatement st, Periodical periodical) throws SQLException {
         st.setString(1, periodical.getName());
-        st.setString(2, periodical.getCategory().toString());
+        st.setString(2, periodical.getCategory().name().toLowerCase());
         st.setString(3, periodical.getPublisher());
         st.setString(4, periodical.getDescription());
         st.setDouble(5, periodical.getOneMonthCost());

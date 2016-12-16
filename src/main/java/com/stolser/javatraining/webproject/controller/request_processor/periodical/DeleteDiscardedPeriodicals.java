@@ -11,6 +11,7 @@ import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalSe
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class DeleteDiscardedPeriodicals implements RequestProcessor {
             response.sendRedirect(redirectUri);
             return null;
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             String message = HttpUtils.getRedirectionExceptionMessage(request,
                     redirectUri);
 

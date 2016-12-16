@@ -5,7 +5,7 @@ import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
 import com.stolser.javatraining.webproject.model.dao.subscription.SubscriptionDao;
 import com.stolser.javatraining.webproject.model.dao.user.UserDao;
 import com.stolser.javatraining.webproject.model.database.ConnectionPoolProvider;
-import com.stolser.javatraining.webproject.model.entity.periodical.Subscription;
+import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import java.sql.Connection;

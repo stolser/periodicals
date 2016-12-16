@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.model.dao.subscription;
 
 import com.stolser.javatraining.webproject.model.dao.GenericDao;
-import com.stolser.javatraining.webproject.model.entity.periodical.Subscription;
+import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import java.util.List;

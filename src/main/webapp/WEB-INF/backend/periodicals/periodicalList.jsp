@@ -1,6 +1,6 @@
 <%@include file="../../includes/header.jsp" %>
-<fmt:setBundle basename="webProject.i18n.admin.periodical" var="langPeriodical"/>
 <fmt:setBundle basename="webProject.i18n.admin.general" var="general"/>
+<fmt:setBundle basename="webProject.i18n.admin.periodical" var="langPeriodical"/>
 
 <div class="row">
     <div class="col-md-12 table-responsive">

@@ -7,7 +7,7 @@ import com.stolser.javatraining.webproject.model.dao.subscription.SubscriptionDa
 import com.stolser.javatraining.webproject.model.database.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
-import com.stolser.javatraining.webproject.model.entity.periodical.Subscription;
+import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
