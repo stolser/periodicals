@@ -26,6 +26,7 @@ public class ApplicationResources {
     public static final String ALL_USERS_ATTR_NAME = "allUsers";
     public static final String LANGUAGE_ATTR_NAME = "language";
     public static final String PERIODICAL_STATISTICS_ATTR_NAME = "periodicalStatistics";
+    public static final String FINANCIAL_STATISTICS_ATTR_NAME = "financialStatistics";
 
     public static final String PARAM_NAME = "paramName";
     public static final String PARAM_VALUE = "paramValue";

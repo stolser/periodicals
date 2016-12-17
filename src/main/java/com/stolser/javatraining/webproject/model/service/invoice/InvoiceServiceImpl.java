@@ -7,6 +7,7 @@ import com.stolser.javatraining.webproject.model.dao.subscription.SubscriptionDa
 import com.stolser.javatraining.webproject.model.database.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
+import com.stolser.javatraining.webproject.model.entity.statistics.FinancialStatistics;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import org.slf4j.Logger;
@@ -55,8 +56,6 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public List<Invoice> findAllByUserId(long userId) {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-//            System.out.println("InvoiceServiceImpl: connection has been got. Retrieving all invoices for " +
-//                    "user with id = " + userId);
 
             return factory.getInvoiceDao(conn).findAllByUserId(userId);
 
@@ -68,7 +67,6 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public boolean createNew(Invoice invoice) {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-//            System.out.println("InvoiceServiceImpl: connection has been got. Creating a new invoice.");
 
             factory.getInvoiceDao(conn).createNew(invoice);
 
@@ -137,6 +135,20 @@ public class InvoiceServiceImpl implements InvoiceService {
                     throw new CustomSqlException(e);
                 }
             }
+        }
+    }
+
+    @Override
+    public FinancialStatistics getFinStatistics(Instant since, Instant until) {
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+
+            InvoiceDao dao = factory.getInvoiceDao(conn);
+            long totalInvoiceSum = dao.getCreatedInvoiceSumByCreationDate(since, until);
+            long paidInvoiceSum = dao.getPaidInvoiceSumByPaymentDate(since, until);
+
+            return new FinancialStatistics(totalInvoiceSum, paidInvoiceSum);
+        } catch (Exception e) {
+            throw new CustomSqlException(e);
         }
     }
 

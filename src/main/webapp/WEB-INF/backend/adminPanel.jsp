@@ -17,7 +17,7 @@
                         <fmt:message key="stat.periodical.title" bundle="${langAdminPanel}"/>
                     </a>
                 </div>
-                <div id="periodicalCollapse" class="panel-collapse collapse" role="tabpanel"
+                <div id="periodicalCollapse" class="panel-collapse collapse in" role="tabpanel"
                      aria-labelledby="periodicalHeading">
                     <div class="panel-body">
                         <table class="table table-hover table-bordered table-striped text-center">
@@ -48,7 +48,8 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="invoiceHeading">
-                    <a class="panel-title btn btn-default"  role="button" data-toggle="collapse" data-parent="#statistics" href="#invoiceCollapse"
+                    <a class="panel-title btn btn-default"  role="button" data-toggle="collapse"
+                       data-parent="#statistics" href="#invoiceCollapse"
                        aria-expanded="true" aria-controls="invoiceCollapse">
                         <fmt:message key="stat.invoice.title" bundle="${langAdminPanel}"/>
                     </a>
@@ -56,25 +57,23 @@
                 <div id="invoiceCollapse" class="panel-collapse collapse" role="tabpanel"
                      aria-labelledby="invoiceHeading">
                     <div class="panel-body">
+                        <h3><fmt:message key="stat.invoice.description" bundle="${langAdminPanel}"/></h3>
+                        <p><fmt:message key="totalInvoiceSum.text" bundle="${langAdminPanel}"/>:
+                            <label class="costAndSumValue">
+                                <c:out value="${financialStatistics.totalInvoiceSum}"/>
+                            </label>
+                            <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>
+                        </p>
+                        <p><fmt:message key="paidInvoiceSum.text" bundle="${langAdminPanel}"/>:
+                            <label class="costAndSumValue">
+                                <c:out value="${financialStatistics.paidInvoiceSum}"/>
+                            </label>
+                            <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <%--<div class="panel panel-default">--%>
-            <%--<div class="panel-heading" role="tab" id="invoiceHeading">--%>
-            <%--<h4 class="panel-title">--%>
-            <%--<a role="button" data-toggle="collapse" data-parent="#statistics" href="#invoiceCollapse"--%>
-            <%--aria-expanded="true" aria-controls="invoiceCollapse">--%>
-            <%--<fmt:message key="stat.invoice.title" bundle="${langAdminPanel}"/>--%>
-            <%--</a>--%>
-            <%--</h4>--%>
-            <%--</div>--%>
-            <%--<div id="invoiceCollapse" class="panel-collapse collapse in" role="tabpanel"--%>
-            <%--aria-labelledby="invoiceHeading">--%>
-            <%--<div class="panel-body">--%>
-            <%--</div>--%>
-            <%--</div>--%>
-            <%--</div>--%>
         </div>
 
     </div>

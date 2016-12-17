@@ -1,14 +1,14 @@
-package com.stolser.javatraining.webproject.model.entity.periodical.statistics;
+package com.stolser.javatraining.webproject.model.entity.statistics;
 
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 
-public class NumberByCategory {
+public class PeriodicalNumberByCategory {
     private PeriodicalCategory category;
     private int active;
     private int inActive;
     private int discarded;
 
-    public NumberByCategory(Builder builder) {
+    public PeriodicalNumberByCategory(Builder builder) {
         this.category = builder.category;
         this.active = builder.active;
         this.inActive = builder.inActive;
@@ -60,8 +60,8 @@ public class NumberByCategory {
             return this;
         }
 
-        public NumberByCategory build() {
-            return new NumberByCategory(this);
+        public PeriodicalNumberByCategory build() {
+            return new PeriodicalNumberByCategory(this);
         }
     }
 

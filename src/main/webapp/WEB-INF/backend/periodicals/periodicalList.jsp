@@ -36,7 +36,7 @@
                         <td>
                             <c:choose>
                                 <c:when test="${periodical.oneMonthCost > 0}">
-                                    <label class="oneMonthCostValue">
+                                    <label class="costAndSumValue">
                                         <c:out value="${periodical.oneMonthCost}"/>
                                     </label>
                                     <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>

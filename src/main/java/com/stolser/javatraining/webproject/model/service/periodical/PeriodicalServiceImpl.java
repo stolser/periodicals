@@ -7,7 +7,7 @@ import com.stolser.javatraining.webproject.model.dao.subscription.SubscriptionDa
 import com.stolser.javatraining.webproject.model.database.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
-import com.stolser.javatraining.webproject.model.entity.periodical.statistics.NumberByCategory;
+import com.stolser.javatraining.webproject.model.entity.statistics.PeriodicalNumberByCategory;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 
 import java.sql.Connection;
@@ -212,8 +212,8 @@ public class PeriodicalServiceImpl implements PeriodicalService {
     }
 
     @Override
-    public List<NumberByCategory> getQuantitativeStatistics() {
-        List<NumberByCategory> statistics = new ArrayList<>();
+    public List<PeriodicalNumberByCategory> getQuantitativeStatistics() {
+        List<PeriodicalNumberByCategory> statistics = new ArrayList<>();
 
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
             PeriodicalDao dao = factory.getPeriodicalDao(conn);
@@ -223,7 +223,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
                 int inActive = dao.findNumberWithCategoryAndStatus(category, Periodical.Status.INACTIVE);
                 int discarded = dao.findNumberWithCategoryAndStatus(category, Periodical.Status.DISCARDED);
 
-                NumberByCategory nextItem = NumberByCategory.newBuilder(category)
+                PeriodicalNumberByCategory nextItem = PeriodicalNumberByCategory.newBuilder(category)
                         .setActive(active).setInActive(inActive).setDiscarded(discarded)
                         .build();
 

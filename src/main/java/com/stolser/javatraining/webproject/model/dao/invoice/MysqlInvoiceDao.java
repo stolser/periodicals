@@ -19,6 +19,8 @@ public class MysqlInvoiceDao implements InvoiceDao {
             "Exception during execution statement '%s' for userId = %d.";
     private static final String EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_INVOICE =
             "Exception during execution statement '%s' for invoice = %s.";
+    private static final String EXCEPTION_DURING_GETTING_INVOICE_SUM = "Exception during execution statement '%s' for since = %s " +
+            "and until = '%s'.";
     private Connection conn;
 
     public MysqlInvoiceDao(Connection conn) {
@@ -71,6 +73,55 @@ public class MysqlInvoiceDao implements InvoiceDao {
         }
 
     }
+
+    @Override
+    public long getCreatedInvoiceSumByCreationDate(Instant since, Instant until) {
+        String sqlStatement = "SELECT SUM(total_sum) FROM invoices " +
+                "WHERE creation_date >= ? AND creation_date <= ?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            st.setTimestamp(1, new Timestamp(since.toEpochMilli()));
+            st.setTimestamp(2, new Timestamp(until.toEpochMilli()));
+
+
+            ResultSet rs = st.executeQuery();
+            rs.next();
+
+            return rs.getLong(1);
+
+        } catch (SQLException e) {
+            String message = String.format(EXCEPTION_DURING_GETTING_INVOICE_SUM,
+                    sqlStatement, since, until);
+            throw new CustomSqlException(message, e);
+        }
+    }
+
+    @Override
+    public long getPaidInvoiceSumByPaymentDate(Instant since, Instant until) {
+        String sqlStatement = "SELECT SUM(total_sum) FROM invoices " +
+                "WHERE payment_date >= ? AND payment_date <= ? AND status = ?";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            System.out.println("since.toEpochMilli() = " + since.toEpochMilli());
+            System.out.println("until.toEpochMilli() = " + until.toEpochMilli());
+            st.setTimestamp(1, new Timestamp(since.toEpochMilli()));
+            st.setTimestamp(2, new Timestamp(until.toEpochMilli()));
+            st.setString(3, Invoice.Status.PAID.name().toLowerCase());
+
+            ResultSet rs = st.executeQuery();
+            rs.next();
+
+            return rs.getLong(1);
+
+        } catch (SQLException e) {
+            String message = String.format(EXCEPTION_DURING_GETTING_INVOICE_SUM,
+                    sqlStatement, since, until);
+            throw new CustomSqlException(message, e);
+        }
+    }
+
 
     @Override
     public void createNew(Invoice invoice) {
@@ -155,15 +206,9 @@ public class MysqlInvoiceDao implements InvoiceDao {
     }
 
     private Timestamp getPaymentDate(Invoice invoice) {
-        Timestamp timestamp = null;
         Instant paymentDate = invoice.getPaymentDate();
 
-
-        if (paymentDate != null) {
-            timestamp = new Timestamp(paymentDate.toEpochMilli());
-        }
-
-        return timestamp;
+        return (paymentDate != null) ? new Timestamp(paymentDate.toEpochMilli()) : null;
     }
 
     @Override

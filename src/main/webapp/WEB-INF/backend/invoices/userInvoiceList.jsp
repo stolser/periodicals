@@ -39,7 +39,7 @@
                 <td>
                     <c:choose>
                         <c:when test="${invoice.periodical.oneMonthCost > 0}">
-                            <label class="oneMonthCostValue">
+                            <label class="costAndSumValue">
                                 <c:out value="${invoice.periodical.oneMonthCost}"/>
                             </label>
                             <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>
@@ -52,7 +52,7 @@
                 <td>
                     <c:choose>
                         <c:when test="${invoice.totalSum > 0}">
-                            <label class="oneMonthCostValue">
+                            <label class="costAndSumValue">
                                 <c:out value="${invoice.totalSum}"/>
                             </label>
                             <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>

@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.model.service.periodical;
 
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
-import com.stolser.javatraining.webproject.model.entity.periodical.statistics.NumberByCategory;
+import com.stolser.javatraining.webproject.model.entity.statistics.PeriodicalNumberByCategory;
 
 import java.util.List;
 
@@ -23,6 +23,6 @@ public interface PeriodicalService {
 
     boolean hasActiveSubscriptions(long periodicalId);
 
-    List<NumberByCategory> getQuantitativeStatistics();
+    List<PeriodicalNumberByCategory> getQuantitativeStatistics();
 
 }
