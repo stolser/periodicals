@@ -40,12 +40,8 @@ public class PeriodicalServiceImpl implements PeriodicalService {
     public Periodical findOneById(long id) {
 
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-            System.out.println("PeriodicalServiceImpl: connection has been got.");
-
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             Periodical periodical = periodicalDao.findOneById(id);
-
-            System.out.println("periodical from the DB: " + periodical);
 
             return periodical;
         } catch (SQLException e) {
@@ -59,8 +55,6 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             Periodical periodical = periodicalDao.findOneByName(name);
-
-            System.out.println("periodical from the DB: " + periodical);
 
             return periodical;
         } catch (SQLException e) {
@@ -107,8 +101,6 @@ public class PeriodicalServiceImpl implements PeriodicalService {
     public Periodical save(Periodical periodical) {
         long thisId = periodical.getId();
 
-        System.out.println("Saving a periodical: " + periodical);
-
         try {
             if (thisId == 0) {
                 createNewPeriodical(periodical);
@@ -126,7 +118,6 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
     private void createNewPeriodical(Periodical periodical) throws SQLException {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-            System.out.println("PeriodicalServiceImpl: connection has been got. Creating a new one.");
 
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             periodicalDao.createNew(periodical);

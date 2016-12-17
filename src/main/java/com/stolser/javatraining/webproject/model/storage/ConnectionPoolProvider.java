@@ -20,11 +20,10 @@ public class ConnectionPoolProvider {
     private static final ConnectionPool INSTANCE;
 
     static {
-        String filename = DB_CONFIG_FILENAME;
         InputStream input;
         Properties properties = new Properties();
         try {
-            input = ConnectionPoolProvider.class.getClassLoader().getResourceAsStream(filename);
+            input = ConnectionPoolProvider.class.getClassLoader().getResourceAsStream(DB_CONFIG_FILENAME);
             properties.load(input);
 
         } catch (FileNotFoundException e) {

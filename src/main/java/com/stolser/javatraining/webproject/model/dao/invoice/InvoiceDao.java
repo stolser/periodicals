@@ -7,7 +7,8 @@ import java.time.Instant;
 import java.util.List;
 
 public interface InvoiceDao extends GenericDao<Invoice> {
-    List<Invoice> findAllByUserId(long id);
+    List<Invoice> findAllByUserId(long userId);
+    List<Invoice> findAllByPeriodicalId(long periodicalId);
     long getCreatedInvoiceSumByCreationDate(Instant since, Instant until);
     long getPaidInvoiceSumByPaymentDate(Instant since, Instant until);
 }

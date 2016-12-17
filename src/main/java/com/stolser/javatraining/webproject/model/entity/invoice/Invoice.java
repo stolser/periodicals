@@ -3,9 +3,10 @@ package com.stolser.javatraining.webproject.model.entity.invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
+import java.io.Serializable;
 import java.time.Instant;
 
-public class Invoice {
+public class Invoice implements Serializable {
     private long id;
     private User user;
     private Periodical periodical;

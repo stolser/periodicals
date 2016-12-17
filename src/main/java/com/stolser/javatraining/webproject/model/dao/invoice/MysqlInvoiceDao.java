@@ -21,6 +21,7 @@ public class MysqlInvoiceDao implements InvoiceDao {
             "Exception during execution statement '%s' for invoice = %s.";
     private static final String EXCEPTION_DURING_GETTING_INVOICE_SUM = "Exception during execution statement '%s' for since = %s " +
             "and until = '%s'.";
+    private static final String EXCEPTION_DURING_EXECUTION_FOR_PERIODICAL_ID = "Exception during execution statement '%s' for periodicalId = %d.";
     private Connection conn;
 
     public MysqlInvoiceDao(Connection conn) {
@@ -53,25 +54,44 @@ public class MysqlInvoiceDao implements InvoiceDao {
                 "WHERE users.id = ?";
 
         try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
-            st.setLong(1, userId);
-
-            ResultSet rs = st.executeQuery();
-
-            List<Invoice> invoices = new ArrayList<>();
-
-            while (rs.next()) {
-                invoices.add(getInvoiceFromRs(rs));
-            }
-
-            return invoices;
+            return executeAndGetInvoicesFromRs(sqlStatement, userId);
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_USER_ID,
                     sqlStatement, userId);
             throw new StorageException(message, e);
         }
+    }
 
+    @Override
+    public List<Invoice> findAllByPeriodicalId(long periodicalId) {
+        String sqlStatement = "SELECT * FROM invoices " +
+                "JOIN periodicals ON (invoices.periodical_id = periodicals.id) " +
+                "WHERE periodicals.id = ?";
+
+        try {
+            return executeAndGetInvoicesFromRs(sqlStatement, periodicalId);
+
+        } catch (SQLException e) {
+            String message = String.format(EXCEPTION_DURING_EXECUTION_FOR_PERIODICAL_ID,
+                    sqlStatement, periodicalId);
+            throw new StorageException(message, e);
+        }
+    }
+
+    private List<Invoice> executeAndGetInvoicesFromRs(String sqlStatement, long periodicalId) throws SQLException {
+        PreparedStatement st = conn.prepareStatement(sqlStatement);
+        st.setLong(1, periodicalId);
+
+        ResultSet rs = st.executeQuery();
+
+        List<Invoice> invoices = new ArrayList<>();
+
+        while (rs.next()) {
+            invoices.add(getInvoiceFromRs(rs));
+        }
+
+        return invoices;
     }
 
     @Override

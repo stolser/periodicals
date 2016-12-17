@@ -1,6 +1,5 @@
 package com.stolser.javatraining.webproject.controller.request_processor.periodical;
 
-import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.CustomRedirectException;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
@@ -15,29 +14,28 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+
 public class DeleteDiscardedPeriodicals implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
-        String redirectUri = ApplicationResources.PERIODICAL_LIST_URI;
+        String redirectUri = PERIODICAL_LIST_URI;
         List<FrontendMessage> generalMessages = new ArrayList<>();
 
         try {
-            /*
-            todo: Get all related invoices and subscriptions and serialize them;
-            */
-
             List<Periodical> periodicalsToDelete = periodicalService
                     .findAllByStatus(Periodical.Status.DISCARDED);
 
             if (periodicalsToDelete.size() > 0) {
+                persistPeriodicalsAndRelatedInvoices(periodicalsToDelete);
                 periodicalService.deleteAllDiscarded();
 
-                generalMessages.add(new FrontendMessage(ApplicationResources.MSG_PERIODICALS_DELETED_SUCCESS,
+                generalMessages.add(new FrontendMessage(MSG_PERIODICALS_DELETED_SUCCESS,
                         FrontendMessage.MessageType.SUCCESS));
             } else {
-                generalMessages.add(new FrontendMessage(ApplicationResources.MSG_NO_PERIODICALS_TO_DELETE,
+                generalMessages.add(new FrontendMessage(MSG_NO_PERIODICALS_TO_DELETE,
                         FrontendMessage.MessageType.WARNING));
             }
 
@@ -52,5 +50,10 @@ public class DeleteDiscardedPeriodicals implements RequestProcessor {
 
             throw new CustomRedirectException(message, e);
         }
+    }
+
+    private void persistPeriodicalsAndRelatedInvoices(List<Periodical> periodicalsToDelete) {
+        /*Here goes implementation of persisting somehow deleted data. It can be serialization into
+        * files or saving into archive database.*/
     }
 }

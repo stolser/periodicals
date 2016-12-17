@@ -105,8 +105,6 @@ public class PersistOnePeriodical implements RequestProcessor {
 
             HttpUtils.addGeneralMessagesToSession(request, generalMessages);
 
-            System.out.println("Persisted periodical: " + periodicalToSave);
-
             return new DisplayAllPeriodicals().getViewName(request, response);
 
         } else {

@@ -61,6 +61,17 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    public List<Invoice> findAllByPeriodicalId(long periodicalId) {
+        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+
+            return factory.getInvoiceDao(conn).findAllByPeriodicalId(periodicalId);
+
+        } catch (Exception e) {
+            throw new StorageException(e);
+        }
+    }
+
+    @Override
     public boolean createNew(Invoice invoice) {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
 

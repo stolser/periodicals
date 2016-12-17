@@ -38,9 +38,6 @@ class Authorization {
         String requestMethod = request.getMethod().toUpperCase();
         String requestURI = request.getRequestURI();
 
-        System.out.println("requestMethod = '" + requestMethod + "'");
-        System.out.println("requestURI = '" + requestURI + "'");
-
         Optional<Map.Entry<String, Set<String>>> thisPermissionMapping = permissionMapping.entrySet()
                 .stream()
                 .filter(entry -> {  // filtering by a method;
@@ -52,8 +49,6 @@ class Authorization {
                 })
                 .filter(entry -> {  // filtering by a Uri pattern;
                     String urlPattern = entry.getKey().split(":")[1];
-//                    System.out.println("urlPattern = '" + urlPattern + "'");
-
                     return Pattern.matches(urlPattern, requestURI);
                 })
                 .findFirst();
@@ -72,13 +67,7 @@ class Authorization {
 
     private boolean userHasLegitRole(Set<String> userRoles, Set<String> legitRoles) {
         Set<String> userLegitRoles = new HashSet<>(legitRoles);
-//        System.out.println("------ User's roles:");
-//        userRoles.forEach(System.out::println);
-
         userLegitRoles.retainAll(userRoles);
-
-//        System.out.println("------ legit user's roles: ");
-//        userLegitRoles.forEach(System.out::println);
 
         return (userLegitRoles.size() != 0);
     }

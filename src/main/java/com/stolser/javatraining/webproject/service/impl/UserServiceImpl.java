@@ -69,8 +69,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findOneUserByUserName(String userName) {
         try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
-            System.out.println("UserServiceImpl: connection has been got.");
-
             UserDao userDao = factory.getUserDao(conn);
             RoleDao roleDao = factory.getRoleDao(conn);
             User user = userDao.findUserByUserName(userName);
@@ -78,8 +76,6 @@ public class UserServiceImpl implements UserService {
             if (user != null) {
                 user.setRoles(roleDao.findRolesByUserName(userName));
             }
-
-            System.out.println("user form the db: " + user);
 
             return user;
         } catch (SQLException e) {

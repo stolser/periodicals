@@ -52,9 +52,6 @@ final class RequestProviderImpl implements RequestProvider {
         String requestMethod = request.getMethod().toUpperCase();
         String requestURI = request.getRequestURI();
 
-        System.out.println("requestMethod = " + requestMethod);
-        System.out.println("getRequestProcessor(): requestURI = '" + requestURI + "'");
-
         Optional<Map.Entry<String, RequestProcessor>> mapping = requestMapping.entrySet()
                 .stream()
                 .filter(entry -> {
@@ -66,13 +63,9 @@ final class RequestProviderImpl implements RequestProvider {
                 })
                 .filter(entry -> {  // filtering by a Uri pattern;
                     String urlPattern = entry.getKey().split(":")[1];
-//                    System.out.println("urlPattern = '" + urlPattern + "'");
-
                     return Pattern.matches(urlPattern, requestURI);
                 })
                 .findFirst();
-
-        System.out.println("mapping = " + mapping);
 
         if (mapping.isPresent()) {
             return mapping.get().getValue();
