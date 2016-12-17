@@ -5,10 +5,10 @@
 
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
-        <c:if test="${entityOperationType == 'create'}">
+        <c:if test="${periodicalOperationType == 'create'}">
             <h1><fmt:message key="createPeriodical.title" bundle="${langPeriodical}"/></h1>
         </c:if>
-        <c:if test="${entityOperationType == 'update'}">
+        <c:if test="${periodicalOperationType == 'update'}">
             <h1><fmt:message key="editPeriodical.title" bundle="${langPeriodical}"/></h1>
         </c:if>
         <h3><fmt:message key="title.top" bundle="${langPeriodical}"/></h3>
@@ -110,9 +110,9 @@
                 </div>
             </div>
             <div class="form-group hidden">
-                <input id="entityOperationType" type="text" class="form-control"
-                       name="entityOperationType"
-                       value="<c:out value="${entityOperationType}"/>"/>
+                <input id="periodicalOperationType" type="text" class="form-control"
+                       name="periodicalOperationType"
+                       value="<c:out value="${periodicalOperationType}"/>"/>
             </div>
             <div class="form-group">
                 <div class="col-md-9 col-md-offset-3">
@@ -126,7 +126,7 @@
                         class="btn btn-primary disabled">
                     <fmt:message key="savePeriodicalBtn.label" bundle="${langPeriodical}"/>
                 </button>
-                <a href="/backend/periodicals/${(entityOperationType == 'update') ? periodical.id : ''}"
+                <a href="/backend/periodicals/${(periodicalOperationType == 'update') ? periodical.id : ''}"
                    class="btn btn-default" role="button">
                     <fmt:message key="cancelBtn.label" bundle="${general}"/>
                 </a>

@@ -36,7 +36,8 @@ public class CreateNewPeriodical implements RequestProcessor {
         request.setAttribute(PERIODICAL_ATTR_NAME, periodicalIntoRequest);
         request.setAttribute(PERIODICAL_STATUSES_ATTR_NAME, Periodical.Status.values());
         request.setAttribute(PERIODICAL_CATEGORIES_ATTR_NAME, PeriodicalCategory.values());
-        request.setAttribute(ENTITY_OPERATION_TYPE_PARAM_ATTR_NAME, "create");
+        request.setAttribute(PERIODICAL_OPERATION_TYPE_PARAM_ATTR_NAME,
+                Periodical.OperationType.CREATE.name().toLowerCase());
 
         return CREATE_EDIT_PERIODICAL_VIEW_NAME;
     }

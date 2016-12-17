@@ -13,6 +13,10 @@ public class Periodical {
         ACTIVE, INACTIVE, DISCARDED;
     }
 
+    public enum OperationType {
+        CREATE, UPDATE;
+    }
+
     public long getId() {
         return id;
     }

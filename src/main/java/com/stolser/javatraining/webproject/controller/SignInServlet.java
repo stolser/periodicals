@@ -23,6 +23,7 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 public class SignInServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(SignInServlet.class);
     private static final String EXCEPTION_DURING_GETTING_MESSAGE_DIGEST_FOR_MD5 = "Exception during getting MessageDigest for 'MD5'";
+    private UserService userService = UserServiceImpl.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -35,7 +36,6 @@ public class SignInServlet extends HttpServlet {
 
         if (usernameAndPasswordIsNotEmpty(username, password)) {
             String passwordHash = getPasswordHash(password);
-            UserService userService = UserServiceImpl.getInstance();
 
             Credential credential = userService.findOneCredentialByUserName(username);
 

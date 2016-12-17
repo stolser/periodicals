@@ -50,7 +50,7 @@ public class ApplicationResources {
     public static final String PERIODICAL_CATEGORY_PARAM_NAME = "periodicalCategory";
     public static final String PERIODICAL_PUBLISHER_PARAM_NAME = "periodicalPublisher";
     public static final String PERIODICAL_COST_PARAM_NAME = "periodicalCost";
-    public static final String ENTITY_OPERATION_TYPE_PARAM_ATTR_NAME = "entityOperationType";
+    public static final String PERIODICAL_OPERATION_TYPE_PARAM_ATTR_NAME = "periodicalOperationType";
     public static final String SUBSCRIPTION_PERIOD_PARAM_NAME = "subscriptionPeriod";
     public static final String ENTITY_ID_PARAM_NAME = "entityId";
     public static final String USER_INVOICES_PARAM_NAME = "userInvoices";
@@ -126,7 +126,7 @@ public class ApplicationResources {
     public static final String MSG_NO_PERIODICALS_TO_DELETE =
             "validation.thereIsNoPeriodicalsToDelete.warning";
     public static final String INCORRECT_OPERATION_DURING_PERSISTING_A_PERIODICAL =
-            "Incorrect entityOperationType during persisting a periodical.";
+            "Incorrect periodicalOperationType during persisting a periodical.";
     public static final String MSG_PERIODICAL_HAS_ACTIVE_SUBSCRIPTIONS_WARNING =
             "validation.periodicalHasActiveSubscriptions.warning";
     public static final String MSG_PERIODICAL_HAS_ACTIVE_SUBSCRIPTIONS_ERROR =

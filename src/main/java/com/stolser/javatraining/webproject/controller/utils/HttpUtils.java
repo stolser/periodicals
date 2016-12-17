@@ -4,6 +4,7 @@ import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.user.User;
+import com.stolser.javatraining.webproject.service.UserService;
 import com.stolser.javatraining.webproject.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ public class HttpUtils {
     private static final String REDIRECTION_FROM_TO_TEXT = "During redirection from \"%s\" to \"%s\"";
     private static final String URI_MUST_CONTAIN_ID_TEXT = "Uri (%s) must contain id.";
     private static final String EXCEPTION_DURING_REDIRECTION_TEXT = "User id = %d. Exception during redirection to '%s'.";
+    private static UserService userService = UserServiceImpl.getInstance();
 
     public static long getUserIdFromSession(HttpServletRequest request) {
         User user = (User) request.getSession()
@@ -32,7 +34,7 @@ public class HttpUtils {
     public static User getCurrentUserFromFromDb(HttpServletRequest request) {
         long userId = getUserIdFromSession(request);
 
-        return UserServiceImpl.getInstance().findOneById(userId);
+        return userService.findOneById(userId);
     }
 
     public static String getRedirectionExceptionMessage(HttpServletRequest request,
@@ -44,15 +46,6 @@ public class HttpUtils {
 
     public static Periodical getPeriodicalFromRequest(HttpServletRequest request) {
         Periodical periodical = new Periodical();
-//
-//        System.out.println("Periodical from a request:");
-//        System.out.println("periodicalId = " + request.getParameter(ENTITY_ID_PARAM_NAME));
-//        System.out.println("periodicalName = " + request.getParameter(PERIODICAL_NAME_PARAM_NAME).toUpperCase());
-//        System.out.println("periodicalCategory = " + request.getParameter("periodicalCategory"));
-//        System.out.println("periodicalPublisher = " + request.getParameter("periodicalPublisher"));
-//        System.out.println("periodicalDescription = " + request.getParameter("periodicalDescription").trim());
-//        System.out.println("periodicalCost = " + request.getParameter("periodicalCost"));
-//        System.out.println("periodicalStatus = " + request.getParameter("periodicalStatus"));
 
         periodical.setId(Long.valueOf(request.getParameter(ENTITY_ID_PARAM_NAME)));
         periodical.setName(request.getParameter(PERIODICAL_NAME_PARAM_NAME));

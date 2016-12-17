@@ -3,6 +3,7 @@ package com.stolser.javatraining.webproject.controller.validator.periodical;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
+import com.stolser.javatraining.webproject.service.PeriodicalService;
 import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,21 +12,22 @@ import java.util.regex.Pattern;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 public class PeriodicalNameValidator implements Validator {
-    private static final String INCORRECT_ENTITY_OPERATION_TYPE_DURING_VALIDATION = "Incorrect entityOperationType during validation!";
+    private static final String INCORRECT_ENTITY_OPERATION_TYPE_DURING_VALIDATION = "Incorrect periodicalOperationType during validation!";
+    private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
     @Override
     public ValidationResult validate(String periodicalName, HttpServletRequest request) {
         int statusCode;
         String messageKey;
 
-        String entityOperationType = checkOperationType(request);
+        Periodical.OperationType periodicalOperationType = checkOperationType(request);
         long periodicalId = Long.valueOf(request.getParameter(ENTITY_ID_PARAM_NAME));
 
         if (nameHasIncorrectSymbols(periodicalName)) {
             statusCode = STATUS_CODE_VALIDATION_FAILED;
             messageKey = MSG_PERIODICAL_NAME_ERROR;
 
-        } else if (nameIsNotUnique(entityOperationType, periodicalId, periodicalName)) {
+        } else if (nameIsNotUnique(periodicalOperationType, periodicalId, periodicalName)) {
             statusCode = STATUS_CODE_VALIDATION_FAILED;
             messageKey = MSG_PERIODICAL_NAME_DUPLICATION;
 
@@ -37,15 +39,16 @@ public class PeriodicalNameValidator implements Validator {
         return new ValidationResult(statusCode, messageKey);
     }
 
-    private boolean nameIsNotUnique(String entityOperationType, long periodicalId, String periodicalName) {
-        Periodical periodicalWithSuchNameInDb = PeriodicalServiceImpl.getInstance().findOneByName(periodicalName);
+    private boolean nameIsNotUnique(Periodical.OperationType periodicalOperationType,
+                                    long periodicalId, String periodicalName) {
+        Periodical periodicalWithSuchNameInDb = periodicalService.findOneByName(periodicalName);
         /*
          * if this is 'create' --> there must not be any periodical with the same name in the db;
          * if this is 'update' --> we exclude this periodical from validation;
          */
         return (periodicalWithSuchNameInDb != null) &&
-                (("create".equals(entityOperationType) ||
-                        ("update".equals(entityOperationType)
+                ((Periodical.OperationType.CREATE.equals(periodicalOperationType) ||
+                        (Periodical.OperationType.UPDATE.equals(periodicalOperationType)
                                 && (periodicalId != periodicalWithSuchNameInDb.getId()))));
     }
 
@@ -53,16 +56,16 @@ public class PeriodicalNameValidator implements Validator {
         return !Pattern.matches(PERIODICAL_NAME_PATTERN_REGEX, periodicalName);
     }
 
-    private String checkOperationType(HttpServletRequest request) {
-        String entityOperationType = request.getParameter(ENTITY_OPERATION_TYPE_PARAM_ATTR_NAME);  // must not be null...
-        System.out.println("entityOperationType = " + entityOperationType);
+    private Periodical.OperationType checkOperationType(HttpServletRequest request) {
+        Periodical.OperationType periodicalOperationType = Periodical.OperationType.valueOf(request
+                .getParameter(PERIODICAL_OPERATION_TYPE_PARAM_ATTR_NAME).toUpperCase());
 
-        if (!"create".equals(entityOperationType)
-                && !"update".equals(entityOperationType)) {
-            // ... and must be 'create' or 'update'. Otherwise something wrong with this request;
+        if (!Periodical.OperationType.CREATE.equals(periodicalOperationType)
+                && !Periodical.OperationType.UPDATE.equals(periodicalOperationType)) {
+
             throw new IllegalArgumentException(INCORRECT_ENTITY_OPERATION_TYPE_DURING_VALIDATION);
         }
 
-        return entityOperationType;
+        return periodicalOperationType;
     }
 }

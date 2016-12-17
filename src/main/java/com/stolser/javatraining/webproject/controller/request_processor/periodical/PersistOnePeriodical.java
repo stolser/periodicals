@@ -42,8 +42,11 @@ public class PersistOnePeriodical implements RequestProcessor {
             return null;
         }
 
-        String entityOperationType = request.getParameter(ENTITY_OPERATION_TYPE_PARAM_ATTR_NAME);
-        String redirectUri = getRedirectUriByOperationType(entityOperationType, periodicalToSave);
+        Periodical.OperationType periodicalOperationType =
+                Periodical.OperationType.valueOf(request
+                        .getParameter(PERIODICAL_OPERATION_TYPE_PARAM_ATTR_NAME).toUpperCase());
+
+        String redirectUri = getRedirectUriByOperationType(periodicalOperationType, periodicalToSave);
 
         request.getSession().setAttribute(PERIODICAL_ATTR_NAME, periodicalToSave);
 
@@ -88,13 +91,13 @@ public class PersistOnePeriodical implements RequestProcessor {
         }
 
         if (persistedPeriodical != null) {
-            switch (entityOperationType) {
-                case "create":
+            switch (periodicalOperationType) {
+                case CREATE:
                     generalMessages.add(new FrontendMessage(MSG_PERIODICAL_CREATED_SUCCESS,
                             FrontendMessage.MessageType.SUCCESS));
                     break;
 
-                case "update":
+                case UPDATE:
                     generalMessages.add(new FrontendMessage(MSG_PERIODICAL_UPDATED_SUCCESS,
                             FrontendMessage.MessageType.SUCCESS));
                     break;
@@ -130,14 +133,14 @@ public class PersistOnePeriodical implements RequestProcessor {
         return ACTIVE.equals(oldStatus) && INACTIVE.equals(newStatus);
     }
 
-    private String getRedirectUriByOperationType(String entityOperationType, Periodical periodicalToSave) {
+    private String getRedirectUriByOperationType(Periodical.OperationType periodicalOperationType, Periodical periodicalToSave) {
         String redirectUri;
-        switch (entityOperationType) {
-            case "create":
+        switch (periodicalOperationType) {
+            case CREATE:
                 redirectUri = PERIODICAL_CREATE_NEW_URI;
                 break;
 
-            case "update":
+            case UPDATE:
                 redirectUri = PERIODICAL_LIST_URI + "/" + periodicalToSave.getId() + "/update";
                 break;
 
