@@ -1,11 +1,12 @@
 package com.stolser.javatraining.webproject.controller.validator.periodical;
 
-import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Pattern;
+
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 public class PeriodicalCostValidator implements Validator {
 
@@ -14,12 +15,12 @@ public class PeriodicalCostValidator implements Validator {
         int statusCode;
         String messageKey;
 
-        if (Pattern.matches(ApplicationResources.PERIODICAL_COST_PATTERN_REGEX, paramValue)) {
-            statusCode = ApplicationResources.STATUS_CODE_SUCCESS;
-            messageKey = ApplicationResources.MSG_SUCCESS;
+        if (Pattern.matches(PERIODICAL_COST_PATTERN_REGEX, paramValue)) {
+            statusCode = STATUS_CODE_SUCCESS;
+            messageKey = MSG_SUCCESS;
         } else {
-            statusCode = ApplicationResources.STATUS_CODE_VALIDATION_FAILED;
-            messageKey = ApplicationResources.MSG_PERIODICAL_COST_ERROR;
+            statusCode = STATUS_CODE_VALIDATION_FAILED;
+            messageKey = MSG_PERIODICAL_COST_ERROR;
         }
 
         return new ValidationResult(statusCode, messageKey);

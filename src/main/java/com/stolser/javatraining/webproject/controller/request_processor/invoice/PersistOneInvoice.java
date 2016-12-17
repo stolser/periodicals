@@ -8,6 +8,8 @@ import com.stolser.javatraining.webproject.controller.validator.user.RequestUser
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
+import com.stolser.javatraining.webproject.service.InvoiceService;
+import com.stolser.javatraining.webproject.service.PeriodicalService;
 import com.stolser.javatraining.webproject.service.impl.InvoiceServiceImpl;
 import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
 
@@ -18,15 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.STATUS_CODE_SUCCESS;
 
 public class PersistOneInvoice implements RequestProcessor {
+
+    private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
+    private InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
         List<FrontendMessage> generalMessages = new ArrayList<>();
         long periodicalId = Long.valueOf(request.getParameter(PERIODICAL_ID_PARAM_NAME));
-        Periodical periodicalInDb = PeriodicalServiceImpl.getInstance().findOneById(periodicalId);
+        Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
 
         if (validationPassed(periodicalInDb, request, generalMessages)) {
             generalMessages.add(new FrontendMessage(MSG_VALIDATION_PASSED_SUCCESS,
@@ -36,8 +40,7 @@ public class PersistOneInvoice implements RequestProcessor {
 
         HttpUtils.addGeneralMessagesToSession(request, generalMessages);
 
-        String redirectUri = String.format("%s/%d",
-                PERIODICAL_LIST_URI, periodicalId);
+        String redirectUri = String.format("%s/%d", PERIODICAL_LIST_URI, periodicalId);
 
         HttpUtils.sendRedirect(request, response, redirectUri);
 
@@ -104,7 +107,7 @@ public class PersistOneInvoice implements RequestProcessor {
 
     private void tryToPersistNewInvoice(Invoice invoiceToPersist, List<FrontendMessage> generalMessages) {
         try {
-            InvoiceServiceImpl.getInstance().createNew(invoiceToPersist);
+            invoiceService.createNew(invoiceToPersist);
 
             generalMessages.add(new FrontendMessage(MSG_INVOICE_CREATION_SUCCESS,
                     FrontendMessage.MessageType.SUCCESS));

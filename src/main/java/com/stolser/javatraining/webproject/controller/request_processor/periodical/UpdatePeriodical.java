@@ -4,6 +4,7 @@ import com.stolser.javatraining.webproject.controller.request_processor.RequestP
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
+import com.stolser.javatraining.webproject.service.PeriodicalService;
 import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,12 +15,14 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 
 public class UpdatePeriodical implements RequestProcessor {
     private static final String NO_PERIODICAL_WITH_ID_IN_DB = "There is no periodical with id %d in the db.";
+    private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
         long periodicalId = HttpUtils.getFirstIdFromUri(request.getRequestURI());
 
-        Periodical periodical = PeriodicalServiceImpl.getInstance().findOneById(periodicalId);
+        Periodical periodical = periodicalService.findOneById(periodicalId);
+
         if (periodical == null) {
             throw new NoSuchElementException(String.format(NO_PERIODICAL_WITH_ID_IN_DB, periodicalId));
         }

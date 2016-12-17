@@ -18,11 +18,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class PeriodicalServiceImpl implements PeriodicalService {
-    private final DaoFactory factory;
-    public static final String NO_PERIODICAL_WITH_ID_MESSAGE = "There is no periodical in the DB with id = %d";
+    private static final String NO_PERIODICAL_WITH_ID_MESSAGE = "There is no periodical in the DB with id = %d";
+    private DaoFactory factory = DaoFactory.getMysqlDaoFactory();
 
     private PeriodicalServiceImpl() {
-        factory = DaoFactory.getMysqlDaoFactory();
     }
 
     private static class InstanceHolder {

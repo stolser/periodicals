@@ -8,6 +8,7 @@ import com.stolser.javatraining.webproject.controller.validator.user.RequestUser
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.service.InvoiceService;
+import com.stolser.javatraining.webproject.service.PeriodicalService;
 import com.stolser.javatraining.webproject.service.impl.InvoiceServiceImpl;
 import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
 import org.slf4j.Logger;
@@ -29,6 +30,8 @@ public class PayOneInvoice implements RequestProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PayOneInvoice.class);
     private static final String EXCEPTION_DURING_PAYING_THE_INVOICE_WITH_ID =
             "User id = {}. Exception during paying invoice {}.";
+    private InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
+    private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
 
     @Override
@@ -36,7 +39,7 @@ public class PayOneInvoice implements RequestProcessor {
         List<FrontendMessage> generalMessages = new ArrayList<>();
         long invoiceId = HttpUtils.getFirstIdFromUri(request.getRequestURI()
                 .replaceFirst("/backend/users/\\d+/", ""));
-        Invoice invoiceInDb = InvoiceServiceImpl.getInstance().findOneById(invoiceId);
+        Invoice invoiceInDb = invoiceService.findOneById(invoiceId);
 
         if (validationPassed(invoiceInDb, request, generalMessages)) {
             generalMessages.add(new FrontendMessage(MSG_VALIDATION_PASSED_SUCCESS,
@@ -90,7 +93,7 @@ public class PayOneInvoice implements RequestProcessor {
 
     private boolean periodicalIsVisible(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
         long periodicalId = invoiceInDb.getPeriodical().getId();
-        Periodical periodicalInDb = PeriodicalServiceImpl.getInstance().findOneById(periodicalId);
+        Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
 
         if (Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())) {
             return true;
@@ -105,8 +108,6 @@ public class PayOneInvoice implements RequestProcessor {
 
     private void tryToPayThisInvoice(Invoice invoiceInDb, HttpServletRequest request,
                                      List<FrontendMessage> generalMessages) {
-        InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
-
         try {
             if (invoiceService.payInvoice(invoiceInDb)) {
                 generalMessages.add(new FrontendMessage(MSG_INVOICE_PAYMENT_SUCCESS,

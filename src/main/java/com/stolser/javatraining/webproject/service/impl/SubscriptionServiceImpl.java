@@ -14,10 +14,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class SubscriptionServiceImpl implements SubscriptionService {
-    private final DaoFactory factory;
+    private DaoFactory factory = DaoFactory.getMysqlDaoFactory();
 
     private SubscriptionServiceImpl() {
-        factory = DaoFactory.getMysqlDaoFactory();
     }
 
     private static class InstanceHolder {

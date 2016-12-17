@@ -15,7 +15,7 @@ import java.io.IOException;
 public class FrontController extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(FrontController.class);
     private static final String USER_ID_REQUEST_URI = "User id = {}. requestURI = {}";
-    private static RequestProvider requestProvider = RequestProviderImpl.getInstance();
+    private RequestProvider requestProvider = RequestProviderImpl.getInstance();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -51,8 +51,6 @@ public class FrontController extends HttpServlet {
 
         if (viewName != null) {
             String page = ViewResolver.getPageByViewName(viewName);
-
-//            System.out.println("forwarding to '" + page + "'");
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(page);
             dispatcher.forward(request, response);

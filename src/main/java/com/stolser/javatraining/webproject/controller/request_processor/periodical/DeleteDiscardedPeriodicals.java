@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeleteDiscardedPeriodicals implements RequestProcessor {
+    private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
@@ -27,7 +28,6 @@ public class DeleteDiscardedPeriodicals implements RequestProcessor {
             todo: Get all related invoices and subscriptions and serialize them;
             */
 
-            PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
             List<Periodical> periodicalsToDelete = periodicalService
                     .findAllByStatus(Periodical.Status.DISCARDED);
 

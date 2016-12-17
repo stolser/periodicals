@@ -1,18 +1,16 @@
 package com.stolser.javatraining.webproject.service.impl;
 
-import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
 import com.stolser.javatraining.webproject.model.dao.invoice.InvoiceDao;
 import com.stolser.javatraining.webproject.model.dao.subscription.SubscriptionDao;
-import com.stolser.javatraining.webproject.model.storage.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.statistics.FinancialStatistics;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
+import com.stolser.javatraining.webproject.model.storage.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.service.InvoiceService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,12 +21,9 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 public class InvoiceServiceImpl implements InvoiceService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceServiceImpl.class);
+    private DaoFactory factory = DaoFactory.getMysqlDaoFactory();
 
-    private final DaoFactory factory;
-
-    public InvoiceServiceImpl() {
-        factory = DaoFactory.getMysqlDaoFactory();
+    private InvoiceServiceImpl() {
     }
 
     private static class InstanceHolder {

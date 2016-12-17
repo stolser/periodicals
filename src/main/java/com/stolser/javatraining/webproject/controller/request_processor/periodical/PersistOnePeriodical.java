@@ -23,6 +23,7 @@ import static com.stolser.javatraining.webproject.model.entity.periodical.Period
 
 public class PersistOnePeriodical implements RequestProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistOnePeriodical.class);
+    private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
@@ -55,7 +56,6 @@ public class PersistOnePeriodical implements RequestProcessor {
             return null;
         }
 
-        PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
         Periodical periodicalInDb = periodicalService.findOneById(periodicalToSave.getId());
 
         Periodical.Status oldStatus = (periodicalInDb != null) ? periodicalInDb.getStatus() : null;
@@ -117,7 +117,7 @@ public class PersistOnePeriodical implements RequestProcessor {
     }
 
     private boolean tryToDiscardPeriodical(Periodical periodicalToSave) {
-        int result = PeriodicalServiceImpl.getInstance().updateAndSetDiscarded(periodicalToSave);
+        int result = periodicalService.updateAndSetDiscarded(periodicalToSave);
         return result >= 1;
     }
 

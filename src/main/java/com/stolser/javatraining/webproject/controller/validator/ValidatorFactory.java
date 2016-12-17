@@ -9,7 +9,8 @@ import com.stolser.javatraining.webproject.controller.validator.user.SignInUsern
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 public class ValidatorFactory {
-    private static final String THERE_IS_NO_VALIDATOR_FOR_SUCH_PARAM = "There is no validator for such a parameter!";
+    private static final String THERE_IS_NO_VALIDATOR_FOR_SUCH_PARAM =
+            "There is no validator for such a parameter!";
 
     private static class InstanceHolder {
         private static final ValidatorFactory INSTANCE = new ValidatorFactory();

@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 public class ValidationServlet extends HttpServlet {
+    private ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -25,17 +26,15 @@ public class ValidationServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String paramName = request.getParameter(PARAM_NAME);
         String paramValue = request.getParameter(PARAM_VALUE);
-//        System.out.println("paramName = " + paramName + "; paramValue = " + paramValue);
 
         removeMessagesForCurrentParam(session, paramName);
 
-        ValidationResult result = ValidatorFactory.getInstance().newValidator(paramName)
+        ValidationResult result = validatorFactory.newValidator(paramName)
                 .validate(paramValue, request);
 
         Locale locale = getLocaleFromSession(session);
 
         ResourceBundle bundle = ResourceBundle.getBundle(VALIDATION_BUNDLE_PATH, locale);
-//        System.out.println("locale = " + locale + "; bundle = " + bundle);
 
         String localizedMessage = bundle.getString(result.getMessageKey());
         int statusCode = result.getStatusCode();
@@ -46,17 +45,12 @@ public class ValidationServlet extends HttpServlet {
         PrintWriter writer = response.getWriter();
         JSONObject jsonResponse = new JSONObject();
 
-//        System.out.println("statusCode = " + statusCode);
-//        System.out.println("localizedMessage = " + localizedMessage);
-
         try {
             jsonResponse.put(STATUS_CODE_JSON_RESPONSE, statusCode);
             jsonResponse.put(VALIDATION_MESSAGE_JSON_RESPONSE, localizedMessage);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-//        System.out.println("jsonResponse.toString() = " + jsonResponse.toString());
 
         writer.println(jsonResponse.toString());
         writer.flush();

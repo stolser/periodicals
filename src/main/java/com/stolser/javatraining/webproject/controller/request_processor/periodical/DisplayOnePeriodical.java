@@ -4,6 +4,7 @@ import com.stolser.javatraining.webproject.controller.request_processor.RequestP
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
+import com.stolser.javatraining.webproject.service.PeriodicalService;
 import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,14 +14,14 @@ import java.util.NoSuchElementException;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 public class DisplayOnePeriodical implements RequestProcessor {
-
     private static final String NO_PERIODICAL_WITH_ID_IN_DB = "There is no periodical with id %d in the db.";
+    private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
         User thisUser = HttpUtils.getCurrentUserFromFromDb(request);
         long periodicalId = HttpUtils.getFirstIdFromUri(request.getRequestURI());
-        Periodical periodical = PeriodicalServiceImpl.getInstance().findOneById(periodicalId);
+        Periodical periodical = periodicalService.findOneById(periodicalId);
 
         if (periodical == null) {
             throw new NoSuchElementException(String.format(NO_PERIODICAL_WITH_ID_IN_DB, periodicalId));

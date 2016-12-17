@@ -18,7 +18,7 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
-    private static final DaoFactory factory = DaoFactory.getMysqlDaoFactory();
+    private DaoFactory factory = DaoFactory.getMysqlDaoFactory();
 
     private UserServiceImpl() {
     }
