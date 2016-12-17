@@ -1,6 +1,5 @@
 #header {
     margin-top: 20px;
-    margin-bottom: 20px;
 }
 
 #header .userFullName {
@@ -62,4 +61,14 @@ footer {
 
 .costAndSumValue {
     font-weight: bold;
+}
+
+#mainMenu {
+    font-size: 115%;
+    font-weight: bold;
+}
+
+.myAccountBtn {
+    margin-left: 10px;
+    margin-right: 10px;
 }

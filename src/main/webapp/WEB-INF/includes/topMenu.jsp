@@ -1,6 +1,6 @@
 <fmt:setBundle basename="webProject.i18n.backend.general" var="general"/>
 
-<nav class="navbar navbar-default navbar-static-top">
+<nav id="mainMenu" class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
         <ul class="nav navbar-nav">
             <custom:if-authorized mustHaveRoles="admin">

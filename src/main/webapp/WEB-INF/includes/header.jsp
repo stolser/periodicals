@@ -25,7 +25,7 @@
 <body>
 <div class="container">
     <div id="header" class="row">
-        <div class="col-xs-6 col-md-2 col-md-push-8">
+        <div class="col-xs-6 col-md-2 col-md-push-6">
             <form>
                 <select class="form-control" id="language" name="language" onchange="submit()">
                     <option value="en_EN" ${language == 'en_EN' ? 'selected' : ''}>English</option>
@@ -34,7 +34,7 @@
                 </select>
             </form>
         </div>
-        <div class="col-xs-6 col-md-2 col-md-push-8 text-right">
+        <div class="col-xs-6 col-md-4 col-md-push-6 text-right">
             <% if (session.getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME) != null) {%>
             <%@include file="/WEB-INF/includes/topUserInfo.jsp" %>
             <%} else if (!"/login.jsp".equals(request.getRequestURI())) {%>
@@ -42,7 +42,7 @@
             <%}%>
         </div>
 
-        <div class="col-xs-12 col-md-8 col-md-pull-4">
+        <div class="col-xs-12 col-md-6 col-md-pull-6">
             <% if (session.getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME) != null) {%>
             <%@include file="/WEB-INF/includes/topMenu.jsp" %>
             <%}%>
