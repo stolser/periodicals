@@ -1,4 +1,4 @@
-package com.stolser.javatraining.webproject.controller.auth;
+package com.stolser.javatraining.webproject.controller.security;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.model.entity.user.User;

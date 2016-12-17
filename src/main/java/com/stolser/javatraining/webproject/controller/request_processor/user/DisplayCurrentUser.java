@@ -4,9 +4,9 @@ import com.stolser.javatraining.webproject.controller.request_processor.RequestP
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
-import com.stolser.javatraining.webproject.model.service.invoice.InvoiceServiceImpl;
-import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalServiceImpl;
-import com.stolser.javatraining.webproject.model.service.subscription.SubscriptionServiceImpl;
+import com.stolser.javatraining.webproject.service.impl.InvoiceServiceImpl;
+import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
+import com.stolser.javatraining.webproject.service.impl.SubscriptionServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

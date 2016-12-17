@@ -1,4 +1,4 @@
-package com.stolser.javatraining.webproject.controller.auth;
+package com.stolser.javatraining.webproject.controller.security;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.model.entity.user.User;
@@ -7,25 +7,24 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.ADMIN_ROLE_NAME;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.SUBSCRIBER_ROLE_NAME;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 class Authorization {
     private static final Map<String, Set<String>> permissionMapping = new HashMap<>();
 
     static {
         Set<String> admin = new HashSet<>(Collections.singletonList(ADMIN_ROLE_NAME));
-        Set<String> subscriber = new HashSet<>(Collections.singletonList(SUBSCRIBER_ROLE_NAME));
 
-        permissionMapping.put("/backend/users(/\\d*)?", admin);
-        permissionMapping.put("/backend/periodicals/createNew/?", admin);
-        permissionMapping.put("/backend/periodicals/\\d+/update/?", admin);
-        permissionMapping.put("/backend/periodicals/discarded/?", admin);
-        permissionMapping.put("/backend/adminPanel/?", admin);
-        permissionMapping.put("/backend/invoices/?", subscriber);
+        permissionMapping.put(GET_ALL_USERS_REQUEST_PATTERN, admin);
+        permissionMapping.put(GET_CREATE_PERIODICAL_REQUEST_PATTERN, admin);
+        permissionMapping.put(GET_UPDATE_PERIODICAL_REQUEST_PATTERN, admin);
+        permissionMapping.put(POST_PERSIST_PERIODICAL_REQUEST_PATTERN, admin);
+        permissionMapping.put(POST_DELETE_PERIODICALS_REQUEST_PATTERN, admin);
+        permissionMapping.put(GET_ADMIN_PANEL_REQUEST_PATTERN, admin);
     }
 
-    private Authorization() {}
+    private Authorization() {
+    }
 
     private static class InstanceHolder {
         private static final Authorization INSTANCE = new Authorization();
@@ -36,14 +35,28 @@ class Authorization {
     }
 
     boolean checkPermissions(HttpServletRequest request) {
+        String requestMethod = request.getMethod().toUpperCase();
         String requestURI = request.getRequestURI();
-        // todo: add 'GET|POST';
 
-        Optional<Map.Entry<String, Set<String>>> thisPermissionMapping =
-                permissionMapping.entrySet()
-                        .stream()
-                        .filter(entry -> Pattern.matches(entry.getKey(), requestURI))
-                        .findFirst();
+        System.out.println("requestMethod = '" + requestMethod + "'");
+        System.out.println("requestURI = '" + requestURI + "'");
+
+        Optional<Map.Entry<String, Set<String>>> thisPermissionMapping = permissionMapping.entrySet()
+                .stream()
+                .filter(entry -> {  // filtering by a method;
+                    String methodPattern = entry.getKey().split(":")[0];
+                    String[] methods = methodPattern.split("\\|");  // is necessary for
+                    // the "GET|POST|PUT|DELETE" notation;
+
+                    return Arrays.asList(methods).contains(requestMethod);
+                })
+                .filter(entry -> {  // filtering by a Uri pattern;
+                    String urlPattern = entry.getKey().split(":")[1];
+//                    System.out.println("urlPattern = '" + urlPattern + "'");
+
+                    return Pattern.matches(urlPattern, requestURI);
+                })
+                .findFirst();
 
         boolean permissionGranted = true;
         if (thisPermissionMapping.isPresent()) {

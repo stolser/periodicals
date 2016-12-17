@@ -1,13 +1,14 @@
-package com.stolser.javatraining.webproject.model.service.user;
+package com.stolser.javatraining.webproject.service.impl;
 
-import com.stolser.javatraining.webproject.model.CustomSqlException;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
 import com.stolser.javatraining.webproject.model.dao.credential.CredentialDao;
 import com.stolser.javatraining.webproject.model.dao.role.RoleDao;
 import com.stolser.javatraining.webproject.model.dao.user.UserDao;
-import com.stolser.javatraining.webproject.model.database.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.model.storage.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
+import com.stolser.javatraining.webproject.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
         } catch (SQLException e) {
             LOGGER.error("Exception during closing a connection.");
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
         } catch (SQLException e) {
             LOGGER.error("Exception during closing a connection.");
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 
@@ -83,7 +84,7 @@ public class UserServiceImpl implements UserService {
             return user;
         } catch (SQLException e) {
             LOGGER.error("Exception during closing a connection.");
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 
@@ -101,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
         } catch (SQLException e) {
             LOGGER.error("Exception during closing a connection.");
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 

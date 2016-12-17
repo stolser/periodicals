@@ -1,4 +1,4 @@
-package com.stolser.javatraining.webproject.model.service.invoice;
+package com.stolser.javatraining.webproject.service;
 
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.statistics.FinancialStatistics;

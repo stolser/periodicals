@@ -28,7 +28,7 @@
 
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
-        <filter-class>com.stolser.javatraining.webproject.controller.auth.AuthenticationFilter</filter-class>
+        <filter-class>com.stolser.javatraining.webproject.controller.security.AuthenticationFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -39,7 +39,7 @@
 
     <filter>
         <filter-name>AuthorizationFilter</filter-name>
-        <filter-class>com.stolser.javatraining.webproject.controller.auth.AuthorizationFilter</filter-class>
+        <filter-class>com.stolser.javatraining.webproject.controller.security.AuthorizationFilter</filter-class>
     </filter>
 
     <filter-mapping>

@@ -1,6 +1,5 @@
-package com.stolser.javatraining.webproject.model.database;
+package com.stolser.javatraining.webproject.model.storage;
 
-import com.stolser.javatraining.webproject.model.CustomSqlException;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +57,7 @@ class SqlConnectionPool implements ConnectionPool {
             newConn = dataSource.getConnection();
         } catch (SQLException e) {
             LOGGER.error(CONNECTION_EXCEPTION_TEXT, e);
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
 
         return newConn;

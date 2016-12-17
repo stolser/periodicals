@@ -1,4 +1,4 @@
-package com.stolser.javatraining.webproject.model.service.periodical;
+package com.stolser.javatraining.webproject.service;
 
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.statistics.PeriodicalNumberByCategory;

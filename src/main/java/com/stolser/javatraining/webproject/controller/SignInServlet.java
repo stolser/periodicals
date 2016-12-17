@@ -3,8 +3,8 @@ package com.stolser.javatraining.webproject.controller;
 import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.model.service.user.UserService;
-import com.stolser.javatraining.webproject.model.service.user.UserServiceImpl;
+import com.stolser.javatraining.webproject.service.UserService;
+import com.stolser.javatraining.webproject.service.impl.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

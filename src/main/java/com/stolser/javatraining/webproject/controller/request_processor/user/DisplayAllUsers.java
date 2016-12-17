@@ -2,7 +2,7 @@ package com.stolser.javatraining.webproject.controller.request_processor.user;
 
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.model.service.user.UserServiceImpl;
+import com.stolser.javatraining.webproject.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

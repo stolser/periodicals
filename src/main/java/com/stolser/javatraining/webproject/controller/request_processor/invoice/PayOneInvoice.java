@@ -7,9 +7,9 @@ import com.stolser.javatraining.webproject.controller.validator.ValidationResult
 import com.stolser.javatraining.webproject.controller.validator.user.RequestUserIdValidator;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
-import com.stolser.javatraining.webproject.model.service.invoice.InvoiceService;
-import com.stolser.javatraining.webproject.model.service.invoice.InvoiceServiceImpl;
-import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalServiceImpl;
+import com.stolser.javatraining.webproject.service.InvoiceService;
+import com.stolser.javatraining.webproject.service.impl.InvoiceServiceImpl;
+import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

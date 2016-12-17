@@ -1,12 +1,13 @@
-package com.stolser.javatraining.webproject.model.service.subscription;
+package com.stolser.javatraining.webproject.service.impl;
 
-import com.stolser.javatraining.webproject.model.CustomSqlException;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
 import com.stolser.javatraining.webproject.model.dao.subscription.SubscriptionDao;
 import com.stolser.javatraining.webproject.model.dao.user.UserDao;
-import com.stolser.javatraining.webproject.model.database.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.model.storage.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
+import com.stolser.javatraining.webproject.service.SubscriptionService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -42,7 +43,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             subscriptions = subscriptionDao.findAllByUser(userInDb);
 
         } catch (SQLException e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
 
         return subscriptions;

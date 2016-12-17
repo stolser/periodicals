@@ -1,4 +1,4 @@
-package com.stolser.javatraining.webproject.model.database;
+package com.stolser.javatraining.webproject.model.storage;
 
 import java.sql.Connection;
 

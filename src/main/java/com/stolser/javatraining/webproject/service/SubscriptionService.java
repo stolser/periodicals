@@ -1,4 +1,4 @@
-package com.stolser.javatraining.webproject.model.service.subscription;
+package com.stolser.javatraining.webproject.service;
 
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 

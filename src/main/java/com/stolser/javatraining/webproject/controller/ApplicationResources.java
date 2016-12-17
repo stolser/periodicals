@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.controller;
 
-import com.stolser.javatraining.webproject.model.CustomSqlException;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 
 import java.util.Locale;
 
@@ -13,9 +13,22 @@ public class ApplicationResources {
 
     public static final String JSP_VIEW_NAME_RESOLVER_PATTERN = "/WEB-INF/backend/%s.jsp";
 
+    public static final String GET_BACKEND_REQUEST_PATTERN = "GET:/backend/?";
+    public static final String GET_ADMIN_PANEL_REQUEST_PATTERN = "GET:/backend/adminPanel/?";
+    public static final String GET_ALL_USERS_REQUEST_PATTERN = "GET:/backend/users/?";
+    public static final String GET_CURRENT_USER_REQUEST_PATTERN = "GET:/backend/users/currentUser/?";
+    public static final String POST_PERSIST_INVOICE_REQUEST_PATTERN = "POST:/backend/users/\\d+/invoices/?";
+    public static final String POST_PAY_INVOICE_REQUEST_PATTERN = "POST:/backend/users/\\d+/invoices/\\d+/pay/?";
+    public static final String GET_ONE_PERIODICAL_REQUEST_PATTERN = "GET:/backend/periodicals/\\d+";
+    public static final String GET_ALL_PERIODICALS_REQUEST_PATTERN = "GET:/backend/periodicals/?";
+    public static final String POST_PERSIST_PERIODICAL_REQUEST_PATTERN = "POST:/backend/periodicals/?";
+    public static final String GET_CREATE_PERIODICAL_REQUEST_PATTERN = "GET:/backend/periodicals/createNew/?";
+    public static final String GET_UPDATE_PERIODICAL_REQUEST_PATTERN = "GET:/backend/periodicals/\\d+/update/?";
+    public static final String POST_DELETE_PERIODICALS_REQUEST_PATTERN = "POST:/backend/periodicals/discarded/?";
+    public static final String GET_SIGN_OUT_REQUEST_PATTERN = "GET:/backend/signOut/?";
+
     public static final String MESSAGES_ATTR_NAME = "messages";
     public static final String GENERAL_MESSAGES_FRONT_BLOCK_NAME = "topMessages";
-//    public static final String MESSAGE_ATTRIBUTE = "messageAttr";
     public static final String CURRENT_USER_ATTR_NAME = "thisUser";
     public static final String PERIODICAL_ATTR_NAME = "periodical";
     public static final String PERIODICAL_STATUSES_ATTR_NAME = "periodicalStatuses";
@@ -165,10 +178,11 @@ public class ApplicationResources {
     public static final String DB_USERS_STATUS = "users.status";
 
 
+
     public static String getErrorViewName(Exception exception) {
         String viewName = DEFAULT_ERROR_PAGE_VIEW_NAME;
 
-        if (exception instanceof CustomSqlException) {
+        if (exception instanceof StorageException) {
             viewName = SQL_ERROR_PAGE_VIEW_NAME;
         }
 

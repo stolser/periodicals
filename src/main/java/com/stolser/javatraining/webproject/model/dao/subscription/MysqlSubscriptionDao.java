@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.model.dao.subscription;
 
-import com.stolser.javatraining.webproject.model.CustomSqlException;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
@@ -48,7 +48,7 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
             String message = String.format(EXCEPTION_MSG_FINDING_ALL_PERIODICALS_BY_USER_ID,
                     userId, periodicalId);
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -76,7 +76,7 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_MSG_FINDING_ALL_BY_ID, periodicalId, status);
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -144,7 +144,7 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
             String message = String.format(EXCEPTION_MSG_RETRIEVING_SUBSCRIPTIONS_FOR_USER,
                     user);
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -165,7 +165,7 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
             String message = String.format(EXCEPTION_MSG_CREATING_SUBSCRIPTION,
                     subscription);
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -195,7 +195,7 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_MSG_UPDATING, subscription);
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -209,13 +209,4 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public boolean delete(long id) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean deleteAll() {
-        throw new UnsupportedOperationException();
-    }
 }

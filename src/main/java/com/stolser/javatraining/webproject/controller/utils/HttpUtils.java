@@ -4,7 +4,7 @@ import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.model.service.user.UserServiceImpl;
+import com.stolser.javatraining.webproject.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

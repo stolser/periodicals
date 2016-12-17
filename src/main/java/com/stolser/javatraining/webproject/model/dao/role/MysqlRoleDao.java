@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.model.dao.role;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
-import com.stolser.javatraining.webproject.model.CustomSqlException;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,7 +43,7 @@ public class MysqlRoleDao implements RoleDao {
             String message = String.format(RETRIEVING_ROLES_FOR_USER,
                     userName);
             
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
 
         return roles;

@@ -1,4 +1,4 @@
-package com.stolser.javatraining.webproject.model.service.user;
+package com.stolser.javatraining.webproject.service;
 
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;

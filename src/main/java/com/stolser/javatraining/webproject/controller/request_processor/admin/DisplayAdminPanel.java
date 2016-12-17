@@ -3,10 +3,10 @@ package com.stolser.javatraining.webproject.controller.request_processor.admin;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.model.entity.statistics.FinancialStatistics;
 import com.stolser.javatraining.webproject.model.entity.statistics.PeriodicalNumberByCategory;
-import com.stolser.javatraining.webproject.model.service.invoice.InvoiceService;
-import com.stolser.javatraining.webproject.model.service.invoice.InvoiceServiceImpl;
-import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalService;
-import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalServiceImpl;
+import com.stolser.javatraining.webproject.service.InvoiceService;
+import com.stolser.javatraining.webproject.service.impl.InvoiceServiceImpl;
+import com.stolser.javatraining.webproject.service.PeriodicalService;
+import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

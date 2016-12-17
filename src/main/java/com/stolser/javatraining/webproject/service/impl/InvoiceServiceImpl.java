@@ -1,15 +1,16 @@
-package com.stolser.javatraining.webproject.model.service.invoice;
+package com.stolser.javatraining.webproject.service.impl;
 
-import com.stolser.javatraining.webproject.model.CustomSqlException;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
 import com.stolser.javatraining.webproject.model.dao.invoice.InvoiceDao;
 import com.stolser.javatraining.webproject.model.dao.subscription.SubscriptionDao;
-import com.stolser.javatraining.webproject.model.database.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.model.storage.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.statistics.FinancialStatistics;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
+import com.stolser.javatraining.webproject.service.InvoiceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +50,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             return factory.getInvoiceDao(conn).findOneById(invoiceId);
 
         } catch (Exception e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 
@@ -60,7 +61,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             return factory.getInvoiceDao(conn).findAllByUserId(userId);
 
         } catch (Exception e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 
@@ -72,7 +73,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
             return true;
         } catch (Exception e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 
@@ -122,17 +123,17 @@ public class InvoiceServiceImpl implements InvoiceService {
                 conn.rollback();
 
             } catch (SQLException e1) {
-                throw new CustomSqlException(e);
+                throw new StorageException(e);
             }
 
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
 
                 } catch (SQLException e) {
-                    throw new CustomSqlException(e);
+                    throw new StorageException(e);
                 }
             }
         }
@@ -148,7 +149,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
             return new FinancialStatistics(totalInvoiceSum, paidInvoiceSum);
         } catch (Exception e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 

@@ -37,15 +37,4 @@ public interface GenericDao<E> {
      */
     int update(E entity);
 
-    /**
-     * Deletes the entity with the given id.
-     *
-     * @param id must not be null
-     */
-    boolean delete(long id);
-
-    /**
-     * Delete all entities from the db.
-     */
-    boolean deleteAll();
 }

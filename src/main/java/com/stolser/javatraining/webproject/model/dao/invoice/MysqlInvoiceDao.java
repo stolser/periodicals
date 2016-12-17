@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.model.dao.invoice;
 
-import com.stolser.javatraining.webproject.model.CustomSqlException;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
@@ -42,7 +42,7 @@ public class MysqlInvoiceDao implements InvoiceDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_INVOICE_ID,
                     sqlStatement, invoiceId);
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -69,7 +69,7 @@ public class MysqlInvoiceDao implements InvoiceDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_USER_ID,
                     sqlStatement, userId);
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
 
     }
@@ -93,7 +93,7 @@ public class MysqlInvoiceDao implements InvoiceDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_GETTING_INVOICE_SUM,
                     sqlStatement, since, until);
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -104,8 +104,6 @@ public class MysqlInvoiceDao implements InvoiceDao {
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
-            System.out.println("since.toEpochMilli() = " + since.toEpochMilli());
-            System.out.println("until.toEpochMilli() = " + until.toEpochMilli());
             st.setTimestamp(1, new Timestamp(since.toEpochMilli()));
             st.setTimestamp(2, new Timestamp(until.toEpochMilli()));
             st.setString(3, Invoice.Status.PAID.name().toLowerCase());
@@ -118,7 +116,7 @@ public class MysqlInvoiceDao implements InvoiceDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_GETTING_INVOICE_SUM,
                     sqlStatement, since, until);
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -139,7 +137,7 @@ public class MysqlInvoiceDao implements InvoiceDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_INVOICE,
                     sqlStatement, invoice);
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -160,7 +158,7 @@ public class MysqlInvoiceDao implements InvoiceDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_INVOICE,
                     sqlStatement, invoice);
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -215,15 +213,4 @@ public class MysqlInvoiceDao implements InvoiceDao {
     public List<Invoice> findAll() {
         throw new UnsupportedOperationException();
     }
-
-    @Override
-    public boolean delete(long id) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean deleteAll() {
-        throw new UnsupportedOperationException();
-    }
-
 }

@@ -4,7 +4,7 @@ import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
-import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalServiceImpl;
+import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Pattern;

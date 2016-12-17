@@ -1,14 +1,15 @@
-package com.stolser.javatraining.webproject.model.service.periodical;
+package com.stolser.javatraining.webproject.service.impl;
 
-import com.stolser.javatraining.webproject.model.CustomSqlException;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
 import com.stolser.javatraining.webproject.model.dao.periodical.PeriodicalDao;
 import com.stolser.javatraining.webproject.model.dao.subscription.SubscriptionDao;
-import com.stolser.javatraining.webproject.model.database.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.model.storage.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.statistics.PeriodicalNumberByCategory;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
+import com.stolser.javatraining.webproject.service.PeriodicalService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -49,7 +50,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
             return periodical;
         } catch (SQLException e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 
@@ -64,7 +65,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
             return periodical;
         } catch (SQLException e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 
@@ -78,7 +79,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
             return periodicals;
 
         } catch (SQLException e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
 
         }
     }
@@ -90,7 +91,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
             return factory.getPeriodicalDao(conn).findAllByStatus(status);
 
         } catch (SQLException e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 
@@ -119,7 +120,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
             return getPeriodicalFromDbByName(periodical.getName());
 
         } catch (SQLException e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
 
     }
@@ -182,7 +183,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
             return periodicalDao.updateAndSetDiscarded(periodical);
         } catch (SQLException e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 
@@ -193,7 +194,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             periodicalDao.deleteAllDiscarded();
         } catch (SQLException e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 
@@ -207,7 +208,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
                     Subscription.Status.ACTIVE).size() > 0;
 
         } catch (SQLException e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 
@@ -232,7 +233,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
             return statistics;
         } catch (SQLException e) {
-            throw new CustomSqlException(e);
+            throw new StorageException(e);
         }
     }
 }

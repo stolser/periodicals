@@ -4,7 +4,7 @@ import com.stolser.javatraining.webproject.controller.request_processor.RequestP
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
-import com.stolser.javatraining.webproject.model.service.periodical.PeriodicalServiceImpl;
+import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

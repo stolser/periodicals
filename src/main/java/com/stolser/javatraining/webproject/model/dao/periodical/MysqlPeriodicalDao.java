@@ -1,7 +1,6 @@
 package com.stolser.javatraining.webproject.model.dao.periodical;
 
-import com.stolser.javatraining.webproject.controller.ApplicationResources;
-import com.stolser.javatraining.webproject.model.CustomSqlException;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
@@ -72,7 +71,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_RETRIEVING_PERIODICAL,
                     fieldName, fieldValue);
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -97,7 +96,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         } catch (SQLException e) {
             String message = EXCEPTION_DURING_RETRIEVING_ALL_PERIODICALS;
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -140,7 +139,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         } catch (SQLException e) {
             String message = String.format(RETRIEVING_ALL_BY_STATUS, status);
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -163,7 +162,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_GETTING_NUMBER_OF_PERIODICALS, category, status);
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -183,7 +182,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
             String message = String.format(EXCEPTION_DURING_INSERTING,
                     periodical);
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -212,7 +211,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_UPDATING, periodical);
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -248,7 +247,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_UPDATING, periodical);
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -266,17 +265,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         } catch (SQLException e) {
             String message = EXCEPTION_DURING_DELETING_DISCARDED_PERIODICALS;
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
-    }
-
-    @Override
-    public boolean delete(long id) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean deleteAll() {
-        throw new UnsupportedOperationException();
     }
 }

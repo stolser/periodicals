@@ -4,7 +4,7 @@ import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.validator.Validator;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
-import com.stolser.javatraining.webproject.model.service.user.UserServiceImpl;
+import com.stolser.javatraining.webproject.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 

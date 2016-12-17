@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.model.dao.user;
 
-import com.stolser.javatraining.webproject.model.CustomSqlException;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import java.sql.Connection;
@@ -42,7 +42,7 @@ public class MysqlUserDao implements UserDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_FINDING_USER_BY_ID, id);
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -63,7 +63,7 @@ public class MysqlUserDao implements UserDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_FINDING_USER_BY_NAME, userName);
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -85,7 +85,7 @@ public class MysqlUserDao implements UserDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_FINDING_ALL_USERS);
 
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
@@ -112,16 +112,6 @@ public class MysqlUserDao implements UserDao {
 
     @Override
     public int update(User entity) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean delete(long id) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean deleteAll() {
         throw new UnsupportedOperationException();
     }
 }

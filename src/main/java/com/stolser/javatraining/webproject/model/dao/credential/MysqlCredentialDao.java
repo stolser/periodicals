@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.model.dao.credential;
 
-import com.stolser.javatraining.webproject.model.CustomSqlException;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 
 import java.sql.Connection;
@@ -43,7 +43,7 @@ public class MysqlCredentialDao implements CredentialDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT,
                     sqlStatement, userName);
-            throw new CustomSqlException(message, e);
+            throw new StorageException(message, e);
         }
     }
 
