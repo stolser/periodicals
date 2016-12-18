@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.controller.utils;
 
-import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.validator.front_message.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.user.User;

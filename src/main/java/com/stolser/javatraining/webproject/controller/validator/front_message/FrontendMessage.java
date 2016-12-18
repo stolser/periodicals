@@ -1,6 +1,6 @@
-package com.stolser.javatraining.webproject.controller.validator;
+package com.stolser.javatraining.webproject.controller.validator.front_message;
 
-public class FrontendMessage {
+public final class FrontendMessage {
     private String messageKey;
     private MessageType type;
 

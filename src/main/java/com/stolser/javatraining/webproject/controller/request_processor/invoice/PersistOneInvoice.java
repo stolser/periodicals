@@ -2,8 +2,9 @@ package com.stolser.javatraining.webproject.controller.request_processor.invoice
 
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
-import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
+import com.stolser.javatraining.webproject.controller.validator.front_message.FrontMessageFactory;
+import com.stolser.javatraining.webproject.controller.validator.front_message.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.validator.user.RequestUserIdValidator;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
@@ -22,9 +23,9 @@ import java.util.List;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 public class PersistOneInvoice implements RequestProcessor {
-
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
     private InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
+    private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
@@ -33,8 +34,7 @@ public class PersistOneInvoice implements RequestProcessor {
         Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
 
         if (validationPassed(periodicalInDb, request, generalMessages)) {
-            generalMessages.add(new FrontendMessage(MSG_VALIDATION_PASSED_SUCCESS,
-                    FrontendMessage.MessageType.INFO));
+            generalMessages.add(messageFactory.getInfo(MSG_VALIDATION_PASSED_SUCCESS));
             tryToPersistNewInvoice(getNewInvoice(periodicalInDb, request), generalMessages);
         }
 
@@ -51,8 +51,7 @@ public class PersistOneInvoice implements RequestProcessor {
         if (periodicalInDb != null) {
             return true;
         } else {
-            generalMessages.add(new FrontendMessage(MSG_VALIDATION_PERIODICAL_IS_NULL,
-                    FrontendMessage.MessageType.ERROR));
+            generalMessages.add(messageFactory.getError(MSG_VALIDATION_PERIODICAL_IS_NULL));
 
             return false;
         }
@@ -62,8 +61,7 @@ public class PersistOneInvoice implements RequestProcessor {
         if (Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())) {
             return true;
         } else {
-            generalMessages.add(new FrontendMessage(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE,
-                    FrontendMessage.MessageType.ERROR));
+            generalMessages.add(messageFactory.getError(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE));
 
             return false;
         }
@@ -71,8 +69,7 @@ public class PersistOneInvoice implements RequestProcessor {
 
     private boolean subscriptionPeriodIsValid(HttpServletRequest request,
                                               List<FrontendMessage> generalMessages) {
-        FrontendMessage message = new FrontendMessage(MSG_VALIDATION_SUBSCRIPTION_PERIOD_IS_NOT_VALID,
-                FrontendMessage.MessageType.ERROR);
+        FrontendMessage message = messageFactory.getError(MSG_VALIDATION_SUBSCRIPTION_PERIOD_IS_NOT_VALID);
 
         try {
             int subscriptionPeriod = Integer.valueOf(request.getParameter(SUBSCRIPTION_PERIOD_PARAM_NAME));
@@ -94,8 +91,7 @@ public class PersistOneInvoice implements RequestProcessor {
         ValidationResult result = new RequestUserIdValidator().validate(null, request);
 
         if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
-            generalMessages.add(new FrontendMessage(result.getMessageKey(),
-                    FrontendMessage.MessageType.ERROR));
+            generalMessages.add(messageFactory.getError(result.getMessageKey()));
 
             return false;
         }
@@ -109,11 +105,9 @@ public class PersistOneInvoice implements RequestProcessor {
         try {
             invoiceService.createNew(invoiceToPersist);
 
-            generalMessages.add(new FrontendMessage(MSG_INVOICE_CREATION_SUCCESS,
-                    FrontendMessage.MessageType.SUCCESS));
+            generalMessages.add(messageFactory.getSuccess(MSG_INVOICE_CREATION_SUCCESS));
         } catch (Exception e) {
-            generalMessages.add(new FrontendMessage(MSG_INVOICE_PERSISTING_FAILED,
-                    FrontendMessage.MessageType.ERROR));
+            generalMessages.add(messageFactory.getError(MSG_INVOICE_PERSISTING_FAILED));
         }
     }
 

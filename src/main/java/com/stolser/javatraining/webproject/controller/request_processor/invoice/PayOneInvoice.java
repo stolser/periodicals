@@ -2,8 +2,9 @@ package com.stolser.javatraining.webproject.controller.request_processor.invoice
 
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
-import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
+import com.stolser.javatraining.webproject.controller.validator.front_message.FrontMessageFactory;
+import com.stolser.javatraining.webproject.controller.validator.front_message.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.validator.user.RequestUserIdValidator;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.STATUS_CODE_SUCCESS;
 
 /**
  * Processes a request to pay one invoice. In one transaction the status of the invoice is changed
@@ -32,6 +32,7 @@ public class PayOneInvoice implements RequestProcessor {
             "User id = {}. Exception during paying invoice {}.";
     private InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
+    private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
 
     @Override
@@ -42,8 +43,7 @@ public class PayOneInvoice implements RequestProcessor {
         Invoice invoiceInDb = invoiceService.findOneById(invoiceId);
 
         if (validationPassed(invoiceInDb, request, generalMessages)) {
-            generalMessages.add(new FrontendMessage(MSG_VALIDATION_PASSED_SUCCESS,
-                    FrontendMessage.MessageType.INFO));
+            generalMessages.add(messageFactory.getInfo(MSG_VALIDATION_PASSED_SUCCESS));
             tryToPayThisInvoice(invoiceInDb, request, generalMessages);
         }
 
@@ -58,9 +58,7 @@ public class PayOneInvoice implements RequestProcessor {
         ValidationResult result = new RequestUserIdValidator().validate(null, request);
 
         if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
-            generalMessages.add(new FrontendMessage(result.getMessageKey(),
-                    FrontendMessage.MessageType.ERROR));
-
+            generalMessages.add(messageFactory.getError(result.getMessageKey()));
             return false;
         }
 
@@ -73,9 +71,7 @@ public class PayOneInvoice implements RequestProcessor {
         if (invoiceInDb != null) {
             return true;
         } else {
-            generalMessages.add(new FrontendMessage(MSG_VALIDATION_NO_SUCH_INVOICE,
-                    FrontendMessage.MessageType.ERROR));
-
+            generalMessages.add(messageFactory.getError(MSG_VALIDATION_NO_SUCH_INVOICE));
             return false;
         }
     }
@@ -84,9 +80,7 @@ public class PayOneInvoice implements RequestProcessor {
         if (Invoice.Status.NEW.equals(invoiceInDb.getStatus())) {
             return true;
         } else {
-            generalMessages.add(new FrontendMessage(MSG_VALIDATION_INVOICE_IS_NOT_NEW,
-                    FrontendMessage.MessageType.ERROR));
-
+            generalMessages.add(messageFactory.getError(MSG_VALIDATION_INVOICE_IS_NOT_NEW));
             return false;
         }
     }
@@ -98,10 +92,7 @@ public class PayOneInvoice implements RequestProcessor {
         if (Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())) {
             return true;
         } else {
-
-            generalMessages.add(new FrontendMessage(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE,
-                    FrontendMessage.MessageType.ERROR));
-
+            generalMessages.add(messageFactory.getError(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE));
             return false;
         }
     }
@@ -110,19 +101,16 @@ public class PayOneInvoice implements RequestProcessor {
                                      List<FrontendMessage> generalMessages) {
         try {
             if (invoiceService.payInvoice(invoiceInDb)) {
-                generalMessages.add(new FrontendMessage(MSG_INVOICE_PAYMENT_SUCCESS,
-                        FrontendMessage.MessageType.SUCCESS));
+                generalMessages.add(messageFactory.getSuccess(MSG_INVOICE_PAYMENT_SUCCESS));
             } else {
-                generalMessages.add(new FrontendMessage(MSG_INVOICE_PAYMENT_ERROR,
-                        FrontendMessage.MessageType.ERROR));
+                generalMessages.add(messageFactory.getError(MSG_INVOICE_PAYMENT_ERROR));
             }
 
         } catch (Exception e) {
             LOGGER.error(EXCEPTION_DURING_PAYING_THE_INVOICE_WITH_ID,
                     HttpUtils.getUserIdFromSession(request), invoiceInDb, e);
 
-            generalMessages.add(new FrontendMessage(MSG_INVOICE_PAYMENT_ERROR,
-                    FrontendMessage.MessageType.ERROR));
+            generalMessages.add(messageFactory.getError(MSG_INVOICE_PAYMENT_ERROR));
         }
     }
 }

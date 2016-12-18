@@ -3,7 +3,8 @@ package com.stolser.javatraining.webproject.controller.request_processor.periodi
 import com.stolser.javatraining.webproject.controller.CustomRedirectException;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
-import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.validator.front_message.FrontMessageFactory;
+import com.stolser.javatraining.webproject.controller.validator.front_message.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.service.PeriodicalService;
 import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
@@ -18,6 +19,7 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 
 public class DeleteDiscardedPeriodicals implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
+    private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {
@@ -32,11 +34,9 @@ public class DeleteDiscardedPeriodicals implements RequestProcessor {
                 persistPeriodicalsAndRelatedInvoices(periodicalsToDelete);
                 periodicalService.deleteAllDiscarded();
 
-                generalMessages.add(new FrontendMessage(MSG_PERIODICALS_DELETED_SUCCESS,
-                        FrontendMessage.MessageType.SUCCESS));
+                generalMessages.add(messageFactory.getSuccess(MSG_PERIODICALS_DELETED_SUCCESS));
             } else {
-                generalMessages.add(new FrontendMessage(MSG_NO_PERIODICALS_TO_DELETE,
-                        FrontendMessage.MessageType.WARNING));
+                generalMessages.add(messageFactory.getWarning(MSG_NO_PERIODICALS_TO_DELETE));
             }
 
             HttpUtils.addGeneralMessagesToSession(request, generalMessages);

@@ -1,9 +1,9 @@
 package com.stolser.javatraining.webproject.model.dao.invoice;
 
-import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 
 import java.sql.*;
 import java.time.Instant;
@@ -79,7 +79,8 @@ public class MysqlInvoiceDao implements InvoiceDao {
         }
     }
 
-    private List<Invoice> executeAndGetInvoicesFromRs(String sqlStatement, long periodicalId) throws SQLException {
+    private List<Invoice> executeAndGetInvoicesFromRs(String sqlStatement, long periodicalId)
+            throws SQLException {
         PreparedStatement st = conn.prepareStatement(sqlStatement);
         st.setLong(1, periodicalId);
 

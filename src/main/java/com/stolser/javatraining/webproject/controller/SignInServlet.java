@@ -1,6 +1,7 @@
 package com.stolser.javatraining.webproject.controller;
 
-import com.stolser.javatraining.webproject.controller.validator.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.validator.front_message.FrontMessageFactory;
+import com.stolser.javatraining.webproject.controller.validator.front_message.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.service.UserService;
@@ -22,8 +23,10 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 
 public class SignInServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(SignInServlet.class);
-    private static final String EXCEPTION_DURING_GETTING_MESSAGE_DIGEST_FOR_MD5 = "Exception during getting MessageDigest for 'MD5'";
+    private static final String EXCEPTION_DURING_GETTING_MESSAGE_DIGEST_FOR_MD5 =
+            "Exception during getting MessageDigest for 'MD5'";
     private UserService userService = UserServiceImpl.getInstance();
+    private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -41,8 +44,7 @@ public class SignInServlet extends HttpServlet {
 
             if (credential == null) {
                 messages.put(SIGN_IN_USERNAME_PARAM_NAME,
-                        new FrontendMessage(MSG_NO_SUCH_USER_NAME,
-                        FrontendMessage.MessageType.ERROR));
+                        messageFactory.getError(MSG_NO_SUCH_USER_NAME));
 
                 redirectUri = SIGN_IN_URI;
             } else if (passwordHash.equals(credential.getPasswordHash())) {
@@ -61,15 +63,14 @@ public class SignInServlet extends HttpServlet {
                     request.getSession().removeAttribute(MESSAGES_ATTR_NAME);
 
                 } else {
-                    messages.put(SIGN_IN_USERNAME_PARAM_NAME, new FrontendMessage(MSG_ERROR_USER_IS_BLOCKED,
-                            FrontendMessage.MessageType.ERROR));
+                    messages.put(SIGN_IN_USERNAME_PARAM_NAME,
+                            messageFactory.getError(MSG_ERROR_USER_IS_BLOCKED));
 
                     redirectUri = SIGN_IN_URI;
                 }
 
             } else {
-                messages.put(PASSWORD_PARAM_NAME, new FrontendMessage(MSG_ERROR_WRONG_PASSWORD,
-                        FrontendMessage.MessageType.ERROR));
+                messages.put(PASSWORD_PARAM_NAME, messageFactory.getError(MSG_ERROR_WRONG_PASSWORD));
 
                 redirectUri = SIGN_IN_URI;
             }

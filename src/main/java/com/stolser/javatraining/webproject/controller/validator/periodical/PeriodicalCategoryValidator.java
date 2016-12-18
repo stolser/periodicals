@@ -18,7 +18,7 @@ public class PeriodicalCategoryValidator implements Validator {
         String messageKey;
 
         if (Arrays.stream(PeriodicalCategory.values())
-                .map(Enum::toString)
+                .map(Enum::name)
                 .collect(Collectors.toList())
                 .contains(paramValue)) {
 

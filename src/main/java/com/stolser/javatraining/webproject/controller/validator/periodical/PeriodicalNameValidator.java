@@ -12,7 +12,8 @@ import java.util.regex.Pattern;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 public class PeriodicalNameValidator implements Validator {
-    private static final String INCORRECT_ENTITY_OPERATION_TYPE_DURING_VALIDATION = "Incorrect periodicalOperationType during validation!";
+    private static final String INCORRECT_ENTITY_OPERATION_TYPE_DURING_VALIDATION =
+            "Incorrect periodicalOperationType during validation!";
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
     @Override
