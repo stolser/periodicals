@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Properties>
-        <!--<Property name="LOG_DIR">\paht_to_server\glassfish\domains\realestate\logs\myLogs</Property>-->
+        <Property name="LOG_DIR">${sys:catalina.home}\logs\webproject\</Property>
         <!--<Property name="ARCHIVE">${LOG_DIR}\myRollingLogs\archive</Property>-->
         <Property name="PATTERN">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
     </Properties>
@@ -9,9 +9,9 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="${PATTERN}"/>
         </Console>
-        <!--<File name="ErrorLogFile" fileName="${LOG_DIR}\error.log" immediateFlush="false" append="true">-->
-            <!--<PatternLayout pattern="${PATTERN}"/>-->
-        <!--</File>-->
+        <File name="ErrorLogFile" fileName="${LOG_DIR}\error.log" immediateFlush="true" append="true">
+            <PatternLayout pattern="${PATTERN}"/>
+        </File>
         <!--<RollingFile name="RollingLogFile"-->
                      <!--fileName="${LOG_DIR}\myRollingLogs\all.log"-->
                      <!--filePattern="${ARCHIVE}\all.log.%d{yyyy-MM-dd-hh-mm}.gz"-->
@@ -23,10 +23,12 @@
     <Loggers>
         <Root level="error">
             <AppenderRef ref="Console"/>
-            <!--<AppenderRef ref="RollingLogFile" />-->
         </Root>
-        <Logger name="com.stolser.javatraining" level="debug" additivity="false">
-            <AppenderRef ref="Console"/>
+        <!--<Logger name="com.stolser.javatraining" level="debug" additivity="false">-->
+            <!--<AppenderRef ref="Console"/>-->
+        <!--</Logger>-->
+        <Logger name="com.stolser.javatraining" level="error" additivity="false">
+            <AppenderRef ref="ErrorLogFile"/>
         </Logger>
     </Loggers>
 </Configuration>

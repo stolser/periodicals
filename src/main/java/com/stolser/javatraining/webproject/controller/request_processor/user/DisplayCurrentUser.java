@@ -18,6 +18,9 @@ import java.util.List;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Processes a GET request to a current user personal account page.
+ */
 public class DisplayCurrentUser implements RequestProcessor {
     private InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
     private SubscriptionService subscriptionService = SubscriptionServiceImpl.getInstance();

@@ -13,6 +13,9 @@ import java.util.NoSuchElementException;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Processes a GET request to page with the information of the selected individual periodical.
+ */
 public class DisplayOnePeriodical implements RequestProcessor {
     private static final String NO_PERIODICAL_WITH_ID_IN_DB = "There is no periodical with id %d in the db.";
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();

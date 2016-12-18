@@ -17,6 +17,9 @@ import java.util.List;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Processes a POST request to delete all periodicals with status = "discarded".
+ */
 public class DeleteDiscardedPeriodicals implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();

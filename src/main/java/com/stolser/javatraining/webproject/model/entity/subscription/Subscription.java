@@ -7,10 +7,24 @@ import java.time.Instant;
 
 public class Subscription {
     private long id;
+    /**
+     * The user this subscription belongs to.
+     */
     private User user;
+    /**
+     * The periodical this subscription is on.
+     */
     private Periodical periodical;
     private String deliveryAddress;
+    /**
+     * The expiration date of this subscription. It can be prolonged by creating and paying a new invoice
+     * for the same periodical.
+     */
     private Instant endDate;
+    /**
+     * Is {@code active} when a subscription is created. Becomes {@code inactive} when
+     * this subscription is expired.
+     */
     private Status status;
 
     public enum Status {

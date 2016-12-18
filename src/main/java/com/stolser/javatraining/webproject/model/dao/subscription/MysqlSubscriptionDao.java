@@ -127,7 +127,7 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
                         rs.getString(DB_PERIODICALS_STATUS).toUpperCase()));
 
                 Subscription subscription = new Subscription();
-                subscription.setId(rs.getLong("subscriptions.id"));
+                subscription.setId(rs.getLong(DB_SUBSCRIPTIONS_ID));
                 subscription.setUser(user);
                 subscription.setPeriodical(periodical);
                 subscription.setDeliveryAddress(rs.getString(DB_SUBSCRIPTIONS_DELIVERY_ADDRESS));

@@ -10,6 +10,9 @@ import java.util.Properties;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Reads database configuration data and creates a connection pool.
+ */
 public class ConnectionPoolProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionPoolProvider.class);
     private static final String EXCEPTION_DURING_OPENING_DB_CONFIG_FILE =

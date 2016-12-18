@@ -16,6 +16,9 @@ import java.util.regex.Pattern;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Provides mapping request uri to classes that will perform actual request processing.
+ */
 final class RequestProviderImpl implements RequestProvider {
     private static final Map<String, RequestProcessor> requestMapping = new HashMap<>();
     private static final String NO_MAPPING_FOR_SUCH_REQUEST = "There no mapping for such a request: '%s'.";
@@ -47,6 +50,11 @@ final class RequestProviderImpl implements RequestProvider {
         return InstanceHolder.INSTANCE;
     }
 
+    /**
+     * @param request a current http request
+     * @return a specific implementation of the {@RequestProcessor} interface that processes
+     * http requests to this request uri
+     */
     @Override
     public RequestProcessor getRequestProcessor(HttpServletRequest request) {
         String requestMethod = request.getMethod().toUpperCase();

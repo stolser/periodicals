@@ -13,6 +13,9 @@ import java.time.Instant;
 import java.time.temporal.Temporal;
 import java.util.Date;
 
+/**
+ * Displays formatted date.
+ */
 public class FormatDatetimeTag extends TagSupport {
     private Temporal value;
     private String pattern = "dd.MM.YYYY HH:mm:ss";

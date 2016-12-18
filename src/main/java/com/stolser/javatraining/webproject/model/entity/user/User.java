@@ -11,7 +11,13 @@ public class User {
     private Date birthday;
     private String email;
     private String address;
+    /**
+     * Only {@code active} users can sign into the system.
+     */
     private Status status;
+    /**
+     * Roles define specific system functionality available to a user.
+     */
     private Set<String> roles;
 
     public enum Status {

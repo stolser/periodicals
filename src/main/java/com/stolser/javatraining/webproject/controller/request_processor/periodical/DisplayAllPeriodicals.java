@@ -10,6 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.ALL_PERIODICALS_ATTR_NAME;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.PERIODICAL_LIST_VIEW_NAME;
 
+/**
+ * Processes a GET request to a page displaying a list of periodicals.<br/>
+ * A user with role = 'subscriber' will see only those that have status = 'active'. <br/>
+ * A user with role = 'admin' will see all periodicals in the system.
+ */
 public class DisplayAllPeriodicals implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 

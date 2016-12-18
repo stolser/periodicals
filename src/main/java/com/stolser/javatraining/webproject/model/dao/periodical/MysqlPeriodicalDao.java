@@ -144,8 +144,8 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     }
 
     @Override
-    public int findNumberWithCategoryAndStatus(PeriodicalCategory category,
-                                               Periodical.Status status) {
+    public int findNumberOfPeriodicalsWithCategoryAndStatus(PeriodicalCategory category,
+                                                            Periodical.Status status) {
         String sqlStatement = "SELECT COUNT(id) FROM periodicals " +
                 "WHERE category = ? AND status = ?";
 
@@ -215,12 +215,6 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         }
     }
 
-    /**
-     * Updates a periodical and sets a new status 'discarded' only if there is no active subscriptions
-     * of this periodical.
-     * @return the number of affected rows: 0 - if the condition was not satisfied and updated
-     * has not happened; 1 - if the status of this periodical has been changed to 'discarded'
-     */
     @Override
     public int updateAndSetDiscarded(Periodical periodical) {
         String sqlStatement = "UPDATE periodicals AS p " +
@@ -233,14 +227,6 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
             setStatementFromPeriodical(st, periodical);
             st.setLong(7, periodical.getId());
             st.setString(8, Subscription.Status.ACTIVE.name().toLowerCase());
-
-//            try {
-//                Thread.sleep(5_000);
-                                    /*for testing racing conditions. If a subscriber creates
-              a subscription during this time then this periodical cannot be discarded any more.*/
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
 
             return st.executeUpdate();
 

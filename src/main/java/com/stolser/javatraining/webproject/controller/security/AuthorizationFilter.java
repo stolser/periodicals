@@ -21,6 +21,10 @@ public class AuthorizationFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
 
+    /**
+     * Proceeds to the next resource if a current user has enough permissions, and
+     * redirects to 'access denied page' otherwise.
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {

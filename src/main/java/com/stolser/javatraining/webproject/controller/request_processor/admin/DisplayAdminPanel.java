@@ -19,7 +19,7 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.PERIODICAL_STATISTICS_ATTR_NAME;
 
 /**
- * Processes a request to the Admin Panel page.
+ * Processes a GET request to the Admin Panel page.
  */
 public class DisplayAdminPanel implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();

@@ -16,6 +16,7 @@ class SqlConnectionPool implements ConnectionPool {
     private static final String USER_PASSWORD_DEFAULT = "test";
     private static final String DRIVER_NAME_DEFAULT = "com.mysql.jdbc.Driver";
     private static final int MAX_TOTAL_CONNECTIONS = 10;
+    private static final String USE_SSL_FALSE = "?useSSL=false";
     private static final String CONNECTION_EXCEPTION_TEXT =
             "Exception during getting a connection from a dataSource.";
     private static final String URL_SHOULD_NOT_BE_NULL = "url should not be null.";
@@ -40,7 +41,7 @@ class SqlConnectionPool implements ConnectionPool {
     private String generateUrl(Builder builder) {
         String url = builder.url + builder.dbName;
         if (! builder.useSSL) {
-            url += "?useSSL=false";
+            url += USE_SSL_FALSE;
         }
 
         return url;
@@ -61,16 +62,6 @@ class SqlConnectionPool implements ConnectionPool {
         }
 
         return newConn;
-    }
-
-    @Override
-    public String getDriverClassName() {
-        return dataSource.getDriverClassName();
-    }
-
-    @Override
-    public String getUrl() {
-        return dataSource.getUrl();
     }
 
     @Override
@@ -130,6 +121,5 @@ class SqlConnectionPool implements ConnectionPool {
         public ConnectionPool build() {
             return new SqlConnectionPool(this);
         }
-
     }
 }

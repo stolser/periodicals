@@ -5,6 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.BACKEND_MAIN_PAGE_VIEW_NAME;
 
+/**
+ * Processes a GET request to a backend main page.
+ */
 public class BackendMainPage implements RequestProcessor {
     @Override
     public String getViewName(HttpServletRequest request, HttpServletResponse response) {

@@ -9,6 +9,9 @@ import java.util.regex.Pattern;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Encapsulates information about resource access permissions of each type of roles.
+ */
 class Authorization {
     private static final Map<String, Set<String>> permissionMapping = new HashMap<>();
 
@@ -34,6 +37,11 @@ class Authorization {
         return InstanceHolder.INSTANCE;
     }
 
+    /**
+     * @param request a current http request
+     * @return {@code true} - if a current user has enough permissions to perform such a kind of requests,
+     * and {@code false} otherwise
+     */
     boolean checkPermissions(HttpServletRequest request) {
         String requestMethod = request.getMethod().toUpperCase();
         String requestURI = request.getRequestURI();

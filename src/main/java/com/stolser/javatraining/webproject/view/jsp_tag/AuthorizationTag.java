@@ -11,6 +11,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Allows specifying two sets of roles that a user must have and must not have in order to
+ * see the content of this tag.
+ */
 public class AuthorizationTag extends TagSupport {
     private String mustHaveRoles;
     private String mustNotHaveRoles;

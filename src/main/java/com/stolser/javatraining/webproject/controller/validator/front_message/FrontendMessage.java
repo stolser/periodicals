@@ -1,5 +1,8 @@
 package com.stolser.javatraining.webproject.controller.validator.front_message;
 
+/**
+ * Encapsulates data about a message displayed on the frontend.
+ */
 public final class FrontendMessage {
     private String messageKey;
     private MessageType type;

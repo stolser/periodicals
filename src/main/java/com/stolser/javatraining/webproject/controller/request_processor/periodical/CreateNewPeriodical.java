@@ -12,6 +12,9 @@ import java.util.Map;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Processes a GET request to a page where admin can create a new periodical.
+ */
 public class CreateNewPeriodical implements RequestProcessor {
 
     @Override

@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.controller.utils;
 
+import com.stolser.javatraining.webproject.controller.CustomRedirectException;
 import com.stolser.javatraining.webproject.controller.validator.front_message.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
@@ -94,7 +95,7 @@ public class HttpUtils {
             String message = String.format(EXCEPTION_DURING_REDIRECTION_TEXT,
                     HttpUtils.getUserIdFromSession(request), redirectUri);
 
-            throw new RuntimeException(message, e);
+            throw new CustomRedirectException(message, e);
         }
     }
 

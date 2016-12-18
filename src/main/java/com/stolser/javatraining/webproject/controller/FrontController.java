@@ -12,6 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+
+/**
+ * Implementation of the Front Controller pattern.
+ */
 public class FrontController extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(FrontController.class);
     private static final String USER_ID_REQUEST_URI = "User id = {}. requestURI = {}";
@@ -31,26 +36,24 @@ public class FrontController extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String viewName;
-
         try {
-            viewName = requestProvider.getRequestProcessor(request).getViewName(request, response);
+            String viewName = requestProvider.getRequestProcessor(request).getViewName(request, response);
+            dispatch(viewName, request, response);
 
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOGGER.error(USER_ID_REQUEST_URI,
                     HttpUtils.getUserIdFromSession(request), request.getRequestURI(), e);
 
-            viewName = ApplicationResources.getErrorViewName(e);
+            HttpUtils.sendRedirect(request, response,
+                    ViewResolver.getPublicResourceByViewName(getErrorViewName(e)));
         }
-
-        dispatch(viewName, request, response);
     }
 
     private void dispatch(String viewName, HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         if (viewName != null) {
-            String page = ViewResolver.getPageByViewName(viewName);
+            String page = ViewResolver.getPrivateResourceByViewName(viewName);
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(page);
             dispatcher.forward(request, response);

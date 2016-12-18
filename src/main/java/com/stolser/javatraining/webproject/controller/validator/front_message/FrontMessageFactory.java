@@ -3,6 +3,10 @@ package com.stolser.javatraining.webproject.controller.validator.front_message;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Contains methods for generating different types of frontend messages: 'success', 'info', 'warning',
+ * 'error'. Implements the Flyweight Design Pattern.
+ */
 public class FrontMessageFactory {
     private static Map<String, FrontendMessage> messagesSuccess = new HashMap<>();
     private static Map<String, FrontendMessage> messagesInfo = new HashMap<>();

@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Checks whether a userId in the request uri is the same as the id of a current user in the session.
+ */
 public class RequestUserIdValidator implements Validator {
     @Override
     public ValidationResult validate(String paramValue, HttpServletRequest request) {

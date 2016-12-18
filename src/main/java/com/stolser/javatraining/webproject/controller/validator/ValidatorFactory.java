@@ -8,6 +8,9 @@ import com.stolser.javatraining.webproject.controller.validator.user.SignInUsern
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Produces validators for different parameter names.
+ */
 public class ValidatorFactory {
     private static final String THERE_IS_NO_VALIDATOR_FOR_SUCH_PARAM =
             "There is no validator for such a parameter!";
@@ -20,8 +23,11 @@ public class ValidatorFactory {
         return InstanceHolder.INSTANCE;
     }
 
+    /**
+     * @param paramName a http parameter name that need to be validated
+     * @return a concrete validator for this specific parameter
+     */
     public Validator newValidator(String paramName) {
-
         switch (paramName) {
             case SIGN_IN_USERNAME_PARAM_NAME:
                 return new SignInUsernameValidator();

@@ -50,7 +50,7 @@
 
     <servlet>
         <servlet-name>SignInServlet</servlet-name>
-        <servlet-class>com.stolser.javatraining.webproject.controller.SignInServlet</servlet-class>
+        <servlet-class>com.stolser.javatraining.webproject.controller.security.SignInServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>SignInServlet</servlet-name>

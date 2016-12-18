@@ -1,7 +1,14 @@
 package com.stolser.javatraining.webproject.controller.validator;
 
 public class ValidationResult {
+    /**
+     * If equals to {@code STATUS_CODE_SUCCESS}, it means that validation has been passed successfully.
+     * Otherwise - validation failed.
+     */
     private int statusCode;
+    /**
+     * i18n message key
+     */
     private String messageKey;
 
     public ValidationResult(int statusCode, String messageKey) {
@@ -16,5 +23,4 @@ public class ValidationResult {
     public String getMessageKey() {
         return messageKey;
     }
-
 }

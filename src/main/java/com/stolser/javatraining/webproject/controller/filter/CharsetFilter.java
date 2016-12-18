@@ -5,6 +5,9 @@ import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import javax.servlet.*;
 import java.io.IOException;
 
+/**
+ * Allows entering on the frontend and saving cyrillic symbols in the system.
+ */
 public class CharsetFilter implements Filter {
 
     @Override

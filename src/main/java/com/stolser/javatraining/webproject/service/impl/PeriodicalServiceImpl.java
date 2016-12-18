@@ -88,15 +88,6 @@ public class PeriodicalServiceImpl implements PeriodicalService {
         }
     }
 
-    /**
-     * If the id of this periodical is 0, creates a new one. Otherwise tries to update an existing periodical in
-     * the db with this id.
-     * Use the returned instance for further operations as the save operation
-     * might have changed the entity instance completely.
-     *
-     * @param periodical the persisted periodical
-     * @return a periodical from the db
-     */
     @Override
     public Periodical save(Periodical periodical) {
         long thisId = periodical.getId();
@@ -210,9 +201,9 @@ public class PeriodicalServiceImpl implements PeriodicalService {
             PeriodicalDao dao = factory.getPeriodicalDao(conn);
 
             for (PeriodicalCategory category : PeriodicalCategory.values()) {
-                int active = dao.findNumberWithCategoryAndStatus(category, Periodical.Status.ACTIVE);
-                int inActive = dao.findNumberWithCategoryAndStatus(category, Periodical.Status.INACTIVE);
-                int discarded = dao.findNumberWithCategoryAndStatus(category, Periodical.Status.DISCARDED);
+                int active = dao.findNumberOfPeriodicalsWithCategoryAndStatus(category, Periodical.Status.ACTIVE);
+                int inActive = dao.findNumberOfPeriodicalsWithCategoryAndStatus(category, Periodical.Status.INACTIVE);
+                int discarded = dao.findNumberOfPeriodicalsWithCategoryAndStatus(category, Periodical.Status.DISCARDED);
 
                 PeriodicalNumberByCategory nextItem = PeriodicalNumberByCategory.newBuilder(category)
                         .setActive(active).setInActive(inActive).setDiscarded(discarded)

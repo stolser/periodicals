@@ -23,8 +23,9 @@ import java.util.List;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 /**
- * Processes a request to pay one invoice. In one transaction the status of the invoice is changed
- * to 'paid' and a subscription is updated (created a new one or the status and the end date are updated).
+ * Processes a POST request to pay one invoice. In one transaction the status of the invoice is changed
+ * to {@code paid} and a subscription is updated (created a new one or the status
+ * and the end date are updated).
  */
 public class PayOneInvoice implements RequestProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PayOneInvoice.class);

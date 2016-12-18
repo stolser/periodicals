@@ -8,14 +8,17 @@ import java.util.regex.Pattern;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Checks whether a periodical cost is an integer number from the acceptable range.
+ */
 public class PeriodicalCostValidator implements Validator {
 
     @Override
-    public ValidationResult validate(String paramValue, HttpServletRequest request) {
+    public ValidationResult validate(String periodicalCost, HttpServletRequest request) {
         int statusCode;
         String messageKey;
 
-        if (Pattern.matches(PERIODICAL_COST_PATTERN_REGEX, paramValue)) {
+        if (Pattern.matches(PERIODICAL_COST_PATTERN_REGEX, periodicalCost)) {
             statusCode = STATUS_CODE_SUCCESS;
             messageKey = MSG_SUCCESS;
         } else {

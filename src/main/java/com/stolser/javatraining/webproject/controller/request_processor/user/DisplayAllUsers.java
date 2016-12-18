@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.ALL_USERS_ATTR_NAME;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.USER_LIST_VIEW_NAME;
 
+/**
+ * Processes a GET request to a page with a list of all users in the system.
+ */
 public class DisplayAllUsers implements RequestProcessor {
     private UserService userService = UserServiceImpl.getInstance();
 

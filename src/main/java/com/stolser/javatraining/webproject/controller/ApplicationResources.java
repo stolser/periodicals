@@ -3,6 +3,7 @@ package com.stolser.javatraining.webproject.controller;
 import com.stolser.javatraining.webproject.model.storage.StorageException;
 
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 public class ApplicationResources {
     public static final String CHARACTER_ENCODING = "UTF-8";
@@ -11,7 +12,8 @@ public class ApplicationResources {
     public static final String VALIDATION_MESSAGE_JSON_RESPONSE = "validationMessage";
     public static final String ALGORITHM_NAME = "MD5";
 
-    public static final String JSP_VIEW_NAME_RESOLVER_PATTERN = "/WEB-INF/backend/%s.jsp";
+    public static final String JSP_PRIVATE_RESOURCE_PATH_PATTERN = "/WEB-INF/backend/%s.jsp";
+    public static final String JSP_PUBLIC_RESOURCE_PATH_PATTERN = "/%s.jsp";
 
     public static final String GET_BACKEND_REQUEST_PATTERN = "GET:/backend/?";
     public static final String GET_ADMIN_PANEL_REQUEST_PATTERN = "GET:/backend/adminPanel/?";
@@ -79,18 +81,17 @@ public class ApplicationResources {
     public static final String PERIODICAL_CREATE_UPDATE_URI = "/backend/periodicals";
 
     public static final String ADMIN_ROLE_NAME = "admin";
-    public static final String SUBSCRIBER_ROLE_NAME = "subscriber";
-    public static final String GUEST_ROLE_NAME = "guest";
 
     public static final int STATUS_CODE_SUCCESS = 200;
     public static final int STATUS_CODE_VALIDATION_FAILED = 412;
 
-    public static final String PERIODICAL_NAME_PATTERN_REGEX = "[а-яА-ЯіІїЇєЄёЁ\\w\\s!&?$#@-]{2,45}";
+    public static final String PERIODICAL_NAME_PATTERN_REGEX = "[а-яА-ЯіІїЇєЄёЁ\\w\\s!&?$#@'\"-]{2,45}";
     public static final String PERIODICAL_PUBLISHER_PATTERN_REGEX = "[а-яА-ЯіІїЇєЄёЁ\\w\\s-]{2,45}";
     public static final String PERIODICAL_COST_PATTERN_REGEX = "0|[1-9]{1}\\d{0,8}";
 
-    private static final String DEFAULT_ERROR_PAGE_VIEW_NAME = "errors/page-404";
-    private static final String SQL_ERROR_PAGE_VIEW_NAME = "errors/sql-error-page";
+    private static final String PAGE_404_VIEW_NAME = "errors/page-404";
+    private static final String STORAGE_EXCEPTION_PAGE_VIEW_NAME = "errors/storage-error-page";
+    private static final String GENERAL_ERROR_PAGE_VIEW_NAME = "errors/error-page";
 
     public static final String MSG_KEY_CATEGORY_NEWS = "category.news";
     public static final String MSG_KEY_CATEGORY_NATURE = "category.nature";
@@ -177,13 +178,15 @@ public class ApplicationResources {
     public static final String DB_USERS_ADDRESS = "users.address";
     public static final String DB_USERS_STATUS = "users.status";
 
-
-
-    public static String getErrorViewName(Exception exception) {
-        String viewName = DEFAULT_ERROR_PAGE_VIEW_NAME;
+    public static String getErrorViewName(Throwable exception) {
+        String viewName = GENERAL_ERROR_PAGE_VIEW_NAME;
 
         if (exception instanceof StorageException) {
-            viewName = SQL_ERROR_PAGE_VIEW_NAME;
+            viewName = STORAGE_EXCEPTION_PAGE_VIEW_NAME;
+        }
+
+        if (exception instanceof NoSuchElementException) {
+            viewName = PAGE_404_VIEW_NAME;
         }
 
         return viewName;

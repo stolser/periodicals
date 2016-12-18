@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Checks that there is a user with such a username in the db.
+ */
 public class SignInUsernameValidator implements Validator {
     private UserService userService = UserServiceImpl.getInstance();
 

@@ -2,6 +2,8 @@ package com.stolser.javatraining.webproject.controller.validator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,45 +18,37 @@ import java.util.ResourceBundle;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Validates a parameter from the request and sends a json with the validation result.
+ * Can be used for ajax validation of input field values.
+ */
 public class ValidationServlet extends HttpServlet {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ValidationServlet.class);
+    private static final String EXCEPTION_DURING_PUTTING_VALUES_INTO_JSON_OBJECT = "Exception during putting values into json object.";
     private ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         HttpSession session = request.getSession();
         String paramName = request.getParameter(PARAM_NAME);
         String paramValue = request.getParameter(PARAM_VALUE);
 
         removeMessagesForCurrentParam(session, paramName);
+        customizeResponse(response);
 
-        ValidationResult result = validatorFactory.newValidator(paramName)
-                .validate(paramValue, request);
-
-        Locale locale = getLocaleFromSession(session);
-
-        ResourceBundle bundle = ResourceBundle.getBundle(VALIDATION_BUNDLE_PATH, locale);
-
-        String localizedMessage = bundle.getString(result.getMessageKey());
-        int statusCode = result.getStatusCode();
-
-        response.setContentType(JSON_CONTENT_TYPE);
-        response.setCharacterEncoding(CHARACTER_ENCODING);
-
-        PrintWriter writer = response.getWriter();
         JSONObject jsonResponse = new JSONObject();
-
         try {
-            jsonResponse.put(STATUS_CODE_JSON_RESPONSE, statusCode);
-            jsonResponse.put(VALIDATION_MESSAGE_JSON_RESPONSE, localizedMessage);
+            ValidationResult result = validatorFactory.newValidator(paramName).validate(paramValue, request);
+            jsonResponse.put(STATUS_CODE_JSON_RESPONSE, result.getStatusCode());
+            jsonResponse.put(VALIDATION_MESSAGE_JSON_RESPONSE, getLocalizedMessage(session, result));
         } catch (JSONException e) {
-            e.printStackTrace();
+            LOGGER.error(EXCEPTION_DURING_PUTTING_VALUES_INTO_JSON_OBJECT, e);
         }
 
+        PrintWriter writer = response.getWriter();
         writer.println(jsonResponse.toString());
         writer.flush();
-
     }
 
     private void removeMessagesForCurrentParam(HttpSession session, String paramName) {
@@ -63,6 +57,11 @@ public class ValidationServlet extends HttpServlet {
         if (frontEndMessages != null) {
             frontEndMessages.remove(paramName);
         }
+    }
+
+    private void customizeResponse(HttpServletResponse response) {
+        response.setContentType(JSON_CONTENT_TYPE);
+        response.setCharacterEncoding(CHARACTER_ENCODING);
     }
 
     private Locale getLocaleFromSession(HttpSession session) {
@@ -77,5 +76,10 @@ public class ValidationServlet extends HttpServlet {
         }
 
         return locale;
+    }
+
+    private String getLocalizedMessage(HttpSession session, ValidationResult result) {
+        return ResourceBundle.getBundle(VALIDATION_BUNDLE_PATH, getLocaleFromSession(session))
+                .getString(result.getMessageKey());
     }
 }

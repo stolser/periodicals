@@ -2,6 +2,9 @@ package com.stolser.javatraining.webproject.model.entity.statistics;
 
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 
+/**
+ * Represents quantitative statistics on existing periodicals divided by status.
+ */
 public class PeriodicalNumberByCategory {
     private PeriodicalCategory category;
     private int active;

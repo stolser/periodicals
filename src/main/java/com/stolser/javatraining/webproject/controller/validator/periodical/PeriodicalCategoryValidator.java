@@ -10,17 +10,20 @@ import java.util.stream.Collectors;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Checks whether a periodical category name passed in the request exists.
+ */
 public class PeriodicalCategoryValidator implements Validator {
 
     @Override
-    public ValidationResult validate(String paramValue, HttpServletRequest request) {
+    public ValidationResult validate(String category, HttpServletRequest request) {
         int statusCode;
         String messageKey;
 
         if (Arrays.stream(PeriodicalCategory.values())
                 .map(Enum::name)
                 .collect(Collectors.toList())
-                .contains(paramValue)) {
+                .contains(category)) {
 
             statusCode = STATUS_CODE_SUCCESS;
             messageKey = MSG_SUCCESS;

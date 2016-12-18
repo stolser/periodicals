@@ -8,6 +8,9 @@ import java.util.regex.Pattern;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Checks whether a periodical publisher name contains only acceptable symbols.
+ */
 public class PeriodicalPublisherValidator implements Validator {
 
     @Override

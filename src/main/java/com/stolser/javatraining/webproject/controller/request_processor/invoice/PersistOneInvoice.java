@@ -22,6 +22,9 @@ import java.util.List;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+/**
+ * Processes a POST request to create a new invoice.
+ */
 public class PersistOneInvoice implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
     private InvoiceService invoiceService = InvoiceServiceImpl.getInstance();

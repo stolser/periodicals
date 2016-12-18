@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ATTR_NAME;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.SIGN_IN_URI;
 
+/**
+ * Processes a GET request to sing out the current user and redirects to a 'login' page.
+ */
 public class SignOut implements RequestProcessor {
 
     @Override

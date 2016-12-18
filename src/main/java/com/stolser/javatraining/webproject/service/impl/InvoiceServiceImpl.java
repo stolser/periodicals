@@ -83,13 +83,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
     }
 
-    /**
-     * Update the status of this invoice to 'PAID' and update an existing subscription
-     * (or create a new one) inside one transaction.
-     * @param invoiceToPay invoice id to be paid
-     * @return true if after committing this invoice in the db has status 'PAID' and
-     * false otherwise.
-     */
     @Override
     public boolean payInvoice(Invoice invoiceToPay) {
         Connection conn = ConnectionPoolProvider.getPool().getConnection();
