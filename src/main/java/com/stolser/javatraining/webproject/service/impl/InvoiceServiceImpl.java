@@ -8,6 +8,7 @@ import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.statistics.FinancialStatistics;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
+import com.stolser.javatraining.webproject.model.storage.ConnectionPool;
 import com.stolser.javatraining.webproject.model.storage.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.service.InvoiceService;
@@ -22,6 +23,7 @@ import java.util.List;
 
 public class InvoiceServiceImpl implements InvoiceService {
     private DaoFactory factory = DaoFactory.getMysqlDaoFactory();
+    private ConnectionPool connectionPool = ConnectionPoolProvider.getPool();
 
     private InvoiceServiceImpl() {
     }
@@ -40,7 +42,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public Invoice findOneById(long invoiceId) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
 
             return factory.getInvoiceDao(conn).findOneById(invoiceId);
 
@@ -51,7 +53,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public List<Invoice> findAllByUserId(long userId) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
 
             return factory.getInvoiceDao(conn).findAllByUserId(userId);
 
@@ -62,7 +64,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public List<Invoice> findAllByPeriodicalId(long periodicalId) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
 
             return factory.getInvoiceDao(conn).findAllByPeriodicalId(periodicalId);
 
@@ -73,7 +75,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public boolean createNew(Invoice invoice) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
 
             factory.getInvoiceDao(conn).createNew(invoice);
 
@@ -85,7 +87,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public boolean payInvoice(Invoice invoiceToPay) {
-        Connection conn = ConnectionPoolProvider.getPool().getConnection();
+        Connection conn = connectionPool.getConnection();
 
         try {
             invoiceToPay.setStatus(Invoice.Status.PAID);
@@ -140,7 +142,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public FinancialStatistics getFinStatistics(Instant since, Instant until) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
 
             InvoiceDao dao = factory.getInvoiceDao(conn);
             long totalInvoiceSum = dao.getCreatedInvoiceSumByCreationDate(since, until);

@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.service.impl;
 
+import com.stolser.javatraining.webproject.model.storage.ConnectionPool;
 import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
 import com.stolser.javatraining.webproject.model.dao.credential.CredentialDao;
@@ -19,6 +20,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     private DaoFactory factory = DaoFactory.getMysqlDaoFactory();
+    private ConnectionPool connectionPool = ConnectionPoolProvider.getPool();
 
     private UserServiceImpl() {
     }
@@ -36,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findOneById(long id) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
 
             User user = factory.getUserDao(conn).findOneById(id);
             if (user != null) {
@@ -53,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Credential findOneCredentialByUserName(String userName) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
             CredentialDao credentialDao = factory.getCredentialDao(conn);
 
             Credential credential = credentialDao.findCredentialByUserName(userName);
@@ -68,7 +70,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findOneUserByUserName(String userName) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
             UserDao userDao = factory.getUserDao(conn);
             RoleDao roleDao = factory.getRoleDao(conn);
             User user = userDao.findUserByUserName(userName);
@@ -86,7 +88,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
             UserDao userDao = factory.getUserDao(conn);
             RoleDao roleDao = factory.getRoleDao(conn);
 

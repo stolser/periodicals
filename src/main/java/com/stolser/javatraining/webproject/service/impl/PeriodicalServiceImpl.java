@@ -1,14 +1,15 @@
 package com.stolser.javatraining.webproject.service.impl;
 
-import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
 import com.stolser.javatraining.webproject.model.dao.periodical.PeriodicalDao;
 import com.stolser.javatraining.webproject.model.dao.subscription.SubscriptionDao;
-import com.stolser.javatraining.webproject.model.storage.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.statistics.PeriodicalNumberByCategory;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
+import com.stolser.javatraining.webproject.model.storage.ConnectionPool;
+import com.stolser.javatraining.webproject.model.storage.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.service.PeriodicalService;
 
 import java.sql.Connection;
@@ -20,6 +21,7 @@ import java.util.NoSuchElementException;
 public class PeriodicalServiceImpl implements PeriodicalService {
     private static final String NO_PERIODICAL_WITH_ID_MESSAGE = "There is no periodical in the DB with id = %d";
     private DaoFactory factory = DaoFactory.getMysqlDaoFactory();
+    private ConnectionPool connectionPool = ConnectionPoolProvider.getPool();
 
     private PeriodicalServiceImpl() {
     }
@@ -39,7 +41,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
     @Override
     public Periodical findOneById(long id) {
 
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             Periodical periodical = periodicalDao.findOneById(id);
 
@@ -51,7 +53,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
     @Override
     public Periodical findOneByName(String name) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
 
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             Periodical periodical = periodicalDao.findOneByName(name);
@@ -64,7 +66,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
     @Override
     public List<Periodical> findAll() {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
 
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             List<Periodical> periodicals = periodicalDao.findAll();
@@ -79,7 +81,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
     @Override
     public List<Periodical> findAllByStatus(Periodical.Status status) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
 
             return factory.getPeriodicalDao(conn).findAllByStatus(status);
 
@@ -108,7 +110,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
     }
 
     private void createNewPeriodical(Periodical periodical) throws SQLException {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
 
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             periodicalDao.createNew(periodical);
@@ -118,7 +120,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
     private Periodical getPeriodicalFromDbByName(String name) throws SQLException {
         Periodical periodicalInDb;
 
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             periodicalInDb = periodicalDao.findOneByName(name);
         }
@@ -142,7 +144,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
     private Periodical getPeriodicalFromDbById(long id) throws SQLException {
         Periodical periodicalInDb;
 
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             periodicalInDb = periodicalDao.findOneById(id);
         }
@@ -151,7 +153,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
     }
 
     private void updatePeriodical(Periodical periodical) throws SQLException {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             periodicalDao.update(periodical);
         }
@@ -159,7 +161,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
     @Override
     public int updateAndSetDiscarded(Periodical periodical) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
 
             return periodicalDao.updateAndSetDiscarded(periodical);
@@ -170,7 +172,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
     @Override
     public void deleteAllDiscarded() {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
 
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
             periodicalDao.deleteAllDiscarded();
@@ -181,7 +183,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
 
     @Override
     public boolean hasActiveSubscriptions(long periodicalId) {
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
 
             SubscriptionDao subscriptionDao = factory.getSubscriptionDao(conn);
 
@@ -197,7 +199,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
     public List<PeriodicalNumberByCategory> getQuantitativeStatistics() {
         List<PeriodicalNumberByCategory> statistics = new ArrayList<>();
 
-        try (Connection conn = ConnectionPoolProvider.getPool().getConnection()) {
+        try (Connection conn = connectionPool.getConnection()) {
             PeriodicalDao dao = factory.getPeriodicalDao(conn);
 
             for (PeriodicalCategory category : PeriodicalCategory.values()) {
