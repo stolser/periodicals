@@ -19,7 +19,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class PeriodicalServiceImpl implements PeriodicalService {
-    private static final String NO_PERIODICAL_WITH_ID_MESSAGE = "There is no periodical in the DB with id = %d";
+    private static final String NO_PERIODICAL_WITH_ID_MESSAGE =
+            "There is no periodical in the DB with id = %d";
     private DaoFactory factory = DaoFactory.getMysqlDaoFactory();
     private ConnectionPool connectionPool = ConnectionPoolProvider.getPool();
 
@@ -203,9 +204,12 @@ public class PeriodicalServiceImpl implements PeriodicalService {
             PeriodicalDao dao = factory.getPeriodicalDao(conn);
 
             for (PeriodicalCategory category : PeriodicalCategory.values()) {
-                int active = dao.findNumberOfPeriodicalsWithCategoryAndStatus(category, Periodical.Status.ACTIVE);
-                int inActive = dao.findNumberOfPeriodicalsWithCategoryAndStatus(category, Periodical.Status.INACTIVE);
-                int discarded = dao.findNumberOfPeriodicalsWithCategoryAndStatus(category, Periodical.Status.DISCARDED);
+                int active = dao.findNumberOfPeriodicalsWithCategoryAndStatus(category,
+                        Periodical.Status.ACTIVE);
+                int inActive = dao.findNumberOfPeriodicalsWithCategoryAndStatus(category,
+                        Periodical.Status.INACTIVE);
+                int discarded = dao.findNumberOfPeriodicalsWithCategoryAndStatus(category,
+                        Periodical.Status.DISCARDED);
 
                 PeriodicalNumberByCategory nextItem = PeriodicalNumberByCategory.newBuilder(category)
                         .setActive(active).setInActive(inActive).setDiscarded(discarded)
