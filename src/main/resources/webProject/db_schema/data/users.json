@@ -1,0 +1,4 @@
+[{"id":1, "first_name":"Oleg", "last_name":"Stoliarov", "birthday":"1985-03-05", "email":"stolser@gmail.com", "address":"Lomonosova Str, 24, Kiev, Ukraine", "status":"active"},
+ {"id":2, "first_name":"Joshua", "last_name":"Bloch", "birthday":"1961-08-28", "email":"bloch@gmail.com", "address":"Bloch Ave, 10F, California, USA", "status":"active"},
+ {"id":4, "first_name":"James", "last_name":"Gosling", "birthday":"1955-05-19", "email":"gosling@nighthacks.com", "address":"San Francisco Bay Area, California, U.S.", "status":"active"},
+ {"id":5, "first_name":"Duke", "last_name":"Java-Mascot", "birthday":"1995-05-23", "email":"duke@gmail.com", "address":"The whole world", "status":"active"}]

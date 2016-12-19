@@ -47,7 +47,7 @@ public class UserServiceImplTest {
     @Test
     public void findOneUserByUserName_Should_SetRolesAndReturnCorrectUser() throws Exception {
         User user = mock(User.class);
-        when(userDao.findUserByUserName(TEST_USERNAME)).thenReturn(user);
+        when(userDao.findOneByUserName(TEST_USERNAME)).thenReturn(user);
 
         assertEquals(user, userService.findOneUserByUserName(TEST_USERNAME));
 

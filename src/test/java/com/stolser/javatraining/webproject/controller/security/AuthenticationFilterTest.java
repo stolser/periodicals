@@ -17,6 +17,7 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 import static org.mockito.Mockito.*;
 
 public class AuthenticationFilterTest {
+    private static final int USER_ID = 77;
     private HttpSession session = mock(HttpSession.class);
     private HttpServletRequest request = mock(HttpServletRequest.class);
     private HttpServletResponse response = mock(HttpServletResponse.class);
@@ -27,7 +28,7 @@ public class AuthenticationFilterTest {
     @Before
     public void setUp() throws Exception {
         user = new User();
-        user.setId(77);
+        user.setId(USER_ID);
 
         when(session.getAttribute(CURRENT_USER_ATTR_NAME)).thenReturn(user);
         when(request.getSession()).thenReturn(session);

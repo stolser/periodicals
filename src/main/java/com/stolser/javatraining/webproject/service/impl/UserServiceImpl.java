@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findOneUserByUserName(String userName) {
         try (Connection conn = connectionPool.getConnection()) {
-            User user = factory.getUserDao(conn).findUserByUserName(userName);
+            User user = factory.getUserDao(conn).findOneByUserName(userName);
 
             if (user != null) {
                 user.setRoles(factory.getRoleDao(conn).findRolesByUserName(userName));

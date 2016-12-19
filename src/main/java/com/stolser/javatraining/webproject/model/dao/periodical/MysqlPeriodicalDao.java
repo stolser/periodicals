@@ -20,12 +20,14 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
             "WHERE id = ?";
     private static final String SELECT_ALL_BY_NAME = "SELECT * FROM periodicals " +
             "WHERE name = ?";
-    private static final String EXCEPTION_DURING_RETRIEVING_ALL_PERIODICALS = "Exception during retrieving all periodicals.";
+    private static final String EXCEPTION_DURING_RETRIEVING_ALL_PERIODICALS =
+            "Exception during retrieving all periodicals.";
     private static final String RETRIEVING_ALL_BY_STATUS = "Exception during retrieving periodicals with " +
             "status '%s'.";
     private static final String EXCEPTION_DURING_INSERTING = "Exception during inserting %s into 'periodicals'.";
     private static final String EXCEPTION_DURING_UPDATING = "Exception during updating %s.";
-    private static final String EXCEPTION_DURING_DELETING_DISCARDED_PERIODICALS = "Exception during deleting discarded periodicals.";
+    private static final String EXCEPTION_DURING_DELETING_DISCARDED_PERIODICALS =
+            "Exception during deleting discarded periodicals.";
     private static final String EXCEPTION_DURING_GETTING_NUMBER_OF_PERIODICALS =
             "Exception during getting number of periodicals with category = '%s' and status = '%s'.";
     private Connection conn;

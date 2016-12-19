@@ -1,0 +1,8 @@
+[{"id":1, "user_id":1, "periodical_id":7, "delivery_address":"Lomonosova Str, 24, Kiev, Ukraine", "end_date":"2016-10-18 04:47:23", "status":"inactive"},
+ {"id":4, "user_id":2, "periodical_id":1, "delivery_address":"Bloch Ave, 10F, California, USA", "end_date":"2018-01-12 20:33:10", "status":"inactive"},
+ {"id":11, "user_id":2, "periodical_id":26, "delivery_address":"Bloch Ave, 10F, California, USA", "end_date":"2017-02-12 19:34:27", "status":"active"},
+ {"id":14, "user_id":1, "periodical_id":26, "delivery_address":"Lomonosova Str, 24, Kiev, Ukraine", "end_date":"2019-03-14 05:33:36", "status":"active"},
+ {"id":22, "user_id":5, "periodical_id":17, "delivery_address":"The whole world", "end_date":"2017-11-17 15:35:08", "status":"active"},
+ {"id":24, "user_id":1, "periodical_id":6, "delivery_address":"Lomonosova Str, 24, Kiev, Ukraine", "end_date":"2017-10-17 21:30:29", "status":"active"},
+ {"id":25, "user_id":1, "periodical_id":30, "delivery_address":"Lomonosova Str, 24, Kiev, Ukraine", "end_date":"2017-01-19 00:12:51", "status":"active"},
+ {"id":26, "user_id":1, "periodical_id":1, "delivery_address":"Lomonosova Str, 24, Kiev, Ukraine", "end_date":"2017-01-19 00:13:33", "status":"active"}]

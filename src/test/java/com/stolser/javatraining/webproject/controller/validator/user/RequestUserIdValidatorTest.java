@@ -16,14 +16,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class RequestUserIdValidatorTest {
+    private static final int USER_ID = 2;
     private HttpSession session = mock(HttpSession.class);
     private HttpServletRequest request = mock(HttpServletRequest.class);
-    private User user;
+    private User user = new User();
 
     @Before
     public void setUp() throws Exception {
-        user = new User();
-        user.setId(2);
+        user.setId(USER_ID);
 
         session = mock(HttpSession.class);
         when(session.getAttribute(CURRENT_USER_ATTR_NAME)).thenReturn(user);

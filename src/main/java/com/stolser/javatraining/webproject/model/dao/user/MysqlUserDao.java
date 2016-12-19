@@ -47,7 +47,7 @@ public class MysqlUserDao implements UserDao {
     }
 
     @Override
-    public User findUserByUserName(String userName) {
+    public User findOneByUserName(String userName) {
         String sqlStatement = "SELECT * FROM credentials " +
                 "INNER JOIN users ON (credentials.user_id = users.id) " +
                 "WHERE credentials.user_name = ?";

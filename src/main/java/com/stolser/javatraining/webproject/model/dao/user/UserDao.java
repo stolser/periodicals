@@ -4,5 +4,5 @@ import com.stolser.javatraining.webproject.model.dao.GenericDao;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
 public interface UserDao extends GenericDao<User> {
-    User findUserByUserName(String userName);
+    User findOneByUserName(String userName);
 }

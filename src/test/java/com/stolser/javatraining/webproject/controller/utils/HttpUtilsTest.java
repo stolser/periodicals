@@ -17,13 +17,14 @@ import static org.mockito.Mockito.when;
 
 public class HttpUtilsTest {
 
+    private static final int USER_ID = 2;
     private HttpSession session;
     private HttpServletRequest request;
 
     @Before
     public void setup() {
         User user = new User();
-        user.setId(2);
+        user.setId(USER_ID);
 
         session = mock(HttpSession.class);
         when(session.getAttribute(CURRENT_USER_ATTR_NAME)).thenReturn(user);

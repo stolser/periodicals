@@ -139,6 +139,7 @@ public class ApplicationResources {
     public static final String MSG_ERROR_WRONG_PASSWORD = "error.wrongPassword";
 
     public static final String DB_CONFIG_FILENAME = "webProject/config/dbConfig.properties";
+    public static final String TEST_DB_CONFIG_FILENAME = "webProject/config/testDbConfig.properties";
     public static final String DB_CONFIG_PARAM_URL = "database.url";
     public static final String DB_CONFIG_PARAM_DB_NAME = "database.dbName";
     public static final String DB_CONFIG_PARAM_USER_NAME = "database.userName";
