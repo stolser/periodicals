@@ -44,7 +44,8 @@
                     <select id="periodicalCategory" class="form-control"
                             name="periodicalCategory">
                         <c:forEach items="${periodicalCategories}" var="category">
-                            <option value="<c:out value='${category}'/>">
+                            <option ${category == periodical.category ? 'selected' : ''}
+                                    value="<c:out value='${category}'/>">
                                 <fmt:message key="${category.messageKey}" bundle="${langPeriodical}"/>
                             </option>
                         </c:forEach>
