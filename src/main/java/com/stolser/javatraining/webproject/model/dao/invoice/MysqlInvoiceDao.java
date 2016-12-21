@@ -143,7 +143,7 @@ public class MysqlInvoiceDao implements InvoiceDao {
 
 
     @Override
-    public void createNew(Invoice invoice) {
+    public long createNew(Invoice invoice) {
         String sqlStatement = "INSERT INTO invoices " +
                 "(user_id, periodical_id, period, total_sum, creation_date, payment_date, status) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -153,7 +153,7 @@ public class MysqlInvoiceDao implements InvoiceDao {
 
             setCreateUpdateStatementFromInvoice(st, invoice);
 
-            st.executeUpdate();
+            return st.executeUpdate();
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_INVOICE,

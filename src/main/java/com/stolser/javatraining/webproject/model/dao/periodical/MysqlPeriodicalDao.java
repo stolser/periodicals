@@ -169,7 +169,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     }
 
     @Override
-    public void createNew(Periodical periodical) {
+    public long createNew(Periodical periodical) {
         String sqlStatement = "INSERT INTO periodicals " +
                 "(name, category, publisher, description, one_month_cost, status) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
@@ -178,7 +178,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
             setStatementFromPeriodical(st, periodical);
 
-            st.executeUpdate();
+            return st.executeUpdate();
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_INSERTING,

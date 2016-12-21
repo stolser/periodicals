@@ -149,7 +149,7 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
     }
 
     @Override
-    public void createNew(Subscription subscription) {
+    public long createNew(Subscription subscription) {
         String sqlStatement = "INSERT INTO subscriptions " +
                 "(user_id, periodical_id, delivery_address, end_date, status) " +
                 "VALUES (?, ?, ?, ?, ?)";
@@ -159,7 +159,7 @@ public class MysqlSubscriptionDao implements SubscriptionDao {
 
             setSubscriptionForInsertUpdateStatement(st, subscription);
 
-            st.executeUpdate();
+            return st.executeUpdate();
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_MSG_CREATING_SUBSCRIPTION,

@@ -90,5 +90,42 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void createNewUser(User user, Credential credential, String userRole) {
+        Connection conn = connectionPool.getConnection();
+
+        try {
+            conn.setAutoCommit(false);
+
+            long userId = factory.getUserDao(conn).createNew(user);
+
+//            factory.getRoleDao(conn).addRole(userId, userRole);
+//            factory.getCredentialDao(conn).createNew(credential);
+
+
+            conn.commit();
+            conn.setAutoCommit(true);
+
+        } catch (Exception e) {
+            try {
+                conn.rollback();
+
+            } catch (SQLException e1) {
+                throw new StorageException(e);
+            }
+
+            throw new StorageException(e);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+
+                } catch (SQLException e) {
+                    throw new StorageException(e);
+                }
+            }
+        }
+    }
+
 
 }

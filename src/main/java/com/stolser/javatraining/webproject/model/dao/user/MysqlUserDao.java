@@ -3,10 +3,7 @@ package com.stolser.javatraining.webproject.model.dao.user;
 import com.stolser.javatraining.webproject.model.storage.StorageException;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -106,8 +103,30 @@ public class MysqlUserDao implements UserDao {
     }
 
     @Override
-    public void createNew(User entity) {
-        throw new UnsupportedOperationException();
+    public long createNew(User user) {
+
+        String sqlStatement = "INSERT INTO users " +
+                "(first_name, last_name, birthday, email, address, status) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS);
+            st.setString(1, user.getFirstName());
+            st.setString(2, user.getLastName());
+            st.setDate(3, new java.sql.Date(user.getBirthday().getTime()));
+            st.setString(4, user.getEmail());
+            st.setString(5, user.getAddress());
+            st.setString(6, user.getStatus().name().toLowerCase());
+
+            st.executeUpdate();
+
+            ResultSet rs = st.getGeneratedKeys();
+            return rs.getLong("id");
+
+        } catch (SQLException e) {
+
+            throw new StorageException(e);
+        }
     }
 
     @Override

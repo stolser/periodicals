@@ -47,4 +47,23 @@ public class MysqlCredentialDao implements CredentialDao {
         }
     }
 
+    @Override
+    public void createNew(Credential credential) {
+
+        String sqlStatement = "INSERT INTO credentials " +
+                "(user_name, password_hash, user_id) " +
+                "VALUES (?, ?, ?)";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            st.setString(1, credential.getUserName());
+            st.setString(2, credential.getPasswordHash());
+            st.setLong(3, credential.getId());
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new StorageException("E during creating a credential.", e);
+        }
+    }
 }

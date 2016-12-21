@@ -25,6 +25,11 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        if(request.getRequestURI().contains("signUp")) {
+            chain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
         String requestURI = request.getRequestURI();
         User thisUser = HttpUtils.getCurrentUserFromFromDb(request);
 

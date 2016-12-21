@@ -46,7 +46,9 @@ public class ApplicationResources {
     public static final String PARAM_NAME = "paramName";
     public static final String PARAM_VALUE = "paramValue";
     public static final String SIGN_IN_USERNAME_PARAM_NAME = "signInUsername";
+    public static final String SIGN_UP_USERNAME_PARAM_NAME = "signUpUsername";
     public static final String PASSWORD_PARAM_NAME = "password";
+    public static final String REPEAT_PASSWORD_PARAM_NAME = "repeatPassword";
     public static final String PERIODICAL_ID_PARAM_NAME = "periodicalId";
     public static final String PERIODICAL_NAME_PARAM_NAME = "periodicalName";
     public static final String PERIODICAL_CATEGORY_PARAM_NAME = "periodicalCategory";
@@ -103,6 +105,7 @@ public class ApplicationResources {
 
     public static final String MSG_SUCCESS = "validation.ok";
     public static final String MSG_NO_SUCH_USER_NAME = "validation.noSuchUserName";
+    public static final String USERNAME_IS_NOT_UNIQUE_TRY_ANOTHER_ONE = "validation.usernameIsNotUnique";
     public static final String MSG_USER_IS_BLOCKED = "validation.userIsBlocked";
     public static final String MSG_PERIODICAL_NAME_ERROR = "periodicalName.validationError";
     public static final String MSG_PERIODICAL_NAME_DUPLICATION = "periodicalName.duplicationError";

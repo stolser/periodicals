@@ -26,7 +26,7 @@ public interface GenericDao<E> {
      * @return a persisted entity
      * @throws IllegalArgumentException in case the given entity is null
      */
-    void createNew(E entity);
+    long createNew(E entity);
 
     /**
      * Updates an entity in the db. If the passed entity has such an 'id' that there is no

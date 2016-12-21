@@ -48,4 +48,22 @@ public class MysqlRoleDao implements RoleDao {
 
         return roles;
     }
+
+    @Override
+    public void addRole(long userId, String roleName) {
+        String sqlStatement = "INSERT INTO user_roles " +
+                "(user_id, name) VALUES (?, ?)";
+
+        try {
+            PreparedStatement st = conn.prepareStatement(sqlStatement);
+            st.setLong(1, userId);
+            st.setString(2, roleName);
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+
+            throw new StorageException(e);
+        }
+    }
 }

@@ -7,6 +7,7 @@ import com.stolser.javatraining.webproject.controller.request_processor.admin.Di
 import com.stolser.javatraining.webproject.controller.request_processor.invoice.PayOneInvoice;
 import com.stolser.javatraining.webproject.controller.request_processor.invoice.PersistOneInvoice;
 import com.stolser.javatraining.webproject.controller.request_processor.periodical.*;
+import com.stolser.javatraining.webproject.controller.request_processor.user.CreateUser;
 import com.stolser.javatraining.webproject.controller.request_processor.user.DisplayAllUsers;
 import com.stolser.javatraining.webproject.controller.request_processor.user.DisplayCurrentUser;
 
@@ -37,6 +38,7 @@ final class RequestProviderImpl implements RequestProvider {
         requestMapping.put(GET_UPDATE_PERIODICAL_REQUEST_PATTERN, new UpdatePeriodical());
         requestMapping.put(POST_DELETE_PERIODICALS_REQUEST_PATTERN, new DeleteDiscardedPeriodicals());
         requestMapping.put(GET_SIGN_OUT_REQUEST_PATTERN, new SignOut());
+        requestMapping.put("POST:signUp", new CreateUser());
     }
 
     private RequestProviderImpl() {
