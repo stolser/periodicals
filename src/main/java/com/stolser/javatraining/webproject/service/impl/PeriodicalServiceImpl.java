@@ -1,15 +1,15 @@
 package com.stolser.javatraining.webproject.service.impl;
 
-import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
-import com.stolser.javatraining.webproject.model.dao.periodical.PeriodicalDao;
-import com.stolser.javatraining.webproject.model.dao.subscription.SubscriptionDao;
+import com.stolser.javatraining.webproject.dao.DaoFactory;
+import com.stolser.javatraining.webproject.dao.PeriodicalDao;
+import com.stolser.javatraining.webproject.dao.SubscriptionDao;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.statistics.PeriodicalNumberByCategory;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
-import com.stolser.javatraining.webproject.model.storage.ConnectionPool;
-import com.stolser.javatraining.webproject.model.storage.ConnectionPoolProvider;
-import com.stolser.javatraining.webproject.model.storage.StorageException;
+import com.stolser.javatraining.webproject.connection_pool.ConnectionPool;
+import com.stolser.javatraining.webproject.connection_pool.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.service.PeriodicalService;
 
 import java.sql.Connection;

@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.controller;
 
-import com.stolser.javatraining.webproject.model.storage.StorageException;
+import com.stolser.javatraining.webproject.dao.exception.StorageException;
 
 import java.util.Locale;
 import java.util.NoSuchElementException;

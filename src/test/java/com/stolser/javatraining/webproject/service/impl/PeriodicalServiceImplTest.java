@@ -1,9 +1,9 @@
 package com.stolser.javatraining.webproject.service.impl;
 
-import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
-import com.stolser.javatraining.webproject.model.dao.periodical.PeriodicalDao;
+import com.stolser.javatraining.webproject.dao.DaoFactory;
+import com.stolser.javatraining.webproject.dao.PeriodicalDao;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
-import com.stolser.javatraining.webproject.model.storage.ConnectionPool;
+import com.stolser.javatraining.webproject.connection_pool.ConnectionPool;
 import com.stolser.javatraining.webproject.service.PeriodicalService;
 import org.junit.Before;
 import org.junit.Test;

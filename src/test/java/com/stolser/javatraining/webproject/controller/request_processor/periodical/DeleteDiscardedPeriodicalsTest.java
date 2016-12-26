@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.controller.request_processor.periodical;
 
-import com.stolser.javatraining.webproject.controller.validator.front_message.FrontMessageFactory;
+import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontMessageFactory;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.service.PeriodicalService;
 import org.junit.Before;

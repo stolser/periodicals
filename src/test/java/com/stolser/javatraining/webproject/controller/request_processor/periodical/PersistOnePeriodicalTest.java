@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.controller.request_processor.periodical;
 
-import com.stolser.javatraining.webproject.controller.validator.front_message.FrontMessageFactory;
+import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontMessageFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,12 +1,12 @@
 package com.stolser.javatraining.webproject.service.impl;
 
-import com.stolser.javatraining.webproject.model.dao.factory.DaoFactory;
-import com.stolser.javatraining.webproject.model.dao.role.RoleDao;
+import com.stolser.javatraining.webproject.dao.DaoFactory;
+import com.stolser.javatraining.webproject.dao.RoleDao;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.model.storage.ConnectionPool;
-import com.stolser.javatraining.webproject.model.storage.ConnectionPoolProvider;
-import com.stolser.javatraining.webproject.model.storage.StorageException;
+import com.stolser.javatraining.webproject.connection_pool.ConnectionPool;
+import com.stolser.javatraining.webproject.connection_pool.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.service.UserService;
 
 import java.sql.Connection;

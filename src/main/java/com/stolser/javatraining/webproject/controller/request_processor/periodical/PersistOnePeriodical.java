@@ -2,10 +2,10 @@ package com.stolser.javatraining.webproject.controller.request_processor.periodi
 
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
-import com.stolser.javatraining.webproject.controller.validator.front_message.FrontMessageFactory;
-import com.stolser.javatraining.webproject.controller.validator.front_message.FrontendMessage;
-import com.stolser.javatraining.webproject.controller.validator.ValidationResult;
-import com.stolser.javatraining.webproject.controller.validator.ValidatorFactory;
+import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontMessageFactory;
+import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.form_validator.ValidationResult;
+import com.stolser.javatraining.webproject.controller.form_validator.ValidatorFactory;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.service.PeriodicalService;
 import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;

@@ -1,8 +1,8 @@
 package com.stolser.javatraining.webproject.controller.request_processor.user;
 
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.validator.front_message.FrontMessageFactory;
-import com.stolser.javatraining.webproject.controller.validator.front_message.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontMessageFactory;
+import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.service.UserService;

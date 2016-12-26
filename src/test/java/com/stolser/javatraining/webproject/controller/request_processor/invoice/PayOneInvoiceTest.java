@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.controller.request_processor.invoice;
 
 import com.stolser.javatraining.webproject.controller.TestResources;
-import com.stolser.javatraining.webproject.controller.validator.front_message.FrontMessageFactory;
+import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontMessageFactory;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
