@@ -35,17 +35,22 @@
             </form>
         </div>
         <div class="col-xs-6 col-md-4 col-md-push-6 text-right">
-            <% if (session.getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME) != null) {%>
-            <%@include file="/WEB-INF/includes/topUserInfo.jsp" %>
-            <%} else if (!"/login.jsp".equals(request.getRequestURI())) {%>
-            <p><a href="/login.jsp"><fmt:message key="signin.label" bundle="${langGeneral}"/></a></p>
-            <%}%>
+            <c:choose>
+                <c:when test="${sessionScope[ApplicationResources.CURRENT_USER_ATTR_NAME] != null}">
+                    <%@include file="/WEB-INF/includes/topUserInfo.jsp" %>
+                </c:when>
+                <c:otherwise>
+                    <c:if test="${pageContext.request.requestURI != '/login.jsp'}">
+                        <p><a href="/login.jsp"><fmt:message key="signin.label" bundle="${langGeneral}"/></a></p>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
         </div>
 
         <div class="col-xs-12 col-md-6 col-md-pull-6">
-            <% if (session.getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME) != null) {%>
-            <%@include file="/WEB-INF/includes/topMenu.jsp" %>
-            <%}%>
+            <c:if test="${sessionScope[ApplicationResources.CURRENT_USER_ATTR_NAME] != null}">
+                <%@include file="/WEB-INF/includes/topMenu.jsp" %>
+            </c:if>
         </div>
     </div>
 

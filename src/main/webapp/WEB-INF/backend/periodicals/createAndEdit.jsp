@@ -15,7 +15,7 @@
 
         <form class="form-horizontal" role="form"
               method="post"
-              action="<% out.print(ApplicationResources.PERIODICAL_CREATE_UPDATE_URI); %>">
+              action="${ApplicationResources.PERIODICAL_CREATE_UPDATE_URI}">
             <div class="form-group hidden">
                 <input id="entityId" type="text" class="form-control"
                        name="entityId"
