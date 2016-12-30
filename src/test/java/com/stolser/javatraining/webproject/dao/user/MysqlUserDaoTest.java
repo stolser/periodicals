@@ -27,12 +27,14 @@ public class MysqlUserDaoTest {
         factory = DaoFactory.getMysqlDaoFactory();
         userDao = factory.getUserDao(conn);
 
-        expected = new User();
-        expected.setUserName("stolser");
-        expected.setFirstName("Oleg");
-        expected.setLastName("Stoliarov");
-        expected.setEmail("stolser@gmail.com");
-        expected.setStatus(User.Status.ACTIVE);
+        User.Builder userBuilder = new User.Builder();
+        userBuilder.setUserName("stolser")
+                .setFirstName("Oleg")
+                .setLastName("Stoliarov")
+                .setEmail("stolser@gmail.com")
+                .setStatus(User.Status.ACTIVE);
+
+        expected = userBuilder.build();
 
     }
 

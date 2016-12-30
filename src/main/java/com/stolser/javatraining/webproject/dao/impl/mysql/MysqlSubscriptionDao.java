@@ -1,9 +1,9 @@
 package com.stolser.javatraining.webproject.dao.impl.mysql;
 
-import com.stolser.javatraining.webproject.dao.exception.StorageException;
+import com.stolser.javatraining.webproject.controller.utils.DaoUtils;
 import com.stolser.javatraining.webproject.dao.SubscriptionDao;
+import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
-import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
@@ -16,10 +16,10 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 class MysqlSubscriptionDao implements SubscriptionDao {
     private static final String EXCEPTION_MSG_FINDING_ALL_PERIODICALS_BY_USER_ID =
             "Exception during finding all periodicals for userId = %d, " +
-            "periodicalId = %d";
+                    "periodicalId = %d";
     private static final String EXCEPTION_MSG_FINDING_ALL_BY_ID =
             "Exception during finding all periodicals for periodicalId = %d, " +
-            "status = %s";
+                    "status = %s";
     private static final String EXCEPTION_MSG_RETRIEVING_SUBSCRIPTIONS_FOR_USER =
             "Exception during retrieving subscriptions for a user: %s.";
     private static final String EXCEPTION_MSG_CREATING_SUBSCRIPTION =
@@ -82,23 +82,22 @@ class MysqlSubscriptionDao implements SubscriptionDao {
     }
 
     private Subscription newSubscriptionFromRs(ResultSet rs) throws SQLException {
-        Subscription subscription = new Subscription();
-        subscription.setId(rs.getLong(DB_SUBSCRIPTIONS_ID));
+        User.Builder userBuilder = new User.Builder();
+        userBuilder.setId(rs.getLong(DB_SUBSCRIPTIONS_USER_ID));
 
-        User user = new User();
-        user.setId(rs.getLong(DB_SUBSCRIPTIONS_USER_ID));
-        subscription.setUser(user);
+        Periodical.Builder periodicalBuilder = new Periodical.Builder();
+        periodicalBuilder.setId(rs.getLong(DB_SUBSCRIPTIONS_PERIODICAL_ID));
 
-        Periodical periodical = new Periodical();
-        periodical.setId(rs.getLong(DB_SUBSCRIPTIONS_PERIODICAL_ID));
-        subscription.setPeriodical(periodical);
+        Subscription.Builder subscriptionBuilder = new Subscription.Builder();
+        subscriptionBuilder.setId(rs.getLong(DB_SUBSCRIPTIONS_ID))
+                .setUser(userBuilder.build())
+                .setPeriodical(periodicalBuilder.build())
+                .setDeliveryAddress(rs.getString(DB_SUBSCRIPTIONS_DELIVERY_ADDRESS))
+                .setEndDate(rs.getTimestamp(DB_SUBSCRIPTIONS_END_DATE).toInstant())
+                .setStatus(Subscription.Status.valueOf(
+                        rs.getString(DB_SUBSCRIPTIONS_STATUS).toUpperCase()));
 
-        subscription.setDeliveryAddress(rs.getString(DB_SUBSCRIPTIONS_DELIVERY_ADDRESS));
-        subscription.setEndDate(rs.getTimestamp(DB_SUBSCRIPTIONS_END_DATE).toInstant());
-        subscription.setStatus(Subscription.Status.valueOf(
-                rs.getString(DB_SUBSCRIPTIONS_STATUS).toUpperCase()));
-
-        return subscription;
+        return subscriptionBuilder.build();
     }
 
     @Override
@@ -116,27 +115,16 @@ class MysqlSubscriptionDao implements SubscriptionDao {
 
             List<Subscription> subscriptions = new ArrayList<>();
             while (rs.next()) {
-                Periodical periodical = new Periodical();
-                periodical.setId(rs.getLong(DB_PERIODICALS_ID));
-                periodical.setName(rs.getString(DB_PERIODICALS_NAME));
-                periodical.setCategory(PeriodicalCategory.valueOf(
-                        rs.getString(DB_PERIODICALS_CATEGORY).toUpperCase()));
-                periodical.setPublisher(rs.getString(DB_PERIODICALS_PUBLISHER));
-                periodical.setDescription(rs.getString(DB_PERIODICALS_DESCRIPTION));
-                periodical.setOneMonthCost(rs.getLong(DB_PERIODICALS_ONE_MONTH_COST));
-                periodical.setStatus(Periodical.Status.valueOf(
-                        rs.getString(DB_PERIODICALS_STATUS).toUpperCase()));
+                Subscription.Builder subscriptionBuilder = new Subscription.Builder();
+                subscriptionBuilder.setId(rs.getLong(DB_SUBSCRIPTIONS_ID))
+                        .setUser(user)
+                        .setPeriodical(DaoUtils.getPeriodicalFromResultSet(rs))
+                        .setDeliveryAddress(rs.getString(DB_SUBSCRIPTIONS_DELIVERY_ADDRESS))
+                        .setEndDate(rs.getTimestamp(DB_SUBSCRIPTIONS_END_DATE).toInstant())
+                        .setStatus(Subscription.Status.valueOf(
+                                rs.getString(DB_SUBSCRIPTIONS_STATUS).toUpperCase()));
 
-                Subscription subscription = new Subscription();
-                subscription.setId(rs.getLong(DB_SUBSCRIPTIONS_ID));
-                subscription.setUser(user);
-                subscription.setPeriodical(periodical);
-                subscription.setDeliveryAddress(rs.getString(DB_SUBSCRIPTIONS_DELIVERY_ADDRESS));
-                subscription.setEndDate(rs.getTimestamp(DB_SUBSCRIPTIONS_END_DATE).toInstant());
-                subscription.setStatus(Subscription.Status.valueOf(
-                        rs.getString(DB_SUBSCRIPTIONS_STATUS).toUpperCase()));
-
-                subscriptions.add(subscription);
+                subscriptions.add(subscriptionBuilder.build());
             }
 
             return subscriptions;

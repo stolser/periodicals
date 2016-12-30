@@ -1,10 +1,10 @@
 package com.stolser.javatraining.webproject.dao.periodical;
 
-import com.stolser.javatraining.webproject.dao.PeriodicalDao;
+import com.stolser.javatraining.webproject.connection_pool.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.dao.DaoFactory;
+import com.stolser.javatraining.webproject.dao.PeriodicalDao;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
-import com.stolser.javatraining.webproject.connection_pool.ConnectionPoolProvider;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -19,9 +19,11 @@ public class MysqlPeriodicalDaoTest {
     private static final String NEW_PERIODICAL_NAME = "A new Periodical";
     private static final String NEW_PUBLISHER_NAME = "Test Publisher";
     private static final int ONE_MONTH_COST = 22;
+    private static final int PERIODICAL_TO_UPDATE_ID = 32;
     private static PeriodicalDao periodicalDao;
     private static Connection conn;
     private static DaoFactory factory;
+    private static Periodical expected;
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -29,16 +31,17 @@ public class MysqlPeriodicalDaoTest {
         factory = DaoFactory.getMysqlDaoFactory();
         periodicalDao = factory.getPeriodicalDao(conn);
 
+        Periodical.Builder periodicalBuilder = new Periodical.Builder();
+        periodicalBuilder.setName(PERIODICAL_NAME)
+                .setCategory(PeriodicalCategory.NEWS)
+                .setOneMonthCost(ONE_MONTH_COST)
+                .setStatus(Periodical.Status.INACTIVE);
+
+        expected = periodicalBuilder.build();
     }
 
     @Test
     public void findOneById_Should_ReturnOnePeriodical() throws Exception {
-        Periodical expected = new Periodical();
-        expected.setName(PERIODICAL_NAME);
-        expected.setCategory(PeriodicalCategory.NEWS);
-        expected.setOneMonthCost(22);
-        expected.setStatus(Periodical.Status.INACTIVE);
-
         assertPeriodicalData(expected, periodicalDao.findOneById(PERIODICAL_ID));
     }
 
@@ -50,13 +53,7 @@ public class MysqlPeriodicalDaoTest {
     }
 
     @Test
-    public void findOneByName_Should_ReturnCorrectValues() throws Exception {
-        Periodical expected = new Periodical();
-        expected.setName(PERIODICAL_NAME);
-        expected.setCategory(PeriodicalCategory.NEWS);
-        expected.setOneMonthCost(22);
-        expected.setStatus(Periodical.Status.INACTIVE);
-
+    public void findOneByName_Should_ReturnOnePeriodical() throws Exception {
         assertPeriodicalData(expected, periodicalDao.findOneByName(PERIODICAL_NAME));
     }
 
@@ -106,17 +103,17 @@ public class MysqlPeriodicalDaoTest {
     public void createNew_Should_IncreaseNumberOfPeriodicalsInDb_ByOne() throws Exception {
         int numberBefore = periodicalDao.findAll().size();
 
-        Periodical newPeriodical = new Periodical();
-        newPeriodical.setName(NEW_PERIODICAL_NAME);
-        newPeriodical.setCategory(PeriodicalCategory.NEWS);
-        newPeriodical.setPublisher(NEW_PUBLISHER_NAME);
-        newPeriodical.setOneMonthCost(ONE_MONTH_COST);
-        newPeriodical.setStatus(Periodical.Status.ACTIVE);
+        Periodical.Builder periodicalBuilder = new Periodical.Builder();
+        periodicalBuilder.setName(NEW_PERIODICAL_NAME)
+                .setCategory(PeriodicalCategory.NEWS)
+                .setPublisher(NEW_PUBLISHER_NAME)
+                .setOneMonthCost(ONE_MONTH_COST)
+                .setStatus(Periodical.Status.ACTIVE);
+        Periodical newPeriodical = periodicalBuilder.build();
 
         periodicalDao.createNew(newPeriodical);
 
         int numberAfter = periodicalDao.findAll().size();
-
         assertEquals(numberBefore, numberAfter - 1);
 
         Periodical periodicalFromDb = periodicalDao.findOneByName(NEW_PERIODICAL_NAME);
@@ -127,13 +124,14 @@ public class MysqlPeriodicalDaoTest {
     @Ignore(value = "change the status of the db")
     @Test
     public void update() throws Exception {
-        Periodical periodicalToUpdate = new Periodical();
-        periodicalToUpdate.setId(32);
-        periodicalToUpdate.setName(NEW_PERIODICAL_NAME);
-        periodicalToUpdate.setCategory(PeriodicalCategory.BUSINESS);
-        periodicalToUpdate.setPublisher(NEW_PUBLISHER_NAME);
-        periodicalToUpdate.setOneMonthCost(ONE_MONTH_COST + 10);
-        periodicalToUpdate.setStatus(Periodical.Status.INACTIVE);
+        Periodical.Builder periodicalBuilder = new Periodical.Builder();
+        periodicalBuilder.setId(PERIODICAL_TO_UPDATE_ID)
+                .setName(NEW_PERIODICAL_NAME)
+                .setCategory(PeriodicalCategory.BUSINESS)
+                .setPublisher(NEW_PUBLISHER_NAME)
+                .setOneMonthCost(ONE_MONTH_COST + 10)
+                .setStatus(Periodical.Status.INACTIVE);
+        Periodical periodicalToUpdate = periodicalBuilder.build();
 
         periodicalDao.update(periodicalToUpdate);
 

@@ -26,14 +26,16 @@ public class AuthorizationTest {
         Set<String> adminRole = new HashSet<>();
         adminRole.add(ADMIN_ROLE_NAME);
 
-        admin = new User();
-        admin.setRoles(adminRole);
+        User.Builder builder = new User.Builder();
+        builder.setRoles(adminRole);
+        admin = builder.build();
 
         Set<String> notAdminRole = new HashSet<>();
         adminRole.add(NOT_ADMIN_ROLE);
 
-        notAdmin = new User();
-        notAdmin.setRoles(notAdminRole);
+        builder = new User.Builder();
+        builder.setRoles(notAdminRole);
+        notAdmin = builder.build();
 
         when(request.getSession()).thenReturn(session);
     }

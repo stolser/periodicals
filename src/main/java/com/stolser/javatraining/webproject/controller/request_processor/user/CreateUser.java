@@ -1,8 +1,8 @@
 package com.stolser.javatraining.webproject.controller.request_processor.user;
 
-import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontMessageFactory;
 import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.service.UserService;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
-public class CreateUser implements RequestProcessor{
+public class CreateUser implements RequestProcessor {
 
     private UserService userService = UserServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
@@ -50,7 +50,6 @@ public class CreateUser implements RequestProcessor{
         }
 
 
-
         return null;
 
     }
@@ -61,14 +60,14 @@ public class CreateUser implements RequestProcessor{
     }
 
     private void createUser(String username, String password, String userRole) {
-        Credential credential = new Credential();
-        credential.setUserName(username);
-        credential.setPasswordHash(getPasswordHash(password));
+        Credential.Builder credentialBuilder = new Credential.Builder();
+        credentialBuilder.setUserName(username)
+                .setPasswordHash(getPasswordHash(password));
 
-        User user = new User();
-        user.setStatus(User.Status.ACTIVE);
+        User.Builder userBuilder = new User.Builder();
+        userBuilder.setStatus(User.Status.ACTIVE);
 
-        userService.createNewUser(user, credential, userRole);
+        userService.createNewUser(userBuilder.build(), credentialBuilder.build(), userRole);
 
     }
 

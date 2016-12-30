@@ -44,7 +44,7 @@ public class InvoiceServiceImplTest {
     @Mock
     private ConnectionPool connectionPool;
 
-    private Invoice invoice = new Invoice();
+    private Invoice invoice;
     private Subscription subscription = mock(Subscription.class);
     private Periodical periodical = new Periodical();
 
@@ -60,10 +60,12 @@ public class InvoiceServiceImplTest {
 
         periodical.setId(PERIODICAL_ID);
 
-        invoice.setId(INVOICE_ID);
-        invoice.setUser(user);
-        invoice.setPeriodical(periodical);
-        invoice.setSubscriptionPeriod(1);
+        Invoice.Builder invoiceBuilder = new Invoice.Builder();
+        invoiceBuilder.setId(INVOICE_ID)
+                .setUser(user)
+                .setPeriodical(periodical)
+                .setSubscriptionPeriod(1);
+        invoice = invoiceBuilder.build();
 
         when(subscription.getId()).thenReturn(SUBSCRIPTION_ID);
         when(subscription.getStatus()).thenReturn(Subscription.Status.INACTIVE);

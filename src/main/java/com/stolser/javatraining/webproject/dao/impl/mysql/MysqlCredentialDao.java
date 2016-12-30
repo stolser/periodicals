@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.dao.impl.mysql;
 
-import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.dao.CredentialDao;
+import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 
 import java.sql.Connection;
@@ -33,10 +33,11 @@ class MysqlCredentialDao implements CredentialDao {
 
             Credential credential = null;
             if (rs.next()) {
-                credential = new Credential();
-                credential.setId(rs.getLong(DB_CREDENTIALS_ID));
-                credential.setUserName(rs.getString(DB_CREDENTIALS_USER_NAME));
-                credential.setPasswordHash(rs.getString(DB_CREDENTIALS_PASSWORD_HASH));
+                Credential.Builder credentialBuilder = new Credential.Builder();
+                credentialBuilder.setId(rs.getLong(DB_CREDENTIALS_ID))
+                        .setUserName(rs.getString(DB_CREDENTIALS_USER_NAME))
+                        .setPasswordHash(rs.getString(DB_CREDENTIALS_PASSWORD_HASH));
+                credential = credentialBuilder.build();
             }
 
             return credential;

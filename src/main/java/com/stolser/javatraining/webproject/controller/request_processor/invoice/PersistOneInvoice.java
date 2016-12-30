@@ -119,17 +119,18 @@ public class PersistOneInvoice implements RequestProcessor {
 
         long totalSum = subscriptionPeriod * periodicalInDb.getOneMonthCost();
         long userIdFromUri = HttpUtils.getFirstIdFromUri(request.getRequestURI());
-        User user = new User();
-        user.setId(userIdFromUri);
+        User.Builder userBuilder = new User.Builder();
+        userBuilder.setId(userIdFromUri);
+        User user = userBuilder.build();
 
-        Invoice newInvoice = new Invoice();
-        newInvoice.setUser(user);
-        newInvoice.setPeriodical(periodicalInDb);
-        newInvoice.setSubscriptionPeriod(subscriptionPeriod);
-        newInvoice.setTotalSum(totalSum);
-        newInvoice.setCreationDate(Instant.now());
-        newInvoice.setStatus(Invoice.Status.NEW);
+        Invoice.Builder invoiceBuilder = new Invoice.Builder();
+        invoiceBuilder.setUser(user)
+                .setPeriodical(periodicalInDb)
+                .setSubscriptionPeriod(subscriptionPeriod)
+                .setTotalSum(totalSum)
+                .setCreationDate(Instant.now())
+                .setStatus(Invoice.Status.NEW);
 
-        return newInvoice;
+        return invoiceBuilder.build();
     }
 }

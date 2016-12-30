@@ -5,6 +5,8 @@ import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import java.time.Instant;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class Subscription {
     private long id;
     /**
@@ -31,6 +33,49 @@ public class Subscription {
         ACTIVE, INACTIVE;
     }
 
+    public static class Builder {
+        private Subscription subscription;
+
+        public Builder() {
+            subscription = new Subscription();
+        }
+
+        public Builder setId(long id) {
+            subscription.setId(id);
+            return this;
+        }
+
+        public Builder setUser(User user) {
+            subscription.setUser(user);
+            return this;
+        }
+
+        public Builder setPeriodical(Periodical periodical) {
+            subscription.setPeriodical(periodical);
+            return this;
+        }
+
+        public Builder setDeliveryAddress(String deliveryAddress) {
+            subscription.setDeliveryAddress(deliveryAddress);
+            return this;
+        }
+
+        public Builder setEndDate(Instant endDate) {
+            subscription.setEndDate(endDate);
+            return this;
+        }
+
+        public Builder setStatus(Status status) {
+            subscription.setStatus(status);
+            return this;
+        }
+
+        public Subscription build() {
+            return subscription;
+        }
+
+    }
+
     public long getId() {
         return id;
     }
@@ -44,6 +89,7 @@ public class Subscription {
     }
 
     public void setUser(User user) {
+        checkNotNull(user);
         this.user = user;
     }
 
@@ -52,6 +98,7 @@ public class Subscription {
     }
 
     public void setPeriodical(Periodical periodical) {
+        checkNotNull(periodical);
         this.periodical = periodical;
     }
 
@@ -60,6 +107,7 @@ public class Subscription {
     }
 
     public void setDeliveryAddress(String deliveryAddress) {
+        checkNotNull(deliveryAddress);
         this.deliveryAddress = deliveryAddress;
     }
 
@@ -68,6 +116,7 @@ public class Subscription {
     }
 
     public void setEndDate(Instant endDate) {
+        checkNotNull(endDate);
         this.endDate = endDate;
     }
 
@@ -76,6 +125,7 @@ public class Subscription {
     }
 
     public void setStatus(Status status) {
+        checkNotNull(status);
         this.status = status;
     }
 
@@ -83,5 +133,34 @@ public class Subscription {
     public String toString() {
         return String.format("Subscription{id=%d, user=%s, periodical=%s, deliveryAddress='%s', " +
                 "endDate=%s, status=%s}", id, user, periodical, deliveryAddress, endDate, status);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Subscription that = (Subscription) o;
+
+        if (id != that.id) {
+            return false;
+        }
+        if (user != null ? !user.equals(that.user) : that.user != null) {
+            return false;
+        }
+        return periodical != null ? periodical.equals(that.periodical) : that.periodical == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (periodical != null ? periodical.hashCode() : 0);
+        return result;
     }
 }

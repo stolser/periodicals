@@ -1,16 +1,21 @@
 package com.stolser.javatraining.webproject.dao.impl.mysql;
 
-import com.stolser.javatraining.webproject.dao.exception.StorageException;
+import com.stolser.javatraining.webproject.controller.utils.DaoUtils;
 import com.stolser.javatraining.webproject.dao.PeriodicalDao;
+import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.DB_PERIODICALS_ID;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.DB_PERIODICALS_NAME;
 
 class MysqlPeriodicalDao implements PeriodicalDao {
     private static final String INCORRECT_FIELD_NAME = "There is no case for such a fieldName." +
@@ -69,7 +74,7 @@ class MysqlPeriodicalDao implements PeriodicalDao {
 
             ResultSet rs = st.executeQuery();
 
-            return rs.next() ? getNextPeriodicalFromResults(rs) : null;
+            return rs.next() ? DaoUtils.getPeriodicalFromResultSet(rs) : null;
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_RETRIEVING_PERIODICAL,
@@ -89,7 +94,7 @@ class MysqlPeriodicalDao implements PeriodicalDao {
 
             List<Periodical> periodicals = new ArrayList<>();
             while (rs.next()) {
-                Periodical periodical = getNextPeriodicalFromResults(rs);
+                Periodical periodical = DaoUtils.getPeriodicalFromResultSet(rs);
 
                 periodicals.add(periodical);
             }
@@ -101,22 +106,6 @@ class MysqlPeriodicalDao implements PeriodicalDao {
 
             throw new StorageException(message, e);
         }
-    }
-
-    private Periodical getNextPeriodicalFromResults(ResultSet rs) throws SQLException {
-        Periodical periodical = new Periodical();
-
-        periodical.setId(rs.getLong(DB_PERIODICALS_ID));
-        periodical.setName(rs.getString(DB_PERIODICALS_NAME));
-        periodical.setCategory(PeriodicalCategory.valueOf(
-                rs.getString(DB_PERIODICALS_CATEGORY).toUpperCase()));
-        periodical.setPublisher(rs.getString(DB_PERIODICALS_PUBLISHER));
-        periodical.setDescription(rs.getString(DB_PERIODICALS_DESCRIPTION));
-        periodical.setOneMonthCost(rs.getLong(DB_PERIODICALS_ONE_MONTH_COST));
-        periodical.setStatus(Periodical.Status.valueOf(
-                rs.getString(DB_PERIODICALS_STATUS).toUpperCase()));
-
-        return periodical;
     }
 
     @Override
@@ -132,7 +121,7 @@ class MysqlPeriodicalDao implements PeriodicalDao {
 
             List<Periodical> periodicals = new ArrayList<>();
             while (rs.next()) {
-                Periodical periodical = getNextPeriodicalFromResults(rs);
+                Periodical periodical = DaoUtils.getPeriodicalFromResultSet(rs);
 
                 periodicals.add(periodical);
             }
@@ -247,7 +236,7 @@ class MysqlPeriodicalDao implements PeriodicalDao {
 
         try {
             PreparedStatement st = conn.prepareStatement(sqlStatement);
-            st.setString( 1, Periodical.Status.DISCARDED.name());
+            st.setString(1, Periodical.Status.DISCARDED.name());
 
             st.executeUpdate();
 

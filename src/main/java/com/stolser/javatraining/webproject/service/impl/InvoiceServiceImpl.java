@@ -172,14 +172,15 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     private void createAndPersistNewSubscription(User userFromDb, Periodical periodical,
                                                  int subscriptionPeriod, SubscriptionDao subscriptionDao) {
-        Subscription newSubscription = new Subscription();
-        newSubscription.setUser(userFromDb);
-        newSubscription.setPeriodical(periodical);
-        newSubscription.setDeliveryAddress(userFromDb.getAddress());
-        newSubscription.setEndDate(getEndDate(Instant.now(), subscriptionPeriod));
-        newSubscription.setStatus(Subscription.Status.ACTIVE);
+        Subscription.Builder builder = new Subscription.Builder();
 
-        subscriptionDao.createNew(newSubscription);
+        builder.setUser(userFromDb)
+                .setPeriodical(periodical)
+                .setDeliveryAddress(userFromDb.getAddress())
+                .setEndDate(getEndDate(Instant.now(), subscriptionPeriod))
+                .setStatus(Subscription.Status.ACTIVE);
+
+        subscriptionDao.createNew(builder.build());
     }
 
     private boolean userDoesNotHaveSubscriptionOnThisPeriodical(Subscription existingSubscription) {

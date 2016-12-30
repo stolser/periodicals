@@ -39,26 +39,25 @@ public class HttpUtils {
     }
 
     public static String getRedirectionExceptionMessage(HttpServletRequest request,
-                                                       String destination) {
+                                                        String destination) {
 
         return String.format(REDIRECTION_FROM_TO_TEXT,
                 request.getRequestURI(), destination);
     }
 
     public static Periodical getPeriodicalFromRequest(HttpServletRequest request) {
-        Periodical periodical = new Periodical();
+        Periodical.Builder periodicalBuilder = new Periodical.Builder();
+        periodicalBuilder.setId(Long.valueOf(request.getParameter(ENTITY_ID_PARAM_NAME)))
+                .setName(request.getParameter(PERIODICAL_NAME_PARAM_NAME))
+                .setCategory(PeriodicalCategory.valueOf(
+                        request.getParameter(PERIODICAL_CATEGORY_PARAM_NAME).toUpperCase()))
+                .setPublisher(request.getParameter(PERIODICAL_PUBLISHER_PARAM_NAME))
+                .setDescription(request.getParameter(PERIODICAL_DESCRIPTION_PARAM_NAME).trim())
+                .setOneMonthCost(Long.valueOf(request.getParameter(PERIODICAL_COST_PARAM_NAME)))
+                .setStatus(Periodical.Status.valueOf(
+                        (request.getParameter(PERIODICAL_STATUS_PARAM_NAME)).toUpperCase()));
 
-        periodical.setId(Long.valueOf(request.getParameter(ENTITY_ID_PARAM_NAME)));
-        periodical.setName(request.getParameter(PERIODICAL_NAME_PARAM_NAME));
-        periodical.setCategory(PeriodicalCategory.valueOf(
-                request.getParameter(PERIODICAL_CATEGORY_PARAM_NAME).toUpperCase()));
-        periodical.setPublisher(request.getParameter(PERIODICAL_PUBLISHER_PARAM_NAME));
-        periodical.setDescription(request.getParameter(PERIODICAL_DESCRIPTION_PARAM_NAME).trim());
-        periodical.setOneMonthCost(Long.valueOf(request.getParameter(PERIODICAL_COST_PARAM_NAME)));
-        periodical.setStatus(Periodical.Status.valueOf(
-                (request.getParameter(PERIODICAL_STATUS_PARAM_NAME)).toUpperCase()));
-
-        return periodical;
+        return periodicalBuilder.build();
     }
 
     public static int getFirstIdFromUri(String uri) {
@@ -87,7 +86,7 @@ public class HttpUtils {
     }
 
     public static void sendRedirect(HttpServletRequest request, HttpServletResponse response,
-                                      String redirectUri) {
+                                    String redirectUri) {
         try {
             response.sendRedirect(redirectUri);
 

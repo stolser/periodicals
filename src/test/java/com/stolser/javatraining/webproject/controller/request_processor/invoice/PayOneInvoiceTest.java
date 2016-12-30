@@ -44,10 +44,11 @@ public class PayOneInvoiceTest {
         periodical.setId(PERIODICAL_ID);
         periodical.setStatus(Periodical.Status.ACTIVE);
 
-        invoice = new Invoice();
-        invoice.setId(10);
-        invoice.setStatus(Invoice.Status.NEW);
-        invoice.setPeriodical(periodical);
+        Invoice.Builder invoiceBuilder = new Invoice.Builder();
+        invoiceBuilder.setId(10)
+                .setStatus(Invoice.Status.NEW)
+                .setPeriodical(periodical);
+        invoice = invoiceBuilder.build();
 
         user = new User();
         user.setId(2);

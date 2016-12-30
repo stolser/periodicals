@@ -88,19 +88,18 @@ class MysqlUserDao implements UserDao {
     }
 
     private User getUserFromResults(ResultSet rs) throws SQLException {
-        User user;
+        User.Builder builder = new User.Builder();
 
-        user = new User();
-        user.setId(rs.getLong(DB_USERS_ID));
-        user.setUserName(rs.getString(DB_CREDENTIALS_USER_NAME));
-        user.setFirstName(rs.getString(DB_USERS_FIRST_NAME));
-        user.setLastName(rs.getString(DB_USERS_LAST_NAME));
-        user.setBirthday(new Date(rs.getDate(DB_USERS_BIRTHDAY).getTime()));
-        user.setEmail(rs.getString(DB_USERS_EMAIL));
-        user.setAddress(rs.getString(DB_USERS_ADDRESS));
-        user.setStatus(User.Status.valueOf(rs.getString(DB_USERS_STATUS).toUpperCase()));
+        builder.setId(rs.getLong(DB_USERS_ID))
+                .setUserName(rs.getString(DB_CREDENTIALS_USER_NAME))
+                .setFirstName(rs.getString(DB_USERS_FIRST_NAME))
+                .setLastName(rs.getString(DB_USERS_LAST_NAME))
+                .setBirthday(new Date(rs.getDate(DB_USERS_BIRTHDAY).getTime()))
+                .setEmail(rs.getString(DB_USERS_EMAIL))
+                .setAddress(rs.getString(DB_USERS_ADDRESS))
+                .setStatus(User.Status.valueOf(rs.getString(DB_USERS_STATUS).toUpperCase()));
 
-        return user;
+        return builder.build();
     }
 
     @Override

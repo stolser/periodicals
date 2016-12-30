@@ -1,10 +1,10 @@
 package com.stolser.javatraining.webproject.dao.impl.mysql;
 
 import com.stolser.javatraining.webproject.dao.InvoiceDao;
+import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.dao.exception.StorageException;
 
 import java.sql.*;
 import java.time.Instant;
@@ -185,24 +185,23 @@ class MysqlInvoiceDao implements InvoiceDao {
     }
 
     private Invoice getInvoiceFromRs(ResultSet rs) throws SQLException {
-        Invoice invoice = new Invoice();
-        invoice.setId(rs.getLong(DB_INVOICES_ID));
-
-        User user = new User();
-        user.setId(rs.getLong(DB_INVOICES_USER_ID));
-        invoice.setUser(user);
+        User.Builder userBuilder = new User.Builder();
+        userBuilder.setId(rs.getLong(DB_INVOICES_USER_ID));
 
         Periodical periodical = new Periodical();
         periodical.setId(rs.getLong(DB_INVOICES_PERIODICAL_ID));
-        invoice.setPeriodical(periodical);
 
-        invoice.setSubscriptionPeriod(rs.getInt(DB_INVOICES_PERIOD));
-        invoice.setTotalSum(rs.getLong(DB_INVOICES_TOTAL_SUM));
-        invoice.setCreationDate(getCreationDateFromResults(rs));
-        invoice.setPaymentDate(getPaymentDateFromResults(rs));
-        invoice.setStatus(Invoice.Status.valueOf(rs.getString(DB_INVOICES_STATUS).toUpperCase()));
+        Invoice.Builder invoiceBuilder = new Invoice.Builder();
+        invoiceBuilder.setId(rs.getLong(DB_INVOICES_ID))
+                .setUser(userBuilder.build())
+                .setPeriodical(periodical)
+                .setSubscriptionPeriod(rs.getInt(DB_INVOICES_PERIOD))
+                .setTotalSum(rs.getLong(DB_INVOICES_TOTAL_SUM))
+                .setCreationDate(getCreationDateFromResults(rs))
+                .setPaymentDate(getPaymentDateFromResults(rs))
+                .setStatus(Invoice.Status.valueOf(rs.getString(DB_INVOICES_STATUS).toUpperCase()));
 
-        return invoice;
+        return invoiceBuilder.build();
     }
 
     private Instant getCreationDateFromResults(ResultSet rs) throws SQLException {
