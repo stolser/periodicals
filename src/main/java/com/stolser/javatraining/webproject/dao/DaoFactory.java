@@ -13,6 +13,6 @@ public abstract class DaoFactory {
     public abstract InvoiceDao getInvoiceDao(Connection conn);
 
     public static DaoFactory getMysqlDaoFactory() {
-        return new MysqlDaoFactory();
+        return MysqlDaoFactory.getInstance();
     }
 }

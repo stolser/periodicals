@@ -11,6 +11,15 @@ import com.stolser.javatraining.webproject.dao.UserDao;
 import java.sql.Connection;
 
 public class MysqlDaoFactory extends DaoFactory {
+    private MysqlDaoFactory() {}
+
+    private static class InstanceHolder {
+        private static final MysqlDaoFactory INSTANCE = new MysqlDaoFactory();
+    }
+
+    public static DaoFactory getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
 
     @Override
     public PeriodicalDao getPeriodicalDao(Connection conn) {
