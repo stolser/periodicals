@@ -1,6 +1,5 @@
 package com.stolser.javatraining.webproject.controller.utils;
 
-import com.stolser.javatraining.webproject.controller.CustomRedirectException;
 import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontendMessage;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
@@ -10,6 +9,7 @@ import com.stolser.javatraining.webproject.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,11 +90,11 @@ public class HttpUtils {
         try {
             response.sendRedirect(redirectUri);
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             String message = String.format(EXCEPTION_DURING_REDIRECTION_TEXT,
                     HttpUtils.getUserIdFromSession(request), redirectUri);
 
-            throw new CustomRedirectException(message, e);
+            throw new RuntimeException(message, e);
         }
     }
 

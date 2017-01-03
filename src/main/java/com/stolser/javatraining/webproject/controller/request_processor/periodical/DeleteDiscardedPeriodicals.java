@@ -1,6 +1,5 @@
 package com.stolser.javatraining.webproject.controller.request_processor.periodical;
 
-import com.stolser.javatraining.webproject.controller.CustomRedirectException;
 import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontMessageFactory;
@@ -51,7 +50,7 @@ public class DeleteDiscardedPeriodicals implements RequestProcessor {
             String message = HttpUtils.getRedirectionExceptionMessage(request,
                     redirectUri);
 
-            throw new CustomRedirectException(message, e);
+            throw new RuntimeException(message, e);
         }
     }
 
