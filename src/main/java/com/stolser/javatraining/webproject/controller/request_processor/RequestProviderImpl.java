@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.controller.request_processor;
 
+import com.stolser.javatraining.webproject.controller.form_validator.ValidationProcessor;
 import com.stolser.javatraining.webproject.controller.request_processor.admin_panel.DisplayAdminPanel;
 import com.stolser.javatraining.webproject.controller.request_processor.invoice.PayOneInvoice;
 import com.stolser.javatraining.webproject.controller.request_processor.invoice.PersistOneInvoice;
@@ -20,6 +21,7 @@ public final class RequestProviderImpl implements RequestProvider {
     public static final String GET_ADMIN_PANEL_REQUEST_PATTERN = "GET:/backend/adminPanel/?";
     public static final String GET_ALL_USERS_REQUEST_PATTERN = "GET:/backend/users/?";
     public static final String GET_CURRENT_USER_REQUEST_PATTERN = "GET:/backend/users/currentUser/?";
+    public static final String POST_SIGN_IN_REQUEST_PATTERN = "POST:/backend/signIn/?";
     public static final String POST_PERSIST_INVOICE_REQUEST_PATTERN = "POST:/backend/users/\\d+/invoices/?";
     public static final String POST_PAY_INVOICE_REQUEST_PATTERN = "POST:/backend/users/\\d+/invoices/\\d+/pay/?";
     public static final String GET_ONE_PERIODICAL_REQUEST_PATTERN = "GET:/backend/periodicals/\\d+";
@@ -29,13 +31,14 @@ public final class RequestProviderImpl implements RequestProvider {
     public static final String GET_UPDATE_PERIODICAL_REQUEST_PATTERN = "GET:/backend/periodicals/\\d+/update/?";
     public static final String POST_DELETE_PERIODICALS_REQUEST_PATTERN = "POST:/backend/periodicals/discarded/?";
     public static final String GET_SIGN_OUT_REQUEST_PATTERN = "GET:/backend/signOut/?";
+    public static final String POST_SIGN_UP = "POST:/backend/signUp";
+    public static final String POST_FORM_VALIDATOR = "POST:/backend/validation";
+
     private static final Map<String, RequestProcessor> requestMapping = new HashMap<>();
     private static final String NO_MAPPING_FOR_SUCH_REQUEST = "There no mapping for such a request: '%s'.";
 
-
-    private static final String POST_SIGN_UP = "POST:signUp";
-
     static {
+        requestMapping.put(POST_SIGN_IN_REQUEST_PATTERN, new SignIn());
         requestMapping.put(GET_BACKEND_REQUEST_PATTERN, new BackendHomePage());
         requestMapping.put(GET_ADMIN_PANEL_REQUEST_PATTERN, new DisplayAdminPanel());
         requestMapping.put(GET_ALL_USERS_REQUEST_PATTERN, new DisplayAllUsers());
@@ -50,10 +53,10 @@ public final class RequestProviderImpl implements RequestProvider {
         requestMapping.put(POST_DELETE_PERIODICALS_REQUEST_PATTERN, new DeleteDiscardedPeriodicals());
         requestMapping.put(GET_SIGN_OUT_REQUEST_PATTERN, new SignOut());
         requestMapping.put(POST_SIGN_UP, new CreateUser());
+        requestMapping.put(POST_FORM_VALIDATOR, new ValidationProcessor());
     }
 
-    private RequestProviderImpl() {
-    }
+    private RequestProviderImpl() {}
 
     private static class InstanceHolder {
         private static final RequestProviderImpl INSTANCE = new RequestProviderImpl();

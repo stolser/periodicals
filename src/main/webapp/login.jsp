@@ -9,7 +9,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title"><fmt:message key="credential.signin.title" bundle="${credential}"/></h3>
                 <form method="POST" name="loginform" id="loginform"
-                      action="/signIn"
+                      action="/backend/signIn"
                       accept-charset="UTF-8" role="form">
                     <div class="form-group validated required">
                         <label class="control-label" for="userName">

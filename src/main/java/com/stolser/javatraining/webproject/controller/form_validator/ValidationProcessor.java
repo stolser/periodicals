@@ -1,13 +1,12 @@
 package com.stolser.javatraining.webproject.controller.form_validator;
 
+import com.stolser.javatraining.webproject.controller.request_processor.RequestProcessor;
 import com.stolser.javatraining.webproject.view.SystemLocale;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,17 +22,18 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
  * Validates a parameter from the request and sends a json with the validation result.
  * Can be used for ajax validation of input field values.
  */
-public class ValidationServlet extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ValidationServlet.class);
-    private static final String EXCEPTION_DURING_PUTTING_VALUES_INTO_JSON_OBJECT = "Exception during putting values into json object.";
-    public static final String JSON_CONTENT_TYPE = "application/json";
-    public static final String STATUS_CODE_JSON_RESPONSE = "statusCode";
-    public static final String VALIDATION_MESSAGE_JSON_RESPONSE = "validationMessage";
+public class ValidationProcessor implements RequestProcessor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ValidationProcessor.class);
+    private static final String EXCEPTION_DURING_PUTTING_VALUES_INTO_JSON_OBJECT =
+            "Exception during putting values into json object.";
+    private static final String JSON_CONTENT_TYPE = "application/json";
+    private static final String STATUS_CODE_JSON_RESPONSE = "statusCode";
+    private static final String VALIDATION_MESSAGE_JSON_RESPONSE = "validationMessage";
+    private static final String EXCEPTION_DURING_VALIDATION = "Exception during validation.";
     private ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         String paramName = request.getParameter(PARAM_NAME);
         String paramValue = request.getParameter(PARAM_VALUE);
@@ -50,9 +50,15 @@ public class ValidationServlet extends HttpServlet {
             LOGGER.error(EXCEPTION_DURING_PUTTING_VALUES_INTO_JSON_OBJECT, e);
         }
 
-        PrintWriter writer = response.getWriter();
-        writer.println(jsonResponse.toString());
-        writer.flush();
+        try {
+            PrintWriter writer = response.getWriter();
+            writer.println(jsonResponse.toString());
+            writer.flush();
+
+            return null;
+        } catch (IOException e) {
+            throw new RuntimeException(EXCEPTION_DURING_VALIDATION, e);
+        }
     }
 
     private void removeMessagesForCurrentParam(HttpSession session, String paramName) {

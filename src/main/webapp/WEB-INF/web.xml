@@ -49,24 +49,6 @@
     </filter-mapping>
 
     <servlet>
-        <servlet-name>SignInServlet</servlet-name>
-        <servlet-class>com.stolser.javatraining.webproject.controller.security.SignInServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SignInServlet</servlet-name>
-        <url-pattern>/signIn</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>ValidationServlet</servlet-name>
-        <servlet-class>com.stolser.javatraining.webproject.controller.form_validator.ValidationServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ValidationServlet</servlet-name>
-        <url-pattern>/backend/validation</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>FrontController</servlet-name>
         <servlet-class>com.stolser.javatraining.webproject.controller.FrontController</servlet-class>
     </servlet>

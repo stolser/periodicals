@@ -40,7 +40,7 @@ public class FrontController extends HttpServlet {
             String viewName = requestProvider.getRequestProcessor(request).process(request, response);
             dispatch(viewName, request, response);
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOGGER.error(USER_ID_REQUEST_URI,
                     HttpUtils.getUserIdFromSession(request), request.getRequestURI(), e);
 

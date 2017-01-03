@@ -1,22 +1,16 @@
-package com.stolser.javatraining.webproject.controller.security;
+package com.stolser.javatraining.webproject.controller.request_processor;
 
 import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontMessageFactory;
 import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.service.UserService;
 import com.stolser.javatraining.webproject.service.impl.UserServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,18 +20,12 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
  * Performs validation of the username, checks the password for correctness, checks that
  * this user is active (not blocked) and if everything is OK, adds this user into the session.
  */
-public class SignInServlet extends HttpServlet {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SignInServlet.class);
-    public static final String ALGORITHM_NAME = "MD5";
-    private static final String EXCEPTION_DURING_GETTING_MESSAGE_DIGEST_FOR_MD5 =
-            "Exception during getting MessageDigest for 'MD5'";
+public class SignIn implements RequestProcessor {
     private UserService userService = UserServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         Map<String, FrontendMessage> messages = new HashMap<>();    // messages to display on the frontend;
         HttpSession session = request.getSession();
         String redirectUri;
@@ -76,7 +64,9 @@ public class SignInServlet extends HttpServlet {
 
         session.setAttribute(USERNAME_ATTR_NAME, username);
         session.setAttribute(MESSAGES_ATTR_NAME, messages);
-        response.sendRedirect(redirectUri);
+        HttpUtils.sendRedirect(request, response, redirectUri);
+
+        return null;
     }
 
     private String signInThisUserAndGetRedirectUri(HttpServletRequest request, HttpSession session,
@@ -97,7 +87,7 @@ public class SignInServlet extends HttpServlet {
     }
 
     private boolean passwordIsCorrect(String password, Credential credential) {
-        return getPasswordHash(password)
+        return HttpUtils.getPasswordHash(password)
                 .equals(credential.getPasswordHash());
     }
 
@@ -112,27 +102,5 @@ public class SignInServlet extends HttpServlet {
 
     private boolean usernameAndPasswordIsNotEmpty(String username, String password) {
         return (username != null) && (password != null) && (!"".equals(username)) && (!"".equals(password));
-    }
-
-    private String getPasswordHash(String password) {
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance(ALGORITHM_NAME);
-
-        } catch (NoSuchAlgorithmException e) {
-            LOGGER.error(EXCEPTION_DURING_GETTING_MESSAGE_DIGEST_FOR_MD5, e);
-            throw new RuntimeException();
-        }
-
-        md.update(password.getBytes());
-        byte byteData[] = md.digest();
-
-        StringBuilder builder = new StringBuilder();
-        for (byte aByteData : byteData) {
-            builder.append(Integer.toString((aByteData & 0xff) + 0x100, 16)
-                    .substring(1));
-        }
-
-        return builder.toString();
     }
 }

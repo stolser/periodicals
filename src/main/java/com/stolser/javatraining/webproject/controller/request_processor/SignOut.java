@@ -18,8 +18,7 @@ public class SignOut implements RequestProcessor {
         request.getSession().removeAttribute(CURRENT_USER_ATTR_NAME);
         request.getSession().invalidate();
 
-        String redirectUri = SIGN_IN_URI;
-        HttpUtils.sendRedirect(request, response, redirectUri);
+        HttpUtils.sendRedirect(request, response, SIGN_IN_URI);
 
         return null;
     }

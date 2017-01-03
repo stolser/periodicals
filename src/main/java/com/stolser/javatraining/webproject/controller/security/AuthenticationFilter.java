@@ -7,6 +7,8 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
@@ -25,7 +27,7 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if(request.getRequestURI().contains("signUp")) {
+        if(requestDoesNotRequireAuthentication(request)) {
             chain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -43,6 +45,13 @@ public class AuthenticationFilter implements Filter {
         } else {
             chain.doFilter(servletRequest, servletResponse);
         }
+    }
+
+    private boolean requestDoesNotRequireAuthentication(HttpServletRequest request) {
+        List<String> unProtectedUris = Arrays.asList("/backend/signIn", "/backend/signUp");
+        String requestUri = request.getRequestURI();
+
+        return unProtectedUris.contains(requestUri);
     }
 
     @Override

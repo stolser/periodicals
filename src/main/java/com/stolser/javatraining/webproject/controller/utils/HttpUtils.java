@@ -7,10 +7,14 @@ import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCat
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.service.UserService;
 import com.stolser.javatraining.webproject.service.impl.UserServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +25,10 @@ import java.util.regex.Pattern;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 public class HttpUtils {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtils.class);
+    private static final String ALGORITHM_NAME = "MD5";
+    private static final String EXCEPTION_DURING_GETTING_MESSAGE_DIGEST_FOR_MD5 =
+            "Exception during getting MessageDigest for 'MD5'";
     private static final String REDIRECTION_FROM_TO_TEXT = "During redirection from \"%s\" to \"%s\"";
     private static final String URI_MUST_CONTAIN_ID_TEXT = "Uri (%s) must contain id.";
     private static final String EXCEPTION_DURING_REDIRECTION_TEXT = "User id = %d. Exception during redirection to '%s'.";
@@ -115,5 +122,27 @@ public class HttpUtils {
         }
 
         return viewName;
+    }
+
+    public static String getPasswordHash(String password) {
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance(ALGORITHM_NAME);
+
+        } catch (NoSuchAlgorithmException e) {
+            LOGGER.error(EXCEPTION_DURING_GETTING_MESSAGE_DIGEST_FOR_MD5, e);
+            throw new RuntimeException();
+        }
+
+        md.update(password.getBytes());
+        byte byteData[] = md.digest();
+
+        StringBuilder builder = new StringBuilder();
+        for (byte aByteData : byteData) {
+            builder.append(Integer.toString((aByteData & 0xff) + 0x100, 16)
+                    .substring(1));
+        }
+
+        return builder.toString();
     }
 }
