@@ -27,7 +27,7 @@ public class DisplayCurrentUser implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
     @Override
-    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         long currentUserId = HttpUtils.getUserIdFromSession(request);
         List<Invoice> invoices = invoiceService.findAllByUserId(currentUserId);
         List<Subscription> subscriptions = subscriptionService.findAllByUserId(currentUserId);

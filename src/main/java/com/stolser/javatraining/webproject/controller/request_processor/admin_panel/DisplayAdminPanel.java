@@ -26,7 +26,7 @@ public class DisplayAdminPanel implements RequestProcessor {
     private InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
 
     @Override
-    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         List<PeriodicalNumberByCategory> periodicalStatistics = periodicalService.getQuantitativeStatistics();
 
         Instant until = Instant.now();

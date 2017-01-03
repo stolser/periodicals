@@ -42,7 +42,7 @@ public class PersistOnePeriodicalTest {
 
     @Test
     public void getViewName_Should_ReturnNullIfRequestHasIncorrectData() throws Exception {
-        Assert.assertNull(persistOnePeriodical.getViewName(request, response));
+        Assert.assertNull(persistOnePeriodical.process(request, response));
 
         verify(messageFactory, times(1)).getError(MSG_PERIODICAL_PERSISTING_ERROR);
     }

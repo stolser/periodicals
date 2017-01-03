@@ -14,7 +14,7 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 public class SignOut implements RequestProcessor {
 
     @Override
-    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().removeAttribute(CURRENT_USER_ATTR_NAME);
         request.getSession().invalidate();
 

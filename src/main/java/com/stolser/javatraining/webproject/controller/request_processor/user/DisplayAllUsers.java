@@ -17,7 +17,7 @@ public class DisplayAllUsers implements RequestProcessor {
     private UserService userService = UserServiceImpl.getInstance();
 
     @Override
-    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
 
         request.setAttribute(ALL_USERS_ATTR_NAME, userService.findAll());
 

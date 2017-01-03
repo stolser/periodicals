@@ -37,7 +37,7 @@ public class FrontController extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String viewName = requestProvider.getRequestProcessor(request).getViewName(request, response);
+            String viewName = requestProvider.getRequestProcessor(request).process(request, response);
             dispatch(viewName, request, response);
 
         } catch (Throwable e) {

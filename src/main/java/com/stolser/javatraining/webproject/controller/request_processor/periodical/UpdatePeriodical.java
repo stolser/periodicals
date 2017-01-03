@@ -21,7 +21,7 @@ public class UpdatePeriodical implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
     @Override
-    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         long periodicalId = HttpUtils.getFirstIdFromUri(request.getRequestURI());
 
         Periodical periodical = periodicalService.findOneById(periodicalId);

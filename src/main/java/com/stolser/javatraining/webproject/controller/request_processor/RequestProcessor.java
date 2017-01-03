@@ -10,5 +10,5 @@ public interface RequestProcessor {
      * @return a basic view name of the page where this request should be forwarded
      * or {@code null} if a request was redirected to another uri.
      */
-    String getViewName(HttpServletRequest request, HttpServletResponse response);
+    String process(HttpServletRequest request, HttpServletResponse response);
 }

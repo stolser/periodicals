@@ -40,7 +40,7 @@ public class DeleteDiscardedPeriodicalsTest {
 
     @Test
     public void getViewName_Should_CallFindAllByStatusOnPeriodicalService() throws Exception {
-        discardedPeriodicals.getViewName(request, response);
+        discardedPeriodicals.process(request, response);
 
         verify(periodicalService, times(1)).findAllByStatus(Periodical.Status.DISCARDED);
     }
@@ -50,7 +50,7 @@ public class DeleteDiscardedPeriodicalsTest {
         when(periodicalService.findAllByStatus(Periodical.Status.DISCARDED))
                 .thenReturn(Arrays.asList(new Periodical()));
 
-        discardedPeriodicals.getViewName(request, response);
+        discardedPeriodicals.process(request, response);
 
         verify(periodicalService, times(1)).deleteAllDiscarded();
         verify(messageFactory, times(1)).getSuccess(anyString());
@@ -61,7 +61,7 @@ public class DeleteDiscardedPeriodicalsTest {
         when(periodicalService.findAllByStatus(Periodical.Status.DISCARDED))
                 .thenReturn(Collections.emptyList());
 
-        discardedPeriodicals.getViewName(request, response);
+        discardedPeriodicals.process(request, response);
 
         verify(periodicalService, times(0)).deleteAllDiscarded();
         verify(messageFactory, times(1)).getWarning(MSG_NO_PERIODICALS_TO_DELETE);

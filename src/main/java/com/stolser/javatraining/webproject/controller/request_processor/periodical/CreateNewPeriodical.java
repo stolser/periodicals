@@ -18,7 +18,7 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 public class CreateNewPeriodical implements RequestProcessor {
 
     @Override
-    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
 
         Periodical periodicalIntoRequest;

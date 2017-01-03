@@ -31,7 +31,7 @@ public class PersistOneInvoice implements RequestProcessor {
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
     @Override
-    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         List<FrontendMessage> generalMessages = new ArrayList<>();
         long periodicalId = Long.valueOf(request.getParameter(PERIODICAL_ID_PARAM_NAME));
         Periodical periodicalInDb = periodicalService.findOneById(periodicalId);

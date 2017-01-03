@@ -76,7 +76,7 @@ public class PayOneInvoiceTest {
 
     @Test
     public void getViewName_Should_PayInvoiceSuccessfully() throws Exception {
-        payOneInvoice.getViewName(request, response);
+        payOneInvoice.process(request, response);
 
         verify(invoiceService, times(1)).findOneById(10);
         verify(request, times(2)).getRequestURI();

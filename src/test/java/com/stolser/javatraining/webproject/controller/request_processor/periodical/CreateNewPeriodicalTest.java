@@ -25,14 +25,14 @@ public class CreateNewPeriodicalTest {
 
     @Test
     public void getViewName_Should_RemovePeriodicalFromSession() throws Exception {
-        new CreateNewPeriodical().getViewName(request, response);
+        new CreateNewPeriodical().process(request, response);
 
         verify(session, times(1)).removeAttribute(PERIODICAL_ATTR_NAME);
     }
 
     @Test
     public void getViewName_Should_CallSetAttributeOnRequestFiveTimes() throws Exception {
-        new CreateNewPeriodical().getViewName(request, response);
+        new CreateNewPeriodical().process(request, response);
 
         verify(request, times(5)).setAttribute(anyString(), any());
     }

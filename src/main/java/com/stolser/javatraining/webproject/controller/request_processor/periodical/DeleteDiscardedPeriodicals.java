@@ -24,7 +24,7 @@ public class DeleteDiscardedPeriodicals implements RequestProcessor {
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
     @Override
-    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         String redirectUri = PERIODICAL_LIST_URI;
         List<FrontendMessage> generalMessages = new ArrayList<>();
 

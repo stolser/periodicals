@@ -19,7 +19,7 @@ public class DisplayAllPeriodicals implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
     @Override
-    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
 
         request.setAttribute(ALL_PERIODICALS_ATTR_NAME, periodicalService.findAll());
 

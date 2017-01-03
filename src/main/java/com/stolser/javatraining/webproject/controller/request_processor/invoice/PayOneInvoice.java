@@ -37,7 +37,7 @@ public class PayOneInvoice implements RequestProcessor {
 
 
     @Override
-    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         List<FrontendMessage> generalMessages = new ArrayList<>();
         long invoiceId = HttpUtils.getFirstIdFromUri(request.getRequestURI()
                 .replaceFirst("/backend/users/\\d+/", ""));

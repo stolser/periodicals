@@ -40,14 +40,14 @@ public class UpdatePeriodicalTest {
     public void getViewName_Should_ThrowException() throws Exception {
         when(periodicalService.findOneById(2)).thenReturn(null);
 
-        updatePeriodical.getViewName(request, response);
+        updatePeriodical.process(request, response);
     }
 
     @Test
     public void getViewName_Should_CallSetAttributeOnRequestFourTimes() throws Exception {
         when(periodicalService.findOneById(2)).thenReturn(new Periodical());
 
-        updatePeriodical.getViewName(request, response);
+        updatePeriodical.process(request, response);
         verify(request, times(4)).setAttribute(anyString(), any());
     }
 }

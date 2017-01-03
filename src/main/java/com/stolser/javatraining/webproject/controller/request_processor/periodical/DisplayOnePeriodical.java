@@ -21,7 +21,7 @@ public class DisplayOnePeriodical implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
     @Override
-    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         User thisUser = HttpUtils.getCurrentUserFromFromDb(request);
         long periodicalId = HttpUtils.getFirstIdFromUri(request.getRequestURI());
         Periodical periodical = periodicalService.findOneById(periodicalId);

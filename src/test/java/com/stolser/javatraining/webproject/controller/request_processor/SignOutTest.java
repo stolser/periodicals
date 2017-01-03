@@ -29,7 +29,7 @@ public class SignOutTest {
 
     @Test
     public void getViewName_Should_InvalidateCurrentSession() throws Exception {
-        signOut.getViewName(request, response);
+        signOut.process(request, response);
 
         verify(session, times(1)).removeAttribute(CURRENT_USER_ATTR_NAME);
         verify(session, times(1)).invalidate();

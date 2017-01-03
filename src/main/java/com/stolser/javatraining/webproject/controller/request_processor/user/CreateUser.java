@@ -22,7 +22,7 @@ public class CreateUser implements RequestProcessor {
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
     @Override
-    public String getViewName(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         Map<String, FrontendMessage> messages = new HashMap<>();
         HttpSession session = request.getSession();
         String redirectUri;
