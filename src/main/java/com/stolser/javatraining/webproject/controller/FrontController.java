@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
-
 /**
  * Implementation of the Front Controller pattern.
  */
@@ -47,7 +45,7 @@ public class FrontController extends HttpServlet {
                     HttpUtils.getUserIdFromSession(request), request.getRequestURI(), e);
 
             HttpUtils.sendRedirect(request, response,
-                    ViewResolver.getPublicResourceByViewName(getErrorViewName(e)));
+                    ViewResolver.getPublicResourceByViewName(HttpUtils.getErrorViewName(e)));
         }
     }
 

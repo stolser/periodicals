@@ -1,6 +1,7 @@
 package com.stolser.javatraining.webproject.controller.utils;
 
 import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontendMessage;
+import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.user.User;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,6 +25,9 @@ public class HttpUtils {
     private static final String REDIRECTION_FROM_TO_TEXT = "During redirection from \"%s\" to \"%s\"";
     private static final String URI_MUST_CONTAIN_ID_TEXT = "Uri (%s) must contain id.";
     private static final String EXCEPTION_DURING_REDIRECTION_TEXT = "User id = %d. Exception during redirection to '%s'.";
+    private static final String PAGE_404_VIEW_NAME = "errors/page-404";
+    private static final String STORAGE_EXCEPTION_PAGE_VIEW_NAME = "errors/storage-error-page";
+    private static final String GENERAL_ERROR_PAGE_VIEW_NAME = "errors/error-page";
     private static UserService userService = UserServiceImpl.getInstance();
 
     public static long getUserIdFromSession(HttpServletRequest request) {
@@ -98,4 +103,17 @@ public class HttpUtils {
         }
     }
 
+    public static String getErrorViewName(Throwable exception) {
+        String viewName = GENERAL_ERROR_PAGE_VIEW_NAME;
+
+        if (exception instanceof StorageException) {
+            viewName = STORAGE_EXCEPTION_PAGE_VIEW_NAME;
+        }
+
+        if (exception instanceof NoSuchElementException) {
+            viewName = PAGE_404_VIEW_NAME;
+        }
+
+        return viewName;
+    }
 }

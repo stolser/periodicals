@@ -9,9 +9,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
-
 class MysqlUserDao implements UserDao {
+    private static final String DB_USERS_ID = "users.id";
+    private static final String DB_USERS_FIRST_NAME = "users.first_name";
+    private static final String DB_USERS_LAST_NAME = "users.last_name";
+    private static final String DB_USERS_BIRTHDAY = "users.birthday";
+    private static final String DB_USERS_EMAIL = "users.email";
+    private static final String DB_USERS_ADDRESS = "users.address";
+    private static final String DB_USERS_STATUS = "users.status";
     private static final String EXCEPTION_DURING_FINDING_ALL_USERS = "Exception during finding all users.";
     private static final String EXCEPTION_DURING_FINDING_USER_BY_NAME =
             "Exception during finding a user with userName = %s.";
@@ -91,7 +96,7 @@ class MysqlUserDao implements UserDao {
         User.Builder builder = new User.Builder();
 
         builder.setId(rs.getLong(DB_USERS_ID))
-                .setUserName(rs.getString(DB_CREDENTIALS_USER_NAME))
+                .setUserName(rs.getString(MysqlCredentialDao.DB_CREDENTIALS_USER_NAME))
                 .setFirstName(rs.getString(DB_USERS_FIRST_NAME))
                 .setLastName(rs.getString(DB_USERS_LAST_NAME))
                 .setBirthday(new Date(rs.getDate(DB_USERS_BIRTHDAY).getTime()))

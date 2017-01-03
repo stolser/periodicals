@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.controller.form_validator;
 
+import com.stolser.javatraining.webproject.view.SystemLocale;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -25,6 +26,9 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 public class ValidationServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(ValidationServlet.class);
     private static final String EXCEPTION_DURING_PUTTING_VALUES_INTO_JSON_OBJECT = "Exception during putting values into json object.";
+    public static final String JSON_CONTENT_TYPE = "application/json";
+    public static final String STATUS_CODE_JSON_RESPONSE = "statusCode";
+    public static final String VALIDATION_MESSAGE_JSON_RESPONSE = "validationMessage";
     private ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
 
     @Override

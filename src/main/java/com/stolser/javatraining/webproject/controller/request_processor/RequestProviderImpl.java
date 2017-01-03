@@ -12,14 +12,26 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
-
 /**
  * Provides mapping request uri to classes that will perform actual request processing.
  */
 public final class RequestProviderImpl implements RequestProvider {
+    public static final String GET_BACKEND_REQUEST_PATTERN = "GET:/backend/?";
+    public static final String GET_ADMIN_PANEL_REQUEST_PATTERN = "GET:/backend/adminPanel/?";
+    public static final String GET_ALL_USERS_REQUEST_PATTERN = "GET:/backend/users/?";
+    public static final String GET_CURRENT_USER_REQUEST_PATTERN = "GET:/backend/users/currentUser/?";
+    public static final String POST_PERSIST_INVOICE_REQUEST_PATTERN = "POST:/backend/users/\\d+/invoices/?";
+    public static final String POST_PAY_INVOICE_REQUEST_PATTERN = "POST:/backend/users/\\d+/invoices/\\d+/pay/?";
+    public static final String GET_ONE_PERIODICAL_REQUEST_PATTERN = "GET:/backend/periodicals/\\d+";
+    public static final String GET_ALL_PERIODICALS_REQUEST_PATTERN = "GET:/backend/periodicals/?";
+    public static final String POST_PERSIST_PERIODICAL_REQUEST_PATTERN = "POST:/backend/periodicals/?";
+    public static final String GET_CREATE_PERIODICAL_REQUEST_PATTERN = "GET:/backend/periodicals/createNew/?";
+    public static final String GET_UPDATE_PERIODICAL_REQUEST_PATTERN = "GET:/backend/periodicals/\\d+/update/?";
+    public static final String POST_DELETE_PERIODICALS_REQUEST_PATTERN = "POST:/backend/periodicals/discarded/?";
+    public static final String GET_SIGN_OUT_REQUEST_PATTERN = "GET:/backend/signOut/?";
     private static final Map<String, RequestProcessor> requestMapping = new HashMap<>();
     private static final String NO_MAPPING_FOR_SUCH_REQUEST = "There no mapping for such a request: '%s'.";
+
 
     private static final String POST_SIGN_UP = "POST:signUp";
 

@@ -14,10 +14,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.DB_PERIODICALS_ID;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.DB_PERIODICALS_NAME;
-
-class MysqlPeriodicalDao implements PeriodicalDao {
+public class MysqlPeriodicalDao implements PeriodicalDao {
+    public static final String DB_PERIODICALS_ID = "periodicals.id";
+    public static final String DB_PERIODICALS_NAME = "periodicals.name";
+    public static final String DB_PERIODICALS_CATEGORY = "periodicals.category";
+    public static final String DB_PERIODICALS_PUBLISHER = "periodicals.publisher";
+    public static final String DB_PERIODICALS_DESCRIPTION = "periodicals.description";
+    public static final String DB_PERIODICALS_ONE_MONTH_COST = "periodicals.one_month_cost";
+    public static final String DB_PERIODICALS_STATUS = "periodicals.status";
     private static final String INCORRECT_FIELD_NAME = "There is no case for such a fieldName." +
             "Fix it!";
     private static final String EXCEPTION_DURING_RETRIEVING_PERIODICAL =

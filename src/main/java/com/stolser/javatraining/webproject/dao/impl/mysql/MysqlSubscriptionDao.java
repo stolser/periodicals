@@ -11,9 +11,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
-
 class MysqlSubscriptionDao implements SubscriptionDao {
+    private static final String DB_SUBSCRIPTIONS_ID = "subscriptions.id";
+    private static final String DB_SUBSCRIPTIONS_USER_ID = "subscriptions.user_id";
+    private static final String DB_SUBSCRIPTIONS_PERIODICAL_ID = "subscriptions.periodical_id";
+    private static final String DB_SUBSCRIPTIONS_DELIVERY_ADDRESS = "subscriptions.delivery_address";
+    private static final String DB_SUBSCRIPTIONS_END_DATE = "subscriptions.end_date";
+    private static final String DB_SUBSCRIPTIONS_STATUS = "subscriptions.status";
     private static final String EXCEPTION_MSG_FINDING_ALL_PERIODICALS_BY_USER_ID =
             "Exception during finding all periodicals for userId = %d, " +
                     "periodicalId = %d";

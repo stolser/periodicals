@@ -11,18 +11,26 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
-
 class MysqlInvoiceDao implements InvoiceDao {
+    private static final String DB_INVOICES_ID = "invoices.id";
+    private static final String DB_INVOICES_USER_ID = "invoices.user_id";
+    private static final String DB_INVOICES_PERIODICAL_ID = "invoices.periodical_id";
+    private static final String DB_INVOICES_PERIOD = "invoices.period";
+    private static final String DB_INVOICES_TOTAL_SUM = "invoices.total_sum";
+    private static final String DB_INVOICES_STATUS = "invoices.status";
+    private static final String DB_INVOICES_CREATION_DATE = "invoices.creation_date";
+    private static final String DB_INVOICES_PAYMENT_DATE = "invoices.payment_date";
     private static final String EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_INVOICE_ID =
             "Exception during execution statement '%s' for invoiceId = %d.";
     private static final String EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_USER_ID =
             "Exception during execution statement '%s' for userId = %d.";
     private static final String EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_INVOICE =
             "Exception during execution statement '%s' for invoice = %s.";
-    private static final String EXCEPTION_DURING_GETTING_INVOICE_SUM = "Exception during execution statement '%s' for since = %s " +
+    private static final String EXCEPTION_DURING_GETTING_INVOICE_SUM =
+            "Exception during execution statement '%s' for since = %s " +
             "and until = '%s'.";
-    private static final String EXCEPTION_DURING_EXECUTION_FOR_PERIODICAL_ID = "Exception during execution statement '%s' for periodicalId = %d.";
+    private static final String EXCEPTION_DURING_EXECUTION_FOR_PERIODICAL_ID =
+            "Exception during execution statement '%s' for periodicalId = %d.";
     private Connection conn;
 
     public MysqlInvoiceDao(Connection conn) {

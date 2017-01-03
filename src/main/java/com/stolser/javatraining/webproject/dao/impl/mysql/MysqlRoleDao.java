@@ -1,6 +1,5 @@
 package com.stolser.javatraining.webproject.dao.impl.mysql;
 
-import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.dao.RoleDao;
 
@@ -12,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 class MysqlRoleDao implements RoleDao {
+    public static final String DB_USER_ROLES_NAME = "user_roles.name";
     private static final String RETRIEVING_ROLES_FOR_USER = "Exception during retrieving roles for user with userName = '%s'";
     private Connection conn;
 
@@ -37,7 +37,7 @@ class MysqlRoleDao implements RoleDao {
             ResultSet rs = st.executeQuery();
 
             while(rs.next()) {
-                roles.add(rs.getString(ApplicationResources.DB_USER_ROLES_NAME));
+                roles.add(rs.getString(DB_USER_ROLES_NAME));
             }
 
         } catch (SQLException e) {

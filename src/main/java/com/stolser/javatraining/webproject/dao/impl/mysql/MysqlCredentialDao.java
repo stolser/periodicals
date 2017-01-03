@@ -9,9 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
-
 class MysqlCredentialDao implements CredentialDao {
+    static final String DB_CREDENTIALS_ID = "credentials.id";
+    static final String DB_CREDENTIALS_USER_NAME = "credentials.user_name";
+    static final String DB_CREDENTIALS_PASSWORD_HASH = "credentials.password_hash";
     private static final String EXCEPTION_DURING_EXECUTION_STATEMENT =
             "Exception during execution statement '%s' for userName = %s.";
     private Connection conn;

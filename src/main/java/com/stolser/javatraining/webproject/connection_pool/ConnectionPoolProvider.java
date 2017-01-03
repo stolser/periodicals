@@ -8,12 +8,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
-
 /**
  * Reads database configuration data and creates a connection pool.
  */
 public class ConnectionPoolProvider {
+    private static final String DB_CONFIG_FILENAME = "webProject/config/dbConfig.properties";
+    private static final String TEST_DB_CONFIG_FILENAME = "webProject/config/testDbConfig.properties";
+    private static final String DB_CONFIG_PARAM_URL = "database.url";
+    private static final String DB_CONFIG_PARAM_DB_NAME = "database.dbName";
+    private static final String DB_CONFIG_PARAM_USER_NAME = "database.userName";
+    private static final String DB_CONFIG_PARAM_USER_PASSWORD = "database.userPassword";
+    private static final String DB_CONFIG_PARAM_MAX_CONN_NUMBER = "database.maxConnNumber";
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionPoolProvider.class);
     private static final String EXCEPTION_DURING_OPENING_DB_CONFIG_FILE =
             "Exception during opening the db-config file with path = {}.";

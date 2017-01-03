@@ -1,6 +1,7 @@
 package com.stolser.javatraining.webproject.controller.security;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
+import com.stolser.javatraining.webproject.controller.request_processor.RequestProviderImpl;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,12 +19,12 @@ class Authorization {
     static {
         Set<String> admin = new HashSet<>(Collections.singletonList(ADMIN_ROLE_NAME));
 
-        permissionMapping.put(GET_ALL_USERS_REQUEST_PATTERN, admin);
-        permissionMapping.put(GET_CREATE_PERIODICAL_REQUEST_PATTERN, admin);
-        permissionMapping.put(GET_UPDATE_PERIODICAL_REQUEST_PATTERN, admin);
-        permissionMapping.put(POST_PERSIST_PERIODICAL_REQUEST_PATTERN, admin);
-        permissionMapping.put(POST_DELETE_PERIODICALS_REQUEST_PATTERN, admin);
-        permissionMapping.put(GET_ADMIN_PANEL_REQUEST_PATTERN, admin);
+        permissionMapping.put(RequestProviderImpl.GET_ALL_USERS_REQUEST_PATTERN, admin);
+        permissionMapping.put(RequestProviderImpl.GET_CREATE_PERIODICAL_REQUEST_PATTERN, admin);
+        permissionMapping.put(RequestProviderImpl.GET_UPDATE_PERIODICAL_REQUEST_PATTERN, admin);
+        permissionMapping.put(RequestProviderImpl.POST_PERSIST_PERIODICAL_REQUEST_PATTERN, admin);
+        permissionMapping.put(RequestProviderImpl.POST_DELETE_PERIODICALS_REQUEST_PATTERN, admin);
+        permissionMapping.put(RequestProviderImpl.GET_ADMIN_PANEL_REQUEST_PATTERN, admin);
     }
 
     private Authorization() {

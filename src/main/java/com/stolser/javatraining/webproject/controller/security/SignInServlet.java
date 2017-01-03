@@ -28,6 +28,7 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
  */
 public class SignInServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(SignInServlet.class);
+    public static final String ALGORITHM_NAME = "MD5";
     private static final String EXCEPTION_DURING_GETTING_MESSAGE_DIGEST_FOR_MD5 =
             "Exception during getting MessageDigest for 'MD5'";
     private UserService userService = UserServiceImpl.getInstance();
