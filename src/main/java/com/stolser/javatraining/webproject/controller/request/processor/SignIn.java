@@ -7,6 +7,7 @@ import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.service.UserService;
 import com.stolser.javatraining.webproject.service.impl.UserServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -102,6 +103,6 @@ public class SignIn implements RequestProcessor {
     }
 
     private boolean usernameAndPasswordIsNotEmpty(String username, String password) {
-        return (username != null) && (password != null) && (!"".equals(username)) && (!"".equals(password));
+        return !StringUtils.isEmpty(username) && !StringUtils.isEmpty(password);
     }
 }

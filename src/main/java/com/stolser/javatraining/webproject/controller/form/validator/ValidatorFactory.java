@@ -1,9 +1,10 @@
 package com.stolser.javatraining.webproject.controller.form.validator;
 
+import com.stolser.javatraining.webproject.controller.form.validator.exception.ValidationProcessorException;
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalCategoryValidator;
-import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalPublisherValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalCostValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalNameValidator;
+import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalPublisherValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.user.SignInUsernameValidator;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
@@ -45,7 +46,7 @@ public class ValidatorFactory {
                 return new PeriodicalCostValidator();
 
             default:
-                throw new IllegalArgumentException(THERE_IS_NO_VALIDATOR_FOR_SUCH_PARAM);
+                throw new ValidationProcessorException(THERE_IS_NO_VALIDATOR_FOR_SUCH_PARAM);
         }
     }
 }

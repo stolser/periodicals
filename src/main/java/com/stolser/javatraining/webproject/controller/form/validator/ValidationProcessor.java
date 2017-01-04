@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.controller.form.validator;
 
+import com.stolser.javatraining.webproject.controller.form.validator.exception.ValidationProcessorException;
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
 import com.stolser.javatraining.webproject.view.SystemLocale;
 import org.json.JSONException;
@@ -48,6 +49,7 @@ public class ValidationProcessor implements RequestProcessor {
             jsonResponse.put(VALIDATION_MESSAGE_JSON_RESPONSE, getLocalizedMessage(session, result));
         } catch (JSONException e) {
             LOGGER.error(EXCEPTION_DURING_PUTTING_VALUES_INTO_JSON_OBJECT, e);
+            throw new ValidationProcessorException(EXCEPTION_DURING_PUTTING_VALUES_INTO_JSON_OBJECT, e);
         }
 
         try {
@@ -57,7 +59,7 @@ public class ValidationProcessor implements RequestProcessor {
 
             return null;
         } catch (IOException e) {
-            throw new RuntimeException(EXCEPTION_DURING_VALIDATION, e);
+            throw new ValidationProcessorException(EXCEPTION_DURING_VALIDATION, e);
         }
     }
 

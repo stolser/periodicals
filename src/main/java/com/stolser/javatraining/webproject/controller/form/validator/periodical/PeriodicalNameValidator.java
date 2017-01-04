@@ -2,6 +2,7 @@ package com.stolser.javatraining.webproject.controller.form.validator.periodical
 
 import com.stolser.javatraining.webproject.controller.form.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.form.validator.Validator;
+import com.stolser.javatraining.webproject.controller.form.validator.exception.ValidationProcessorException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.service.PeriodicalService;
 import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
@@ -78,7 +79,7 @@ public class PeriodicalNameValidator implements Validator {
                     .getParameter(PERIODICAL_OPERATION_TYPE_PARAM_ATTR_NAME).toUpperCase());
 
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(INCORRECT_ENTITY_OPERATION_TYPE_DURING_VALIDATION, e);
+            throw new ValidationProcessorException(INCORRECT_ENTITY_OPERATION_TYPE_DURING_VALIDATION, e);
         }
     }
 }
