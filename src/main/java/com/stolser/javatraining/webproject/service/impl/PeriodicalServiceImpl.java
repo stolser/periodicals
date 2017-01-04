@@ -7,8 +7,8 @@ import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import com.stolser.javatraining.webproject.model.entity.statistics.PeriodicalNumberByCategory;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
-import com.stolser.javatraining.webproject.connection_pool.ConnectionPool;
-import com.stolser.javatraining.webproject.connection_pool.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.service.PeriodicalService;
 

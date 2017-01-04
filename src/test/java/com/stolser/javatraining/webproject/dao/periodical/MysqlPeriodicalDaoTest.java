@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.dao.periodical;
 
-import com.stolser.javatraining.webproject.connection_pool.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.dao.DaoFactory;
 import com.stolser.javatraining.webproject.dao.PeriodicalDao;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;

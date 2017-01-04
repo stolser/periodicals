@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.controller.security;
 
 import com.stolser.javatraining.webproject.controller.ApplicationResources;
-import com.stolser.javatraining.webproject.controller.request_processor.RequestProviderImpl;
+import com.stolser.javatraining.webproject.controller.request.processor.RequestProviderImpl;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,14 +49,16 @@ class Authorization {
 
         Optional<Map.Entry<String, Set<String>>> thisPermissionMapping = permissionMapping.entrySet()
                 .stream()
-                .filter(entry -> {  // filtering by a method;
+                .filter(entry -> {
+                    // filtering by a method;
                     String methodPattern = entry.getKey().split(":")[0];
-                    String[] methods = methodPattern.split("\\|");  // is necessary for
-                    // the "GET|POST|PUT|DELETE" notation;
+                    // is necessary for the "GET|POST|PUT|DELETE" notation;
+                    String[] methods = methodPattern.split("\\|");
 
                     return Arrays.asList(methods).contains(requestMethod);
                 })
-                .filter(entry -> {  // filtering by a Uri pattern;
+                .filter(entry -> {
+                    // filtering by a Uri pattern;
                     String urlPattern = entry.getKey().split(":")[1];
                     return Pattern.matches(urlPattern, requestURI);
                 })

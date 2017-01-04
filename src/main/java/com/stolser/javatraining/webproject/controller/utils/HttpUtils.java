@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.controller.utils;
 
-import com.stolser.javatraining.webproject.controller.form_validator.front_message.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontendMessage;
 import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
-public class HttpUtils {
+public final class HttpUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtils.class);
     private static final String ALGORITHM_NAME = "MD5";
     private static final String EXCEPTION_DURING_GETTING_MESSAGE_DIGEST_FOR_MD5 =
@@ -36,6 +36,8 @@ public class HttpUtils {
     private static final String STORAGE_EXCEPTION_PAGE_VIEW_NAME = "errors/storage-error-page";
     private static final String GENERAL_ERROR_PAGE_VIEW_NAME = "errors/error-page";
     private static UserService userService = UserServiceImpl.getInstance();
+
+    private HttpUtils() {}
 
     public static long getUserIdFromSession(HttpServletRequest request) {
         User user = (User) request.getSession()

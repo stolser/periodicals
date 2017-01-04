@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.controller;
 
-import com.stolser.javatraining.webproject.controller.request_processor.RequestProvider;
-import com.stolser.javatraining.webproject.controller.request_processor.RequestProviderImpl;
+import com.stolser.javatraining.webproject.controller.request.processor.RequestProvider;
+import com.stolser.javatraining.webproject.controller.request.processor.RequestProviderImpl;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.view.ViewResolver;
 import org.slf4j.Logger;
@@ -40,7 +40,7 @@ public class FrontController extends HttpServlet {
             String viewName = requestProvider.getRequestProcessor(request).process(request, response);
             dispatch(viewName, request, response);
 
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             LOGGER.error(USER_ID_REQUEST_URI,
                     HttpUtils.getUserIdFromSession(request), request.getRequestURI(), e);
 

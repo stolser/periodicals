@@ -3,8 +3,8 @@ package com.stolser.javatraining.webproject.service.impl;
 import com.stolser.javatraining.webproject.dao.DaoFactory;
 import com.stolser.javatraining.webproject.dao.SubscriptionDao;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
-import com.stolser.javatraining.webproject.connection_pool.ConnectionPool;
-import com.stolser.javatraining.webproject.connection_pool.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.service.SubscriptionService;
 

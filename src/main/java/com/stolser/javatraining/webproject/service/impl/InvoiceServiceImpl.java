@@ -8,8 +8,8 @@ import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.statistics.FinancialStatistics;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.connection_pool.ConnectionPool;
-import com.stolser.javatraining.webproject.connection_pool.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPoolProvider;
 import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.service.InvoiceService;
 
@@ -46,7 +46,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
             return factory.getInvoiceDao(conn).findOneById(invoiceId);
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new StorageException(e);
         }
     }
@@ -57,7 +57,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
             return factory.getInvoiceDao(conn).findAllByUserId(userId);
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new StorageException(e);
         }
     }
@@ -68,7 +68,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
             return factory.getInvoiceDao(conn).findAllByPeriodicalId(periodicalId);
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new StorageException(e);
         }
     }
@@ -80,7 +80,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             factory.getInvoiceDao(conn).createNew(invoice);
 
             return true;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new StorageException(e);
         }
     }
@@ -149,7 +149,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             long paidInvoiceSum = dao.getPaidInvoiceSumByPaymentDate(since, until);
 
             return new FinancialStatistics(totalInvoiceSum, paidInvoiceSum);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             throw new StorageException(e);
         }
     }

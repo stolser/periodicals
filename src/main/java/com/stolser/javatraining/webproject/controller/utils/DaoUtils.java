@@ -7,7 +7,8 @@ import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCat
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DaoUtils {
+public final class DaoUtils {
+    private DaoUtils() {}
 
     public static Periodical getPeriodicalFromResultSet(ResultSet rs) throws SQLException {
         Periodical.Builder periodicalBuilder = new Periodical.Builder();

@@ -8,7 +8,7 @@ import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.connection_pool.ConnectionPool;
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
 import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.service.InvoiceService;
 import org.junit.Before;

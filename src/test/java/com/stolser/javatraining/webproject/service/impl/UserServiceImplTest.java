@@ -4,7 +4,7 @@ import com.stolser.javatraining.webproject.dao.DaoFactory;
 import com.stolser.javatraining.webproject.dao.RoleDao;
 import com.stolser.javatraining.webproject.dao.UserDao;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.connection_pool.ConnectionPool;
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
 import com.stolser.javatraining.webproject.service.UserService;
 import org.junit.Before;
 import org.junit.Test;

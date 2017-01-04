@@ -6,7 +6,7 @@
     <uri>http://stolser.com/javaee/jsp-tags-0.1</uri>
     <tag>
         <name>if-authorized</name>
-        <tag-class>com.stolser.javatraining.webproject.view.jsp_tag.AuthorizationTag</tag-class>
+        <tag-class>com.stolser.javatraining.webproject.view.jsp.tag.AuthorizationTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <name>mustHaveRoles</name>
@@ -19,7 +19,7 @@
     
     <tag>
         <name>format-datetime</name>
-        <tag-class>com.stolser.javatraining.webproject.view.jsp_tag.FormatDatetimeTag</tag-class>
+        <tag-class>com.stolser.javatraining.webproject.view.jsp.tag.FormatDatetimeTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>value</name>

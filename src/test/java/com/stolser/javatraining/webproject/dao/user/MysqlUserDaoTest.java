@@ -3,7 +3,7 @@ package com.stolser.javatraining.webproject.dao.user;
 import com.stolser.javatraining.webproject.dao.UserDao;
 import com.stolser.javatraining.webproject.dao.DaoFactory;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.connection_pool.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPoolProvider;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

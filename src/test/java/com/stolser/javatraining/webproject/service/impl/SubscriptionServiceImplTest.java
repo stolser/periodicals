@@ -5,7 +5,7 @@ import com.stolser.javatraining.webproject.dao.SubscriptionDao;
 import com.stolser.javatraining.webproject.dao.UserDao;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.connection_pool.ConnectionPool;
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
 import com.stolser.javatraining.webproject.service.SubscriptionService;
 import org.junit.Before;
 import org.junit.Test;

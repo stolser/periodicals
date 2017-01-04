@@ -63,9 +63,12 @@ $(document).ready(function () {
 });
 
 function activateOrDisableSubmitBtn($thisInput) {
-    var $thisForm = $thisInput.closest("form"); // the <form> element inside which this input resides;
-    var $thisFormInputs = $thisForm.find("input");  // all the input in the current form;
-    var $errorMsg = $thisFormInputs.nextAll(".messages.error"); // elements containing error-messages;
+    // the <form> element inside which this input resides;
+    var $thisForm = $thisInput.closest("form");
+    // all the input in the current form;
+    var $thisFormInputs = $thisForm.find("input");
+    // elements containing error-messages;
+    var $errorMsg = $thisFormInputs.nextAll(".messages.error"); 
     var $submitBtn = $thisForm.find(":submit");
 
     if (($errorMsg.length == 0) // there is no error-messages;
