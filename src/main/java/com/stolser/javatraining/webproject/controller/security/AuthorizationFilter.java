@@ -31,7 +31,7 @@ public class AuthorizationFilter implements Filter {
 
         String requestURI = ((HttpServletRequest) request).getRequestURI();
 
-        if (requestIsAuthorized(request)) {
+        if (isRequestAuthorized(request)) {
             chain.doFilter(request, response);
 
         } else {
@@ -45,7 +45,7 @@ public class AuthorizationFilter implements Filter {
         }
     }
 
-    private boolean requestIsAuthorized(ServletRequest request) {
+    private boolean isRequestAuthorized(ServletRequest request) {
         return Authorization.getInstance().checkPermissions((HttpServletRequest) request);
     }
 

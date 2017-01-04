@@ -27,7 +27,7 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if(requestDoesNotRequireAuthentication(request)) {
+        if(doesRequestNotRequireAuthentication(request)) {
             chain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -47,7 +47,7 @@ public class AuthenticationFilter implements Filter {
         }
     }
 
-    private boolean requestDoesNotRequireAuthentication(HttpServletRequest request) {
+    private boolean doesRequestNotRequireAuthentication(HttpServletRequest request) {
         List<String> unProtectedUris = Arrays.asList("/backend/signIn", "/backend/signUp");
         String requestUri = request.getRequestURI();
 

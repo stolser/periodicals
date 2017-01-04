@@ -49,7 +49,7 @@ public class PersistOnePeriodical implements RequestProcessor {
 
         request.getSession().setAttribute(PERIODICAL_ATTR_NAME, periodicalToSave);
 
-        if (periodicalToSaveIsValid(periodicalToSave, request)) {
+        if (isPeriodicalToSaveValid(periodicalToSave, request)) {
             generalMessages.add(messageFactory.getInfo(MSG_VALIDATION_PASSED_SUCCESS));
         } else {
             HttpUtils.sendRedirect(request, response, redirectUri);
@@ -61,14 +61,14 @@ public class PersistOnePeriodical implements RequestProcessor {
         Periodical.Status oldStatus = (periodicalInDb != null) ? periodicalInDb.getStatus() : null;
         Periodical.Status newStatus = periodicalToSave.getStatus();
 
-        if (statusFromActiveToInactive(oldStatus, newStatus)) {
+        if (isStatusChangedFromActiveToInactive(oldStatus, newStatus)) {
             if (periodicalService.hasActiveSubscriptions(periodicalToSave.getId())) {
                 generalMessages.add(messageFactory.getWarning(MSG_PERIODICAL_HAS_ACTIVE_SUBSCRIPTIONS_WARNING));
             }
         }
 
         Periodical persistedPeriodical;
-        if (statusFromActiveOrInactiveToDiscarded(oldStatus, newStatus)) {
+        if (isStatusChangedFromActiveOrInactiveToDiscarded(oldStatus, newStatus)) {
 
             if (tryToDiscardPeriodical(periodicalToSave)) {
                 persistedPeriodical = periodicalService.findOneById(periodicalToSave.getId());
@@ -134,13 +134,13 @@ public class PersistOnePeriodical implements RequestProcessor {
         return result >= 1;
     }
 
-    private boolean statusFromActiveOrInactiveToDiscarded(Periodical.Status oldStatus,
-                                                          Periodical.Status newStatus) {
+    private boolean isStatusChangedFromActiveOrInactiveToDiscarded(Periodical.Status oldStatus,
+                                                                   Periodical.Status newStatus) {
         return (ACTIVE.equals(oldStatus) || INACTIVE.equals(oldStatus))
                 && DISCARDED.equals(newStatus);
     }
 
-    private boolean statusFromActiveToInactive(Periodical.Status oldStatus, Periodical.Status newStatus) {
+    private boolean isStatusChangedFromActiveToInactive(Periodical.Status oldStatus, Periodical.Status newStatus) {
         return ACTIVE.equals(oldStatus) && INACTIVE.equals(newStatus);
     }
 
@@ -162,7 +162,7 @@ public class PersistOnePeriodical implements RequestProcessor {
         return redirectUri;
     }
 
-    private boolean periodicalToSaveIsValid(Periodical periodicalToSave, HttpServletRequest request) {
+    private boolean isPeriodicalToSaveValid(Periodical periodicalToSave, HttpServletRequest request) {
         boolean isValid = true;
         Map<String, FrontendMessage> messages = new HashMap<>();
         ValidatorFactory factory = ValidatorFactory.getInstance();

@@ -32,7 +32,7 @@ public class DisplayCurrentUser implements RequestProcessor {
         List<Invoice> invoices = invoiceService.findAllByUserId(currentUserId);
         List<Subscription> subscriptions = subscriptionService.findAllByUserId(currentUserId);
 
-        if (thereAreInvoicesToDisplay(invoices)) {
+        if (areThereInvoicesToDisplay(invoices)) {
             invoices.forEach(invoice -> {
                 long periodicalId = invoice.getPeriodical().getId();
                 invoice.setPeriodical(periodicalService.findOneById(periodicalId));
@@ -42,7 +42,7 @@ public class DisplayCurrentUser implements RequestProcessor {
             request.setAttribute(USER_INVOICES_PARAM_NAME, invoices);
         }
 
-        if (thereAreSubscriptionsToDisplay(subscriptions)) {
+        if (areThereSubscriptionsToDisplay(subscriptions)) {
             sortSubscriptions(subscriptions);
             request.setAttribute(USER_SUBSCRIPTIONS_PARAM_NAME, subscriptions);
         }
@@ -50,11 +50,11 @@ public class DisplayCurrentUser implements RequestProcessor {
         return ONE_USER_INFO_VIEW_NAME;
     }
 
-    private boolean thereAreInvoicesToDisplay(List<Invoice> invoices) {
+    private boolean areThereInvoicesToDisplay(List<Invoice> invoices) {
         return invoices.size() > 0;
     }
 
-    private boolean thereAreSubscriptionsToDisplay(List<Subscription> subscriptions) {
+    private boolean areThereSubscriptionsToDisplay(List<Subscription> subscriptions) {
         return subscriptions.size() > 0;
     }
 

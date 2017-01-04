@@ -36,7 +36,7 @@ public class PersistOneInvoice implements RequestProcessor {
         long periodicalId = Long.valueOf(request.getParameter(PERIODICAL_ID_PARAM_NAME));
         Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
 
-        if (validationPassed(periodicalInDb, request, generalMessages)) {
+        if (isPeriodicalValid(periodicalInDb, request, generalMessages)) {
             generalMessages.add(messageFactory.getInfo(MSG_VALIDATION_PASSED_SUCCESS));
             tryToPersistNewInvoice(getNewInvoice(periodicalInDb, request), generalMessages);
         }
@@ -50,7 +50,7 @@ public class PersistOneInvoice implements RequestProcessor {
         return null;
     }
 
-    private boolean periodicalExistsInDb(Periodical periodicalInDb, List<FrontendMessage> generalMessages) {
+    private boolean doesPeriodicalExistInDb(Periodical periodicalInDb, List<FrontendMessage> generalMessages) {
         if (periodicalInDb != null) {
             return true;
         } else {
@@ -60,7 +60,7 @@ public class PersistOneInvoice implements RequestProcessor {
         }
     }
 
-    private boolean periodicalIsVisible(Periodical periodicalInDb, List<FrontendMessage> generalMessages) {
+    private boolean isPeriodicalVisible(Periodical periodicalInDb, List<FrontendMessage> generalMessages) {
         if (Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())) {
             return true;
         } else {
@@ -70,7 +70,7 @@ public class PersistOneInvoice implements RequestProcessor {
         }
     }
 
-    private boolean subscriptionPeriodIsValid(HttpServletRequest request,
+    private boolean isSubscriptionPeriodValid(HttpServletRequest request,
                                               List<FrontendMessage> generalMessages) {
         FrontendMessage message = messageFactory.getError(MSG_VALIDATION_SUBSCRIPTION_PERIOD_IS_NOT_VALID);
 
@@ -89,8 +89,8 @@ public class PersistOneInvoice implements RequestProcessor {
         }
     }
 
-    private boolean validationPassed(Periodical periodicalInDb, HttpServletRequest request,
-                                     List<FrontendMessage> generalMessages) {
+    private boolean isPeriodicalValid(Periodical periodicalInDb, HttpServletRequest request,
+                                      List<FrontendMessage> generalMessages) {
         ValidationResult result = new RequestUserIdValidator().validate(null, request);
 
         if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
@@ -99,9 +99,9 @@ public class PersistOneInvoice implements RequestProcessor {
             return false;
         }
 
-        return periodicalExistsInDb(periodicalInDb, generalMessages)
-                && periodicalIsVisible(periodicalInDb, generalMessages)
-                && subscriptionPeriodIsValid(request, generalMessages);
+        return doesPeriodicalExistInDb(periodicalInDb, generalMessages)
+                && isPeriodicalVisible(periodicalInDb, generalMessages)
+                && isSubscriptionPeriodValid(request, generalMessages);
     }
 
     private void tryToPersistNewInvoice(Invoice invoiceToPersist, List<FrontendMessage> generalMessages) {

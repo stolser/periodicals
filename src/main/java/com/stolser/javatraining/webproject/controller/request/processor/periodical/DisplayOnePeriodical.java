@@ -28,7 +28,7 @@ public class DisplayOnePeriodical implements RequestProcessor {
 
         checkPeriodicalExists(periodicalId, periodicalInDb);
 
-        if(userDoesNotHaveEnoughPermissions(thisUser, periodicalInDb)) {
+        if(hasUserNotEnoughPermissions(thisUser, periodicalInDb)) {
             HttpUtils.sendRedirect(request, response, ACCESS_DENIED_URI);
             return null;
         }
@@ -44,7 +44,7 @@ public class DisplayOnePeriodical implements RequestProcessor {
         }
     }
 
-    private boolean userDoesNotHaveEnoughPermissions(User thisUser, Periodical periodicalInDb) {
+    private boolean hasUserNotEnoughPermissions(User thisUser, Periodical periodicalInDb) {
         return !Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())
                 && !thisUser.hasRole(ADMIN_ROLE_NAME);
     }

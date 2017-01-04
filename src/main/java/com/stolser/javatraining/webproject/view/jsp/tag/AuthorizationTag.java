@@ -26,8 +26,8 @@ public class AuthorizationTag extends TagSupport {
                 .getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
 
         if ((user != null)
-                && userHasLegitRoles()
-                && userHasNoProhibitedRoles()) {
+                && hasUserLegitRoles()
+                && hasUserNoProhibitedRoles()) {
 
             return Tag.EVAL_BODY_INCLUDE;
         }
@@ -35,7 +35,7 @@ public class AuthorizationTag extends TagSupport {
         return Tag.SKIP_BODY;
     }
 
-    private boolean userHasLegitRoles() {
+    private boolean hasUserLegitRoles() {
         if ("*".equals(mustHaveRoles)) {
             return true;
 
@@ -59,7 +59,7 @@ public class AuthorizationTag extends TagSupport {
         return legitRoles;
     }
 
-    private boolean userHasNoProhibitedRoles() {
+    private boolean hasUserNoProhibitedRoles() {
         if ("*".equals(mustNotHaveRoles)) {
             return false;
 

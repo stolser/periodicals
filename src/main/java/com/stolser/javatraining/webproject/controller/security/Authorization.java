@@ -70,13 +70,13 @@ class Authorization {
             Set<String> userRoles = user.getRoles();
             Set<String> legitRoles = thisPermissionMapping.get().getValue();
 
-            permissionGranted = userHasLegitRole(userRoles, legitRoles);
+            permissionGranted = hasUserLegitRole(userRoles, legitRoles);
         }
 
         return permissionGranted;
     }
 
-    private boolean userHasLegitRole(Set<String> userRoles, Set<String> legitRoles) {
+    private boolean hasUserLegitRole(Set<String> userRoles, Set<String> legitRoles) {
         Set<String> userLegitRoles = new HashSet<>(legitRoles);
         userLegitRoles.retainAll(userRoles);
 

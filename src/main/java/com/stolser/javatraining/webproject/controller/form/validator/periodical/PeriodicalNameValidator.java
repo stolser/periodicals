@@ -28,11 +28,11 @@ public class PeriodicalNameValidator implements Validator {
         Periodical.OperationType operationType = getOperationType(request);
         long periodicalId = Long.valueOf(request.getParameter(ENTITY_ID_PARAM_NAME));
 
-        if (nameHasIncorrectSymbols(periodicalName)) {
+        if (hasNameIncorrectSymbols(periodicalName)) {
             statusCode = STATUS_CODE_VALIDATION_FAILED;
             messageKey = MSG_PERIODICAL_NAME_ERROR;
 
-        } else if (nameIsNotUnique(operationType, periodicalId, periodicalName)) {
+        } else if (isNameNotUnique(operationType, periodicalId, periodicalName)) {
             statusCode = STATUS_CODE_VALIDATION_FAILED;
             messageKey = MSG_PERIODICAL_NAME_DUPLICATION;
 
@@ -44,32 +44,32 @@ public class PeriodicalNameValidator implements Validator {
         return new ValidationResult(statusCode, messageKey);
     }
 
-    private boolean nameIsNotUnique(Periodical.OperationType periodicalOperationType,
+    private boolean isNameNotUnique(Periodical.OperationType periodicalOperationType,
                                     long periodicalId, String periodicalName) {
         Periodical periodicalWithSuchNameInDb = periodicalService.findOneByName(periodicalName);
         /*
          * if this is 'create' --> there must not be any periodical with the same name in the db;
          * if this is 'update' --> we exclude this periodical from validation;
          */
-        return suchNameExists(periodicalWithSuchNameInDb)
-                && (operationIsCreate(periodicalOperationType)
-                || (operationIsUpdate(periodicalOperationType) &&
+        return doesSuchNameExist(periodicalWithSuchNameInDb)
+                && (isOperationCreate(periodicalOperationType)
+                || (isOperationUpdate(periodicalOperationType) &&
                 (periodicalId != periodicalWithSuchNameInDb.getId())));
     }
 
-    private boolean operationIsUpdate(Periodical.OperationType periodicalOperationType) {
+    private boolean isOperationUpdate(Periodical.OperationType periodicalOperationType) {
         return Periodical.OperationType.UPDATE.equals(periodicalOperationType);
     }
 
-    private boolean suchNameExists(Periodical periodicalWithSuchNameInDb) {
+    private boolean doesSuchNameExist(Periodical periodicalWithSuchNameInDb) {
         return periodicalWithSuchNameInDb != null;
     }
 
-    private boolean operationIsCreate(Periodical.OperationType periodicalOperationType) {
+    private boolean isOperationCreate(Periodical.OperationType periodicalOperationType) {
         return Periodical.OperationType.CREATE.equals(periodicalOperationType);
     }
 
-    private boolean nameHasIncorrectSymbols(String periodicalName) {
+    private boolean hasNameIncorrectSymbols(String periodicalName) {
         return !Pattern.matches(PERIODICAL_NAME_PATTERN_REGEX, periodicalName);
     }
 

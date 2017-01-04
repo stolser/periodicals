@@ -34,18 +34,18 @@ public class SignIn implements RequestProcessor {
         String username = request.getParameter(SIGN_IN_USERNAME_PARAM_NAME);
         String password = request.getParameter(PASSWORD_PARAM_NAME);
 
-        if (usernameAndPasswordIsNotEmpty(username, password)) {
+        if (isUsernameAndPasswordNotEmpty(username, password)) {
             Credential credential = userService.findOneCredentialByUserName(username);
 
-            if (thereIsNoUsernameInDb(credential)) {
+            if (doesUsernameNotExistInDb(credential)) {
                 messages.put(SIGN_IN_USERNAME_PARAM_NAME,
                         messageFactory.getError(MSG_NO_SUCH_USER_NAME));
 
                 redirectUri = SIGN_IN_URI;
-            } else if (passwordIsCorrect(password, credential)) {
+            } else if (isPasswordCorrect(password, credential)) {
                 User thisUser = userService.findOneUserByUserName(username);
 
-                if (thisUserIsActive(thisUser)) {
+                if (isThisUserActive(thisUser)) {
                     redirectUri = signInThisUserAndGetRedirectUri(request, session, thisUser);
 
                 } else {
@@ -80,15 +80,15 @@ public class SignIn implements RequestProcessor {
         return redirectUri;
     }
 
-    private boolean thisUserIsActive(User thisUser) {
+    private boolean isThisUserActive(User thisUser) {
         return thisUser.getStatus() == User.Status.ACTIVE;
     }
 
-    private boolean thereIsNoUsernameInDb(Credential credential) {
+    private boolean doesUsernameNotExistInDb(Credential credential) {
         return credential == null;
     }
 
-    private boolean passwordIsCorrect(String password, Credential credential) {
+    private boolean isPasswordCorrect(String password, Credential credential) {
         return HttpUtils.getPasswordHash(password)
                 .equals(credential.getPasswordHash());
     }
@@ -102,7 +102,7 @@ public class SignIn implements RequestProcessor {
                 ? originalUri : defaultUri;
     }
 
-    private boolean usernameAndPasswordIsNotEmpty(String username, String password) {
+    private boolean isUsernameAndPasswordNotEmpty(String username, String password) {
         return !StringUtils.isEmpty(username) && !StringUtils.isEmpty(password);
     }
 }

@@ -43,7 +43,7 @@ public class PayOneInvoice implements RequestProcessor {
                 .replaceFirst("/backend/users/\\d+/", ""));
         Invoice invoiceInDb = invoiceService.findOneById(invoiceId);
 
-        if (validationPassed(invoiceInDb, request, generalMessages)) {
+        if (isInvoiceValid(invoiceInDb, request, generalMessages)) {
             generalMessages.add(messageFactory.getInfo(MSG_VALIDATION_PASSED_SUCCESS));
             tryToPayThisInvoice(invoiceInDb, request, generalMessages);
         }
@@ -54,8 +54,8 @@ public class PayOneInvoice implements RequestProcessor {
         return null;
     }
 
-    private boolean validationPassed(Invoice invoiceInDb, HttpServletRequest request,
-                                     List<FrontendMessage> generalMessages) {
+    private boolean isInvoiceValid(Invoice invoiceInDb, HttpServletRequest request,
+                                   List<FrontendMessage> generalMessages) {
         ValidationResult result = new RequestUserIdValidator().validate(null, request);
 
         if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
@@ -63,12 +63,12 @@ public class PayOneInvoice implements RequestProcessor {
             return false;
         }
 
-        return invoiceExistsInDb(invoiceInDb, generalMessages)
-                && invoiceIsNew(invoiceInDb, generalMessages)
-                && periodicalIsVisible(invoiceInDb, generalMessages);
+        return doesInvoiceExistInDb(invoiceInDb, generalMessages)
+                && isInvoiceNew(invoiceInDb, generalMessages)
+                && isPeriodicalVisible(invoiceInDb, generalMessages);
     }
 
-    private boolean invoiceExistsInDb(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
+    private boolean doesInvoiceExistInDb(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
         if (invoiceInDb != null) {
             return true;
         } else {
@@ -77,7 +77,7 @@ public class PayOneInvoice implements RequestProcessor {
         }
     }
 
-    private boolean invoiceIsNew(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
+    private boolean isInvoiceNew(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
         if (Invoice.Status.NEW.equals(invoiceInDb.getStatus())) {
             return true;
         } else {
@@ -86,7 +86,7 @@ public class PayOneInvoice implements RequestProcessor {
         }
     }
 
-    private boolean periodicalIsVisible(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
+    private boolean isPeriodicalVisible(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
         long periodicalId = invoiceInDb.getPeriodical().getId();
         Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
 
