@@ -24,20 +24,28 @@ public class DisplayOnePeriodical implements RequestProcessor {
     public String process(HttpServletRequest request, HttpServletResponse response) {
         User thisUser = HttpUtils.getCurrentUserFromFromDb(request);
         long periodicalId = HttpUtils.getFirstIdFromUri(request.getRequestURI());
-        Periodical periodical = periodicalService.findOneById(periodicalId);
+        Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
 
-        if (periodical == null) {
-            throw new NoSuchElementException(String.format(NO_PERIODICAL_WITH_ID_IN_DB, periodicalId));
+        checkPeriodicalExists(periodicalId, periodicalInDb);
 
-        } else if(!Periodical.Status.ACTIVE.equals(periodical.getStatus())
-                && !thisUser.hasRole(ADMIN_ROLE_NAME)) {
+        if(userDoesNotHaveEnoughPermissions(thisUser, periodicalInDb)) {
             HttpUtils.sendRedirect(request, response, ACCESS_DENIED_URI);
-
             return null;
         }
 
-        request.setAttribute(PERIODICAL_ATTR_NAME, periodical);
+        request.setAttribute(PERIODICAL_ATTR_NAME, periodicalInDb);
 
         return ONE_PERIODICAL_VIEW_NAME;
+    }
+
+    private void checkPeriodicalExists(long periodicalId, Periodical periodicalInDb) {
+        if (periodicalInDb == null) {
+            throw new NoSuchElementException(String.format(NO_PERIODICAL_WITH_ID_IN_DB, periodicalId));
+        }
+    }
+
+    private boolean userDoesNotHaveEnoughPermissions(User thisUser, Periodical periodicalInDb) {
+        return !Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())
+                && !thisUser.hasRole(ADMIN_ROLE_NAME);
     }
 }

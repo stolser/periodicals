@@ -40,8 +40,7 @@ class MysqlSubscriptionDao implements SubscriptionDao {
         String sqlStatement = "SELECT * FROM subscriptions " +
                 "WHERE user_id = ? AND periodical_id = ?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setLong(1, userId);
             st.setLong(2, periodicalId);
 
@@ -64,8 +63,7 @@ class MysqlSubscriptionDao implements SubscriptionDao {
                 "JOIN periodicals ON (subscriptions.periodical_id = periodicals.id) " +
                 "WHERE periodicals.id = ? AND subscriptions.status = ?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setLong(1, periodicalId);
             st.setString(2, status.name().toLowerCase());
 
@@ -111,8 +109,7 @@ class MysqlSubscriptionDao implements SubscriptionDao {
                 "JOIN periodicals ON (subscriptions.periodical_id = periodicals.id) " +
                 "WHERE users.id = ?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setLong(1, user.getId());
 
             ResultSet rs = st.executeQuery();
@@ -147,9 +144,7 @@ class MysqlSubscriptionDao implements SubscriptionDao {
                 "(user_id, periodical_id, delivery_address, end_date, status) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
-
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             setSubscriptionForInsertUpdateStatement(st, subscription);
 
             return st.executeUpdate();
@@ -177,9 +172,7 @@ class MysqlSubscriptionDao implements SubscriptionDao {
                 "SET user_id=?, periodical_id=?, delivery_address=?, end_date=?, status=? " +
                 "WHERE id=?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
-
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             setSubscriptionForInsertUpdateStatement(st, subscription);
             st.setLong(6, subscription.getId());
 

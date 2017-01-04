@@ -62,9 +62,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
 
     private Periodical getPeriodicalFromDb(String sqlStatement, Object fieldValue,
                                            String fieldName) {
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
-
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             switch (fieldName) {
                 case DB_PERIODICALS_ID:
                     st.setLong(1, (Long) fieldValue);
@@ -91,9 +89,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     public List<Periodical> findAll() {
         String sqlStatement = "SELECT * FROM periodicals";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
-
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             ResultSet rs = st.executeQuery();
 
             List<Periodical> periodicals = new ArrayList<>();
@@ -117,8 +113,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         String sqlStatement = "SELECT * FROM periodicals " +
                 "WHERE status = ?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setString(1, status.name().toLowerCase());
 
             ResultSet rs = st.executeQuery();
@@ -145,8 +140,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         String sqlStatement = "SELECT COUNT(id) FROM periodicals " +
                 "WHERE category = ? AND status = ?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setString(1, category.name().toLowerCase());
             st.setString(2, status.name().toLowerCase());
 
@@ -168,8 +162,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
                 "(name, category, publisher, description, one_month_cost, status) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             setStatementFromPeriodical(st, periodical);
 
             return st.executeUpdate();
@@ -197,8 +190,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
                 "SET name=?, category=?, publisher=?, description=?, one_month_cost=?, status=? " +
                 "WHERE id=?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             setStatementFromPeriodical(st, periodical);
             st.setLong(7, periodical.getId());
 
@@ -218,8 +210,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
                 "WHERE id=? AND 0 = (SELECT count(*) FROM subscriptions AS s " +
                 "WHERE s.periodical_id = p.id AND s.status = ?)";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             setStatementFromPeriodical(st, periodical);
             st.setLong(7, periodical.getId());
             st.setString(8, Subscription.Status.ACTIVE.name().toLowerCase());
@@ -238,8 +229,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         String sqlStatement = "DELETE FROM periodicals " +
                 "WHERE status = ?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setString(1, Periodical.Status.DISCARDED.name());
 
             st.executeUpdate();

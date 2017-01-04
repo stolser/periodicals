@@ -30,8 +30,7 @@ class MysqlRoleDao implements RoleDao {
 
         Set<String> roles = new HashSet<>();
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setString(1, userName);
 
             ResultSet rs = st.executeQuery();
@@ -55,8 +54,7 @@ class MysqlRoleDao implements RoleDao {
         String sqlStatement = "INSERT INTO user_roles " +
                 "(user_id, name) VALUES (?, ?)";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setLong(1, userId);
             st.setString(2, roleName);
 

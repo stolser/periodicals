@@ -26,8 +26,7 @@ class MysqlCredentialDao implements CredentialDao {
         String sqlStatement = "SELECT * FROM credentials " +
                 "WHERE user_name = ?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try(PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setString(1, userName);
 
             ResultSet rs = st.executeQuery();
@@ -57,8 +56,7 @@ class MysqlCredentialDao implements CredentialDao {
                 "(user_name, password_hash, user_id) " +
                 "VALUES (?, ?, ?)";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try(PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setString(1, credential.getUserName());
             st.setString(2, credential.getPasswordHash());
             st.setLong(3, credential.getId());

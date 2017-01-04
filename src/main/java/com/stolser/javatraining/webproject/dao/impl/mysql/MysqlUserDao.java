@@ -34,8 +34,7 @@ class MysqlUserDao implements UserDao {
                 "JOIN credentials ON (users.id = credentials.user_id) " +
                 "WHERE users.id = ?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setLong(1, id);
 
             ResultSet rs = st.executeQuery();
@@ -55,8 +54,7 @@ class MysqlUserDao implements UserDao {
                 "INNER JOIN users ON (credentials.user_id = users.id) " +
                 "WHERE credentials.user_name = ?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setString(1, userName);
 
             ResultSet rs = st.executeQuery();
@@ -75,9 +73,7 @@ class MysqlUserDao implements UserDao {
         String sqlStatement = "SELECT * FROM credentials " +
                 "RIGHT OUTER JOIN users ON (credentials.user_id = users.id) ";
 
-        try {
-            ResultSet rs = conn.createStatement().executeQuery(sqlStatement);
-
+        try (ResultSet rs = conn.createStatement().executeQuery(sqlStatement)) {
             List<User> users = new ArrayList<>();
             while (rs.next()) {
                 users.add(getUserFromResults(rs));
@@ -114,8 +110,7 @@ class MysqlUserDao implements UserDao {
                 "(first_name, last_name, birthday, email, address, status) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, user.getFirstName());
             st.setString(2, user.getLastName());
             st.setDate(3, new java.sql.Date(user.getBirthday().getTime()));

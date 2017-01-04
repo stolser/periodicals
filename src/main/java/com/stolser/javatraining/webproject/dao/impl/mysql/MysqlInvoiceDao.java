@@ -28,7 +28,7 @@ class MysqlInvoiceDao implements InvoiceDao {
             "Exception during execution statement '%s' for invoice = %s.";
     private static final String EXCEPTION_DURING_GETTING_INVOICE_SUM =
             "Exception during execution statement '%s' for since = %s " +
-            "and until = '%s'.";
+                    "and until = '%s'.";
     private static final String EXCEPTION_DURING_EXECUTION_FOR_PERIODICAL_ID =
             "Exception during execution statement '%s' for periodicalId = %d.";
     private Connection conn;
@@ -41,8 +41,7 @@ class MysqlInvoiceDao implements InvoiceDao {
     public Invoice findOneById(long invoiceId) {
         String sqlStatement = "SELECT * FROM invoices WHERE id = ?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setLong(1, invoiceId);
 
             ResultSet rs = st.executeQuery();
@@ -90,18 +89,19 @@ class MysqlInvoiceDao implements InvoiceDao {
 
     private List<Invoice> executeAndGetInvoicesFromRs(String sqlStatement, long periodicalId)
             throws SQLException {
-        PreparedStatement st = conn.prepareStatement(sqlStatement);
-        st.setLong(1, periodicalId);
 
-        ResultSet rs = st.executeQuery();
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
+            st.setLong(1, periodicalId);
 
-        List<Invoice> invoices = new ArrayList<>();
+            ResultSet rs = st.executeQuery();
 
-        while (rs.next()) {
-            invoices.add(getInvoiceFromRs(rs));
+            List<Invoice> invoices = new ArrayList<>();
+            while (rs.next()) {
+                invoices.add(getInvoiceFromRs(rs));
+            }
+
+            return invoices;
         }
-
-        return invoices;
     }
 
     @Override
@@ -109,8 +109,7 @@ class MysqlInvoiceDao implements InvoiceDao {
         String sqlStatement = "SELECT SUM(total_sum) FROM invoices " +
                 "WHERE creation_date >= ? AND creation_date <= ?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setTimestamp(1, new Timestamp(since.toEpochMilli()));
             st.setTimestamp(2, new Timestamp(until.toEpochMilli()));
 
@@ -132,8 +131,7 @@ class MysqlInvoiceDao implements InvoiceDao {
         String sqlStatement = "SELECT SUM(total_sum) FROM invoices " +
                 "WHERE payment_date >= ? AND payment_date <= ? AND status = ?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setTimestamp(1, new Timestamp(since.toEpochMilli()));
             st.setTimestamp(2, new Timestamp(until.toEpochMilli()));
             st.setString(3, Invoice.Status.PAID.name().toLowerCase());
@@ -157,9 +155,7 @@ class MysqlInvoiceDao implements InvoiceDao {
                 "(user_id, periodical_id, period, total_sum, creation_date, payment_date, status) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
-
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             setCreateUpdateStatementFromInvoice(st, invoice);
 
             return st.executeUpdate();
@@ -177,9 +173,7 @@ class MysqlInvoiceDao implements InvoiceDao {
                 "SET user_id=?, periodical_id=?, period=?, total_sum=?, creation_date=?, " +
                 "payment_date=?, status=? WHERE id=?";
 
-        try {
-            PreparedStatement st = conn.prepareStatement(sqlStatement);
-
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             setCreateUpdateStatementFromInvoice(st, invoice);
             st.setLong(8, invoice.getId());
 
