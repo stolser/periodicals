@@ -63,12 +63,12 @@ public class PayOneInvoice implements RequestProcessor {
             return false;
         }
 
-        return doesInvoiceExistInDb(invoiceInDb, generalMessages)
+        return invoiceExistsInDb(invoiceInDb, generalMessages)
                 && isInvoiceNew(invoiceInDb, generalMessages)
                 && isPeriodicalVisible(invoiceInDb, generalMessages);
     }
 
-    private boolean doesInvoiceExistInDb(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
+    private boolean invoiceExistsInDb(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
         if (invoiceInDb != null) {
             return true;
         } else {

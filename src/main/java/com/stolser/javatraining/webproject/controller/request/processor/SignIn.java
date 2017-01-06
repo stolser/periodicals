@@ -37,16 +37,16 @@ public class SignIn implements RequestProcessor {
         if (isUsernameAndPasswordNotEmpty(username, password)) {
             Credential credential = userService.findOneCredentialByUserName(username);
 
-            if (doesUsernameNotExistInDb(credential)) {
+            if (usernameNotExistsInDb(credential)) {
                 messages.put(SIGN_IN_USERNAME_PARAM_NAME,
                         messageFactory.getError(MSG_NO_SUCH_USER_NAME));
 
                 redirectUri = SIGN_IN_URI;
             } else if (isPasswordCorrect(password, credential)) {
-                User thisUser = userService.findOneUserByUserName(username);
+                User currentUser = userService.findOneUserByUserName(username);
 
-                if (isThisUserActive(thisUser)) {
-                    redirectUri = signInThisUserAndGetRedirectUri(request, session, thisUser);
+                if (isThisUserActive(currentUser)) {
+                    redirectUri = signInThisUserAndGetRedirectUri(request, session, currentUser);
 
                 } else {
                     messages.put(SIGN_IN_USERNAME_PARAM_NAME,
@@ -72,19 +72,19 @@ public class SignIn implements RequestProcessor {
     }
 
     private String signInThisUserAndGetRedirectUri(HttpServletRequest request, HttpSession session,
-                                                   User thisUser) {
-        String redirectUri = getRedirectUri(request, thisUser);
-        session.setAttribute(CURRENT_USER_ATTR_NAME, thisUser);
+                                                   User currentUser) {
+        String redirectUri = getRedirectUri(request, currentUser);
+        session.setAttribute(CURRENT_USER_ATTR_NAME, currentUser);
         session.removeAttribute(ORIGINAL_URI_ATTR_NAME);
 
         return redirectUri;
     }
 
-    private boolean isThisUserActive(User thisUser) {
-        return thisUser.getStatus() == User.Status.ACTIVE;
+    private boolean isThisUserActive(User currentUser) {
+        return currentUser.getStatus() == User.Status.ACTIVE;
     }
 
-    private boolean doesUsernameNotExistInDb(Credential credential) {
+    private boolean usernameNotExistsInDb(Credential credential) {
         return credential == null;
     }
 
@@ -93,9 +93,9 @@ public class SignIn implements RequestProcessor {
                 .equals(credential.getPasswordHash());
     }
 
-    private String getRedirectUri(HttpServletRequest request, User thisUser) {
+    private String getRedirectUri(HttpServletRequest request, User currentUser) {
         String originalUri = (String) request.getSession().getAttribute(ORIGINAL_URI_ATTR_NAME);
-        String defaultUri = thisUser.hasRole(ADMIN_ROLE_NAME) ? ADMIN_PANEL_URI
+        String defaultUri = currentUser.hasRole(ADMIN_ROLE_NAME) ? ADMIN_PANEL_URI
                 : CURRENT_USER_ACCOUNT_URI;
 
         return (originalUri != null) && (!SIGN_OUT_URI.equals(originalUri))

@@ -50,7 +50,7 @@ public class PersistOneInvoice implements RequestProcessor {
         return null;
     }
 
-    private boolean doesPeriodicalExistInDb(Periodical periodicalInDb, List<FrontendMessage> generalMessages) {
+    private boolean periodicalExistsInDb(Periodical periodicalInDb, List<FrontendMessage> generalMessages) {
         if (periodicalInDb != null) {
             return true;
         } else {
@@ -99,7 +99,7 @@ public class PersistOneInvoice implements RequestProcessor {
             return false;
         }
 
-        return doesPeriodicalExistInDb(periodicalInDb, generalMessages)
+        return periodicalExistsInDb(periodicalInDb, generalMessages)
                 && isPeriodicalVisible(periodicalInDb, generalMessages)
                 && isSubscriptionPeriodValid(request, generalMessages);
     }

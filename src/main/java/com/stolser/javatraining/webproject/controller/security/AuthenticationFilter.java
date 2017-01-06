@@ -27,19 +27,19 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if(doesRequestNotRequireAuthentication(request)) {
+        if(requestNotRequiresAuthentication(request)) {
             chain.doFilter(servletRequest, servletResponse);
             return;
         }
 
         String requestURI = request.getRequestURI();
-        User thisUser = HttpUtils.getCurrentUserFromFromDb(request);
+        User currentUser = HttpUtils.getCurrentUserFromFromDb(request);
 
-        if (thisUser == null) {
+        if (currentUser == null) {
             request.getSession().setAttribute(ORIGINAL_URI_ATTR_NAME, requestURI);
             response.sendRedirect(SIGN_IN_URI);
 
-        } else if (!User.Status.ACTIVE.equals(thisUser.getStatus())) {
+        } else if (!User.Status.ACTIVE.equals(currentUser.getStatus())) {
             response.sendRedirect(SIGN_OUT_URI);
 
         } else {
@@ -47,7 +47,7 @@ public class AuthenticationFilter implements Filter {
         }
     }
 
-    private boolean doesRequestNotRequireAuthentication(HttpServletRequest request) {
+    private boolean requestNotRequiresAuthentication(HttpServletRequest request) {
         List<String> unProtectedUris = Arrays.asList("/backend/signIn", "/backend/signUp");
         String requestUri = request.getRequestURI();
 

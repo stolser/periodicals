@@ -34,12 +34,12 @@ public class CreateUser implements RequestProcessor {
 
         Credential credential = userService.findOneCredentialByUserName(username);
 
-        if (doesUsernameExistInDb(credential)) {
+        if (usernameExistsInDb(credential)) {
             messages.put(SIGN_UP_USERNAME_PARAM_NAME,
                     messageFactory.getError(USERNAME_IS_NOT_UNIQUE_TRY_ANOTHER_ONE));
 
             redirectUri = SIGN_IN_URI;
-        } else if (arePasswordsNotEqual(password, repeatPassword)) {
+        } else if (passwordsNotEqual(password, repeatPassword)) {
             messages.put(PASSWORD_PARAM_NAME,
                     messageFactory.getError("validation.passwordsAreNotEqual"));
 
@@ -75,11 +75,11 @@ public class CreateUser implements RequestProcessor {
         return password;
     }
 
-    private boolean arePasswordsNotEqual(String password, String repeatPassword) {
+    private boolean passwordsNotEqual(String password, String repeatPassword) {
         return !password.equals(repeatPassword);
     }
 
-    private boolean doesUsernameExistInDb(Credential credential) {
+    private boolean usernameExistsInDb(Credential credential) {
         return credential != null;
     }
 }

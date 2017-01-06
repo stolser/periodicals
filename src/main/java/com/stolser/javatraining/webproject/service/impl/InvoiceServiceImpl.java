@@ -107,7 +107,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             conn.setAutoCommit(false);
             invoiceDao.update(invoiceToPay);
 
-            if (doesUserNotHaveSubscriptionOnThisPeriodical(existingSubscription)) {
+            if (userNotHaveSubscriptionOnThisPeriodical(existingSubscription)) {
                 createAndPersistNewSubscription(userFromDb, periodical, subscriptionPeriod, subscriptionDao);
 
             } else {
@@ -183,7 +183,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         subscriptionDao.createNew(builder.build());
     }
 
-    private boolean doesUserNotHaveSubscriptionOnThisPeriodical(Subscription existingSubscription) {
+    private boolean userNotHaveSubscriptionOnThisPeriodical(Subscription existingSubscription) {
         return existingSubscription == null;
     }
 

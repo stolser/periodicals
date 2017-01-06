@@ -51,7 +51,7 @@ public class PeriodicalNameValidator implements Validator {
          * if this is 'create' --> there must not be any periodical with the same name in the db;
          * if this is 'update' --> we exclude this periodical from validation;
          */
-        return doesSuchNameExist(periodicalWithSuchNameInDb)
+        return periodicalNameExists(periodicalWithSuchNameInDb)
                 && (isOperationCreate(periodicalOperationType)
                 || (isOperationUpdate(periodicalOperationType) &&
                 (periodicalId != periodicalWithSuchNameInDb.getId())));
@@ -61,7 +61,7 @@ public class PeriodicalNameValidator implements Validator {
         return Periodical.OperationType.UPDATE.equals(periodicalOperationType);
     }
 
-    private boolean doesSuchNameExist(Periodical periodicalWithSuchNameInDb) {
+    private boolean periodicalNameExists(Periodical periodicalWithSuchNameInDb) {
         return periodicalWithSuchNameInDb != null;
     }
 

@@ -22,13 +22,13 @@ public class DisplayOnePeriodical implements RequestProcessor {
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
-        User thisUser = HttpUtils.getCurrentUserFromFromDb(request);
+        User currentUser = HttpUtils.getCurrentUserFromFromDb(request);
         long periodicalId = HttpUtils.getFirstIdFromUri(request.getRequestURI());
         Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
 
         checkPeriodicalExists(periodicalId, periodicalInDb);
 
-        if(hasUserNotEnoughPermissions(thisUser, periodicalInDb)) {
+        if(hasUserNotEnoughPermissions(currentUser, periodicalInDb)) {
             HttpUtils.sendRedirect(request, response, ACCESS_DENIED_URI);
             return null;
         }
@@ -44,8 +44,8 @@ public class DisplayOnePeriodical implements RequestProcessor {
         }
     }
 
-    private boolean hasUserNotEnoughPermissions(User thisUser, Periodical periodicalInDb) {
+    private boolean hasUserNotEnoughPermissions(User currentUser, Periodical periodicalInDb) {
         return !Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())
-                && !thisUser.hasRole(ADMIN_ROLE_NAME);
+                && !currentUser.hasRole(ADMIN_ROLE_NAME);
     }
 }
