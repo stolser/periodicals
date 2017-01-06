@@ -31,7 +31,6 @@ public class ValidationProcessor implements RequestProcessor {
     private static final String STATUS_CODE_JSON_RESPONSE = "statusCode";
     private static final String VALIDATION_MESSAGE_JSON_RESPONSE = "validationMessage";
     private static final String EXCEPTION_DURING_VALIDATION = "Exception during validation.";
-    private ValidatorFactory validatorFactory = ValidatorFactory.getInstance();
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -44,7 +43,7 @@ public class ValidationProcessor implements RequestProcessor {
 
         JSONObject jsonResponse = new JSONObject();
         try {
-            ValidationResult result = validatorFactory.newValidator(paramName).validate(paramValue, request);
+            ValidationResult result = ValidatorFactory.newValidator(paramName).validate(paramValue, request);
             jsonResponse.put(STATUS_CODE_JSON_RESPONSE, result.getStatusCode());
             jsonResponse.put(VALIDATION_MESSAGE_JSON_RESPONSE, getLocalizedMessage(session, result));
         } catch (JSONException e) {

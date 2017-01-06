@@ -16,19 +16,27 @@ public class ValidatorFactory {
     private static final String THERE_IS_NO_VALIDATOR_FOR_SUCH_PARAM =
             "There is no validator for such a parameter!";
 
-    private static class InstanceHolder {
-        private static final ValidatorFactory INSTANCE = new ValidatorFactory();
+    public static Validator getPeriodicalNameValidator() {
+        return new PeriodicalNameValidator();
     }
 
-    public static ValidatorFactory getInstance() {
-        return InstanceHolder.INSTANCE;
+    public static Validator getPeriodicalCategoryValidator() {
+        return new PeriodicalCategoryValidator();
+    }
+
+    public static Validator getPeriodicalPublisherValidator() {
+        return new PeriodicalPublisherValidator();
+    }
+
+    public static Validator getPeriodicalCostValidator() {
+        return new PeriodicalCostValidator();
     }
 
     /**
      * @param paramName a http parameter name that need to be validated
      * @return a concrete validator for this specific parameter
      */
-    public Validator newValidator(String paramName) {
+    public static Validator newValidator(String paramName) {
         switch (paramName) {
             case SIGN_IN_USERNAME_PARAM_NAME:
                 return new SignInUsernameValidator();

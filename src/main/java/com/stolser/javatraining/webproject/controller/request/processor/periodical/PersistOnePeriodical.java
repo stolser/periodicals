@@ -163,47 +163,57 @@ public class PersistOnePeriodical implements RequestProcessor {
     }
 
     private boolean isPeriodicalToSaveValid(Periodical periodicalToSave, HttpServletRequest request) {
-        boolean isValid = true;
         Map<String, FrontendMessage> messages = new HashMap<>();
-        ValidatorFactory factory = ValidatorFactory.getInstance();
 
-        ValidationResult result = factory.newValidator(PERIODICAL_NAME_PARAM_NAME)
-                .validate(periodicalToSave.getName(), request);
+        validateName(periodicalToSave, request, messages);
+        validateCategory(periodicalToSave, request, messages);
+        validatePublisher(periodicalToSave, request, messages);
+        validateCost(periodicalToSave, request, messages);
 
-        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
-            isValid = false;
-            messages.put(PERIODICAL_NAME_PARAM_NAME, messageFactory.getError(result.getMessageKey()));
-        }
-
-        result = factory.newValidator(PERIODICAL_NAME_PARAM_NAME)
-                .validate(periodicalToSave.getCategory().toString(), request);
-
-        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
-            isValid = false;
-            messages.put(PERIODICAL_NAME_PARAM_NAME, messageFactory.getError(result.getMessageKey()));
-        }
-
-        result = factory.newValidator(PERIODICAL_PUBLISHER_PARAM_NAME)
-                .validate(periodicalToSave.getPublisher(), request);
-
-        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
-            isValid = false;
-            messages.put(PERIODICAL_PUBLISHER_PARAM_NAME, messageFactory.getError(result.getMessageKey()));
-        }
-
-        result = factory.newValidator(PERIODICAL_COST_PARAM_NAME)
-                .validate(String.valueOf(periodicalToSave.getOneMonthCost()), request);
-
-        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
-            isValid = false;
-            messages.put(PERIODICAL_COST_PARAM_NAME, messageFactory.getError(result.getMessageKey()));
-        }
-
-        if (messages.size() > 0) {
+        int messagesSize = messages.size();
+        if (messagesSize > 0) {
             request.getSession().setAttribute(MESSAGES_ATTR_NAME, messages);
         }
 
-        return isValid;
+        return messagesSize == 0;
+    }
+
+    private void validateName(Periodical periodicalToSave, HttpServletRequest request,
+                              Map<String, FrontendMessage> messages) {
+        ValidationResult result = ValidatorFactory.getPeriodicalNameValidator()
+                .validate(periodicalToSave.getName(), request);
+
+        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
+            messages.put(PERIODICAL_NAME_PARAM_NAME, messageFactory.getError(result.getMessageKey()));
+        }
+    }
+
+    private void validateCategory(Periodical periodicalToSave, HttpServletRequest request,
+                                  Map<String, FrontendMessage> messages) {
+        ValidationResult result = ValidatorFactory.getPeriodicalCategoryValidator()
+                .validate(periodicalToSave.getCategory().toString(), request);
+
+        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
+            messages.put(PERIODICAL_NAME_PARAM_NAME, messageFactory.getError(result.getMessageKey()));
+        }
+    }
+
+    private void validatePublisher(Periodical periodicalToSave, HttpServletRequest request, Map<String, FrontendMessage> messages) {
+        ValidationResult result = ValidatorFactory.getPeriodicalPublisherValidator()
+                .validate(periodicalToSave.getPublisher(), request);
+
+        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
+            messages.put(PERIODICAL_PUBLISHER_PARAM_NAME, messageFactory.getError(result.getMessageKey()));
+        }
+    }
+
+    private void validateCost(Periodical periodicalToSave, HttpServletRequest request, Map<String, FrontendMessage> messages) {
+        ValidationResult result = ValidatorFactory.getPeriodicalCostValidator()
+                .validate(String.valueOf(periodicalToSave.getOneMonthCost()), request);
+
+        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
+            messages.put(PERIODICAL_COST_PARAM_NAME, messageFactory.getError(result.getMessageKey()));
+        }
     }
 
 }
