@@ -1,18 +1,17 @@
 package com.stolser.javatraining.webproject.service.impl;
 
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
+import com.stolser.javatraining.webproject.dao.AbstractConnection;
 import com.stolser.javatraining.webproject.dao.DaoFactory;
 import com.stolser.javatraining.webproject.dao.RoleDao;
 import com.stolser.javatraining.webproject.dao.UserDao;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
 import com.stolser.javatraining.webproject.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.sql.Connection;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,7 +28,7 @@ public class UserServiceImplTest {
     @Mock
     private ConnectionPool connectionPool;
     @Mock
-    private Connection conn;
+    private AbstractConnection conn;
     @InjectMocks
     private UserService userService = UserServiceImpl.getInstance();
 
@@ -52,6 +51,5 @@ public class UserServiceImplTest {
         assertEquals(user, userService.findOneUserByUserName(TEST_USERNAME));
 
         verify(user).setRoles(any());
-        verify(roleDao).findRolesByUserName(TEST_USERNAME);
     }
 }

@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.dao.impl.mysql;
 
-import com.stolser.javatraining.webproject.dao.exception.StorageException;
+import com.stolser.javatraining.webproject.dao.exception.DaoException;
 import com.stolser.javatraining.webproject.dao.UserDao;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
@@ -22,6 +22,7 @@ class MysqlUserDao implements UserDao {
             "Exception during finding a user with userName = %s.";
     private static final String EXCEPTION_DURING_FINDING_USER_BY_ID =
             "Exception during finding a user with id = %d.";
+    private static final String EXCEPTION_DURING_CREATING_NEW_USER = "Exception during creating a new user: %s";
     private Connection conn;
 
     public MysqlUserDao(Connection conn) {
@@ -43,8 +44,7 @@ class MysqlUserDao implements UserDao {
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_FINDING_USER_BY_ID, id);
-
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 
@@ -63,8 +63,7 @@ class MysqlUserDao implements UserDao {
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_FINDING_USER_BY_NAME, userName);
-
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 
@@ -83,8 +82,7 @@ class MysqlUserDao implements UserDao {
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_FINDING_ALL_USERS);
-
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 
@@ -124,8 +122,8 @@ class MysqlUserDao implements UserDao {
             return rs.getLong("id");
 
         } catch (SQLException e) {
-
-            throw new StorageException(e);
+            String message = String.format(EXCEPTION_DURING_CREATING_NEW_USER, user);
+            throw new DaoException(message, e);
         }
     }
 

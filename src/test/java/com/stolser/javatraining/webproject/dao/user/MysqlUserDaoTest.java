@@ -1,14 +1,14 @@
 package com.stolser.javatraining.webproject.dao.user;
 
-import com.stolser.javatraining.webproject.dao.UserDao;
-import com.stolser.javatraining.webproject.dao.DaoFactory;
-import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.connection.pool.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.dao.AbstractConnection;
+import com.stolser.javatraining.webproject.dao.DaoFactory;
+import com.stolser.javatraining.webproject.dao.UserDao;
+import com.stolser.javatraining.webproject.model.entity.user.User;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNull;
 public class MysqlUserDaoTest {
     private static final int ADMIN_ID = 1;
     private static UserDao userDao;
-    private static Connection conn;
+    private static AbstractConnection conn;
     private static DaoFactory factory;
     private static User expected;
 

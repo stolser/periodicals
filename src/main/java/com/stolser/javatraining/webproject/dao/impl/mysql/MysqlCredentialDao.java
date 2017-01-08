@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.dao.impl.mysql;
 
 import com.stolser.javatraining.webproject.dao.CredentialDao;
-import com.stolser.javatraining.webproject.dao.exception.StorageException;
+import com.stolser.javatraining.webproject.dao.exception.DaoException;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 
 import java.sql.Connection;
@@ -15,6 +15,7 @@ class MysqlCredentialDao implements CredentialDao {
     static final String DB_CREDENTIALS_PASSWORD_HASH = "credentials.password_hash";
     private static final String EXCEPTION_DURING_EXECUTION_STATEMENT =
             "Exception during execution statement '%s' for userName = %s.";
+    private static final String EXCEPTION_DURING_CREATING_CREDENTIAL = "Exception during creating a credential.";
     private Connection conn;
 
     public MysqlCredentialDao(Connection conn) {
@@ -45,7 +46,7 @@ class MysqlCredentialDao implements CredentialDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT,
                     sqlStatement, userName);
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 
@@ -64,7 +65,7 @@ class MysqlCredentialDao implements CredentialDao {
             st.executeUpdate();
 
         } catch (SQLException e) {
-            throw new StorageException("E during creating a credential.", e);
+            throw new DaoException(EXCEPTION_DURING_CREATING_CREDENTIAL, e);
         }
     }
 }

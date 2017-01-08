@@ -1,10 +1,10 @@
 package com.stolser.javatraining.webproject.connection.pool;
 
-import java.sql.Connection;
+import com.stolser.javatraining.webproject.dao.AbstractConnection;
 
 /**
  * Represents an abstraction for reusable connection pool.
  */
 public interface ConnectionPool {
-    Connection getConnection();
+    AbstractConnection getConnection();
 }

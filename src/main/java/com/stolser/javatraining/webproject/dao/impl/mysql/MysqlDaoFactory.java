@@ -1,16 +1,17 @@
 package com.stolser.javatraining.webproject.dao.impl.mysql;
 
-import com.stolser.javatraining.webproject.dao.InvoiceDao;
-import com.stolser.javatraining.webproject.dao.DaoFactory;
-import com.stolser.javatraining.webproject.dao.CredentialDao;
-import com.stolser.javatraining.webproject.dao.PeriodicalDao;
-import com.stolser.javatraining.webproject.dao.RoleDao;
-import com.stolser.javatraining.webproject.dao.SubscriptionDao;
-import com.stolser.javatraining.webproject.dao.UserDao;
+import com.stolser.javatraining.webproject.dao.*;
+import com.stolser.javatraining.webproject.dao.exception.DaoException;
 
 import java.sql.Connection;
 
 public class MysqlDaoFactory extends DaoFactory {
+    private static final String SQL_CONNECTION_CAN_NOT_BE_NULL =
+            "SQL connection can not be null. Datasource returned no connection.";
+    private static final String CONNECTION_CAN_NOT_BE_NULL = "Connection can not be null.";
+    private static final String CONNECTION_IS_NOT_AN_ABSTRACT_CONNECTION_IMPL_FOR_JDBC =
+            "Connection is not an AbstractConnectionImpl for JDBC.";
+
     private MysqlDaoFactory() {}
 
     private static class InstanceHolder {
@@ -22,32 +23,52 @@ public class MysqlDaoFactory extends DaoFactory {
     }
 
     @Override
-    public PeriodicalDao getPeriodicalDao(Connection conn) {
-        return new MysqlPeriodicalDao(conn);
+    public PeriodicalDao getPeriodicalDao(AbstractConnection conn) {
+        checkConnection(conn);
+        return new MysqlPeriodicalDao(getSqlConnection(conn));
     }
 
     @Override
-    public CredentialDao getCredentialDao(Connection conn) {
-        return new MysqlCredentialDao(conn);
+    public CredentialDao getCredentialDao(AbstractConnection conn) {
+        checkConnection(conn);
+        return new MysqlCredentialDao(getSqlConnection(conn));
     }
 
     @Override
-    public UserDao getUserDao(Connection conn) {
-        return new MysqlUserDao(conn);
+    public UserDao getUserDao(AbstractConnection conn) {
+        checkConnection(conn);
+        return new MysqlUserDao(getSqlConnection(conn));
     }
 
     @Override
-    public RoleDao getRoleDao(Connection conn) {
-        return new MysqlRoleDao(conn);
+    public RoleDao getRoleDao(AbstractConnection conn) {
+        checkConnection(conn);
+        return new MysqlRoleDao(getSqlConnection(conn));
     }
 
     @Override
-    public SubscriptionDao getSubscriptionDao(Connection conn) {
-        return new MysqlSubscriptionDao(conn);
+    public SubscriptionDao getSubscriptionDao(AbstractConnection conn) {
+        checkConnection(conn);
+        return new MysqlSubscriptionDao(getSqlConnection(conn));
     }
 
     @Override
-    public InvoiceDao getInvoiceDao(Connection conn) {
-        return new MysqlInvoiceDao(conn);
+    public InvoiceDao getInvoiceDao(AbstractConnection conn) {
+        checkConnection(conn);
+        return new MysqlInvoiceDao(getSqlConnection(conn));
+    }
+
+    private void checkConnection(AbstractConnection conn) {
+        if (conn == null) {
+            throw new DaoException(CONNECTION_CAN_NOT_BE_NULL);
+        }
+
+        if (!(conn instanceof AbstractConnectionImpl)) {
+            throw new DaoException(CONNECTION_IS_NOT_AN_ABSTRACT_CONNECTION_IMPL_FOR_JDBC);
+        }
+    }
+
+    private Connection getSqlConnection(AbstractConnection conn) {
+        return ((AbstractConnectionImpl) conn).getConnection();
     }
 }

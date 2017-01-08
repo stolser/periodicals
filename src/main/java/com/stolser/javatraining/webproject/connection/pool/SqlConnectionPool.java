@@ -1,9 +1,9 @@
 package com.stolser.javatraining.webproject.connection.pool;
 
-import com.stolser.javatraining.webproject.dao.exception.StorageException;
+import com.stolser.javatraining.webproject.dao.AbstractConnection;
+import com.stolser.javatraining.webproject.dao.exception.DaoException;
+import com.stolser.javatraining.webproject.dao.impl.mysql.AbstractConnectionImpl;
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,7 +12,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 class SqlConnectionPool implements ConnectionPool {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SqlConnectionPool.class);
     private static final String USER_NAME_DEFAULT = "test";
     private static final String USER_PASSWORD_DEFAULT = "test";
     private static final String DRIVER_NAME_DEFAULT = "com.mysql.jdbc.Driver";
@@ -52,17 +51,16 @@ class SqlConnectionPool implements ConnectionPool {
         return new Builder(url, dbName);
     }
 
-    public Connection getConnection() {
+    public AbstractConnection getConnection() {
         Connection newConn;
 
         try {
             newConn = dataSource.getConnection();
         } catch (SQLException e) {
-            LOGGER.error(CONNECTION_EXCEPTION_TEXT, e);
-            throw new StorageException(e);
+            throw new DaoException(CONNECTION_EXCEPTION_TEXT, e);
         }
 
-        return newConn;
+        return new AbstractConnectionImpl(newConn);
     }
 
     @Override

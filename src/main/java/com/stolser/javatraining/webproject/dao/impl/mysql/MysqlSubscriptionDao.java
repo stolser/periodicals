@@ -2,7 +2,7 @@ package com.stolser.javatraining.webproject.dao.impl.mysql;
 
 import com.stolser.javatraining.webproject.controller.utils.DaoUtils;
 import com.stolser.javatraining.webproject.dao.SubscriptionDao;
-import com.stolser.javatraining.webproject.dao.exception.StorageException;
+import com.stolser.javatraining.webproject.dao.exception.DaoException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
@@ -51,8 +51,7 @@ class MysqlSubscriptionDao implements SubscriptionDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_MSG_FINDING_ALL_PERIODICALS_BY_USER_ID,
                     userId, periodicalId);
-
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 
@@ -78,8 +77,7 @@ class MysqlSubscriptionDao implements SubscriptionDao {
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_MSG_FINDING_ALL_BY_ID, periodicalId, status);
-
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 
@@ -131,10 +129,8 @@ class MysqlSubscriptionDao implements SubscriptionDao {
             return subscriptions;
 
         } catch (SQLException e) {
-            String message = String.format(EXCEPTION_MSG_RETRIEVING_SUBSCRIPTIONS_FOR_USER,
-                    user);
-
-            throw new StorageException(message, e);
+            String message = String.format(EXCEPTION_MSG_RETRIEVING_SUBSCRIPTIONS_FOR_USER, user);
+            throw new DaoException(message, e);
         }
     }
 
@@ -150,10 +146,8 @@ class MysqlSubscriptionDao implements SubscriptionDao {
             return st.executeUpdate();
 
         } catch (SQLException e) {
-            String message = String.format(EXCEPTION_MSG_CREATING_SUBSCRIPTION,
-                    subscription);
-
-            throw new StorageException(message, e);
+            String message = String.format(EXCEPTION_MSG_CREATING_SUBSCRIPTION, subscription);
+            throw new DaoException(message, e);
         }
     }
 
@@ -180,8 +174,7 @@ class MysqlSubscriptionDao implements SubscriptionDao {
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_MSG_UPDATING, subscription);
-
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 

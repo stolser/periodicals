@@ -1,6 +1,7 @@
 package com.stolser.javatraining.webproject.dao.periodical;
 
 import com.stolser.javatraining.webproject.connection.pool.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.dao.AbstractConnection;
 import com.stolser.javatraining.webproject.dao.DaoFactory;
 import com.stolser.javatraining.webproject.dao.PeriodicalDao;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
@@ -8,8 +9,6 @@ import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCat
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import java.sql.Connection;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,7 +20,7 @@ public class MysqlPeriodicalDaoTest {
     private static final int ONE_MONTH_COST = 22;
     private static final int PERIODICAL_TO_UPDATE_ID = 32;
     private static PeriodicalDao periodicalDao;
-    private static Connection conn;
+    private static AbstractConnection conn;
     private static DaoFactory factory;
     private static Periodical expected;
 

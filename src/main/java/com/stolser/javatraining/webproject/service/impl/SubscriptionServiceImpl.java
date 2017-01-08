@@ -1,15 +1,12 @@
 package com.stolser.javatraining.webproject.service.impl;
 
-import com.stolser.javatraining.webproject.dao.DaoFactory;
-import com.stolser.javatraining.webproject.dao.SubscriptionDao;
-import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
 import com.stolser.javatraining.webproject.connection.pool.ConnectionPoolProvider;
-import com.stolser.javatraining.webproject.dao.exception.StorageException;
+import com.stolser.javatraining.webproject.dao.AbstractConnection;
+import com.stolser.javatraining.webproject.dao.DaoFactory;
+import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.service.SubscriptionService;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 
 public class SubscriptionServiceImpl implements SubscriptionService {
@@ -32,14 +29,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public List<Subscription> findAllByUserId(long id) {
-
-        try (Connection conn = connectionPool.getConnection()) {
-            SubscriptionDao subscriptionDao = factory.getSubscriptionDao(conn);
-
-            return subscriptionDao.findAllByUser(factory.getUserDao(conn).findOneById(id));
-
-        } catch (SQLException e) {
-            throw new StorageException(e);
+        try (AbstractConnection conn = connectionPool.getConnection()) {
+            return factory.getSubscriptionDao(conn)
+                    .findAllByUser(factory.getUserDao(conn).findOneById(id));
         }
     }
 }

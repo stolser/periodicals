@@ -1,5 +1,8 @@
 package com.stolser.javatraining.webproject.service.impl;
 
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPoolProvider;
+import com.stolser.javatraining.webproject.dao.AbstractConnection;
 import com.stolser.javatraining.webproject.dao.DaoFactory;
 import com.stolser.javatraining.webproject.dao.InvoiceDao;
 import com.stolser.javatraining.webproject.dao.SubscriptionDao;
@@ -8,13 +11,8 @@ import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.statistics.FinancialStatistics;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
-import com.stolser.javatraining.webproject.connection.pool.ConnectionPoolProvider;
-import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.service.InvoiceService;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -42,115 +40,70 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public Invoice findOneById(long invoiceId) {
-        try (Connection conn = connectionPool.getConnection()) {
-
+        try (AbstractConnection conn = connectionPool.getConnection()) {
             return factory.getInvoiceDao(conn).findOneById(invoiceId);
-
-        } catch (SQLException e) {
-            throw new StorageException(e);
         }
     }
 
     @Override
     public List<Invoice> findAllByUserId(long userId) {
-        try (Connection conn = connectionPool.getConnection()) {
-
+        try (AbstractConnection conn = connectionPool.getConnection()) {
             return factory.getInvoiceDao(conn).findAllByUserId(userId);
-
-        } catch (SQLException e) {
-            throw new StorageException(e);
         }
     }
 
     @Override
     public List<Invoice> findAllByPeriodicalId(long periodicalId) {
-        try (Connection conn = connectionPool.getConnection()) {
-
+        try (AbstractConnection conn = connectionPool.getConnection()) {
             return factory.getInvoiceDao(conn).findAllByPeriodicalId(periodicalId);
-
-        } catch (SQLException e) {
-            throw new StorageException(e);
         }
     }
 
     @Override
     public boolean createNew(Invoice invoice) {
-        try (Connection conn = connectionPool.getConnection()) {
-
+        try (AbstractConnection conn = connectionPool.getConnection()) {
             factory.getInvoiceDao(conn).createNew(invoice);
-
             return true;
-        } catch (SQLException e) {
-            throw new StorageException(e);
         }
     }
 
     @Override
     public boolean payInvoice(Invoice invoiceToPay) {
-        Connection conn = connectionPool.getConnection();
-
-        try {
+        try (AbstractConnection conn = connectionPool.getConnection()) {
+            SubscriptionDao subscriptionDao = factory.getSubscriptionDao(conn);
             invoiceToPay.setStatus(Invoice.Status.PAID);
             invoiceToPay.setPaymentDate(Instant.now());
 
             User userFromDb = factory.getUserDao(conn).findOneById(invoiceToPay.getUser().getId());
             Periodical periodical = invoiceToPay.getPeriodical();
 
-            SubscriptionDao subscriptionDao = factory.getSubscriptionDao(conn);
             Subscription existingSubscription = subscriptionDao
                     .findOneByUserIdAndPeriodicalId(userFromDb.getId(), periodical.getId());
 
+            conn.beginTransaction();
+            factory.getInvoiceDao(conn).update(invoiceToPay);
+
             int subscriptionPeriod = invoiceToPay.getSubscriptionPeriod();
-
-            InvoiceDao invoiceDao = factory.getInvoiceDao(conn);
-
-            conn.setAutoCommit(false);
-            invoiceDao.update(invoiceToPay);
-
-            if (userNotHaveSubscriptionOnThisPeriodical(existingSubscription)) {
+            if (existingSubscription == null) {
                 createAndPersistNewSubscription(userFromDb, periodical, subscriptionPeriod, subscriptionDao);
 
             } else {
                 updateExistingSubscription(existingSubscription, subscriptionPeriod, subscriptionDao);
             }
 
-            conn.commit();
-            conn.setAutoCommit(true);
-
+            conn.commitTransaction();
             return true;
-
-        } catch (Exception e) {
-            try {
-                conn.rollback();
-
-            } catch (SQLException e1) {
-                throw new StorageException(e);
-            }
-
-            throw new StorageException(e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-
-                } catch (SQLException e) {
-                    throw new StorageException(e);
-                }
-            }
         }
     }
 
     @Override
     public FinancialStatistics getFinStatistics(Instant since, Instant until) {
-        try (Connection conn = connectionPool.getConnection()) {
-
+        try (AbstractConnection conn = connectionPool.getConnection()) {
             InvoiceDao dao = factory.getInvoiceDao(conn);
             long totalInvoiceSum = dao.getCreatedInvoiceSumByCreationDate(since, until);
             long paidInvoiceSum = dao.getPaidInvoiceSumByPaymentDate(since, until);
 
             return new FinancialStatistics(totalInvoiceSum, paidInvoiceSum);
-        } catch (SQLException e) {
-            throw new StorageException(e);
         }
     }
 
@@ -183,15 +136,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         subscriptionDao.createNew(builder.build());
     }
 
-    private boolean userNotHaveSubscriptionOnThisPeriodical(Subscription existingSubscription) {
-        return existingSubscription == null;
-    }
-
     private Instant getEndDate(Instant startInstant, int subscriptionPeriod) {
         LocalDateTime startDate = LocalDateTime.ofInstant(startInstant, ZoneId.systemDefault());
 
         return startDate.plusMonths(subscriptionPeriod).toInstant(ZoneOffset.UTC);
     }
-
-
 }

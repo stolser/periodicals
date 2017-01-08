@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.dao.impl.mysql;
 
-import com.stolser.javatraining.webproject.dao.exception.StorageException;
+import com.stolser.javatraining.webproject.dao.exception.DaoException;
 import com.stolser.javatraining.webproject.dao.RoleDao;
 
 import java.sql.Connection;
@@ -12,7 +12,11 @@ import java.util.Set;
 
 class MysqlRoleDao implements RoleDao {
     public static final String DB_USER_ROLES_NAME = "user_roles.name";
-    private static final String RETRIEVING_ROLES_FOR_USER = "Exception during retrieving roles for user with userName = '%s'";
+    private static final String RETRIEVING_ROLES_FOR_USER =
+            "Exception during retrieving roles for user with userName = '%s'";
+    private static final String EXCEPTION_DURING_INSERTING_ROLE =
+            "Exception during executing statement: '%s' for " +
+            "userId = %d";
     private Connection conn;
 
     public MysqlRoleDao(Connection conn) {
@@ -40,10 +44,8 @@ class MysqlRoleDao implements RoleDao {
             }
 
         } catch (SQLException e) {
-            String message = String.format(RETRIEVING_ROLES_FOR_USER,
-                    userName);
-            
-            throw new StorageException(message, e);
+            String message = String.format(RETRIEVING_ROLES_FOR_USER, userName);
+            throw new DaoException(message, e);
         }
 
         return roles;
@@ -61,8 +63,8 @@ class MysqlRoleDao implements RoleDao {
             st.executeUpdate();
 
         } catch (SQLException e) {
-
-            throw new StorageException(e);
+            String message = String.format(EXCEPTION_DURING_INSERTING_ROLE, sqlStatement, userId);
+            throw new DaoException(message, e);
         }
     }
 }

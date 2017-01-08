@@ -1,11 +1,12 @@
 package com.stolser.javatraining.webproject.service.impl;
 
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
+import com.stolser.javatraining.webproject.dao.AbstractConnection;
 import com.stolser.javatraining.webproject.dao.DaoFactory;
 import com.stolser.javatraining.webproject.dao.SubscriptionDao;
 import com.stolser.javatraining.webproject.dao.UserDao;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
 import com.stolser.javatraining.webproject.service.SubscriptionService;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class SubscriptionServiceImplTest {
     @Mock
     private ConnectionPool connectionPool;
     @Mock
-    private Connection conn;
+    private AbstractConnection conn;
     @InjectMocks
     private SubscriptionService subscriptionService = SubscriptionServiceImpl.getInstance();
     private User user;

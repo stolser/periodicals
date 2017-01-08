@@ -1,15 +1,12 @@
 package com.stolser.javatraining.webproject.service.impl;
 
-import com.stolser.javatraining.webproject.dao.DaoFactory;
-import com.stolser.javatraining.webproject.dao.InvoiceDao;
-import com.stolser.javatraining.webproject.dao.SubscriptionDao;
-import com.stolser.javatraining.webproject.dao.UserDao;
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
+import com.stolser.javatraining.webproject.dao.*;
+import com.stolser.javatraining.webproject.dao.exception.DaoException;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.subscription.Subscription;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
-import com.stolser.javatraining.webproject.dao.exception.StorageException;
 import com.stolser.javatraining.webproject.service.InvoiceService;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Instant;
 
@@ -38,7 +34,7 @@ public class InvoiceServiceImplTest {
     @Mock
     private InvoiceDao invoiceDao;
     @Mock
-    private Connection conn;
+    private AbstractConnection conn;
     @Mock
     private User user;
     @Mock
@@ -87,9 +83,8 @@ public class InvoiceServiceImplTest {
     public void payInvoice_Should_UpdateInvoiceAndSubscription() throws Exception {
         assertTrue(invoiceService.payInvoice(invoice));
 
-        verify(conn, times(1)).setAutoCommit(false);
-        verify(conn, times(1)).setAutoCommit(true);
-        verify(conn, times(1)).commit();
+        verify(conn, times(1)).beginTransaction();
+        verify(conn, times(1)).commitTransaction();
 
         verify(invoiceDao, times(1)).update(invoice);
 
@@ -124,12 +119,12 @@ public class InvoiceServiceImplTest {
         verify(subscriptionDao, times(1)).createNew(any());
     }
 
-    @Test(expected = StorageException.class)
+    @Test(expected = DaoException.class)
     public void payInvoice_Should_CallRollbackIfExceptionIsThrown() throws SQLException {
-        when(subscriptionDao.update(any())).thenThrow(StorageException.class);
+        when(subscriptionDao.update(any())).thenThrow(DaoException.class);
 
         invoiceService.payInvoice(invoice);
 
-        verify(conn).rollback();
+        verify(conn).rollbackTransaction();
     }
 }

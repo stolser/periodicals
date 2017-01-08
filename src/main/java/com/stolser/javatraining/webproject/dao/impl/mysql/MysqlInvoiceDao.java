@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.dao.impl.mysql;
 
 import com.stolser.javatraining.webproject.dao.InvoiceDao;
-import com.stolser.javatraining.webproject.dao.exception.StorageException;
+import com.stolser.javatraining.webproject.dao.exception.DaoException;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
@@ -51,7 +51,7 @@ class MysqlInvoiceDao implements InvoiceDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_INVOICE_ID,
                     sqlStatement, invoiceId);
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 
@@ -67,7 +67,7 @@ class MysqlInvoiceDao implements InvoiceDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_USER_ID,
                     sqlStatement, userId);
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 
@@ -83,7 +83,7 @@ class MysqlInvoiceDao implements InvoiceDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_FOR_PERIODICAL_ID,
                     sqlStatement, periodicalId);
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 
@@ -122,7 +122,7 @@ class MysqlInvoiceDao implements InvoiceDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_GETTING_INVOICE_SUM,
                     sqlStatement, since, until);
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 
@@ -144,7 +144,7 @@ class MysqlInvoiceDao implements InvoiceDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_GETTING_INVOICE_SUM,
                     sqlStatement, since, until);
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 
@@ -163,7 +163,7 @@ class MysqlInvoiceDao implements InvoiceDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_INVOICE,
                     sqlStatement, invoice);
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 
@@ -182,7 +182,7 @@ class MysqlInvoiceDao implements InvoiceDao {
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_INVOICE,
                     sqlStatement, invoice);
-            throw new StorageException(message, e);
+            throw new DaoException(message, e);
         }
     }
 

@@ -1,9 +1,10 @@
 package com.stolser.javatraining.webproject.service.impl;
 
+import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
+import com.stolser.javatraining.webproject.dao.AbstractConnection;
 import com.stolser.javatraining.webproject.dao.DaoFactory;
 import com.stolser.javatraining.webproject.dao.PeriodicalDao;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
-import com.stolser.javatraining.webproject.connection.pool.ConnectionPool;
 import com.stolser.javatraining.webproject.service.PeriodicalService;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.sql.Connection;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
@@ -28,7 +28,7 @@ public class PeriodicalServiceImplTest {
     @Mock
     private PeriodicalDao periodicalDao;
     @Mock
-    private Connection conn;
+    private AbstractConnection conn;
 
     @InjectMocks
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
