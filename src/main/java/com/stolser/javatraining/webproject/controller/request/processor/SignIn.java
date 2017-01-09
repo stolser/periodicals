@@ -7,7 +7,6 @@ import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.service.UserService;
 import com.stolser.javatraining.webproject.service.impl.UserServiceImpl;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,41 +26,28 @@ public class SignIn implements RequestProcessor {
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
-        // messages to display on the frontend;
         Map<String, FrontendMessage> messages = new HashMap<>();
         HttpSession session = request.getSession();
-        String redirectUri;
+        String redirectUri = SIGN_IN_URI;
         String username = request.getParameter(SIGN_IN_USERNAME_PARAM_NAME);
         String password = request.getParameter(PASSWORD_PARAM_NAME);
+        Credential credential = userService.findOneCredentialByUserName(username);
 
-        if (isUsernameAndPasswordNotEmpty(username, password)) {
-            Credential credential = userService.findOneCredentialByUserName(username);
-
-            if (usernameNotExistsInDb(credential)) {
-                messages.put(SIGN_IN_USERNAME_PARAM_NAME,
-                        messageFactory.getError(MSG_NO_SUCH_USER_NAME));
-
-                redirectUri = SIGN_IN_URI;
-            } else if (isPasswordCorrect(password, credential)) {
-                User currentUser = userService.findOneUserByUserName(username);
-
-                if (isThisUserActive(currentUser)) {
-                    redirectUri = signInThisUserAndGetRedirectUri(request, session, currentUser);
-
-                } else {
-                    messages.put(SIGN_IN_USERNAME_PARAM_NAME,
-                            messageFactory.getError(MSG_ERROR_USER_IS_BLOCKED));
-
-                    redirectUri = SIGN_IN_URI;
-                }
-
-            } else {
-                messages.put(PASSWORD_PARAM_NAME, messageFactory.getError(MSG_ERROR_WRONG_PASSWORD));
-                redirectUri = SIGN_IN_URI;
-            }
+        if ((credential == null) || !isPasswordCorrect(password, credential)) {
+            messages.put(SIGN_IN_USERNAME_PARAM_NAME,
+                    messageFactory.getError(MSG_CREDENTIALS_ARE_NOT_CORRECT));
+            messages.put(PASSWORD_PARAM_NAME, messageFactory.getError(MSG_CREDENTIALS_ARE_NOT_CORRECT));
 
         } else {
-            redirectUri = SIGN_IN_URI;
+            User currentUser = userService.findOneUserByUserName(username);
+
+            if (isThisUserActive(currentUser)) {
+                redirectUri = signInThisUserAndGetRedirectUri(request, session, currentUser);
+
+            } else {
+                messages.put(SIGN_IN_USERNAME_PARAM_NAME,
+                        messageFactory.getError(MSG_ERROR_USER_IS_BLOCKED));
+            }
         }
 
         session.setAttribute(USERNAME_ATTR_NAME, username);
@@ -84,10 +70,6 @@ public class SignIn implements RequestProcessor {
         return currentUser.getStatus() == User.Status.ACTIVE;
     }
 
-    private boolean usernameNotExistsInDb(Credential credential) {
-        return credential == null;
-    }
-
     private boolean isPasswordCorrect(String password, Credential credential) {
         return HttpUtils.getPasswordHash(password)
                 .equals(credential.getPasswordHash());
@@ -102,7 +84,7 @@ public class SignIn implements RequestProcessor {
                 ? originalUri : defaultUri;
     }
 
-    private boolean isUsernameAndPasswordNotEmpty(String username, String password) {
-        return !StringUtils.isEmpty(username) && !StringUtils.isEmpty(password);
-    }
+//    private boolean isUsernameAndPasswordNotEmpty(String username, String password) {
+//        return !StringUtils.isEmpty(username) && !StringUtils.isEmpty(password);
+//    }
 }

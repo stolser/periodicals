@@ -75,6 +75,7 @@ public class ApplicationResources {
 
     public static final String MSG_SUCCESS = "validation.ok";
     public static final String MSG_NO_SUCH_USER_NAME = "validation.noSuchUserName";
+    public static final String MSG_CREDENTIALS_ARE_NOT_CORRECT = "validation.credentialsAreNotCorrect";
     public static final String USERNAME_IS_NOT_UNIQUE_TRY_ANOTHER_ONE = "validation.usernameIsNotUnique";
     public static final String MSG_USER_IS_BLOCKED = "validation.userIsBlocked";
     public static final String MSG_PERIODICAL_NAME_ERROR = "periodicalName.validationError";

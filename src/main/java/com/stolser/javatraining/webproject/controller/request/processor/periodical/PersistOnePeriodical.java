@@ -28,7 +28,8 @@ import static com.stolser.javatraining.webproject.model.entity.periodical.Period
  */
 public class PersistOnePeriodical implements RequestProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistOnePeriodical.class);
-    private static final String EXCEPTION_DURING_PERSISTING_PERIODICAL_WITH_ID = "Exception during persisting a periodical with id = {}.";
+    private static final String EXCEPTION_DURING_PERSISTING_PERIODICAL_WITH_ID =
+            "Exception during persisting a periodical with id = {}.";
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
@@ -61,10 +62,9 @@ public class PersistOnePeriodical implements RequestProcessor {
         Periodical.Status oldStatus = (periodicalInDb != null) ? periodicalInDb.getStatus() : null;
         Periodical.Status newStatus = periodicalToSave.getStatus();
 
-        if (isStatusChangedFromActiveToInactive(oldStatus, newStatus)) {
-            if (periodicalService.hasActiveSubscriptions(periodicalToSave.getId())) {
-                generalMessages.add(messageFactory.getWarning(MSG_PERIODICAL_HAS_ACTIVE_SUBSCRIPTIONS_WARNING));
-            }
+        if (isStatusChangedFromActiveToInactive(oldStatus, newStatus)
+                && periodicalToSaveHasActiveSubscriptions(periodicalToSave)) {
+            generalMessages.add(messageFactory.getWarning(MSG_PERIODICAL_HAS_ACTIVE_SUBSCRIPTIONS_WARNING));
         }
 
         Periodical persistedPeriodical;
@@ -98,6 +98,10 @@ public class PersistOnePeriodical implements RequestProcessor {
         }
     }
 
+    private boolean periodicalToSaveHasActiveSubscriptions(Periodical periodicalToSave) {
+        return periodicalService.hasActiveSubscriptions(periodicalToSave.getId());
+    }
+
     private Periodical.OperationType getOperationTypeFromRequest(HttpServletRequest request) {
         return Periodical.OperationType.valueOf(request
                 .getParameter(PERIODICAL_OPERATION_TYPE_PARAM_ATTR_NAME).toUpperCase());
@@ -115,7 +119,8 @@ public class PersistOnePeriodical implements RequestProcessor {
         HttpUtils.sendRedirect(request, response, PERIODICAL_LIST_URI);
     }
 
-    private void addGeneralMessagesToSession(HttpServletRequest request, List<FrontendMessage> generalMessages, Periodical.OperationType periodicalOperationType) {
+    private void addGeneralMessagesToSession(HttpServletRequest request, List<FrontendMessage> generalMessages,
+                                             Periodical.OperationType periodicalOperationType) {
         switch (periodicalOperationType) {
             case CREATE:
                 generalMessages.add(messageFactory.getSuccess(MSG_PERIODICAL_CREATED_SUCCESS));
@@ -198,7 +203,8 @@ public class PersistOnePeriodical implements RequestProcessor {
         }
     }
 
-    private void validatePublisher(Periodical periodicalToSave, HttpServletRequest request, Map<String, FrontendMessage> messages) {
+    private void validatePublisher(Periodical periodicalToSave, HttpServletRequest request,
+                                   Map<String, FrontendMessage> messages) {
         ValidationResult result = ValidatorFactory.getPeriodicalPublisherValidator()
                 .validate(periodicalToSave.getPublisher(), request);
 
@@ -207,7 +213,8 @@ public class PersistOnePeriodical implements RequestProcessor {
         }
     }
 
-    private void validateCost(Periodical periodicalToSave, HttpServletRequest request, Map<String, FrontendMessage> messages) {
+    private void validateCost(Periodical periodicalToSave, HttpServletRequest request,
+                              Map<String, FrontendMessage> messages) {
         ValidationResult result = ValidatorFactory.getPeriodicalCostValidator()
                 .validate(String.valueOf(periodicalToSave.getOneMonthCost()), request);
 

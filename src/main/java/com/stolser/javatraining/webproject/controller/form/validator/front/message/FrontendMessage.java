@@ -1,17 +1,20 @@
 package com.stolser.javatraining.webproject.controller.form.validator.front.message;
 
+import java.io.Serializable;
+
 /**
  * Encapsulates data about a message displayed on the frontend.
  */
-public final class FrontendMessage {
+public final class FrontendMessage implements Serializable {
+    private static final long serialVersionUID = -777L;
     private String messageKey;
     private MessageType type;
 
-    public enum MessageType {
+    enum MessageType {
         SUCCESS,
         INFO,
         WARNING,
-        ERROR;
+        ERROR
     }
 
     public FrontendMessage(String messageKey, MessageType type) {

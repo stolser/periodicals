@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.controller.request.processor;
 
-import com.stolser.javatraining.webproject.controller.form.validator.ValidationProcessor;
+import com.stolser.javatraining.webproject.controller.form.validator.AjaxFormValidation;
 import com.stolser.javatraining.webproject.controller.request.processor.invoice.PersistOneInvoice;
 import com.stolser.javatraining.webproject.controller.request.processor.periodical.*;
 import com.stolser.javatraining.webproject.controller.request.processor.user.CreateUser;
@@ -11,6 +11,7 @@ import com.stolser.javatraining.webproject.controller.request.processor.user.Dis
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 /**
@@ -32,7 +33,7 @@ public final class RequestProviderImpl implements RequestProvider {
     public static final String POST_DELETE_PERIODICALS_REQUEST_PATTERN = "POST:/backend/periodicals/discarded/?";
     public static final String GET_SIGN_OUT_REQUEST_PATTERN = "GET:/backend/signOut/?";
     public static final String POST_SIGN_UP = "POST:/backend/signUp";
-    public static final String POST_FORM_VALIDATOR = "POST:/backend/validation";
+    public static final String POST_AJAX_FORM_VALIDATOR = "POST:/backend/validation";
 
     private static final Map<String, RequestProcessor> requestMapping = new HashMap<>();
     private static final String NO_MAPPING_FOR_SUCH_REQUEST = "There no mapping for such a request: '%s'.";
@@ -53,7 +54,7 @@ public final class RequestProviderImpl implements RequestProvider {
         requestMapping.put(POST_DELETE_PERIODICALS_REQUEST_PATTERN, new DeleteDiscardedPeriodicals());
         requestMapping.put(GET_SIGN_OUT_REQUEST_PATTERN, new SignOut());
         requestMapping.put(POST_SIGN_UP, new CreateUser());
-        requestMapping.put(POST_FORM_VALIDATOR, new ValidationProcessor());
+        requestMapping.put(POST_AJAX_FORM_VALIDATOR, new AjaxFormValidation());
     }
 
     private RequestProviderImpl() {}
@@ -73,27 +74,28 @@ public final class RequestProviderImpl implements RequestProvider {
      */
     @Override
     public RequestProcessor getRequestProcessor(HttpServletRequest request) {
-        String requestMethod = request.getMethod().toUpperCase();
         String requestURI = request.getRequestURI();
+        Predicate<Map.Entry<String, RequestProcessor>> mappingContainsRequestMethod = entry -> {
+            String methodPattern = entry.getKey().split(":")[0];
+            String[] methods = methodPattern.split("\\|");
+            String requestMethod = request.getMethod().toUpperCase();
 
-        Optional<Map.Entry<String, RequestProcessor>> mapping = requestMapping.entrySet()
+            return Arrays.asList(methods).contains(requestMethod);
+        };
+
+        Predicate<Map.Entry<String, RequestProcessor>> mappingMatchesRequestUri = entry -> {
+            String urlPattern = entry.getKey().split(":")[1];
+            return Pattern.matches(urlPattern, requestURI);
+        };
+
+        Optional<Map.Entry<String, RequestProcessor>> currentMapping = requestMapping.entrySet()
                 .stream()
-                .filter(entry -> {
-                    String methodPattern = entry.getKey().split(":")[0];
-                    // is necessary for the "GET|POST|PUT|DELETE" notation;
-                    String[] methods = methodPattern.split("\\|");
-
-                    return Arrays.asList(methods).contains(requestMethod);
-                })
-                // filtering by a Uri pattern;
-                .filter(entry -> {
-                    String urlPattern = entry.getKey().split(":")[1];
-                    return Pattern.matches(urlPattern, requestURI);
-                })
+                .filter(mappingContainsRequestMethod)
+                .filter(mappingMatchesRequestUri)
                 .findFirst();
 
-        if (mapping.isPresent()) {
-            return mapping.get().getValue();
+        if (currentMapping.isPresent()) {
+            return currentMapping.get().getValue();
         } else {
             throw new NoSuchElementException(
                     String.format(NO_MAPPING_FOR_SUCH_REQUEST, requestURI));

@@ -23,8 +23,8 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
  * Validates a parameter from the request and sends a json with the validation result.
  * Can be used for ajax validation of input field values.
  */
-public class ValidationProcessor implements RequestProcessor {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ValidationProcessor.class);
+public class AjaxFormValidation implements RequestProcessor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AjaxFormValidation.class);
     private static final String EXCEPTION_DURING_PUTTING_VALUES_INTO_JSON_OBJECT =
             "Exception during putting values into json object.";
     private static final String JSON_CONTENT_TYPE = "application/json";

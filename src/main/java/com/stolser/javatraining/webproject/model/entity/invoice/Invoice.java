@@ -9,7 +9,7 @@ import java.time.Instant;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Invoice implements Serializable {
-    private static final long serialVersionUID = -665713676816604388L;
+    private static final long serialVersionUID = -888L;
     private long id;
     private User user;
     private Periodical periodical;

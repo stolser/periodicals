@@ -5,7 +5,6 @@ import com.stolser.javatraining.webproject.controller.form.validator.periodical.
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalCostValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalNameValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalPublisherValidator;
-import com.stolser.javatraining.webproject.controller.form.validator.user.SignInUsernameValidator;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
@@ -38,9 +37,6 @@ public class ValidatorFactory {
      */
     public static Validator newValidator(String paramName) {
         switch (paramName) {
-            case SIGN_IN_USERNAME_PARAM_NAME:
-                return new SignInUsernameValidator();
-
             case PERIODICAL_NAME_PARAM_NAME:
                 return new PeriodicalNameValidator();
 

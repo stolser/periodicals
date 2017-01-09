@@ -26,10 +26,8 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
             "Fix it!";
     private static final String EXCEPTION_DURING_RETRIEVING_PERIODICAL =
             "Exception during retrieving a periodical with %s = %s. ";
-    private static final String SELECT_ALL_BY_ID = "SELECT * FROM periodicals " +
-            "WHERE id = ?";
-    private static final String SELECT_ALL_BY_NAME = "SELECT * FROM periodicals " +
-            "WHERE name = ?";
+    private static final String SELECT_ALL_BY_ID = "SELECT * FROM periodicals WHERE id = ?";
+    private static final String SELECT_ALL_BY_NAME = "SELECT * FROM periodicals WHERE name = ?";
     private static final String EXCEPTION_DURING_RETRIEVING_ALL_PERIODICALS =
             "Exception during retrieving all periodicals.";
     private static final String RETRIEVING_ALL_BY_STATUS = "Exception during retrieving periodicals with " +
@@ -63,16 +61,7 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     private Periodical getPeriodicalFromDb(String sqlStatement, Object fieldValue,
                                            String fieldName) {
         try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
-            switch (fieldName) {
-                case DB_PERIODICALS_ID:
-                    st.setLong(1, (Long) fieldValue);
-                    break;
-                case DB_PERIODICALS_NAME:
-                    st.setString(1, (String) fieldValue);
-                    break;
-                default:
-                    throw new IllegalArgumentException(INCORRECT_FIELD_NAME);
-            }
+            setFieldValue(st, fieldName, fieldValue);
 
             ResultSet rs = st.executeQuery();
 
@@ -82,6 +71,19 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
             String message = String.format(EXCEPTION_DURING_RETRIEVING_PERIODICAL,
                     fieldName, fieldValue);
             throw new DaoException(message, e);
+        }
+    }
+
+    private void setFieldValue(PreparedStatement st, String fieldName, Object fieldValue) throws SQLException {
+        switch (fieldName) {
+            case DB_PERIODICALS_ID:
+                st.setLong(1, (Long) fieldValue);
+                break;
+            case DB_PERIODICALS_NAME:
+                st.setString(1, (String) fieldValue);
+                break;
+            default:
+                throw new IllegalArgumentException(INCORRECT_FIELD_NAME);
         }
     }
 
