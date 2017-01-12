@@ -24,6 +24,16 @@ public class SignIn implements RequestProcessor {
     private UserService userService = UserServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
+    private SignIn() {}
+
+    private static class InstanceHolder {
+        private static final SignIn INSTANCE = new SignIn();
+    }
+
+    public static SignIn getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         Map<String, FrontendMessage> messages = new HashMap<>();

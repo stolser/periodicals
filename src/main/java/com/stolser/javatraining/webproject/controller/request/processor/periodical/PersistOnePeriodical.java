@@ -33,6 +33,16 @@ public class PersistOnePeriodical implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
+    private PersistOnePeriodical() {}
+
+    private static class InstanceHolder {
+        private static final PersistOnePeriodical INSTANCE = new PersistOnePeriodical();
+    }
+
+    public static PersistOnePeriodical getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         List<FrontendMessage> generalMessages = new ArrayList<>();
@@ -87,7 +97,7 @@ public class PersistOnePeriodical implements RequestProcessor {
 
         if (persistedPeriodical != null) {
             addGeneralMessagesToSession(request, generalMessages, periodicalOperationType);
-            return new DisplayAllPeriodicals().process(request, response);
+            return DisplayAllPeriodicals.getInstance().process(request, response);
 
         } else {
             generalMessages.add(messageFactory.getError(MSG_PERIODICAL_PERSISTING_ERROR));

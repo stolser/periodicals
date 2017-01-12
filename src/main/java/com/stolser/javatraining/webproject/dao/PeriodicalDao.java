@@ -23,6 +23,7 @@ public interface PeriodicalDao extends GenericDao<Periodical> {
 
     /**
      * Deletes from the db all periodicals with status = 'discarded'.
+     * @return the number of deleted periodicals.
      */
-    void deleteAllDiscarded();
+    int deleteAllDiscarded();
 }

@@ -17,9 +17,18 @@ import java.util.Map;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 public class CreateUser implements RequestProcessor {
-
     private UserService userService = UserServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
+
+    private CreateUser() {}
+
+    private static class InstanceHolder {
+        private static final CreateUser INSTANCE = new CreateUser();
+    }
+
+    public static CreateUser getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
@@ -48,7 +57,6 @@ public class CreateUser implements RequestProcessor {
             createUser(username, password, userRole);
             redirectUri = selectRedirectUriByUserRole(userRole);
         }
-
 
         return null;
 

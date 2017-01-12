@@ -39,22 +39,22 @@ public final class RequestProviderImpl implements RequestProvider {
     private static final String NO_MAPPING_FOR_SUCH_REQUEST = "There no mapping for such a request: '%s'.";
 
     static {
-        requestMapping.put(POST_SIGN_IN_REQUEST_PATTERN, new SignIn());
-        requestMapping.put(GET_BACKEND_REQUEST_PATTERN, new BackendHomePage());
-        requestMapping.put(GET_ADMIN_PANEL_REQUEST_PATTERN, new DisplayAdminPanel());
-        requestMapping.put(GET_ALL_USERS_REQUEST_PATTERN, new DisplayAllUsers());
-        requestMapping.put(GET_CURRENT_USER_REQUEST_PATTERN, new DisplayCurrentUser());
-        requestMapping.put(POST_PERSIST_INVOICE_REQUEST_PATTERN, new PersistOneInvoice());
-        requestMapping.put(POST_PAY_INVOICE_REQUEST_PATTERN, new PayOneInvoice());
-        requestMapping.put(GET_ONE_PERIODICAL_REQUEST_PATTERN, new DisplayOnePeriodical());
-        requestMapping.put(GET_ALL_PERIODICALS_REQUEST_PATTERN, new DisplayAllPeriodicals());
-        requestMapping.put(POST_PERSIST_PERIODICAL_REQUEST_PATTERN, new PersistOnePeriodical());
-        requestMapping.put(GET_CREATE_PERIODICAL_REQUEST_PATTERN, new CreateNewPeriodical());
-        requestMapping.put(GET_UPDATE_PERIODICAL_REQUEST_PATTERN, new UpdatePeriodical());
-        requestMapping.put(POST_DELETE_PERIODICALS_REQUEST_PATTERN, new DeleteDiscardedPeriodicals());
-        requestMapping.put(GET_SIGN_OUT_REQUEST_PATTERN, new SignOut());
-        requestMapping.put(POST_SIGN_UP, new CreateUser());
-        requestMapping.put(POST_AJAX_FORM_VALIDATOR, new AjaxFormValidation());
+        requestMapping.put(POST_SIGN_IN_REQUEST_PATTERN, SignIn.getInstance());
+        requestMapping.put(GET_BACKEND_REQUEST_PATTERN, BackendHomePage.getInstance());
+        requestMapping.put(GET_ADMIN_PANEL_REQUEST_PATTERN, DisplayAdminPanel.getInstance());
+        requestMapping.put(GET_ALL_USERS_REQUEST_PATTERN, DisplayAllUsers.getInstance());
+        requestMapping.put(GET_CURRENT_USER_REQUEST_PATTERN, DisplayCurrentUser.getInstance());
+        requestMapping.put(POST_PERSIST_INVOICE_REQUEST_PATTERN, PersistOneInvoice.getInstance());
+        requestMapping.put(POST_PAY_INVOICE_REQUEST_PATTERN, PayOneInvoice.getInstance());
+        requestMapping.put(GET_ONE_PERIODICAL_REQUEST_PATTERN, DisplayOnePeriodical.getInstance());
+        requestMapping.put(GET_ALL_PERIODICALS_REQUEST_PATTERN, DisplayAllPeriodicals.getInstance());
+        requestMapping.put(POST_PERSIST_PERIODICAL_REQUEST_PATTERN, PersistOnePeriodical.getInstance());
+        requestMapping.put(GET_CREATE_PERIODICAL_REQUEST_PATTERN, CreateNewPeriodical.getInstance());
+        requestMapping.put(GET_UPDATE_PERIODICAL_REQUEST_PATTERN, UpdatePeriodical.getInstance());
+        requestMapping.put(POST_DELETE_PERIODICALS_REQUEST_PATTERN, DeleteDiscardedPeriodicals.getInstance());
+        requestMapping.put(GET_SIGN_OUT_REQUEST_PATTERN, SignOut.getInstance());
+        requestMapping.put(POST_SIGN_UP, CreateUser.getInstance());
+        requestMapping.put(POST_AJAX_FORM_VALIDATOR, AjaxFormValidation.getInstance());
     }
 
     private RequestProviderImpl() {}

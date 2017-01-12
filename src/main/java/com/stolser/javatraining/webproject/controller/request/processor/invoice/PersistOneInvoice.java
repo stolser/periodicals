@@ -13,6 +13,8 @@ import com.stolser.javatraining.webproject.service.InvoiceService;
 import com.stolser.javatraining.webproject.service.PeriodicalService;
 import com.stolser.javatraining.webproject.service.impl.InvoiceServiceImpl;
 import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,14 +28,26 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
  * Processes a POST request to create a new invoice.
  */
 public class PersistOneInvoice implements RequestProcessor {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersistOneInvoice.class);
+    private static final String EXCEPTION_DURING_PERSISTING_INVOICE = "Exception during persisting an invoice: %s.";
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
     private InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
+    private PersistOneInvoice() {}
+
+    private static class InstanceHolder {
+        private static final PersistOneInvoice INSTANCE = new PersistOneInvoice();
+    }
+
+    public static PersistOneInvoice getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         List<FrontendMessage> generalMessages = new ArrayList<>();
-        long periodicalId = Long.valueOf(request.getParameter(PERIODICAL_ID_PARAM_NAME));
+        long periodicalId = Long.parseLong(request.getParameter(PERIODICAL_ID_PARAM_NAME));
         Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
 
         if (isPeriodicalValid(periodicalInDb, request, generalMessages)) {
@@ -44,7 +58,6 @@ public class PersistOneInvoice implements RequestProcessor {
         HttpUtils.addGeneralMessagesToSession(request, generalMessages);
 
         String redirectUri = String.format("%s/%d", PERIODICAL_LIST_URI, periodicalId);
-
         HttpUtils.sendRedirect(request, response, redirectUri);
 
         return null;
@@ -55,7 +68,6 @@ public class PersistOneInvoice implements RequestProcessor {
             return true;
         } else {
             generalMessages.add(messageFactory.getError(MSG_VALIDATION_PERIODICAL_IS_NULL));
-
             return false;
         }
     }
@@ -65,7 +77,6 @@ public class PersistOneInvoice implements RequestProcessor {
             return true;
         } else {
             generalMessages.add(messageFactory.getError(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE));
-
             return false;
         }
     }
@@ -75,7 +86,7 @@ public class PersistOneInvoice implements RequestProcessor {
         FrontendMessage message = messageFactory.getError(MSG_VALIDATION_SUBSCRIPTION_PERIOD_IS_NOT_VALID);
 
         try {
-            int subscriptionPeriod = Integer.valueOf(request.getParameter(SUBSCRIPTION_PERIOD_PARAM_NAME));
+            int subscriptionPeriod = Integer.parseInt(request.getParameter(SUBSCRIPTION_PERIOD_PARAM_NAME));
 
             if ((subscriptionPeriod >= 1) && (subscriptionPeriod <= 12)) {
                 return true;
@@ -110,12 +121,13 @@ public class PersistOneInvoice implements RequestProcessor {
 
             generalMessages.add(messageFactory.getSuccess(MSG_INVOICE_CREATION_SUCCESS));
         } catch (RuntimeException e) {
+            LOGGER.error(String.format(EXCEPTION_DURING_PERSISTING_INVOICE, invoiceToPersist), e);
             generalMessages.add(messageFactory.getError(MSG_INVOICE_PERSISTING_FAILED));
         }
     }
 
     private Invoice getNewInvoice(Periodical periodicalInDb, HttpServletRequest request) {
-        int subscriptionPeriod = Integer.valueOf(request.getParameter(SUBSCRIPTION_PERIOD_PARAM_NAME));
+        int subscriptionPeriod = Integer.parseInt(request.getParameter(SUBSCRIPTION_PERIOD_PARAM_NAME));
 
         long totalSum = subscriptionPeriod * periodicalInDb.getOneMonthCost();
         long userIdFromUri = HttpUtils.getFirstIdFromUri(request.getRequestURI());

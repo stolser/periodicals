@@ -35,12 +35,25 @@ public class PayOneInvoice implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
+    private PayOneInvoice() {}
+
+    private static class InstanceHolder {
+        private static final PayOneInvoice INSTANCE = new PayOneInvoice();
+    }
+
+    public static PayOneInvoice getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
 
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         List<FrontendMessage> generalMessages = new ArrayList<>();
         long invoiceId = HttpUtils.getFirstIdFromUri(request.getRequestURI()
                 .replaceFirst("/backend/users/\\d+/", ""));
+
+        System.out.println("invoiceId = " + invoiceId);
+        System.out.println("invoiceService = " + invoiceService);
+
         Invoice invoiceInDb = invoiceService.findOneById(invoiceId);
 
         if (isInvoiceValid(invoiceInDb, request, generalMessages)) {

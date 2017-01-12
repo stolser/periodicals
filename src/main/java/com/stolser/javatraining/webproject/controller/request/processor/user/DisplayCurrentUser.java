@@ -26,6 +26,16 @@ public class DisplayCurrentUser implements RequestProcessor {
     private SubscriptionService subscriptionService = SubscriptionServiceImpl.getInstance();
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
+    private DisplayCurrentUser() {}
+
+    private static class InstanceHolder {
+        private static final DisplayCurrentUser INSTANCE = new DisplayCurrentUser();
+    }
+
+    public static DisplayCurrentUser getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         long currentUserId = HttpUtils.getUserIdFromSession(request);
@@ -51,11 +61,11 @@ public class DisplayCurrentUser implements RequestProcessor {
     }
 
     private boolean areThereInvoicesToDisplay(List<Invoice> invoices) {
-        return invoices.size() > 0;
+        return !invoices.isEmpty();
     }
 
     private boolean areThereSubscriptionsToDisplay(List<Subscription> subscriptions) {
-        return subscriptions.size() > 0;
+        return !subscriptions.isEmpty();
     }
 
     private void sortInvoices(List<Invoice> invoices) {

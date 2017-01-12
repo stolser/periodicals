@@ -25,6 +25,16 @@ public class DisplayAdminPanel implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
     private InvoiceService invoiceService = InvoiceServiceImpl.getInstance();
 
+    private DisplayAdminPanel() {}
+
+    private static class InstanceHolder {
+        private static final DisplayAdminPanel INSTANCE = new DisplayAdminPanel();
+    }
+
+    public static DisplayAdminPanel getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         List<PeriodicalNumberByCategory> periodicalStatistics = periodicalService.getQuantitativeStatistics();

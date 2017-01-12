@@ -13,6 +13,16 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
  */
 public class SignOut implements RequestProcessor {
 
+    private SignOut() {}
+
+    private static class InstanceHolder {
+        private static final SignOut INSTANCE = new SignOut();
+    }
+
+    public static SignOut getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().removeAttribute(CURRENT_USER_ATTR_NAME);

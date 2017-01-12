@@ -32,6 +32,16 @@ public class AjaxFormValidation implements RequestProcessor {
     private static final String VALIDATION_MESSAGE_JSON_RESPONSE = "validationMessage";
     private static final String EXCEPTION_DURING_VALIDATION = "Exception during validation.";
 
+    private AjaxFormValidation() {}
+
+    private static class InstanceHolder {
+        private static final AjaxFormValidation INSTANCE = new AjaxFormValidation();
+    }
+
+    public static AjaxFormValidation getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
@@ -52,14 +62,17 @@ public class AjaxFormValidation implements RequestProcessor {
         }
 
         try {
-            PrintWriter writer = response.getWriter();
-            writer.println(jsonResponse.toString());
-            writer.flush();
-
+            writeJsonIntoResponse(response, jsonResponse);
             return null;
         } catch (IOException e) {
             throw new ValidationProcessorException(EXCEPTION_DURING_VALIDATION, e);
         }
+    }
+
+    private void writeJsonIntoResponse(HttpServletResponse response, JSONObject jsonResponse) throws IOException {
+        PrintWriter writer = response.getWriter();
+        writer.println(jsonResponse.toString());
+        writer.flush();
     }
 
     private void removeMessagesForCurrentParam(HttpSession session, String paramName) {

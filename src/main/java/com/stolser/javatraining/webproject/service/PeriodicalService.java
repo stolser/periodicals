@@ -37,8 +37,9 @@ public interface PeriodicalService {
 
     /**
      * Deletes from the db all periodicals with status = 'discarded'.
+     * @return the number of deleted periodicals
      */
-    void deleteAllDiscarded();
+    int deleteAllDiscarded();
 
     /**
      * @return true if there are subscriptions with status = 'active' on the specified periodical

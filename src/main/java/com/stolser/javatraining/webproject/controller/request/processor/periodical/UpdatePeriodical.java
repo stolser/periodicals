@@ -20,22 +20,35 @@ public class UpdatePeriodical implements RequestProcessor {
     private static final String NO_PERIODICAL_WITH_ID_IN_DB = "There is no periodical with id %d in the db.";
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
+    private UpdatePeriodical() {}
+
+    private static class InstanceHolder {
+        private static final UpdatePeriodical INSTANCE = new UpdatePeriodical();
+    }
+
+    public static UpdatePeriodical getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         long periodicalId = HttpUtils.getFirstIdFromUri(request.getRequestURI());
-
         Periodical periodical = periodicalService.findOneById(periodicalId);
 
         if (periodical == null) {
             throw new NoSuchElementException(String.format(NO_PERIODICAL_WITH_ID_IN_DB, periodicalId));
         }
 
+        setRequestAttributes(request, periodical);
+
+        return CREATE_EDIT_PERIODICAL_VIEW_NAME;
+    }
+
+    private void setRequestAttributes(HttpServletRequest request, Periodical periodical) {
         request.setAttribute(PERIODICAL_ATTR_NAME, periodical);
         request.setAttribute(PERIODICAL_OPERATION_TYPE_PARAM_ATTR_NAME,
                 Periodical.OperationType.UPDATE.name().toLowerCase());
         request.setAttribute(PERIODICAL_STATUSES_ATTR_NAME, Periodical.Status.values());
         request.setAttribute(PERIODICAL_CATEGORIES_ATTR_NAME, PeriodicalCategory.values());
-
-        return CREATE_EDIT_PERIODICAL_VIEW_NAME;
     }
 }

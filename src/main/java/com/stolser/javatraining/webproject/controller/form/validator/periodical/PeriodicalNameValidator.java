@@ -26,7 +26,7 @@ public class PeriodicalNameValidator implements Validator {
         String messageKey;
 
         Periodical.OperationType operationType = getOperationType(request);
-        long periodicalId = Long.valueOf(request.getParameter(ENTITY_ID_PARAM_NAME));
+        long periodicalId = Long.parseLong(request.getParameter(ENTITY_ID_PARAM_NAME));
 
         if (hasNameIncorrectSymbols(periodicalName)) {
             statusCode = STATUS_CODE_VALIDATION_FAILED;

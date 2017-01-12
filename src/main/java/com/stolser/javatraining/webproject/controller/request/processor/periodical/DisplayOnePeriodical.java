@@ -20,6 +20,16 @@ public class DisplayOnePeriodical implements RequestProcessor {
     private static final String NO_PERIODICAL_WITH_ID_IN_DB = "There is no periodical with id %d in the db.";
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
+    private DisplayOnePeriodical() {}
+
+    private static class InstanceHolder {
+        private static final DisplayOnePeriodical INSTANCE = new DisplayOnePeriodical();
+    }
+
+    public static DisplayOnePeriodical getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         User currentUser = HttpUtils.getCurrentUserFromFromDb(request);

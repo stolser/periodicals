@@ -35,7 +35,7 @@ public class DisplayOnePeriodicalTest {
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void getViewName_Should_ThrowException() throws Exception {
+    public void process_Should_ThrowException() throws Exception {
         displayOnePeriodical.process(request, response);
     }
 }

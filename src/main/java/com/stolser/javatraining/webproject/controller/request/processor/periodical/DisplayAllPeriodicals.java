@@ -18,11 +18,19 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 public class DisplayAllPeriodicals implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
+    private DisplayAllPeriodicals() {}
+
+    private static class InstanceHolder {
+        private static final DisplayAllPeriodicals INSTANCE = new DisplayAllPeriodicals();
+    }
+
+    public static DisplayAllPeriodicals getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
-
         request.setAttribute(ALL_PERIODICALS_ATTR_NAME, periodicalService.findAll());
-
         return PERIODICAL_LIST_VIEW_NAME;
     }
 }

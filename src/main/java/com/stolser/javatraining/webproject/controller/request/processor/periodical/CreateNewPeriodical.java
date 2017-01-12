@@ -17,20 +17,32 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
  */
 public class CreateNewPeriodical implements RequestProcessor {
 
+    private CreateNewPeriodical() {}
+
+    private static class InstanceHolder {
+        private static final CreateNewPeriodical INSTANCE = new CreateNewPeriodical();
+    }
+
+    public static CreateNewPeriodical getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-
-        Periodical periodicalIntoRequest;
         Periodical periodicalFromSession = (Periodical) session.getAttribute(PERIODICAL_ATTR_NAME);
+        Periodical periodicalIntoRequest = (periodicalFromSession != null)
+                ? periodicalFromSession
+                : new Periodical();
 
-        if (periodicalFromSession != null) {
-            periodicalIntoRequest = periodicalFromSession;
-            session.removeAttribute(PERIODICAL_ATTR_NAME);
-        } else {
-            periodicalIntoRequest = new Periodical();
-        }
+        session.removeAttribute(PERIODICAL_ATTR_NAME);
+        setRequestAttributes(request, session, periodicalIntoRequest);
 
+        return CREATE_EDIT_PERIODICAL_VIEW_NAME;
+    }
+
+    private void setRequestAttributes(HttpServletRequest request, HttpSession session,
+                                      Periodical periodicalIntoRequest) {
         @SuppressWarnings("unchecked")
         Map<String, FrontendMessage> messages = (Map<String, FrontendMessage>) session
                 .getAttribute(MESSAGES_ATTR_NAME);
@@ -41,7 +53,5 @@ public class CreateNewPeriodical implements RequestProcessor {
         request.setAttribute(PERIODICAL_CATEGORIES_ATTR_NAME, PeriodicalCategory.values());
         request.setAttribute(PERIODICAL_OPERATION_TYPE_PARAM_ATTR_NAME,
                 Periodical.OperationType.CREATE.name().toLowerCase());
-
-        return CREATE_EDIT_PERIODICAL_VIEW_NAME;
     }
 }

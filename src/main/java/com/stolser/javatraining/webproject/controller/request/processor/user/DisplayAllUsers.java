@@ -16,6 +16,16 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 public class DisplayAllUsers implements RequestProcessor {
     private UserService userService = UserServiceImpl.getInstance();
 
+    private DisplayAllUsers() {}
+
+    private static class InstanceHolder {
+        private static final DisplayAllUsers INSTANCE = new DisplayAllUsers();
+    }
+
+    public static DisplayAllUsers getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
+
     @Override
     public String process(HttpServletRequest request, HttpServletResponse response) {
 

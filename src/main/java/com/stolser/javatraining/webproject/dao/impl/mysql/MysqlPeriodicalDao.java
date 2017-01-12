@@ -220,14 +220,14 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
     }
 
     @Override
-    public void deleteAllDiscarded() {
+    public int deleteAllDiscarded() {
         String sqlStatement = "DELETE FROM periodicals " +
                 "WHERE status = ?";
 
         try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setString(1, Periodical.Status.DISCARDED.name());
 
-            st.executeUpdate();
+            return st.executeUpdate();
 
         } catch (SQLException e) {
             String message = EXCEPTION_DURING_DELETING_DISCARDED_PERIODICALS;

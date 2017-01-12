@@ -120,18 +120,18 @@ public class PeriodicalServiceImpl implements PeriodicalService {
     }
 
     @Override
-    public void deleteAllDiscarded() {
+    public int deleteAllDiscarded() {
         try (AbstractConnection conn = connectionPool.getConnection()) {
-            factory.getPeriodicalDao(conn).deleteAllDiscarded();
+            return factory.getPeriodicalDao(conn).deleteAllDiscarded();
         }
     }
 
     @Override
     public boolean hasActiveSubscriptions(long periodicalId) {
         try (AbstractConnection conn = connectionPool.getConnection()) {
-            return factory.getSubscriptionDao(conn)
+            return !factory.getSubscriptionDao(conn)
                     .findAllByPeriodicalIdAndStatus(periodicalId, Subscription.Status.ACTIVE)
-                    .size() > 0;
+                    .isEmpty();
         }
     }
 
