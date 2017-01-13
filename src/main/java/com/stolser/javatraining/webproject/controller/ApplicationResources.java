@@ -48,9 +48,13 @@ public class ApplicationResources {
 
     public static final String ADMIN_PANEL_URI = "/backend/adminPanel";
     public static final String PERIODICAL_LIST_URI = "/backend/periodicals";
-    public static final String SIGN_IN_URI = "/login.jsp";
+    public static final String LOGIN_PAGE = "/login.jsp";
+    public static final String SIGN_UP_PAGE = "/signUp.jsp";
+    public static final String SIGN_IN_URI = "/backend/signIn";
     public static final String SIGN_OUT_URI = "/backend/signOut";
+    public static final String SIGN_UP_URI = "/signUp";
     public static final String ACCESS_DENIED_URI = "/accessDenied.jsp";
+    public static final String USERS_LIST_URI = "/backend/users";
     public static final String CURRENT_USER_ACCOUNT_URI = "/backend/users/currentUser";
     public static final String PERIODICAL_CREATE_NEW_URI = "/backend/periodicals/createNew";
     public static final String PERIODICAL_DELETE_DISCARDED_URI = "/backend/periodicals/discarded";
@@ -74,10 +78,8 @@ public class ApplicationResources {
     public static final String MSG_KEY_CATEGORY_TRAVELING = "category.traveling";
 
     public static final String MSG_SUCCESS = "validation.ok";
-    public static final String MSG_NO_SUCH_USER_NAME = "validation.noSuchUserName";
     public static final String MSG_CREDENTIALS_ARE_NOT_CORRECT = "validation.credentialsAreNotCorrect";
     public static final String USERNAME_IS_NOT_UNIQUE_TRY_ANOTHER_ONE = "validation.usernameIsNotUnique";
-    public static final String MSG_USER_IS_BLOCKED = "validation.userIsBlocked";
     public static final String MSG_PERIODICAL_NAME_ERROR = "periodicalName.validationError";
     public static final String MSG_PERIODICAL_NAME_DUPLICATION = "periodicalName.duplicationError";
     public static final String MSG_PERIODICAL_PUBLISHER_ERROR = "periodicalPublisher.validationError";
@@ -110,5 +112,4 @@ public class ApplicationResources {
     public static final String MSG_PERIODICAL_UPDATED_SUCCESS = "periodicalUpdated.success";
     public static final String MSG_PERIODICAL_PERSISTING_ERROR = "periodicalPersisting.error";
     public static final String MSG_ERROR_USER_IS_BLOCKED = "error.userIsBlocked";
-    public static final String MSG_ERROR_WRONG_PASSWORD = "error.wrongPassword";
 }

@@ -84,8 +84,6 @@ public class PayOneInvoiceTest {
     @Test
     @Ignore
     public void getViewName_Should_PayInvoiceSuccessfully() throws Exception {
-        System.out.println("invoiceService in the test = " + invoiceService.hashCode());
-
         payOneInvoice.process(request, response);
 
         verify(invoiceService, times(1)).findOneById(10);

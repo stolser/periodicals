@@ -2,10 +2,12 @@
     margin-top: 20px;
 }
 
+/*noinspection CssUnusedSymbol*/
 #header .userFullName {
     font-weight: 600;
 }
 
+/*noinspection CssUnusedSymbol*/
 #header .userEmail {
     font-style: italic;
 }

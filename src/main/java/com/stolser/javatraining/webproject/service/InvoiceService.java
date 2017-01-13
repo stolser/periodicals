@@ -13,7 +13,7 @@ public interface InvoiceService {
 
     List<Invoice> findAllByPeriodicalId(long periodicalId);
 
-    boolean createNew(Invoice newInvoice);
+    void createNew(Invoice newInvoice);
 
     /**
      * Updates the status of this invoice to {@code paid} and updates an existing subscription

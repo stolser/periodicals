@@ -45,7 +45,7 @@ public class AuthorizationTag extends TagSupport {
 
             userRoles.retainAll(legitRoles);
 
-            return userRoles.size() > 0;
+            return !userRoles.isEmpty();
         }
     }
 
@@ -68,7 +68,7 @@ public class AuthorizationTag extends TagSupport {
             Set<String> userRoles = new HashSet<>(user.getRoles());
             userRoles.retainAll(prohibitedRoles);
 
-            return userRoles.size() == 0;
+            return userRoles.isEmpty();
         }
     }
 

@@ -69,7 +69,7 @@ public final class RequestProviderImpl implements RequestProvider {
 
     /**
      * @param request a current http request
-     * @return a specific implementation of the {@RequestProcessor} interface that processes
+     * @return a specific implementation of the {@link RequestProcessor} interface that processes
      * http requests to this request uri
      */
     @Override

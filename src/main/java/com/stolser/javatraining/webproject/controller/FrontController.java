@@ -20,7 +20,7 @@ import java.io.IOException;
 public class FrontController extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(FrontController.class);
     private static final String USER_ID_REQUEST_URI = "User id = {}. requestURI = {}";
-    private RequestProvider requestProvider = RequestProviderImpl.getInstance();
+    private final RequestProvider requestProvider = RequestProviderImpl.getInstance();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)

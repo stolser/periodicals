@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ATTR_NAME;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.SIGN_IN_URI;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.LOGIN_PAGE;
 
 /**
  * Processes a GET request to sing out the current user and redirects to a 'login' page.
@@ -28,7 +28,7 @@ public class SignOut implements RequestProcessor {
         request.getSession().removeAttribute(CURRENT_USER_ATTR_NAME);
         request.getSession().invalidate();
 
-        HttpUtils.sendRedirect(request, response, SIGN_IN_URI);
+        HttpUtils.sendRedirect(request, response, LOGIN_PAGE);
 
         return null;
     }

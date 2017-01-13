@@ -12,11 +12,11 @@ public class Periodical {
     private Status status;
 
     public enum Status {
-        ACTIVE, INACTIVE, DISCARDED;
+        ACTIVE, INACTIVE, DISCARDED
     }
 
     public enum OperationType {
-        CREATE, UPDATE;
+        CREATE, UPDATE
     }
 
     public static class Builder {

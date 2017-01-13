@@ -38,7 +38,7 @@ public class SignIn implements RequestProcessor {
     public String process(HttpServletRequest request, HttpServletResponse response) {
         Map<String, FrontendMessage> messages = new HashMap<>();
         HttpSession session = request.getSession();
-        String redirectUri = SIGN_IN_URI;
+        String redirectUri = LOGIN_PAGE;
         String username = request.getParameter(SIGN_IN_USERNAME_PARAM_NAME);
         String password = request.getParameter(PASSWORD_PARAM_NAME);
         Credential credential = userService.findOneCredentialByUserName(username);

@@ -30,7 +30,7 @@ public class Subscription {
     private Status status;
 
     public enum Status {
-        ACTIVE, INACTIVE;
+        ACTIVE, INACTIVE
     }
 
     public static class Builder {

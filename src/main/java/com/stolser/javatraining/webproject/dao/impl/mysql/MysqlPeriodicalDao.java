@@ -208,7 +208,9 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
 
         try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             setStatementFromPeriodical(st, periodical);
+            //noinspection JpaQueryApiInspection
             st.setLong(7, periodical.getId());
+            //noinspection JpaQueryApiInspection
             st.setString(8, Subscription.Status.ACTIVE.name().toLowerCase());
 
             return st.executeUpdate();

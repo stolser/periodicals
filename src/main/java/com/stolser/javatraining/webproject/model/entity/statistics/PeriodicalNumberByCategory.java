@@ -11,7 +11,7 @@ public class PeriodicalNumberByCategory {
     private int inActive;
     private int discarded;
 
-    public PeriodicalNumberByCategory(Builder builder) {
+    private PeriodicalNumberByCategory(Builder builder) {
         this.category = builder.category;
         this.active = builder.active;
         this.inActive = builder.inActive;

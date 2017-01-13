@@ -40,9 +40,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
     public Periodical findOneById(long id) {
         try (AbstractConnection conn = connectionPool.getConnection()) {
             PeriodicalDao periodicalDao = factory.getPeriodicalDao(conn);
-            Periodical periodical = periodicalDao.findOneById(id);
-
-            return periodical;
+            return periodicalDao.findOneById(id);
         }
     }
 

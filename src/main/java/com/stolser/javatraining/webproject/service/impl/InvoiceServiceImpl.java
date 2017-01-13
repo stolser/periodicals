@@ -60,10 +60,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public boolean createNew(Invoice invoice) {
+    public void createNew(Invoice invoice) {
         try (AbstractConnection conn = connectionPool.getConnection()) {
             factory.getInvoiceDao(conn).createNew(invoice);
-            return true;
         }
     }
 

@@ -51,9 +51,6 @@ public class PayOneInvoice implements RequestProcessor {
         long invoiceId = HttpUtils.getFirstIdFromUri(request.getRequestURI()
                 .replaceFirst("/backend/users/\\d+/", ""));
 
-        System.out.println("invoiceId = " + invoiceId);
-        System.out.println("invoiceService = " + invoiceService);
-
         Invoice invoiceInDb = invoiceService.findOneById(invoiceId);
 
         if (isInvoiceValid(invoiceInDb, request, generalMessages)) {

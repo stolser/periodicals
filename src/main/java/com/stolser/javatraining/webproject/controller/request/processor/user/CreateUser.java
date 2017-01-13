@@ -47,12 +47,12 @@ public class CreateUser implements RequestProcessor {
             messages.put(SIGN_UP_USERNAME_PARAM_NAME,
                     messageFactory.getError(USERNAME_IS_NOT_UNIQUE_TRY_ANOTHER_ONE));
 
-            redirectUri = SIGN_IN_URI;
+            redirectUri = LOGIN_PAGE;
         } else if (passwordsNotEqual(password, repeatPassword)) {
             messages.put(PASSWORD_PARAM_NAME,
                     messageFactory.getError("validation.passwordsAreNotEqual"));
 
-            redirectUri = SIGN_IN_URI;
+            redirectUri = LOGIN_PAGE;
         } else {
             createUser(username, password, userRole);
             redirectUri = selectRedirectUriByUserRole(userRole);

@@ -20,7 +20,7 @@ public class Invoice implements Serializable {
     private Status status;
 
     public enum Status {
-        NEW, PAID;
+        NEW, PAID
     }
 
     public static class Builder {

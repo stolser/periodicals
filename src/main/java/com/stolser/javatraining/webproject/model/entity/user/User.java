@@ -23,7 +23,7 @@ public class User {
     private Set<String> roles;
 
     public enum Status {
-        ACTIVE, BLOCKED;
+        ACTIVE, BLOCKED
     }
 
     public static class Builder {

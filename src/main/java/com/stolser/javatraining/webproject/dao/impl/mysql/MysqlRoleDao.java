@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 class MysqlRoleDao implements RoleDao {
-    public static final String DB_USER_ROLES_NAME = "user_roles.name";
+    private static final String DB_USER_ROLES_NAME = "user_roles.name";
     private static final String RETRIEVING_ROLES_FOR_USER =
             "Exception during retrieving roles for user with userName = '%s'";
     private static final String EXCEPTION_DURING_INSERTING_ROLE =
