@@ -54,7 +54,7 @@
                         <c:forEach items="${thisUser.roles}" var="role">
                             <li><fmt:message key="${role}" bundle="${general}"/></li>
                         </c:forEach>
-                    </ul></p>
+                    </ul>
                 </div>
             </div>
         </form>

@@ -8,7 +8,7 @@
     <div class="col-md-8 col-md-offset-2">
         <h2><fmt:message key="error_page.sub_title" bundle="${general}"/></h2>
         <p><fmt:message key="error_page.description" bundle="${general}"/>
-            <a href="/backend/users/currentUser"><fmt:message key="errorPage.homepage.label" bundle="${general}"/></a>.</p>
+            <a href="${ApplicationResources.CURRENT_USER_ACCOUNT_URI}"><fmt:message key="errorPage.homepage.label" bundle="${general}"/></a>.</p>
     </div>
 
 </div>

@@ -6,7 +6,7 @@
     <c:choose>
         <c:when test="${sessionScope[ApplicationResources.CURRENT_USER_ATTR_NAME] != null}">
             <p><fmt:message key="visitYour.text" bundle="${frontGeneral}"/>
-                <a href="<c:url value="/backend/users/currentUser"/>">
+                <a href="<c:url value="${ApplicationResources.CURRENT_USER_ACCOUNT_URI}"/>">
                     <fmt:message key="accountPage.text" bundle="${frontGeneral}"/>
                 </a>.
             </p>
