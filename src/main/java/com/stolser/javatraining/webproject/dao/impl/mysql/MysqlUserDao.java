@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.dao.impl.mysql;
 
-import com.stolser.javatraining.webproject.dao.exception.DaoException;
 import com.stolser.javatraining.webproject.dao.UserDao;
+import com.stolser.javatraining.webproject.dao.exception.DaoException;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import java.sql.*;
@@ -38,9 +38,9 @@ class MysqlUserDao implements UserDao {
         try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setLong(1, id);
 
-            ResultSet rs = st.executeQuery();
-
-            return rs.next() ? getUserFromResults(rs) : null;
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next() ? getUserFromResults(rs) : null;
+            }
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_FINDING_USER_BY_ID, id);
@@ -57,9 +57,9 @@ class MysqlUserDao implements UserDao {
         try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setString(1, userName);
 
-            ResultSet rs = st.executeQuery();
-
-            return rs.next() ? getUserFromResults(rs) : null;
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next() ? getUserFromResults(rs) : null;
+            }
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_FINDING_USER_BY_NAME, userName);
@@ -72,7 +72,8 @@ class MysqlUserDao implements UserDao {
         String sqlStatement = "SELECT * FROM credentials " +
                 "RIGHT OUTER JOIN users ON (credentials.user_id = users.id) ";
 
-        try (ResultSet rs = conn.createStatement().executeQuery(sqlStatement)) {
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement);
+             ResultSet rs = st.executeQuery()) {
             List<User> users = new ArrayList<>();
             while (rs.next()) {
                 users.add(getUserFromResults(rs));
@@ -81,8 +82,7 @@ class MysqlUserDao implements UserDao {
             return users;
 
         } catch (SQLException e) {
-            String message = String.format(EXCEPTION_DURING_FINDING_ALL_USERS);
-            throw new DaoException(message, e);
+            throw new DaoException(EXCEPTION_DURING_FINDING_ALL_USERS, e);
         }
     }
 

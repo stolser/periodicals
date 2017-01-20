@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class AuthorizationFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationFilter.class);
-    private static final String ACCESS_DENIED_FOR_USER = "Access denied for user '%s' to '%s'!!!\n";
+    private static final String ACCESS_DENIED_FOR_USER = "Access denied for user '%s' to '%s'!!!%n";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
@@ -29,7 +29,7 @@ public class AuthorizationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        String requestURI = ((HttpServletRequest) request).getRequestURI();
+        String requestUri = ((HttpServletRequest) request).getRequestURI();
 
         if (isRequestAuthorized(request)) {
             chain.doFilter(request, response);
@@ -39,7 +39,7 @@ public class AuthorizationFilter implements Filter {
                     .getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME)).getUserName();
 
             LOGGER.error(String.format(ACCESS_DENIED_FOR_USER,
-                    username, requestURI));
+                    username, requestUri));
 
             ((HttpServletResponse) response).sendRedirect(ApplicationResources.ACCESS_DENIED_URI);
         }

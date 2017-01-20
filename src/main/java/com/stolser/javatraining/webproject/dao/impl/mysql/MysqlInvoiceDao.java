@@ -44,9 +44,9 @@ class MysqlInvoiceDao implements InvoiceDao {
         try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setLong(1, invoiceId);
 
-            ResultSet rs = st.executeQuery();
-
-            return rs.next() ? getInvoiceFromRs(rs) : null;
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next() ? getInvoiceFromRs(rs) : null;
+            }
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT_FOR_INVOICE_ID,
@@ -93,14 +93,15 @@ class MysqlInvoiceDao implements InvoiceDao {
         try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setLong(1, periodicalId);
 
-            ResultSet rs = st.executeQuery();
+            try (ResultSet rs = st.executeQuery()) {
+                List<Invoice> invoices = new ArrayList<>();
 
-            List<Invoice> invoices = new ArrayList<>();
-            while (rs.next()) {
-                invoices.add(getInvoiceFromRs(rs));
+                while (rs.next()) {
+                    invoices.add(getInvoiceFromRs(rs));
+                }
+
+                return invoices;
             }
-
-            return invoices;
         }
     }
 
@@ -114,10 +115,10 @@ class MysqlInvoiceDao implements InvoiceDao {
             st.setTimestamp(2, new Timestamp(until.toEpochMilli()));
 
 
-            ResultSet rs = st.executeQuery();
-            rs.next();
-
-            return rs.getLong(1);
+            try (ResultSet rs = st.executeQuery()) {
+                rs.next();
+                return rs.getLong(1);
+            }
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_GETTING_INVOICE_SUM,
@@ -136,10 +137,10 @@ class MysqlInvoiceDao implements InvoiceDao {
             st.setTimestamp(2, new Timestamp(until.toEpochMilli()));
             st.setString(3, Invoice.Status.PAID.name().toLowerCase());
 
-            ResultSet rs = st.executeQuery();
-            rs.next();
-
-            return rs.getLong(1);
+            try (ResultSet rs = st.executeQuery()) {
+                rs.next();
+                return rs.getLong(1);
+            }
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_GETTING_INVOICE_SUM,

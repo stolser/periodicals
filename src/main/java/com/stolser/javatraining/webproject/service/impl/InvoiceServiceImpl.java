@@ -30,9 +30,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         private static final InvoiceServiceImpl INSTANCE = new InvoiceServiceImpl();
     }
 
-    /**
-     * @return a singleton object of this type
-     */
     public static InvoiceServiceImpl getInstance() {
         return InstanceHolder.INSTANCE;
     }

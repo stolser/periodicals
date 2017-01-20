@@ -6,8 +6,8 @@
     <div class="col-md-8 col-md-offset-2">
         <p>
             <fmt:message key="accessDenied.text" bundle="${general}">
-                <fmt:param value="${sessionScope.thisUser.firstName}"/>
-                <fmt:param value="${sessionScope.thisUser.lastName}"/>
+                <fmt:param value="${sessionScope.currentUser.firstName}"/>
+                <fmt:param value="${sessionScope.currentUser.lastName}"/>
             </fmt:message>
         </p>
     </div>

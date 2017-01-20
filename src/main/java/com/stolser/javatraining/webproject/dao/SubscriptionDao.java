@@ -9,9 +9,10 @@ public interface SubscriptionDao extends GenericDao<Subscription> {
     Subscription findOneByUserIdAndPeriodicalId(long userId, long periodicalId);
 
     /**
-     * @return all subscriptions (active and expired) of the specified user
+     * Retrieves all the subscriptions (active and expired) of the specified user.
      */
     List<Subscription> findAllByUser(User user);
+
     List<Subscription> findAllByPeriodicalIdAndStatus(long periodicalId,
                                                       Subscription.Status status);
 }

@@ -5,7 +5,7 @@ public class ApplicationResources {
 
     public static final String MESSAGES_ATTR_NAME = "messages";
     public static final String GENERAL_MESSAGES_FRONT_BLOCK_NAME = "topMessages";
-    public static final String CURRENT_USER_ATTR_NAME = "thisUser";
+    public static final String CURRENT_USER_ATTR_NAME = "currentUser";
     public static final String PERIODICAL_ATTR_NAME = "periodical";
     public static final String PERIODICAL_STATUSES_ATTR_NAME = "periodicalStatuses";
     public static final String PERIODICAL_CATEGORIES_ATTR_NAME = "periodicalCategories";

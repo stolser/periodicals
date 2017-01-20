@@ -28,13 +28,9 @@ public class PeriodicalServiceImpl implements PeriodicalService {
         private static final PeriodicalServiceImpl INSTANCE = new PeriodicalServiceImpl();
     }
 
-    /**
-     * @return a singleton object of this type
-     */
     public static PeriodicalService getInstance() {
         return InstanceHolder.INSTANCE;
     }
-
 
     @Override
     public Periodical findOneById(long id) {

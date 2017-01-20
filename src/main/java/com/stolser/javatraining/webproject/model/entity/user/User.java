@@ -1,11 +1,13 @@
 package com.stolser.javatraining.webproject.model.entity.user;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = -888L;
     private long id;
     private String userName;
     private String firstName;
@@ -120,12 +122,12 @@ public class User {
     }
 
     public Date getBirthday() {
-        return birthday;
+        return new Date(birthday.getTime());
     }
 
     public void setBirthday(Date birthday) {
         checkNotNull(birthday);
-        this.birthday = birthday;
+        this.birthday = new Date(birthday.getTime());
     }
 
     public String getEmail() {

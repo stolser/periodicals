@@ -1,7 +1,7 @@
 <div class="modal fade" id="subscriptionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" action="/backend/users/${thisUser.id}/invoices">
+            <form method="post" action="/backend/users/${currentUser.id}/invoices">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>

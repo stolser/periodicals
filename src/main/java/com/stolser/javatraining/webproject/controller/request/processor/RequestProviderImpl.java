@@ -1,12 +1,12 @@
 package com.stolser.javatraining.webproject.controller.request.processor;
 
 import com.stolser.javatraining.webproject.controller.form.validator.AjaxFormValidation;
+import com.stolser.javatraining.webproject.controller.request.processor.admin.panel.DisplayAdminPanel;
+import com.stolser.javatraining.webproject.controller.request.processor.invoice.PayOneInvoice;
 import com.stolser.javatraining.webproject.controller.request.processor.invoice.PersistOneInvoice;
 import com.stolser.javatraining.webproject.controller.request.processor.periodical.*;
 import com.stolser.javatraining.webproject.controller.request.processor.user.CreateUser;
 import com.stolser.javatraining.webproject.controller.request.processor.user.DisplayAllUsers;
-import com.stolser.javatraining.webproject.controller.request.processor.admin.panel.DisplayAdminPanel;
-import com.stolser.javatraining.webproject.controller.request.processor.invoice.PayOneInvoice;
 import com.stolser.javatraining.webproject.controller.request.processor.user.DisplayCurrentUser;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +57,8 @@ public final class RequestProviderImpl implements RequestProvider {
         requestMapping.put(POST_AJAX_FORM_VALIDATOR, AjaxFormValidation.getInstance());
     }
 
-    private RequestProviderImpl() {}
+    private RequestProviderImpl() {
+    }
 
     private static class InstanceHolder {
         private static final RequestProviderImpl INSTANCE = new RequestProviderImpl();
@@ -68,13 +69,15 @@ public final class RequestProviderImpl implements RequestProvider {
     }
 
     /**
+     * Determines a specific request processor to process the request depending on the current
+     * http method and uri.
      * @param request a current http request
      * @return a specific implementation of the {@link RequestProcessor} interface that processes
-     * http requests to this request uri
+     *      http requests to this request uri
      */
     @Override
     public RequestProcessor getRequestProcessor(HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
+        String requestUri = request.getRequestURI();
         Predicate<Map.Entry<String, RequestProcessor>> mappingContainsRequestMethod = entry -> {
             String methodPattern = entry.getKey().split(":")[0];
             String[] methods = methodPattern.split("\\|");
@@ -85,7 +88,7 @@ public final class RequestProviderImpl implements RequestProvider {
 
         Predicate<Map.Entry<String, RequestProcessor>> mappingMatchesRequestUri = entry -> {
             String urlPattern = entry.getKey().split(":")[1];
-            return Pattern.matches(urlPattern, requestURI);
+            return Pattern.matches(urlPattern, requestUri);
         };
 
         Optional<Map.Entry<String, RequestProcessor>> currentMapping = requestMapping.entrySet()
@@ -98,7 +101,7 @@ public final class RequestProviderImpl implements RequestProvider {
             return currentMapping.get().getValue();
         } else {
             throw new NoSuchElementException(
-                    String.format(NO_MAPPING_FOR_SUCH_REQUEST, requestURI));
+                    String.format(NO_MAPPING_FOR_SUCH_REQUEST, requestUri));
         }
     }
 }

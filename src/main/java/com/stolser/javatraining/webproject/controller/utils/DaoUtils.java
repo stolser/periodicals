@@ -10,6 +10,9 @@ import java.sql.SQLException;
 public final class DaoUtils {
     private DaoUtils() {}
 
+    /**
+     * Creates a new periodical using the data from the result set.
+     */
     public static Periodical getPeriodicalFromResultSet(ResultSet rs) throws SQLException {
         Periodical.Builder periodicalBuilder = new Periodical.Builder();
         periodicalBuilder.setId(rs.getLong(MysqlPeriodicalDao.DB_PERIODICALS_ID))

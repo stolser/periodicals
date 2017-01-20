@@ -27,7 +27,7 @@
                 <td><c:out value="${loop.index + 1}"/></td>
                 <td><c:choose>
                     <c:when test="${(invoice.periodical.status == 'ACTIVE') ||
-                                thisUser.hasRole('admin')}">
+                                currentUser.hasRole('admin')}">
                         <a href="/backend/periodicals/${invoice.periodical.id}">
                             <c:out value="${invoice.periodical.name}"/></a>
                     </c:when>
@@ -68,7 +68,7 @@
                 <td class="text-center"><fmt:message key="${invoice.status}" bundle="${langInvoice}"/>
                     <c:if test="${invoice.status == 'NEW'}">
                         <form method="post"
-                              action="/backend/users/${thisUser.id}/invoices/${invoice.id}/pay">
+                              action="/backend/users/${currentUser.id}/invoices/${invoice.id}/pay">
                             <button type="submit" class="btn btn-primary btn-block">
                                 <fmt:message key="payInvoiceBtn.label" bundle="${langInvoice}"/>
                             </button>

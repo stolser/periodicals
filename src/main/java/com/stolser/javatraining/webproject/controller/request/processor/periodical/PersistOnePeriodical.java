@@ -1,11 +1,11 @@
 package com.stolser.javatraining.webproject.controller.request.processor.periodical;
 
-import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
-import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontMessageFactory;
-import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.form.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.form.validator.ValidatorFactory;
+import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontMessageFactory;
+import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.service.PeriodicalService;
 import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
@@ -33,7 +33,8 @@ public class PersistOnePeriodical implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
-    private PersistOnePeriodical() {}
+    private PersistOnePeriodical() {
+    }
 
     private static class InstanceHolder {
         private static final PersistOnePeriodical INSTANCE = new PersistOnePeriodical();
@@ -110,7 +111,10 @@ public class PersistOnePeriodical implements RequestProcessor {
                 .getParameter(PERIODICAL_OPERATION_TYPE_PARAM_ATTR_NAME).toUpperCase());
     }
 
-    private void checkPeriodicalForActiveSubscriptions(List<FrontendMessage> generalMessages, Periodical periodicalToSave, Periodical.Status oldStatus, Periodical.Status newStatus) {
+    private void checkPeriodicalForActiveSubscriptions(List<FrontendMessage> generalMessages,
+                                                       Periodical periodicalToSave,
+                                                       Periodical.Status oldStatus,
+                                                       Periodical.Status newStatus) {
         if (isStatusChangedFromActiveToInactive(oldStatus, newStatus)
                 && periodicalToSaveHasActiveSubscriptions(periodicalToSave)) {
             generalMessages.add(messageFactory.getWarning(MSG_PERIODICAL_HAS_ACTIVE_SUBSCRIPTIONS_WARNING));
@@ -135,10 +139,11 @@ public class PersistOnePeriodical implements RequestProcessor {
             case CREATE:
                 generalMessages.add(messageFactory.getSuccess(MSG_PERIODICAL_CREATED_SUCCESS));
                 break;
-
             case UPDATE:
                 generalMessages.add(messageFactory.getSuccess(MSG_PERIODICAL_UPDATED_SUCCESS));
                 break;
+            default:
+                throw new IllegalArgumentException(INCORRECT_OPERATION_DURING_PERSISTING_A_PERIODICAL);
         }
 
         HttpUtils.addGeneralMessagesToSession(request, generalMessages);
@@ -160,14 +165,13 @@ public class PersistOnePeriodical implements RequestProcessor {
             case CREATE:
                 redirectUri = PERIODICAL_CREATE_NEW_URI;
                 break;
-
             case UPDATE:
                 redirectUri = PERIODICAL_LIST_URI + "/" + periodicalToSave.getId() + "/update";
                 break;
-
             default:
                 throw new IllegalArgumentException(INCORRECT_OPERATION_DURING_PERSISTING_A_PERIODICAL);
         }
+
         return redirectUri;
     }
 

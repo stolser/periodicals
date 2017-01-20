@@ -24,7 +24,8 @@ class SqlConnectionPool implements ConnectionPool {
     private static final String DRIVER_CLASS_NAME_SHOULD_NOT_BE_NULL = "driverClassName should not be null.";
     private static final String USER_NAME_SHOULD_NOT_BE_NULL = "userName should not be null.";
     private static final String PASSWORD_SHOULD_NOT_BE_NULL = "password should not be null.";
-    private static final String MAX_CONNECTIONS_SHOULD_BE_A_POSITIVE_NUMBER = "maxConnections should be a positive number.";
+    private static final String MAX_CONNECTIONS_SHOULD_BE_A_POSITIVE_NUMBER =
+            "maxConnections should be a positive number.";
     private BasicDataSource dataSource;
     private String description;
 
@@ -40,7 +41,7 @@ class SqlConnectionPool implements ConnectionPool {
 
     private String generateUrl(Builder builder) {
         String url = builder.url + builder.dbName;
-        if (! builder.useSSL) {
+        if (! builder.useSsl) {
             url += USE_SSL_FALSE;
         }
 
@@ -75,7 +76,7 @@ class SqlConnectionPool implements ConnectionPool {
         private String userName;
         private String password;
         private int maxConnections;
-        private boolean useSSL;
+        private boolean useSsl;
 
         private Builder(String url, String dbName) {
             checkNotNull(url, URL_SHOULD_NOT_BE_NULL);
@@ -106,8 +107,8 @@ class SqlConnectionPool implements ConnectionPool {
             return this;
         }
 
-        public Builder setUseSSL(boolean useSSL) {
-            this.useSSL = useSSL;
+        public Builder setUseSsl(boolean useSsl) {
+            this.useSsl = useSsl;
             return this;
         }
 

@@ -32,8 +32,8 @@ public class ValidatorFactory {
     }
 
     /**
+     * Returns a concrete validator for this specific parameter.
      * @param paramName a http parameter name that need to be validated
-     * @return a concrete validator for this specific parameter
      */
     public static Validator newValidator(String paramName) {
         switch (paramName) {

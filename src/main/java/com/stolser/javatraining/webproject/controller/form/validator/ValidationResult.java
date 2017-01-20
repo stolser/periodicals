@@ -7,7 +7,7 @@ public class ValidationResult {
      */
     private int statusCode;
     /**
-     * i18n message key
+     * An i18n message key.
      */
     private String messageKey;
 

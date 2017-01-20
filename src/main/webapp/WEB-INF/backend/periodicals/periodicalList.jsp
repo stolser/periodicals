@@ -22,7 +22,7 @@
             <tbody>
             <c:set var="onlyVisibleIndex" value="0"/>
             <c:forEach items="${allPeriodicals}" var="periodical" varStatus="loop">
-                <c:if test="${(periodical.status == 'ACTIVE') || thisUser.hasRole('admin')}">
+                <c:if test="${(periodical.status == 'ACTIVE') || currentUser.hasRole('admin')}">
                     <c:set var="onlyVisibleIndex" value="${onlyVisibleIndex + 1}"/>
                     <tr class="${periodical.status == 'ACTIVE' ? 'success' :
                     (periodical.status == 'INACTIVE' ? 'warning' : 'danger')}">

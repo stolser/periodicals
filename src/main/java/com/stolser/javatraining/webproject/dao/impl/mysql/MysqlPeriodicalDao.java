@@ -63,9 +63,9 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
         try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             setFieldValue(st, fieldName, fieldValue);
 
-            ResultSet rs = st.executeQuery();
-
-            return rs.next() ? DaoUtils.getPeriodicalFromResultSet(rs) : null;
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next() ? DaoUtils.getPeriodicalFromResultSet(rs) : null;
+            }
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_RETRIEVING_PERIODICAL,
@@ -144,10 +144,10 @@ public class MysqlPeriodicalDao implements PeriodicalDao {
             st.setString(1, category.name().toLowerCase());
             st.setString(2, status.name().toLowerCase());
 
-            ResultSet rs = st.executeQuery();
-            rs.next();
-
-            return rs.getInt(1);
+            try (ResultSet rs = st.executeQuery()) {
+                rs.next();
+                return rs.getInt(1);
+            }
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_GETTING_NUMBER_OF_PERIODICALS, category, status);

@@ -1,8 +1,11 @@
 package com.stolser.javatraining.webproject.model.entity.periodical;
 
+import java.io.Serializable;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class Periodical {
+public class Periodical implements Serializable {
+    private static final long serialVersionUID = -888L;
     private long id;
     private String name;
     private PeriodicalCategory category;

@@ -12,9 +12,7 @@ public interface UserService {
 
     User findOneUserByUserName(String userName);
 
-    /**
-     * @return all the users in the database
-     */
     List<User> findAll();
+
     void createNewUser(User user, Credential credential, String userRole);
 }

@@ -20,9 +20,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         private static final SubscriptionServiceImpl INSTANCE = new SubscriptionServiceImpl();
     }
 
-    /**
-     * @return a singleton object of this type
-     */
     public static SubscriptionServiceImpl getInstance() {
         return InstanceHolder.INSTANCE;
     }

@@ -21,7 +21,7 @@ public interface InvoiceService {
      *
      * @param invoiceToPay invoice id to be paid
      * @return true if after committing this invoice in the db has status 'PAID' and
-     * false otherwise.
+     *      false otherwise.
      */
     boolean payInvoice(Invoice invoiceToPay);
 

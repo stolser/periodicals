@@ -20,7 +20,7 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
  * Performs validation of the username, checks the password for correctness, checks that
  * this user is active (not blocked) and if everything is OK, adds this user into the session.
  */
-public class SignIn implements RequestProcessor {
+public final class SignIn implements RequestProcessor {
     private UserService userService = UserServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
@@ -93,8 +93,4 @@ public class SignIn implements RequestProcessor {
         return (originalUri != null) && (!SIGN_OUT_URI.equals(originalUri))
                 ? originalUri : defaultUri;
     }
-
-//    private boolean isUsernameAndPasswordNotEmpty(String username, String password) {
-//        return !StringUtils.isEmpty(username) && !StringUtils.isEmpty(password);
-//    }
 }

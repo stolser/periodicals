@@ -24,25 +24,24 @@ class MysqlCredentialDao implements CredentialDao {
 
     @Override
     public Credential findCredentialByUserName(String userName) {
-        String sqlStatement = "SELECT * FROM credentials " +
-                "WHERE user_name = ?";
+        String sqlStatement = "SELECT * FROM credentials WHERE user_name = ?";
 
-        try(PreparedStatement st = conn.prepareStatement(sqlStatement)) {
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setString(1, userName);
 
-            ResultSet rs = st.executeQuery();
+            try (ResultSet rs = st.executeQuery()) {
+                Credential credential = null;
 
-            Credential credential = null;
-            if (rs.next()) {
-                Credential.Builder credentialBuilder = new Credential.Builder();
-                credentialBuilder.setId(rs.getLong(DB_CREDENTIALS_ID))
-                        .setUserName(rs.getString(DB_CREDENTIALS_USER_NAME))
-                        .setPasswordHash(rs.getString(DB_CREDENTIALS_PASSWORD_HASH));
-                credential = credentialBuilder.build();
+                if (rs.next()) {
+                    Credential.Builder credentialBuilder = new Credential.Builder();
+                    credentialBuilder.setId(rs.getLong(DB_CREDENTIALS_ID))
+                            .setUserName(rs.getString(DB_CREDENTIALS_USER_NAME))
+                            .setPasswordHash(rs.getString(DB_CREDENTIALS_PASSWORD_HASH));
+                    credential = credentialBuilder.build();
+                }
+
+                return credential;
             }
-
-            return credential;
-
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_DURING_EXECUTION_STATEMENT,
                     sqlStatement, userName);
@@ -53,11 +52,11 @@ class MysqlCredentialDao implements CredentialDao {
     @Override
     public void createNew(Credential credential) {
 
-        String sqlStatement = "INSERT INTO credentials " +
-                "(user_name, password_hash, user_id) " +
-                "VALUES (?, ?, ?)";
+        String sqlStatement = "INSERT INTO credentials "
+                + "(user_name, password_hash, user_id) "
+                + "VALUES (?, ?, ?)";
 
-        try(PreparedStatement st = conn.prepareStatement(sqlStatement)) {
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setString(1, credential.getUserName());
             st.setString(2, credential.getPasswordHash());
             st.setLong(3, credential.getId());

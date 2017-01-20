@@ -21,9 +21,6 @@ public class UserServiceImpl implements UserService {
         private static final UserServiceImpl INSTANCE = new UserServiceImpl();
     }
 
-    /**
-     * @return a singleton object of this type
-     */
     public static UserService getInstance() {
         return InstanceHolder.INSTANCE;
     }

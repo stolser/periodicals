@@ -5,7 +5,7 @@ package com.stolser.javatraining.webproject.dao;
  */
 public interface AbstractConnection extends AutoCloseable {
     /**
-     * Defines begin of transaction
+     * Defines begin of transaction.
      */
     void beginTransaction();
 
@@ -15,7 +15,7 @@ public interface AbstractConnection extends AutoCloseable {
     void commitTransaction();
 
     /**
-     * rolls back transaction
+     * rolls back transaction.
      */
     void rollbackTransaction();
 

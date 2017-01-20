@@ -8,12 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.ADMIN_ROLE_NAME;
 
 /**
  * Encapsulates information about resource access permissions of each type of roles.
  */
-class Authorization {
+final class Authorization {
     private static final Map<String, Set<String>> permissionMapping = new HashMap<>();
 
     static {
@@ -27,8 +27,7 @@ class Authorization {
         permissionMapping.put(RequestProviderImpl.GET_ADMIN_PANEL_REQUEST_PATTERN, admin);
     }
 
-    private Authorization() {
-    }
+    private Authorization() {}
 
     private static class InstanceHolder {
         private static final Authorization INSTANCE = new Authorization();
@@ -39,31 +38,47 @@ class Authorization {
     }
 
     /**
+     * Checks whether a current user has enough permissions to access a requested uri
+     * using a current http method.
+     *
      * @param request a current http request
      * @return {@code true} - if a current user has enough permissions to perform such a kind of requests,
-     * and {@code false} otherwise
+     *      and {@code false} otherwise
      */
     boolean checkPermissions(HttpServletRequest request) {
         String requestMethod = request.getMethod().toUpperCase();
-        String requestURI = request.getRequestURI();
+        String requestUri = request.getRequestURI();
 
-        Optional<Map.Entry<String, Set<String>>> thisPermissionMapping = permissionMapping.entrySet()
-                .stream()
-                .filter(entry -> {
-                    // filtering by a method;
-                    String methodPattern = entry.getKey().split(":")[0];
-                    // is necessary for the "GET|POST|PUT|DELETE" notation;
-                    String[] methods = methodPattern.split("\\|");
+        Optional<Map.Entry<String, Set<String>>> thisPermissionMapping =
+                permissionMapping.entrySet()
+                        .stream()
+                        .filter(entry -> {
+                            String[] methods = extractHttpMethodsFromMapping(entry);
+                            return Arrays.asList(methods).contains(requestMethod);
+                        })
+                        .filter(entry -> {
+                            String urlPattern = entry.getKey().split(":")[1];
+                            return Pattern.matches(urlPattern, requestUri);
+                        })
+                        .findFirst();
 
-                    return Arrays.asList(methods).contains(requestMethod);
-                })
-                .filter(entry -> {
-                    // filtering by a Uri pattern;
-                    String urlPattern = entry.getKey().split(":")[1];
-                    return Pattern.matches(urlPattern, requestURI);
-                })
-                .findFirst();
+        return isPermissionGranted(thisPermissionMapping, request);
+    }
 
+    private String[] extractHttpMethodsFromMapping(Map.Entry<String, Set<String>> entry) {
+        String methodPattern = entry.getKey().split(":")[0];
+        return methodPattern.split("\\|");
+    }
+
+    private boolean hasUserLegitRole(Set<String> userRoles, Set<String> legitRoles) {
+        Set<String> userLegitRoles = new HashSet<>(legitRoles);
+        userLegitRoles.retainAll(userRoles);
+
+        return !userLegitRoles.isEmpty();
+    }
+
+    private boolean isPermissionGranted(Optional<Map.Entry<String, Set<String>>> thisPermissionMapping,
+                                        HttpServletRequest request) {
         boolean permissionGranted = true;
         if (thisPermissionMapping.isPresent()) {
             User user = (User) request.getSession().getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
@@ -74,12 +89,5 @@ class Authorization {
         }
 
         return permissionGranted;
-    }
-
-    private boolean hasUserLegitRole(Set<String> userRoles, Set<String> legitRoles) {
-        Set<String> userLegitRoles = new HashSet<>(legitRoles);
-        userLegitRoles.retainAll(userRoles);
-
-        return (userLegitRoles.size() != 0);
     }
 }

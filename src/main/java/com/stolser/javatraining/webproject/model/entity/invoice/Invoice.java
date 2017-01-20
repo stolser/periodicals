@@ -147,8 +147,8 @@ public class Invoice implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Invoice{id=%d, user=%s, periodical=%s, subscriptionPeriod=%d, " +
-                        "totalSum=%s, creationDate=%s, paymentDate=%s, status=%s}",
+        return String.format("Invoice{id=%d, user=%s, periodical=%s, subscriptionPeriod=%d, "
+                        + "totalSum=%s, creationDate=%s, paymentDate=%s, status=%s}",
                 id, user, periodical, subscriptionPeriod, totalSum,
                 creationDate, paymentDate, status);
     }

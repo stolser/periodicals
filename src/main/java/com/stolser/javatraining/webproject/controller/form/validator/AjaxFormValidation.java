@@ -19,6 +19,7 @@ import java.util.ResourceBundle;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
+
 /**
  * Validates a parameter from the request and sends a json with the validation result.
  * Can be used for ajax validation of input field values.

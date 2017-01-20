@@ -23,8 +23,8 @@ public class ConnectionPoolProvider {
     private static final String EXCEPTION_DURING_OPENING_DB_CONFIG_FILE =
             "Exception during opening the db-config file with path = {}.";
     private static final String EXCEPTION_DURING_LOADING_DB_CONFIG_PROPERTIES =
-            "Exception during loading db-config properties from the file " +
-                    "(path = {})";
+            "Exception during loading db-config properties from the file "
+                    + "(path = {})";
     private static final ConnectionPool INSTANCE;
     private static ConnectionPool TEST_INSTANCE;
 
@@ -51,7 +51,7 @@ public class ConnectionPoolProvider {
         String dbName = properties.getProperty(DB_CONFIG_PARAM_DB_NAME);
         String userName = properties.getProperty(DB_CONFIG_PARAM_USER_NAME);
         String userPassword = properties.getProperty(DB_CONFIG_PARAM_USER_PASSWORD);
-        int maxConnNumber = Integer.valueOf(properties.getProperty(DB_CONFIG_PARAM_MAX_CONN_NUMBER));
+        int maxConnNumber = Integer.parseInt(properties.getProperty(DB_CONFIG_PARAM_MAX_CONN_NUMBER));
 
         return SqlConnectionPool.getBuilder(url, dbName)
                 .setUserName(userName)
@@ -64,6 +64,9 @@ public class ConnectionPoolProvider {
         return INSTANCE;
     }
 
+    /**
+     * @return a connection pool for using in tests.
+     */
     public static ConnectionPool getTestPool() {
         if (TEST_INSTANCE == null) {
             try {
@@ -80,7 +83,7 @@ public class ConnectionPoolProvider {
                 throw new RuntimeException(e);
             } catch (IOException e) {
                 LOGGER.error(EXCEPTION_DURING_LOADING_DB_CONFIG_PROPERTIES, TEST_DB_CONFIG_FILENAME);
-                throw new RuntimeException();
+                throw new RuntimeException(e);
             }
         }
 

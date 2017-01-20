@@ -31,7 +31,8 @@ public final class HttpUtils {
             "Exception during getting MessageDigest for 'MD5'";
     private static final String REDIRECTION_FROM_TO_TEXT = "During redirection from \"%s\" to \"%s\"";
     private static final String URI_MUST_CONTAIN_ID_TEXT = "Uri (%s) must contain id.";
-    private static final String EXCEPTION_DURING_REDIRECTION_TEXT = "User id = %d. Exception during redirection to '%s'.";
+    private static final String EXCEPTION_DURING_REDIRECTION_TEXT =
+            "User id = %d. Exception during redirection to '%s'.";
     private static final String PAGE_404_VIEW_NAME = "errors/page-404";
     private static final String STORAGE_EXCEPTION_PAGE_VIEW_NAME = "errors/storage-error-page";
     private static final String GENERAL_ERROR_PAGE_VIEW_NAME = "errors/error-page";
@@ -39,26 +40,33 @@ public final class HttpUtils {
 
     private HttpUtils() {}
 
+    /**
+     * Retrieves a current user's id from the session.
+     * @return id of the current signed in user or 0 if a user has not been authenticated yet
+     */
     public static long getUserIdFromSession(HttpServletRequest request) {
-        User user = (User) request.getSession()
-                .getAttribute(CURRENT_USER_ATTR_NAME);
+        User user = (User) request.getSession().getAttribute(CURRENT_USER_ATTR_NAME);
 
         return (user != null) ? user.getId() : 0;
     }
 
+    /**
+     * Retrieves a user object from the db for the current user from the request.
+     */
     public static User getCurrentUserFromFromDb(HttpServletRequest request) {
-        long userId = getUserIdFromSession(request);
-
-        return userService.findOneById(userId);
+        return userService.findOneById(getUserIdFromSession(request));
     }
 
-    public static String getRedirectionExceptionMessage(HttpServletRequest request,
-                                                        String destination) {
-
-        return String.format(REDIRECTION_FROM_TO_TEXT,
-                request.getRequestURI(), destination);
+    /**
+     * Creates and returns a formatted message.
+     */
+    public static String getRedirectionExceptionMessage(HttpServletRequest request, String destination) {
+        return String.format(REDIRECTION_FROM_TO_TEXT, request.getRequestURI(), destination);
     }
 
+    /**
+     * Creates a new periodical using the data from the request.
+     */
     public static Periodical getPeriodicalFromRequest(HttpServletRequest request) {
         Periodical.Builder periodicalBuilder = new Periodical.Builder();
         periodicalBuilder.setId(Long.parseLong(request.getParameter(ENTITY_ID_PARAM_NAME)))
@@ -74,24 +82,30 @@ public final class HttpUtils {
         return periodicalBuilder.build();
     }
 
+    /**
+     * Tries to find the first number in the uri.
+     */
     public static int getFirstIdFromUri(String uri) {
         Matcher matcher = Pattern.compile("\\d+").matcher(uri);
 
-        if (matcher.find()) {
-            String stringId = matcher.group();
-
-            return Integer.valueOf(stringId);
-
+        if (!matcher.find()) {
+            throw new IllegalArgumentException(String.format(URI_MUST_CONTAIN_ID_TEXT, uri));
         }
 
-        throw new IllegalArgumentException(String.format(URI_MUST_CONTAIN_ID_TEXT, uri));
+        return Integer.parseInt(matcher.group());
     }
 
+    /**
+     * Sets a session scoped attribute 'messages'.
+     */
     public static void addMessagesToSession(HttpServletRequest request,
                                             Map<String, List<FrontendMessage>> frontMessageMap) {
         request.getSession().setAttribute(MESSAGES_ATTR_NAME, frontMessageMap);
     }
 
+    /**
+     * Adds general messages to the session.
+     */
     public static void addGeneralMessagesToSession(HttpServletRequest request,
                                                    List<FrontendMessage> generalMessages) {
         Map<String, List<FrontendMessage>> frontMessageMap = new HashMap<>();
@@ -99,6 +113,9 @@ public final class HttpUtils {
         HttpUtils.addMessagesToSession(request, frontMessageMap);
     }
 
+    /**
+     * Sends a redirect on this response.
+     */
     public static void sendRedirect(HttpServletRequest request, HttpServletResponse response,
                                     String redirectUri) {
         try {
@@ -112,6 +129,9 @@ public final class HttpUtils {
         }
     }
 
+    /**
+     * Returns an appropriate view name for this exception.
+     */
     public static String getErrorViewName(Throwable exception) {
         String viewName = GENERAL_ERROR_PAGE_VIEW_NAME;
 
@@ -126,18 +146,24 @@ public final class HttpUtils {
         return viewName;
     }
 
+    /**
+     * Returns a hash for this password.
+     */
     public static String getPasswordHash(String password) {
-        MessageDigest md;
         try {
-            md = MessageDigest.getInstance(ALGORITHM_NAME);
+            return convertPasswordIntoHash(password);
 
         } catch (NoSuchAlgorithmException e) {
             LOGGER.error(EXCEPTION_DURING_GETTING_MESSAGE_DIGEST_FOR_MD5, e);
             throw new RuntimeException();
         }
+    }
+
+    private static String convertPasswordIntoHash(String password) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance(ALGORITHM_NAME);
 
         md.update(password.getBytes());
-        byte byteData[] = md.digest();
+        byte[] byteData = md.digest();
 
         StringBuilder builder = new StringBuilder();
         for (byte aByteData : byteData) {

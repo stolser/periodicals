@@ -16,7 +16,7 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 /**
  * Processes a GET request to page with the information of the selected individual periodical.
  */
-public class DisplayOnePeriodical implements RequestProcessor {
+public final class DisplayOnePeriodical implements RequestProcessor {
     private static final String NO_PERIODICAL_WITH_ID_IN_DB = "There is no periodical with id %d in the db.";
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
@@ -38,7 +38,7 @@ public class DisplayOnePeriodical implements RequestProcessor {
 
         checkPeriodicalExists(periodicalId, periodicalInDb);
 
-        if(hasUserNotEnoughPermissions(currentUser, periodicalInDb)) {
+        if (hasUserNotEnoughPermissions(currentUser, periodicalInDb)) {
             HttpUtils.sendRedirect(request, response, ACCESS_DENIED_URI);
             return null;
         }

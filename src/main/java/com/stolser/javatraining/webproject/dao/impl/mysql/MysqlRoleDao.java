@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.dao.impl.mysql;
 
-import com.stolser.javatraining.webproject.dao.exception.DaoException;
 import com.stolser.javatraining.webproject.dao.RoleDao;
+import com.stolser.javatraining.webproject.dao.exception.DaoException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,10 +37,10 @@ class MysqlRoleDao implements RoleDao {
         try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setString(1, userName);
 
-            ResultSet rs = st.executeQuery();
-
-            while(rs.next()) {
-                roles.add(rs.getString(DB_USER_ROLES_NAME));
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    roles.add(rs.getString(DB_USER_ROLES_NAME));
+                }
             }
 
         } catch (SQLException e) {

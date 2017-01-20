@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface RequestProvider {
     /**
-     * @return a specific request processing implementation of the {@code RequestProcessor} interface
+     * Returns a specific request processing implementation of the {@code RequestProcessor} interface.
      */
     RequestProcessor getRequestProcessor(HttpServletRequest request);
 }

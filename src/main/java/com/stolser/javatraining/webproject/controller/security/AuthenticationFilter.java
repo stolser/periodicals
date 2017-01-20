@@ -18,7 +18,8 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 public class AuthenticationFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
@@ -27,16 +28,16 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if(requestNotRequiresAuthentication(request)) {
+        if (requestNotRequiresAuthentication(request)) {
             chain.doFilter(servletRequest, servletResponse);
             return;
         }
 
-        String requestURI = request.getRequestURI();
+        String requestUri = request.getRequestURI();
         User currentUser = HttpUtils.getCurrentUserFromFromDb(request);
 
         if (currentUser == null) {
-            request.getSession().setAttribute(ORIGINAL_URI_ATTR_NAME, requestURI);
+            request.getSession().setAttribute(ORIGINAL_URI_ATTR_NAME, requestUri);
             response.sendRedirect(LOGIN_PAGE);
 
         } else if (!User.Status.ACTIVE.equals(currentUser.getStatus())) {
@@ -55,5 +56,6 @@ public class AuthenticationFilter implements Filter {
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 }

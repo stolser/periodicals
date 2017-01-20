@@ -44,9 +44,9 @@ class MysqlSubscriptionDao implements SubscriptionDao {
             st.setLong(1, userId);
             st.setLong(2, periodicalId);
 
-            ResultSet rs = st.executeQuery();
-
-            return rs.next() ? newSubscriptionFromRs(rs) : null;
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next() ? newSubscriptionFromRs(rs) : null;
+            }
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_MSG_FINDING_ALL_PERIODICALS_BY_USER_ID,
@@ -66,14 +66,15 @@ class MysqlSubscriptionDao implements SubscriptionDao {
             st.setLong(1, periodicalId);
             st.setString(2, status.name().toLowerCase());
 
-            ResultSet rs = st.executeQuery();
+            try (ResultSet rs = st.executeQuery()) {
+                List<Subscription> subscriptions = new ArrayList<>();
 
-            List<Subscription> subscriptions = new ArrayList<>();
-            while (rs.next()) {
-                subscriptions.add(newSubscriptionFromRs(rs));
+                while (rs.next()) {
+                    subscriptions.add(newSubscriptionFromRs(rs));
+                }
+
+                return subscriptions;
             }
-
-            return subscriptions;
 
         } catch (SQLException e) {
             String message = String.format(EXCEPTION_MSG_FINDING_ALL_BY_ID, periodicalId, status);

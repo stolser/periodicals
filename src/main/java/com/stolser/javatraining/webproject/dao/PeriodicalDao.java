@@ -17,7 +17,7 @@ public interface PeriodicalDao extends GenericDao<Periodical> {
      * of this periodical.
      *
      * @return the number of affected rows: 0 - if the condition was not satisfied and updated
-     * has not happened; 1 - if the status of this periodical has been changed to 'discarded'
+     *      has not happened; 1 - if the status of this periodical has been changed to 'discarded'
      */
     int updateAndSetDiscarded(Periodical periodical);
 

@@ -31,7 +31,7 @@ public interface PeriodicalService {
      * of this periodical.
      *
      * @return the number of affected rows: 0 - if the condition was not satisfied and updated
-     * has not happened; 1 - if the status of this periodical has been changed to 'discarded'
+     *      has not happened; 1 - if the status of this periodical has been changed to 'discarded'
      */
     int updateAndSetDiscarded(Periodical periodical);
 
@@ -42,6 +42,7 @@ public interface PeriodicalService {
     int deleteAllDiscarded();
 
     /**
+     * Checks whether a periodical with the id has any active subscriptions.
      * @return true if there are subscriptions with status = 'active' on the specified periodical
      */
     boolean hasActiveSubscriptions(long periodicalId);
