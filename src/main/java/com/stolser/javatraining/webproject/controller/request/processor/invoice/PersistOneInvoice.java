@@ -1,11 +1,11 @@
 package com.stolser.javatraining.webproject.controller.request.processor.invoice;
 
-import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.controller.form.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontMessageFactory;
 import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.form.validator.user.RequestUserIdValidator;
+import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
@@ -45,22 +46,23 @@ public class PersistOneInvoice implements RequestProcessor {
     }
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
         List<FrontendMessage> generalMessages = new ArrayList<>();
         long periodicalId = Long.parseLong(request.getParameter(PERIODICAL_ID_PARAM_NAME));
         Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
 
         if (isPeriodicalValid(periodicalInDb, request, generalMessages)) {
-            generalMessages.add(messageFactory.getInfo(MSG_VALIDATION_PASSED_SUCCESS));
             tryToPersistNewInvoice(getNewInvoice(periodicalInDb, request), generalMessages);
         }
 
         HttpUtils.addGeneralMessagesToSession(request, generalMessages);
+        HttpUtils.sendRedirect(request, response, getRedirectUri(periodicalId));
 
-        String redirectUri = String.format("%s/%d", PERIODICAL_LIST_URI, periodicalId);
-        HttpUtils.sendRedirect(request, response, redirectUri);
+        return Optional.empty();
+    }
 
-        return null;
+    private String getRedirectUri(long periodicalId) {
+        return String.format("%s/%d", PERIODICAL_LIST_URI, periodicalId);
     }
 
     private boolean periodicalExistsInDb(Periodical periodicalInDb, List<FrontendMessage> generalMessages) {
@@ -116,6 +118,8 @@ public class PersistOneInvoice implements RequestProcessor {
     }
 
     private void tryToPersistNewInvoice(Invoice invoiceToPersist, List<FrontendMessage> generalMessages) {
+        generalMessages.add(messageFactory.getInfo(MSG_VALIDATION_PASSED_SUCCESS));
+
         try {
             invoiceService.createNew(invoiceToPersist);
 

@@ -1,11 +1,11 @@
 package com.stolser.javatraining.webproject.controller.request.processor.invoice;
 
-import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.controller.form.validator.ValidationResult;
 import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontMessageFactory;
 import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.form.validator.user.RequestUserIdValidator;
+import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.service.InvoiceService;
@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
@@ -46,22 +47,23 @@ public class PayOneInvoice implements RequestProcessor {
     }
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
         List<FrontendMessage> generalMessages = new ArrayList<>();
-        long invoiceId = HttpUtils.getFirstIdFromUri(request.getRequestURI()
-                .replaceFirst("/backend/users/\\d+/", ""));
-
-        Invoice invoiceInDb = invoiceService.findOneById(invoiceId);
+        Invoice invoiceInDb = invoiceService.findOneById((long) getInvoiceIdFromRequest(request));
 
         if (isInvoiceValid(invoiceInDb, request, generalMessages)) {
-            generalMessages.add(messageFactory.getInfo(MSG_VALIDATION_PASSED_SUCCESS));
-            tryToPayThisInvoice(invoiceInDb, request, generalMessages);
+            tryToPayInvoice(invoiceInDb, request, generalMessages);
         }
 
         HttpUtils.addGeneralMessagesToSession(request, generalMessages);
         HttpUtils.sendRedirect(request, response, CURRENT_USER_ACCOUNT_URI);
 
-        return null;
+        return Optional.empty();
+    }
+
+    private int getInvoiceIdFromRequest(HttpServletRequest request) {
+        return HttpUtils.getFirstIdFromUri(request.getRequestURI()
+                .replaceFirst("/backend/users/\\d+/", ""));
     }
 
     private boolean isInvoiceValid(Invoice invoiceInDb, HttpServletRequest request,
@@ -96,20 +98,10 @@ public class PayOneInvoice implements RequestProcessor {
         }
     }
 
-    private boolean isPeriodicalVisible(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
-        long periodicalId = invoiceInDb.getPeriodical().getId();
-        Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
+    private void tryToPayInvoice(Invoice invoiceInDb, HttpServletRequest request,
+                                 List<FrontendMessage> generalMessages) {
+        generalMessages.add(messageFactory.getInfo(MSG_VALIDATION_PASSED_SUCCESS));
 
-        if (Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())) {
-            return true;
-        } else {
-            generalMessages.add(messageFactory.getError(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE));
-            return false;
-        }
-    }
-
-    private void tryToPayThisInvoice(Invoice invoiceInDb, HttpServletRequest request,
-                                     List<FrontendMessage> generalMessages) {
         try {
             if (invoiceService.payInvoice(invoiceInDb)) {
                 generalMessages.add(messageFactory.getSuccess(MSG_INVOICE_PAYMENT_SUCCESS));
@@ -122,6 +114,18 @@ public class PayOneInvoice implements RequestProcessor {
                     HttpUtils.getUserIdFromSession(request), invoiceInDb, e);
 
             generalMessages.add(messageFactory.getError(MSG_INVOICE_PAYMENT_ERROR));
+        }
+    }
+
+    private boolean isPeriodicalVisible(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
+        long periodicalId = invoiceInDb.getPeriodical().getId();
+        Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
+
+        if (Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())) {
+            return true;
+        } else {
+            generalMessages.add(messageFactory.getError(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE));
+            return false;
         }
     }
 }

@@ -6,6 +6,7 @@ import com.stolser.javatraining.webproject.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.ALL_USERS_ATTR_NAME;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.USER_LIST_VIEW_NAME;
@@ -27,10 +28,8 @@ public class DisplayAllUsers implements RequestProcessor {
     }
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
-
+    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute(ALL_USERS_ATTR_NAME, userService.findAll());
-
-        return USER_LIST_VIEW_NAME;
+        return Optional.of(USER_LIST_VIEW_NAME);
     }
 }

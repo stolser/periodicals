@@ -4,6 +4,7 @@ import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ATTR_NAME;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.LOGIN_PAGE;
@@ -24,12 +25,12 @@ public class SignOut implements RequestProcessor {
     }
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().removeAttribute(CURRENT_USER_ATTR_NAME);
         request.getSession().invalidate();
 
         HttpUtils.sendRedirect(request, response, LOGIN_PAGE);
 
-        return null;
+        return Optional.empty();
     }
 }

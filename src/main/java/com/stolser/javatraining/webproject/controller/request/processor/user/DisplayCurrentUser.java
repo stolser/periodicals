@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
@@ -37,7 +38,7 @@ public class DisplayCurrentUser implements RequestProcessor {
     }
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
         long currentUserId = HttpUtils.getUserIdFromSession(request);
         List<Invoice> invoices = invoiceService.findAllByUserId(currentUserId);
         List<Subscription> subscriptions = subscriptionService.findAllByUserId(currentUserId);
@@ -57,7 +58,7 @@ public class DisplayCurrentUser implements RequestProcessor {
             request.setAttribute(USER_SUBSCRIPTIONS_PARAM_NAME, subscriptions);
         }
 
-        return ONE_USER_INFO_VIEW_NAME;
+        return Optional.of(ONE_USER_INFO_VIEW_NAME);
     }
 
     private boolean areThereInvoicesToDisplay(List<Invoice> invoices) {

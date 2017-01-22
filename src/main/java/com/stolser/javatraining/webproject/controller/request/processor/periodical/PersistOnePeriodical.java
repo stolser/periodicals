@@ -14,10 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 import static com.stolser.javatraining.webproject.model.entity.periodical.Periodical.Status.*;
@@ -30,6 +27,7 @@ public class PersistOnePeriodical implements RequestProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistOnePeriodical.class);
     private static final String EXCEPTION_DURING_PERSISTING_PERIODICAL_WITH_ID =
             "Exception during persisting a periodical with id = {}.";
+    private static final String EXCEPTION_DURING_PERSISTING_PERIODICAL = "Exception during persisting periodical ({}).";
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
@@ -45,14 +43,14 @@ public class PersistOnePeriodical implements RequestProcessor {
     }
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
         List<FrontendMessage> generalMessages = new ArrayList<>();
         Periodical periodicalToSave;
         try {
             periodicalToSave = HttpUtils.getPeriodicalFromRequest(request);
         } catch (RuntimeException e) {
             processExceptionAndRedirect(request, response, e);
-            return null;
+            return Optional.empty();
         }
 
         String redirectUri = getRedirectUriByOperationType(request, periodicalToSave);
@@ -62,7 +60,7 @@ public class PersistOnePeriodical implements RequestProcessor {
             generalMessages.add(messageFactory.getInfo(MSG_VALIDATION_PASSED_SUCCESS));
         } else {
             HttpUtils.sendRedirect(request, response, redirectUri);
-            return null;
+            return Optional.empty();
         }
 
         Periodical periodicalInDb = periodicalService.findOneById(periodicalToSave.getId());
@@ -76,9 +74,10 @@ public class PersistOnePeriodical implements RequestProcessor {
                 int discardedPeriodicalsNumber = periodicalService.updateAndSetDiscarded(periodicalToSave);
 
                 if (discardedPeriodicalsNumber == 0) {
-                    addErrorMessageAndSendRedirect(MSG_PERIODICAL_HAS_ACTIVE_SUBSCRIPTIONS_ERROR, generalMessages,
+                    addErrorMessageAndSendRedirect(MSG_PERIODICAL_HAS_ACTIVE_SUBSCRIPTIONS_ERROR,
+                            generalMessages,
                             request, response, redirectUri);
-                    return null;
+                    return Optional.empty();
                 }
             } else {
                 periodicalService.save(periodicalToSave);
@@ -88,9 +87,10 @@ public class PersistOnePeriodical implements RequestProcessor {
             return DisplayAllPeriodicals.getInstance().process(request, response);
 
         } catch (RuntimeException e) {
+            LOGGER.error(EXCEPTION_DURING_PERSISTING_PERIODICAL, periodicalToSave, e);
             addErrorMessageAndSendRedirect(MSG_PERIODICAL_PERSISTING_ERROR, generalMessages,
                     request, response, redirectUri);
-            return null;
+            return Optional.empty();
         }
     }
 

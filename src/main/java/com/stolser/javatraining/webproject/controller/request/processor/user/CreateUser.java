@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
@@ -31,7 +32,7 @@ public class CreateUser implements RequestProcessor {
     }
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
         Map<String, FrontendMessage> messages = new HashMap<>();
         HttpSession session = request.getSession();
         String redirectUri;
@@ -58,7 +59,7 @@ public class CreateUser implements RequestProcessor {
             redirectUri = selectRedirectUriByUserRole(userRole);
         }
 
-        return null;
+        return Optional.empty();
 
     }
 

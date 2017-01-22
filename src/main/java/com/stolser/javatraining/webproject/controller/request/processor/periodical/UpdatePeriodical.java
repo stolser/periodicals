@@ -10,6 +10,7 @@ import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
@@ -31,7 +32,7 @@ public class UpdatePeriodical implements RequestProcessor {
     }
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
         long periodicalId = HttpUtils.getFirstIdFromUri(request.getRequestURI());
         Periodical periodical = periodicalService.findOneById(periodicalId);
 
@@ -41,7 +42,7 @@ public class UpdatePeriodical implements RequestProcessor {
 
         setRequestAttributes(request, periodical);
 
-        return CREATE_EDIT_PERIODICAL_VIEW_NAME;
+        return Optional.of(CREATE_EDIT_PERIODICAL_VIEW_NAME);
     }
 
     private void setRequestAttributes(HttpServletRequest request, Periodical periodical) {

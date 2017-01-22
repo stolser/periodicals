@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
@@ -44,7 +45,7 @@ public class AjaxFormValidation implements RequestProcessor {
     }
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         String paramName = request.getParameter(PARAM_NAME);
         String paramValue = request.getParameter(PARAM_VALUE);
@@ -64,7 +65,7 @@ public class AjaxFormValidation implements RequestProcessor {
 
         try {
             writeJsonIntoResponse(response, jsonResponse);
-            return null;
+            return Optional.empty();
         } catch (IOException e) {
             throw new ValidationProcessorException(EXCEPTION_DURING_VALIDATION, e);
         }

@@ -1,7 +1,7 @@
 package com.stolser.javatraining.webproject.controller.request.processor.periodical;
 
-import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 
@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
@@ -28,27 +29,26 @@ public class CreateNewPeriodical implements RequestProcessor {
     }
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
+        request.getSession().removeAttribute(PERIODICAL_ATTR_NAME);
+        setRequestAttributes(request);
+
+        return Optional.of(CREATE_EDIT_PERIODICAL_VIEW_NAME);
+    }
+
+    private void setRequestAttributes(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Periodical periodicalFromSession = (Periodical) session.getAttribute(PERIODICAL_ATTR_NAME);
-        Periodical periodicalIntoRequest = (periodicalFromSession != null)
+        Periodical periodicalToForward = (periodicalFromSession != null)
                 ? periodicalFromSession
                 : new Periodical();
 
-        session.removeAttribute(PERIODICAL_ATTR_NAME);
-        setRequestAttributes(request, session, periodicalIntoRequest);
-
-        return CREATE_EDIT_PERIODICAL_VIEW_NAME;
-    }
-
-    private void setRequestAttributes(HttpServletRequest request, HttpSession session,
-                                      Periodical periodicalIntoRequest) {
         @SuppressWarnings("unchecked")
         Map<String, FrontendMessage> messages = (Map<String, FrontendMessage>) session
                 .getAttribute(MESSAGES_ATTR_NAME);
 
         request.setAttribute(MESSAGES_ATTR_NAME, messages);
-        request.setAttribute(PERIODICAL_ATTR_NAME, periodicalIntoRequest);
+        request.setAttribute(PERIODICAL_ATTR_NAME, periodicalToForward);
         request.setAttribute(PERIODICAL_STATUSES_ATTR_NAME, Periodical.Status.values());
         request.setAttribute(PERIODICAL_CATEGORIES_ATTR_NAME, PeriodicalCategory.values());
         request.setAttribute(PERIODICAL_OPERATION_TYPE_PARAM_ATTR_NAME,

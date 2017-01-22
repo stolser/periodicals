@@ -4,8 +4,8 @@ import com.stolser.javatraining.webproject.controller.request.processor.RequestP
 import com.stolser.javatraining.webproject.model.entity.statistics.FinancialStatistics;
 import com.stolser.javatraining.webproject.model.entity.statistics.PeriodicalNumberByCategory;
 import com.stolser.javatraining.webproject.service.InvoiceService;
-import com.stolser.javatraining.webproject.service.impl.InvoiceServiceImpl;
 import com.stolser.javatraining.webproject.service.PeriodicalService;
+import com.stolser.javatraining.webproject.service.impl.InvoiceServiceImpl;
 import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,10 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.ADMIN_PANEL_VIEW_NAME;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.FINANCIAL_STATISTICS_ATTR_NAME;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.PERIODICAL_STATISTICS_ATTR_NAME;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 /**
  * Processes a GET request to the Admin Panel page.
@@ -36,16 +35,23 @@ public class DisplayAdminPanel implements RequestProcessor {
     }
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
-        List<PeriodicalNumberByCategory> periodicalStatistics = periodicalService.getQuantitativeStatistics();
+    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
+        addPeriodicalStatsIntoRequest(request);
+        addFinStatsIntoRequest(request);
 
+        return Optional.of(ADMIN_PANEL_VIEW_NAME);
+    }
+
+    private void addPeriodicalStatsIntoRequest(HttpServletRequest request) {
+        List<PeriodicalNumberByCategory> periodicalStatistics = periodicalService.getQuantitativeStatistics();
+        request.setAttribute(PERIODICAL_STATISTICS_ATTR_NAME, periodicalStatistics);
+    }
+
+    private void addFinStatsIntoRequest(HttpServletRequest request) {
         Instant until = Instant.now();
         Instant since = until.minus(30, ChronoUnit.DAYS);
         FinancialStatistics finStatistics = invoiceService.getFinStatistics(since, until);
 
-        request.setAttribute(PERIODICAL_STATISTICS_ATTR_NAME, periodicalStatistics);
         request.setAttribute(FINANCIAL_STATISTICS_ATTR_NAME, finStatistics);
-
-        return ADMIN_PANEL_VIEW_NAME;
     }
 }

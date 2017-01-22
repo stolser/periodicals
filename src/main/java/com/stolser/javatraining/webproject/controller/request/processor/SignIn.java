@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
@@ -35,7 +36,7 @@ public final class SignIn implements RequestProcessor {
     }
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
         Map<String, FrontendMessage> messages = new HashMap<>();
         HttpSession session = request.getSession();
         String redirectUri = LOGIN_PAGE;
@@ -53,7 +54,6 @@ public final class SignIn implements RequestProcessor {
 
             if (isThisUserActive(currentUser)) {
                 redirectUri = signInThisUserAndGetRedirectUri(request, session, currentUser);
-
             } else {
                 messages.put(SIGN_IN_USERNAME_PARAM_NAME,
                         messageFactory.getError(MSG_ERROR_USER_IS_BLOCKED));
@@ -64,7 +64,7 @@ public final class SignIn implements RequestProcessor {
         session.setAttribute(MESSAGES_ATTR_NAME, messages);
         HttpUtils.sendRedirect(request, response, redirectUri);
 
-        return null;
+        return Optional.empty();
     }
 
     private String signInThisUserAndGetRedirectUri(HttpServletRequest request, HttpSession session,

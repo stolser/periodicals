@@ -6,6 +6,7 @@ import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.ALL_PERIODICALS_ATTR_NAME;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.PERIODICAL_LIST_VIEW_NAME;
@@ -29,8 +30,8 @@ public class DisplayAllPeriodicals implements RequestProcessor {
     }
 
     @Override
-    public String process(HttpServletRequest request, HttpServletResponse response) {
+    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute(ALL_PERIODICALS_ATTR_NAME, periodicalService.findAll());
-        return PERIODICAL_LIST_VIEW_NAME;
+        return Optional.of(PERIODICAL_LIST_VIEW_NAME);
     }
 }
