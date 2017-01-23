@@ -15,7 +15,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class AuthorizationTest {
-    private static final String NOT_ADMIN_ROLE = "notAdmin";
     private HttpSession session = mock(HttpSession.class);
     private HttpServletRequest request = mock(HttpServletRequest.class);
     private User admin;
@@ -23,15 +22,15 @@ public class AuthorizationTest {
 
     @Before
     public void setUp() throws Exception {
-        Set<String> adminRole = new HashSet<>();
-        adminRole.add(ADMIN_ROLE_NAME);
+        Set<User.Role> adminRole = new HashSet<>();
+        adminRole.add(User.Role.ADMIN);
 
         User.Builder builder = new User.Builder();
         builder.setRoles(adminRole);
         admin = builder.build();
 
-        Set<String> notAdminRole = new HashSet<>();
-        adminRole.add(NOT_ADMIN_ROLE);
+        Set<User.Role> notAdminRole = new HashSet<>();
+        adminRole.add(User.Role.SUBSCRIBER);
 
         builder = new User.Builder();
         builder.setRoles(notAdminRole);

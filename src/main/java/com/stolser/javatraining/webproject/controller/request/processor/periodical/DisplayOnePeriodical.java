@@ -57,6 +57,6 @@ public final class DisplayOnePeriodical implements RequestProcessor {
 
     private boolean hasUserNotEnoughPermissions(User currentUser, Periodical periodicalInDb) {
         return !Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())
-                && !currentUser.hasRole(ADMIN_ROLE_NAME);
+                && !currentUser.hasRole(User.Role.ADMIN);
     }
 }

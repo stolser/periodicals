@@ -8,16 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.ADMIN_ROLE_NAME;
-
 /**
  * Encapsulates information about resource access permissions of each type of roles.
  */
 final class Authorization {
-    private static final Map<String, Set<String>> permissionMapping = new HashMap<>();
+    private static final Map<String, Set<User.Role>> permissionMapping = new HashMap<>();
 
     static {
-        Set<String> admin = new HashSet<>(Collections.singletonList(ADMIN_ROLE_NAME));
+        Set<User.Role> admin = new HashSet<>(Collections.singletonList(User.Role.ADMIN));
 
         permissionMapping.put(RequestProviderImpl.GET_ALL_USERS_REQUEST_PATTERN, admin);
         permissionMapping.put(RequestProviderImpl.GET_CREATE_PERIODICAL_REQUEST_PATTERN, admin);
@@ -49,7 +47,7 @@ final class Authorization {
         String requestMethod = request.getMethod().toUpperCase();
         String requestUri = request.getRequestURI();
 
-        Optional<Map.Entry<String, Set<String>>> thisPermissionMapping =
+        Optional<Map.Entry<String, Set<User.Role>>> thisPermissionMapping =
                 permissionMapping.entrySet()
                         .stream()
                         .filter(entry -> {
@@ -65,29 +63,29 @@ final class Authorization {
         return isPermissionGranted(thisPermissionMapping, request);
     }
 
-    private String[] extractHttpMethodsFromMapping(Map.Entry<String, Set<String>> entry) {
+    private String[] extractHttpMethodsFromMapping(Map.Entry<String, Set<User.Role>> entry) {
         String methodPattern = entry.getKey().split(":")[0];
         return methodPattern.split("\\|");
     }
 
-    private boolean hasUserLegitRole(Set<String> userRoles, Set<String> legitRoles) {
-        Set<String> userLegitRoles = new HashSet<>(legitRoles);
-        userLegitRoles.retainAll(userRoles);
-
-        return !userLegitRoles.isEmpty();
-    }
-
-    private boolean isPermissionGranted(Optional<Map.Entry<String, Set<String>>> thisPermissionMapping,
+    private boolean isPermissionGranted(Optional<Map.Entry<String, Set<User.Role>>> thisPermissionMapping,
                                         HttpServletRequest request) {
         boolean permissionGranted = true;
         if (thisPermissionMapping.isPresent()) {
             User user = (User) request.getSession().getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
-            Set<String> userRoles = user.getRoles();
-            Set<String> legitRoles = thisPermissionMapping.get().getValue();
+            Set<User.Role> userRoles = user.getRoles();
+            Set<User.Role> legitRoles = thisPermissionMapping.get().getValue();
 
             permissionGranted = hasUserLegitRole(userRoles, legitRoles);
         }
 
         return permissionGranted;
+    }
+
+    private boolean hasUserLegitRole(Set<User.Role> userRoles, Set<User.Role> legitRoles) {
+        Set<User.Role> userLegitRoles = new HashSet<>(legitRoles);
+        userLegitRoles.retainAll(userRoles);
+
+        return !userLegitRoles.isEmpty();
     }
 }

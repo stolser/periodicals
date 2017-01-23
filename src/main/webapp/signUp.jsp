@@ -54,12 +54,17 @@
                         </c:if>
                     </div>
 
+                    <p>Role.roles = ${Role.roles}</p>
+
                     <div class="form-group validated required">
                         <label class="control-label" for="userRole">
                             <fmt:message key="credential.userRole.label" bundle="${validation}"/></label>
                         <select id="userRole" class="form-control" name="userRole">
-                            <option value="admin">admin</option>
-                            <option value="subscriber">subscriber</option>
+                            <c:forEach var="role" items="${Role.roles}">
+                                <option value="role">${role}</option>
+                            </c:forEach>
+                            <%--<option value="admin">admin</option>--%>
+                            <%--<option value="subscriber">subscriber</option>--%>
                         </select>
                     </div>
 

@@ -22,10 +22,19 @@ public class User implements Serializable {
     /**
      * Roles define specific system functionality available to a user.
      */
-    private Set<String> roles;
+    private Set<Role> roles;
 
     public enum Status {
         ACTIVE, BLOCKED
+    }
+
+    public enum Role {
+        ADMIN, SUBSCRIBER;
+
+        @Override
+        public String toString() {
+            return name().toLowerCase();
+        }
     }
 
     public static class Builder {
@@ -75,7 +84,7 @@ public class User implements Serializable {
             return this;
         }
 
-        public Builder setRoles(Set<String> roles) {
+        public Builder setRoles(Set<Role> roles) {
             user.setRoles(roles);
             return this;
         }
@@ -157,17 +166,21 @@ public class User implements Serializable {
         this.status = status;
     }
 
-    public Set<String> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<String> roles) {
+    public void setRoles(Set<Role> roles) {
         checkNotNull(roles);
         this.roles = roles;
     }
 
-    public boolean hasRole(String role) {
+    public boolean hasRole(Role role) {
         return roles.contains(role);
+    }
+
+    public boolean hasRole(String role) {
+        return hasRole(Role.valueOf(role.toUpperCase()));
     }
 
     @Override

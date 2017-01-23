@@ -10,6 +10,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Allows specifying two sets of roles that a user must have and must not have in order to
@@ -40,8 +41,8 @@ public class AuthorizationTag extends TagSupport {
             return true;
 
         } else {
-            Set<String> legitRoles = parseLegitRoles();
-            Set<String> userRoles = new HashSet<>(user.getRoles());
+            Set<User.Role> legitRoles = parseLegitRoles();
+            Set<User.Role> userRoles = new HashSet<>(user.getRoles());
 
             userRoles.retainAll(legitRoles);
 
@@ -49,11 +50,14 @@ public class AuthorizationTag extends TagSupport {
         }
     }
 
-    private Set<String> parseLegitRoles() {
-        Set<String> legitRoles = new HashSet<>();
+    private Set<User.Role> parseLegitRoles() {
+        Set<User.Role> legitRoles = new HashSet<>();
 
         if (mustHaveRoles != null) {
-            legitRoles.addAll(Arrays.asList(mustHaveRoles.split(" ")));
+            legitRoles.addAll(Arrays.asList(mustHaveRoles.split(" "))
+                    .stream()
+                    .map(roleStr -> User.Role.valueOf(roleStr.toUpperCase()))
+                    .collect(Collectors.toList()));
         }
 
         return legitRoles;
@@ -64,19 +68,22 @@ public class AuthorizationTag extends TagSupport {
             return false;
 
         } else {
-            Set<String> prohibitedRoles = parseProhibitedRoles();
-            Set<String> userRoles = new HashSet<>(user.getRoles());
+            Set<User.Role> prohibitedRoles = parseProhibitedRoles();
+            Set<User.Role> userRoles = new HashSet<>(user.getRoles());
             userRoles.retainAll(prohibitedRoles);
 
             return userRoles.isEmpty();
         }
     }
 
-    private Set<String> parseProhibitedRoles() {
-        Set<String> prohibitedRoles = new HashSet<>();
+    private Set<User.Role> parseProhibitedRoles() {
+        Set<User.Role> prohibitedRoles = new HashSet<>();
 
         if (mustNotHaveRoles != null) {
-            prohibitedRoles.addAll(Arrays.asList(mustNotHaveRoles.split(" ")));
+            prohibitedRoles.addAll(Arrays.asList(mustNotHaveRoles.split(" "))
+                    .stream()
+                    .map(roleStr -> User.Role.valueOf(roleStr.toUpperCase()))
+                    .collect(Collectors.toList()));
         }
 
         return prohibitedRoles;

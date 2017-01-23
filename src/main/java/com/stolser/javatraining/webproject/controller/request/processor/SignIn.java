@@ -87,7 +87,7 @@ public final class SignIn implements RequestProcessor {
 
     private String getRedirectUri(HttpServletRequest request, User currentUser) {
         String originalUri = (String) request.getSession().getAttribute(ORIGINAL_URI_ATTR_NAME);
-        String defaultUri = currentUser.hasRole(ADMIN_ROLE_NAME) ? ADMIN_PANEL_URI
+        String defaultUri = currentUser.hasRole(User.Role.ADMIN) ? ADMIN_PANEL_URI
                 : CURRENT_USER_ACCOUNT_URI;
 
         return (originalUri != null) && (!SIGN_OUT_URI.equals(originalUri))

@@ -60,8 +60,6 @@ public class ApplicationResources {
     public static final String PERIODICAL_DELETE_DISCARDED_URI = "/backend/periodicals/discarded";
     public static final String PERIODICAL_CREATE_UPDATE_URI = "/backend/periodicals";
 
-    public static final String ADMIN_ROLE_NAME = "admin";
-
     public static final int STATUS_CODE_SUCCESS = 200;
     public static final int STATUS_CODE_VALIDATION_FAILED = 412;
 
