@@ -35,9 +35,9 @@
                                 <tr>
                                     <td><fmt:message key="${statItem.category.messageKey}"
                                                      bundle="${langPeriodical}"/></td>
-                                    <td><c:out value="${statItem.active}"/></td>
-                                    <td><c:out value="${statItem.inActive}"/></td>
-                                    <td><c:out value="${statItem.discarded}"/></td>
+                                    <td>${statItem.active}</td>
+                                    <td>${statItem.inActive}</td>
+                                    <td>${statItem.discarded}</td>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -59,15 +59,11 @@
                     <div class="panel-body">
                         <h3><fmt:message key="stat.invoice.description" bundle="${langAdminPanel}"/></h3>
                         <p><fmt:message key="totalInvoiceSum.text" bundle="${langAdminPanel}"/>:
-                            <label class="costAndSumValue">
-                                <c:out value="${financialStatistics.totalInvoiceSum}"/>
-                            </label>
+                            <label class="costAndSumValue">${financialStatistics.totalInvoiceSum}</label>
                             <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>
                         </p>
                         <p><fmt:message key="paidInvoiceSum.text" bundle="${langAdminPanel}"/>:
-                            <label class="costAndSumValue">
-                                <c:out value="${financialStatistics.paidInvoiceSum}"/>
-                            </label>
+                            <label class="costAndSumValue">${financialStatistics.paidInvoiceSum}</label>
                             <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>
                         </p>
                     </div>

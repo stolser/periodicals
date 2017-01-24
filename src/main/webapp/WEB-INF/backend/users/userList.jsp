@@ -22,12 +22,12 @@
             <tbody>
             <c:forEach items="${allUsers}" var="user" varStatus="rowStatus">
                 <tr class="${user.status == 'ACTIVE' ? 'success' : 'danger'}">
-                    <td><c:out value="${user.id}"/></td>
-                    <td><c:out value="${user.userName}"/></td>
-                    <td><c:out value="${user.firstName}"/></td>
-                    <td><c:out value="${user.lastName}"/></td>
-                    <td><c:out value="${user.email}"/></td>
-                    <td><c:out value="${user.address}"/></td>
+                    <td>${user.id}</td>
+                    <td>${user.userName}</td>
+                    <td>${user.firstName}</td>
+                    <td>${user.lastName}</td>
+                    <td>${user.email}</td>
+                    <td>${user.address}</td>
                     <td><fmt:formatDate type="date" value="${user.birthday}"/></td>
                     <td><fmt:message key="${user.status}" bundle="${langUser}"/></td>
                     <td>

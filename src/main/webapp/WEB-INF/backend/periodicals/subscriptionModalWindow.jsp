@@ -7,7 +7,7 @@
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">
                         <fmt:message key="subscriptionModal.title" bundle="${langPeriodical}"/>
-                        <label class="periodicalNameModal">"<c:out value="${periodical.name}"/>"</label>
+                        <label class="periodicalNameModal">"${periodical.name}"</label>
                     </h4>
                 </div>
                 <div class="row modal-body">
@@ -35,8 +35,7 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">
                         <fmt:message key="cancelBtn.label" bundle="${general}"/>
                     </button>
-                    <input name="periodicalId" type="text" class="hidden"
-                           value="<c:out value="${periodical.id}"/>"/>
+                    <input name="periodicalId" type="text" class="hidden" value="${periodical.id}"/>
                 </div>
             </form>
         </div>

@@ -19,8 +19,7 @@
                                name="signInUsername"
                                value="${sessionScope.username}"/>
                         <c:if test="${(not empty messages) && (not empty messages['signInUsername'])}">
-                            <label class="messages
-                            <c:out value="${messages['signInUsername'].type == 'ERROR' ? 'error' : ''}"/>">
+                            <label class="messages ${messages['signInUsername'].type == 'ERROR' ? 'error' : ''}">
                                 <fmt:message key="${messages['signInUsername'].messageKey}" bundle="${validation}"/>
                             </label>
                         </c:if>
@@ -33,16 +32,13 @@
                                placeholder="<fmt:message key="credential.password.label" bundle="${credential}"/>"
                                name="password"/>
                         <c:if test="${(not empty messages) && (not empty messages['password'])}">
-                            <label class="messages
-                            <c:out value="${messages['password'].type == 'ERROR' ? 'error' : ''}"/>">
+                            <label class="messages ${messages['password'].type == 'ERROR' ? 'error' : ''}">
                                 <fmt:message key="${messages['password'].messageKey}" bundle="${validation}"/>
                             </label>
                         </c:if>
                     </div>
 
-
                     <p class="requiredFieldsMessage"><fmt:message key="requiredFieldsMessage" bundle="${general}"/></p>
-
 
                     <button type="submit"
                             class="btn btn-lg btn-primary btn-block disabled">
@@ -56,11 +52,6 @@
 
     </div>
 </div>
-
-<script>
-
-</script>
-
 
 <%@include file="/WEB-INF/includes/footer.jsp" %>
 

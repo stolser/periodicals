@@ -26,19 +26,16 @@
                     <c:set var="onlyVisibleIndex" value="${onlyVisibleIndex + 1}"/>
                     <tr class="${periodical.status == 'ACTIVE' ? 'success' :
                     (periodical.status == 'INACTIVE' ? 'warning' : 'danger')}">
-                        <td><c:out value="${onlyVisibleIndex}"/></td>
+                        <td>${onlyVisibleIndex}</td>
                         <td>
-                            <a href="/backend/periodicals/${periodical.id}">
-                                <c:out value="${periodical.name}"/></a></td>
+                            <a href="/backend/periodicals/${periodical.id}">${periodical.name}</a></td>
                         <td><fmt:message key="${periodical.category.messageKey}"
                                          bundle="${langPeriodical}"/></td>
-                        <td><c:out value="${periodical.publisher}"/></td>
+                        <td>${periodical.publisher}</td>
                         <td>
                             <c:choose>
                                 <c:when test="${periodical.oneMonthCost > 0}">
-                                    <label class="costAndSumValue">
-                                        <c:out value="${periodical.oneMonthCost}"/>
-                                    </label>
+                                    <label class="costAndSumValue">${periodical.oneMonthCost}</label>
                                     <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>
                                 </c:when>
                                 <c:otherwise>

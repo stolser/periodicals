@@ -19,19 +19,17 @@
             <div class="form-group hidden">
                 <input id="entityId" type="text" class="form-control"
                        name="entityId"
-                       value="<c:out value="${periodical.id}"/>"/>
+                       value="${periodical.id}"/>
             </div>
             <div class="form-group validated required">
                 <label for="periodicalName" class="col-sm-3 control-label">
                     <fmt:message key="name.label" bundle="${langPeriodical}"/></label>
                 <div class="col-sm-9">
                     <input id="periodicalName" type="text" class="form-control ajax-validated"
-                           name="periodicalName"
-                           value="<c:out value="${periodical.name}"/>"
+                           name="periodicalName" value="${periodical.name}"
                            placeholder="<fmt:message key="name.label" bundle="${langPeriodical}"/>"/>
                     <c:if test="${(not empty messages) && (not empty messages['periodicalName'])}">
-                        <label class="messages
-                            <c:out value="${messages['periodicalName'].type == 'ERROR' ? 'error' : ''}"/>">
+                        <label class="messages ${messages['periodicalName'].type == 'ERROR' ? 'error' : ''}">
                             <fmt:message key="${messages['periodicalName'].messageKey}" bundle="${validation}"/>
                         </label>
                     </c:if>
@@ -44,8 +42,7 @@
                     <select id="periodicalCategory" class="form-control"
                             name="periodicalCategory">
                         <c:forEach items="${periodicalCategories}" var="category">
-                            <option ${category == periodical.category ? 'selected' : ''}
-                                    value="<c:out value='${category}'/>">
+                            <option value="${category}" ${category == periodical.category ? 'selected' : ''}>
                                 <fmt:message key="${category.messageKey}" bundle="${langPeriodical}"/>
                             </option>
                         </c:forEach>
@@ -58,11 +55,11 @@
                 <div class="col-sm-9">
                     <input id="periodicalPublisher" type="text" class="form-control ajax-validated"
                            name="periodicalPublisher"
-                           value="<c:out value="${periodical.publisher}"/>"
+                           value="${periodical.publisher}"
                            placeholder="<fmt:message key="publisher.label" bundle="${langPeriodical}"/>"/>
                     <c:if test="${(not empty messages) && (not empty messages['periodicalPublisher'])}">
                         <label class="messages
-                            <c:out value="${messages['periodicalPublisher'].type == 'ERROR' ? 'error' : ''}"/>">
+                            ${messages['periodicalPublisher'].type == 'ERROR' ? 'error' : ''}">
                             <fmt:message key="${messages['periodicalPublisher'].messageKey}" bundle="${validation}"/>
                         </label>
                     </c:if>
@@ -75,7 +72,7 @@
                     <textarea id="periodicalDescription" class="form-control" rows="4"
                               name="periodicalDescription" maxlength="999"
                               placeholder="<fmt:message key="description.label" bundle="${langPeriodical}"/>">
-                        <c:out value="${periodical.description}"/>
+                        ${periodical.description}
                     </textarea>
                 </div>
             </div>
@@ -85,11 +82,10 @@
                 <div class="col-sm-9">
                     <input id="periodicalCost" type="number" class="form-control ajax-validated"
                            name="periodicalCost" min="0" max="999999999"
-                           value="<c:out value="${periodical.oneMonthCost}"/>"
+                           value="${periodical.oneMonthCost}"
                            placeholder="<fmt:message key="oneMonthCost.label" bundle="${langPeriodical}"/>"/>
                     <c:if test="${(not empty messages) && (not empty messages['periodicalCost'])}">
-                        <label class="messages
-                            <c:out value="${messages['periodicalCost'].type == 'ERROR' ? 'error' : ''}"/>">
+                        <label class="messages ${messages['periodicalCost'].type == 'ERROR' ? 'error' : ''}">
                             <fmt:message key="${messages['periodicalCost'].messageKey}" bundle="${validation}"/>
                         </label>
                     </c:if>
@@ -102,8 +98,7 @@
                     <select id="periodicalStatus" class="form-control"
                             name="periodicalStatus">
                         <c:forEach items="${periodicalStatuses}" var="status">
-                            <option ${status == periodical.status ? 'selected' : ''}
-                                    value="<c:out value='${status}'/>">
+                            <option ${status == periodical.status ? 'selected' : ''} value="${status}">
                                 <fmt:message key="${status}" bundle="${langPeriodical}"/>
                             </option>
                         </c:forEach>
@@ -113,7 +108,7 @@
             <div class="form-group hidden">
                 <input id="periodicalOperationType" type="text" class="form-control"
                        name="periodicalOperationType"
-                       value="<c:out value="${periodicalOperationType}"/>"/>
+                       value="${periodicalOperationType}"/>
             </div>
             <div class="form-group">
                 <div class="col-md-9 col-md-offset-3">

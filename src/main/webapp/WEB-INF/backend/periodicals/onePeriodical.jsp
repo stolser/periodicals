@@ -3,14 +3,14 @@
 
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
-        <h1><c:out value="${periodical.name}"/></h1>
+        <h1>${periodical.name}</h1>
         <h3><fmt:message key="title.top" bundle="${langPeriodical}"/></h3>
 
         <div class="row">
             <label class="col-sm-3 control-label">
                 <fmt:message key="name.label" bundle="${langPeriodical}"/></label>
             <div class="col-sm-9">
-                <p class="form-control-static"><c:out value="${periodical.name}"/></p>
+                <p class="form-control-static">${periodical.name}</p>
             </div>
         </div>
         <div class="row">
@@ -25,14 +25,14 @@
             <label class="col-sm-3 control-label">
                 <fmt:message key="publisher.label" bundle="${langPeriodical}"/></label>
             <div class="col-sm-9">
-                <p class="form-control-static"><c:out value="${periodical.publisher}"/></p>
+                <p class="form-control-static">${periodical.publisher}</p>
             </div>
         </div>
         <div class="row">
             <label class="col-sm-3 control-label">
                 <fmt:message key="description.label" bundle="${langPeriodical}"/></label>
             <div class="col-sm-9">
-                <p class="form-control-static"><c:out value="${periodical.description}"/></p>
+                <p class="form-control-static">${periodical.description}</p>
             </div>
         </div>
         <div class="row">
@@ -42,9 +42,7 @@
                 <p class="form-control-static">
                     <c:choose>
                         <c:when test="${periodical.oneMonthCost > 0}">
-                            <label class="costAndSumValue">
-                                <c:out value="${periodical.oneMonthCost}"/>
-                            </label>
+                            <label class="costAndSumValue">${periodical.oneMonthCost}</label>
                             <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>
                         </c:when>
                         <c:otherwise>
@@ -60,7 +58,7 @@
             <label class="col-sm-3 control-label">
                 <fmt:message key="status.label" bundle="${langPeriodical}"/></label>
             <div class="col-sm-9">
-                <p class="form-control-static"><c:out value="${periodical.status}"/></p>
+                <p class="form-control-static">${periodical.status}</p>
             </div>
         </div>
 

@@ -14,18 +14,15 @@
         <tbody>
         <c:forEach items="${userSubscriptions}" var="subscription" varStatus="loop">
             <tr class="${subscription.status == 'ACTIVE' ? 'success' : 'active'}">
-                <td><c:out value="${loop.index + 1}"/></td>
+                <td>${loop.index + 1}</td>
                 <td><c:choose>
                     <c:when test="${(subscription.periodical.status == 'ACTIVE') ||
                                 currentUser.hasRole('admin')}">
-                        <a href="/backend/periodicals/${subscription.periodical.id}">
-                            <c:out value="${subscription.periodical.name}"/></a>
+                        <a href="/backend/periodicals/${subscription.periodical.id}">${subscription.periodical.name}</a>
                     </c:when>
-                    <c:otherwise>
-                        <c:out value="${subscription.periodical.name}"/>
-                    </c:otherwise>
+                    <c:otherwise>${subscription.periodical.name}</c:otherwise>
                 </c:choose></td>
-                <td><c:out value="${subscription.deliveryAddress}"/></td>
+                <td>${subscription.deliveryAddress}</td>
                 <td><custom:format-datetime value="${subscription.endDate}"/></td>
                 <td><fmt:message key="${subscription.status}" bundle="${langSubscription}"/></td>
             </tr>

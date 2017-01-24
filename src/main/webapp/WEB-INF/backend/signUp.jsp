@@ -20,8 +20,7 @@
                                name="signUpUsername"
                                value="${sessionScope.username}"/>
                         <c:if test="${(not empty messages) && (not empty messages['signUpUsername'])}">
-                            <label class="messages
-                            <c:out value="${messages['signUpUsername'].type == 'ERROR' ? 'error' : ''}"/>">
+                            <label class="messages ${messages['signUpUsername'].type == 'ERROR' ? 'error' : ''}">
                                 <fmt:message key="${messages['signUpUsername'].messageKey}" bundle="${validation}"/>
                             </label>
                         </c:if>
@@ -35,8 +34,7 @@
                                name="userEmail"
                                value="${sessionScope.userEmail}"/>
                         <c:if test="${(not empty messages) && (not empty messages['userEmail'])}">
-                            <label class="messages
-                            <c:out value="${messages['userEmail'].type == 'ERROR' ? 'error' : ''}"/>">
+                            <label class="messages ${messages['userEmail'].type == 'ERROR' ? 'error' : ''}">
                                 <fmt:message key="${messages['userEmail'].messageKey}" bundle="${validation}"/>
                             </label>
                         </c:if>
@@ -50,8 +48,7 @@
                                placeholder="<fmt:message key="credential.password.label" bundle="${credential}"/>"
                                name="password"/>
                         <c:if test="${(not empty messages) && (not empty messages['password'])}">
-                            <label class="messages
-                            <c:out value="${messages['password'].type == 'ERROR' ? 'error' : ''}"/>">
+                            <label class="messages ${messages['password'].type == 'ERROR' ? 'error' : ''}">
                                 <fmt:message key="${messages['password'].messageKey}" bundle="${validation}"/>
                             </label>
                         </c:if>
@@ -65,8 +62,7 @@
                                placeholder="<fmt:message key="credential.repeatPassword.label" bundle="${credential}"/>"
                                name="repeatPassword"/>
                         <c:if test="${(not empty messages) && (not empty messages['password'])}">
-                            <label class="messages
-                            <c:out value="${messages['password'].type == 'ERROR' ? 'error' : ''}"/>">
+                            <label class="messages ${messages['password'].type == 'ERROR' ? 'error' : ''}">
                                 <fmt:message key="${messages['password'].messageKey}" bundle="${validation}"/>
                             </label>
                         </c:if>

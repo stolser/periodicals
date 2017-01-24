@@ -7,35 +7,35 @@
                 <label class="col-xs-4 control-label">
                     <fmt:message key="user.username.label" bundle="${langUser}"/></label>
                 <div class="col-xs-8">
-                    <p class="form-control-static"><c:out value="${currentUser.userName}"/></p>
+                    <p class="form-control-static">${currentUser.userName}</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-4 control-label">
                     <fmt:message key="user.firstName.label" bundle="${langUser}"/></label>
                 <div class="col-xs-8">
-                    <p class="form-control-static"><c:out value="${currentUser.firstName}"/></p>
+                    <p class="form-control-static">${currentUser.firstName}</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-4 control-label">
                     <fmt:message key="user.lastName.label" bundle="${langUser}"/></label>
                 <div class="col-xs-8">
-                    <p class="form-control-static"><c:out value="${currentUser.lastName}"/></p>
+                    <p class="form-control-static">${currentUser.lastName}</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-4 control-label">
                     <fmt:message key="user.email.label" bundle="${langUser}"/></label>
                 <div class="col-xs-8">
-                    <p class="form-control-static"><c:out value="${currentUser.email}"/></p>
+                    <p class="form-control-static">${currentUser.email}</p>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-xs-4 control-label">
                     <fmt:message key="user.address.label" bundle="${langUser}"/></label>
                 <div class="col-xs-8">
-                    <p class="form-control-static"><c:out value="${currentUser.address}"/></p>
+                    <p class="form-control-static">${currentUser.address}</p>
                 </div>
             </div>
             <div class="form-group">

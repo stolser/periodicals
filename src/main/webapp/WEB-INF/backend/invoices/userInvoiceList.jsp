@@ -24,24 +24,19 @@
         <tbody>
         <c:forEach items="${userInvoices}" var="invoice" varStatus="loop">
             <tr class="${invoice.status == 'PAID' ? 'success' : 'danger'}">
-                <td><c:out value="${loop.index + 1}"/></td>
+                <td>${loop.index + 1}</td>
                 <td><c:choose>
                     <c:when test="${(invoice.periodical.status == 'ACTIVE') ||
                                 currentUser.hasRole('admin')}">
-                        <a href="/backend/periodicals/${invoice.periodical.id}">
-                            <c:out value="${invoice.periodical.name}"/></a>
+                        <a href="/backend/periodicals/${invoice.periodical.id}">${invoice.periodical.name}</a>
                     </c:when>
-                    <c:otherwise>
-                        <c:out value="${invoice.periodical.name}"/>
-                    </c:otherwise>
+                    <c:otherwise>${invoice.periodical.name}</c:otherwise>
                 </c:choose></td>
-                <td><c:out value="${invoice.subscriptionPeriod}"/></td>
+                <td>${invoice.subscriptionPeriod}</td>
                 <td>
                     <c:choose>
                         <c:when test="${invoice.periodical.oneMonthCost > 0}">
-                            <label class="costAndSumValue">
-                                <c:out value="${invoice.periodical.oneMonthCost}"/>
-                            </label>
+                            <label class="costAndSumValue">${invoice.periodical.oneMonthCost}</label>
                             <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>
                         </c:when>
                         <c:otherwise><label class="priceFreeLabel">
@@ -52,9 +47,7 @@
                 <td>
                     <c:choose>
                         <c:when test="${invoice.totalSum > 0}">
-                            <label class="costAndSumValue">
-                                <c:out value="${invoice.totalSum}"/>
-                            </label>
+                            <label class="costAndSumValue">${invoice.totalSum}</label>
                             <fmt:message key="standardUnit.label" bundle="${langPeriodical}"/>
                         </c:when>
                         <c:otherwise>
@@ -75,9 +68,7 @@
                         </form>
                     </c:if>
                 </td>
-
             </tr>
-
         </c:forEach>
         </tbody>
 
