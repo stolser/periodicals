@@ -16,6 +16,8 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
  * Makes sure that this request comes from a signed in user and the session has not expired.
  */
 public class AuthenticationFilter implements Filter {
+    private List<String> unProtectedUris = Arrays.asList("/backend/signIn", "/backend/signUp",
+            "/backend/validation");
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -24,7 +26,6 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain)
             throws IOException, ServletException {
-
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
@@ -49,10 +50,7 @@ public class AuthenticationFilter implements Filter {
     }
 
     private boolean requestNotRequiresAuthentication(HttpServletRequest request) {
-        List<String> unProtectedUris = Arrays.asList("/backend/signIn", "/backend/signUp");
-        String requestUri = request.getRequestURI();
-
-        return unProtectedUris.contains(requestUri);
+        return unProtectedUris.contains(request.getRequestURI());
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.stolser.javatraining.webproject.controller.form.validator.periodical.
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalCostValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalNameValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalPublisherValidator;
+import com.stolser.javatraining.webproject.controller.form.validator.user.UserEmailValidator;
+import com.stolser.javatraining.webproject.controller.form.validator.user.UserPasswordValidator;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
@@ -33,6 +35,7 @@ public class ValidatorFactory {
 
     /**
      * Returns a concrete validator for this specific parameter.
+     *
      * @param paramName a http parameter name that need to be validated
      */
     public static Validator newValidator(String paramName) {
@@ -48,6 +51,12 @@ public class ValidatorFactory {
 
             case PERIODICAL_COST_PARAM_NAME:
                 return new PeriodicalCostValidator();
+
+            case USER_EMAIL_PARAM_NAME:
+                return new UserEmailValidator();
+
+            case USER_PASSWORD_PARAM_NAME:
+                return new UserPasswordValidator();
 
             default:
                 throw new ValidationProcessorException(THERE_IS_NO_VALIDATOR_FOR_SUCH_PARAM);

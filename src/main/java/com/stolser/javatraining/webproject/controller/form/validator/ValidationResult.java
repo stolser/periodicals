@@ -23,4 +23,9 @@ public class ValidationResult {
     public String getMessageKey() {
         return messageKey;
     }
+
+    @Override
+    public String toString() {
+        return String.format("ValidationResult{statusCode=%d, messageKey='%s'}", statusCode, messageKey);
+    }
 }
