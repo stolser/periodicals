@@ -25,14 +25,12 @@ import static com.stolser.javatraining.webproject.model.entity.periodical.Period
  */
 public class PersistOnePeriodical implements RequestProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistOnePeriodical.class);
-    private static final String EXCEPTION_DURING_PERSISTING_PERIODICAL_WITH_ID =
-            "Exception during persisting a periodical with id = {}.";
-    private static final String EXCEPTION_DURING_PERSISTING_PERIODICAL = "Exception during persisting periodical ({}).";
+    private static final String EXCEPTION_DURING_PERSISTING_PERIODICAL =
+            "Exception during persisting periodical ({}).";
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
-    private PersistOnePeriodical() {
-    }
+    private PersistOnePeriodical() {}
 
     private static class InstanceHolder {
         private static final PersistOnePeriodical INSTANCE = new PersistOnePeriodical();
@@ -45,14 +43,7 @@ public class PersistOnePeriodical implements RequestProcessor {
     @Override
     public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
         List<FrontendMessage> generalMessages = new ArrayList<>();
-        Periodical periodicalToSave;
-        try {
-            periodicalToSave = HttpUtils.getPeriodicalFromRequest(request);
-        } catch (RuntimeException e) {
-            processExceptionAndRedirect(request, response, e);
-            return Optional.empty();
-        }
-
+        Periodical periodicalToSave = HttpUtils.getPeriodicalFromRequest(request);
         String redirectUri = getRedirectUriByOperationType(request, periodicalToSave);
         request.getSession().setAttribute(PERIODICAL_ATTR_NAME, periodicalToSave);
 
@@ -63,17 +54,15 @@ public class PersistOnePeriodical implements RequestProcessor {
             return Optional.empty();
         }
 
-        Periodical periodicalInDb = periodicalService.findOneById(periodicalToSave.getId());
-        Periodical.Status oldStatus = (periodicalInDb != null) ? periodicalInDb.getStatus() : null;
-        Periodical.Status newStatus = periodicalToSave.getStatus();
-
-        checkPeriodicalForActiveSubscriptions(generalMessages, periodicalToSave, oldStatus, newStatus);
-
         try {
-            if (isStatusChangedFromActiveOrInactiveToDiscarded(oldStatus, newStatus)) {
-                int discardedPeriodicalsNumber = periodicalService.updateAndSetDiscarded(periodicalToSave);
+            checkPeriodicalForActiveSubscriptions(periodicalToSave,
+                    PeriodicalStatusChange.getInstance(periodicalToSave), generalMessages);
 
-                if (discardedPeriodicalsNumber == 0) {
+            if (isStatusChangedFromActiveOrInactiveToDiscarded(
+                    PeriodicalStatusChange.getInstance(periodicalToSave))) {
+                int affectedRows = periodicalService.updateAndSetDiscarded(periodicalToSave);
+
+                if (affectedRows == 0) {
                     addErrorMessageAndSendRedirect(MSG_PERIODICAL_HAS_ACTIVE_SUBSCRIPTIONS_ERROR,
                             generalMessages,
                             request, response, redirectUri);
@@ -111,26 +100,14 @@ public class PersistOnePeriodical implements RequestProcessor {
                 .getParameter(PERIODICAL_OPERATION_TYPE_PARAM_ATTR_NAME).toUpperCase());
     }
 
-    private void checkPeriodicalForActiveSubscriptions(List<FrontendMessage> generalMessages,
-                                                       Periodical periodicalToSave,
-                                                       Periodical.Status oldStatus,
-                                                       Periodical.Status newStatus) {
-        if (isStatusChangedFromActiveToInactive(oldStatus, newStatus)
+    private void checkPeriodicalForActiveSubscriptions(Periodical periodicalToSave,
+                                                       PeriodicalStatusChange statusChange,
+                                                       List<FrontendMessage> generalMessages) {
+        if (isStatusChangedFromActiveToInactive(statusChange)
                 && periodicalToSaveHasActiveSubscriptions(periodicalToSave)) {
+
             generalMessages.add(messageFactory.getWarning(MSG_PERIODICAL_HAS_ACTIVE_SUBSCRIPTIONS_WARNING));
         }
-    }
-
-    private void processExceptionAndRedirect(HttpServletRequest request, HttpServletResponse response,
-                                             Exception e) {
-        List<FrontendMessage> generalMessages = new ArrayList<>();
-
-        LOGGER.error(EXCEPTION_DURING_PERSISTING_PERIODICAL_WITH_ID,
-                request.getParameter(ENTITY_ID_PARAM_NAME), e);
-
-        generalMessages.add(messageFactory.getError(MSG_PERIODICAL_PERSISTING_ERROR));
-        HttpUtils.addGeneralMessagesToSession(request, generalMessages);
-        HttpUtils.sendRedirect(request, response, PERIODICAL_LIST_URI);
     }
 
     private void addGeneralMessagesToSession(HttpServletRequest request, List<FrontendMessage> generalMessages) {
@@ -149,14 +126,16 @@ public class PersistOnePeriodical implements RequestProcessor {
         HttpUtils.addGeneralMessagesToSession(request, generalMessages);
     }
 
-    private boolean isStatusChangedFromActiveOrInactiveToDiscarded(Periodical.Status oldStatus,
-                                                                   Periodical.Status newStatus) {
+    private boolean isStatusChangedFromActiveOrInactiveToDiscarded(PeriodicalStatusChange statusChange) {
+        Periodical.Status oldStatus = statusChange.getOldStatus();
+        Periodical.Status newStatus = statusChange.getNewStatus();
+
         return (ACTIVE.equals(oldStatus) || INACTIVE.equals(oldStatus))
                 && DISCARDED.equals(newStatus);
     }
 
-    private boolean isStatusChangedFromActiveToInactive(Periodical.Status oldStatus, Periodical.Status newStatus) {
-        return ACTIVE.equals(oldStatus) && INACTIVE.equals(newStatus);
+    private boolean isStatusChangedFromActiveToInactive(PeriodicalStatusChange statusChange) {
+        return ACTIVE.equals(statusChange.getOldStatus()) && INACTIVE.equals(statusChange.getNewStatus());
     }
 
     private String getRedirectUriByOperationType(HttpServletRequest request, Periodical periodicalToSave) {
@@ -231,4 +210,41 @@ public class PersistOnePeriodical implements RequestProcessor {
         }
     }
 
+    private static final class PeriodicalStatusChange {
+        private static Map<String, PeriodicalStatusChange> cache = new HashMap<>();
+        private Periodical.Status oldStatus;
+        private Periodical.Status newStatus;
+
+        private PeriodicalStatusChange(Periodical.Status oldStatus, Periodical.Status newStatus) {
+            this.oldStatus = oldStatus;
+            this.newStatus = newStatus;
+        }
+
+        static PeriodicalStatusChange getInstance(Periodical periodicalToSave) {
+            Periodical periodicalInDb =
+                    PeriodicalServiceImpl.getInstance().findOneById(periodicalToSave.getId());
+            Periodical.Status oldStatus = (periodicalInDb != null) ? periodicalInDb.getStatus() : null;
+            Periodical.Status newStatus = periodicalToSave.getStatus();
+            String cacheKey = getCacheKey(oldStatus, newStatus);
+
+            if (!cache.containsKey(cacheKey)) {
+                cache.put(cacheKey, new PeriodicalStatusChange(oldStatus, newStatus));
+            }
+
+            return cache.get(cacheKey);
+        }
+
+        private static String getCacheKey(Periodical.Status oldStatus, Periodical.Status newStatus) {
+            return ((oldStatus != null) ? oldStatus.name() : "null")
+                    + ((newStatus != null) ? newStatus.name() : "null");
+        }
+
+        Periodical.Status getOldStatus() {
+            return oldStatus;
+        }
+
+        Periodical.Status getNewStatus() {
+            return newStatus;
+        }
+    }
 }

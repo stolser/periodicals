@@ -40,7 +40,6 @@ public class ApplicationResources {
     public static final String USER_ROLE_PARAM_NAME = "userRole";
     public static final String USER_EMAIL_PARAM_NAME = "userEmail";
 
-
     public static final String VALIDATION_BUNDLE_PATH = "webProject/i18n/validation";
 
     public static final String ADMIN_PANEL_VIEW_NAME = "adminPanel";
@@ -55,7 +54,6 @@ public class ApplicationResources {
     public static final String ADMIN_PANEL_URI = "/backend/adminPanel";
     public static final String PERIODICAL_LIST_URI = "/backend/periodicals";
     public static final String LOGIN_PAGE = "/login.jsp";
-//    public static final String SIGN_UP_PAGE = "/backend/signUp";
     public static final String SIGN_IN_URI = "/backend/signIn";
     public static final String SIGN_OUT_URI = "/backend/signOut";
     public static final String SIGN_UP_URI = "/backend/signUp";
@@ -64,7 +62,6 @@ public class ApplicationResources {
     public static final String CURRENT_USER_ACCOUNT_URI = "/backend/users/currentUser";
     public static final String PERIODICAL_CREATE_NEW_URI = "/backend/periodicals/createNew";
     public static final String PERIODICAL_DELETE_DISCARDED_URI = "/backend/periodicals/discarded";
-    public static final String PERIODICAL_CREATE_UPDATE_URI = "/backend/periodicals";
 
     public static final int STATUS_CODE_SUCCESS = 200;
     public static final int STATUS_CODE_VALIDATION_FAILED = 412;

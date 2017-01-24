@@ -24,18 +24,21 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
  */
 public final class RequestProviderImpl implements RequestProvider {
     public static final String GET_BACKEND_REQUEST_PATTERN = "GET:/backend/?";
-    public static final String GET_ADMIN_PANEL_REQUEST_PATTERN = "GET:/backend/adminPanel/?";
-    public static final String GET_ALL_USERS_REQUEST_PATTERN = "GET:/backend/users/?";
+    public static final String GET_ADMIN_PANEL_REQUEST_PATTERN = "GET:" + ADMIN_PANEL_URI + "/?";
+    public static final String GET_ALL_USERS_REQUEST_PATTERN = "GET:" + USERS_LIST_URI + "/?";
     public static final String GET_CURRENT_USER_REQUEST_PATTERN = "GET:" + CURRENT_USER_ACCOUNT_URI + "/?";
     public static final String POST_SIGN_IN_REQUEST_PATTERN = "POST:" + SIGN_IN_URI + "/?";
-    public static final String POST_PERSIST_INVOICE_REQUEST_PATTERN = "POST:/backend/users/\\d+/invoices/?";
-    public static final String POST_PAY_INVOICE_REQUEST_PATTERN = "POST:/backend/users/\\d+/invoices/\\d+/pay/?";
-    public static final String GET_ONE_PERIODICAL_REQUEST_PATTERN = "GET:/backend/periodicals/\\d+";
-    public static final String GET_ALL_PERIODICALS_REQUEST_PATTERN = "GET:/backend/periodicals/?";
-    public static final String POST_PERSIST_PERIODICAL_REQUEST_PATTERN = "POST:/backend/periodicals/?";
-    public static final String GET_CREATE_PERIODICAL_REQUEST_PATTERN = "GET:/backend/periodicals/createNew/?";
-    public static final String GET_UPDATE_PERIODICAL_REQUEST_PATTERN = "GET:/backend/periodicals/\\d+/update/?";
-    public static final String POST_DELETE_PERIODICALS_REQUEST_PATTERN = "POST:/backend/periodicals/discarded/?";
+    public static final String POST_PERSIST_INVOICE_REQUEST_PATTERN = "POST:" + USERS_LIST_URI + "/\\d+/invoices/?";
+    public static final String POST_PAY_INVOICE_REQUEST_PATTERN =
+            "POST:" + USERS_LIST_URI + "/\\d+/invoices/\\d+/pay/?";
+    public static final String GET_ONE_PERIODICAL_REQUEST_PATTERN = "GET:" + PERIODICAL_LIST_URI + "/\\d+";
+    public static final String GET_ALL_PERIODICALS_REQUEST_PATTERN = "GET:" + PERIODICAL_LIST_URI + "/?";
+    public static final String POST_PERSIST_PERIODICAL_REQUEST_PATTERN = "POST:" + PERIODICAL_LIST_URI + "/?";
+    public static final String GET_CREATE_PERIODICAL_REQUEST_PATTERN = "GET:" + PERIODICAL_LIST_URI + "/createNew/?";
+    public static final String GET_UPDATE_PERIODICAL_REQUEST_PATTERN =
+            "GET:" + PERIODICAL_LIST_URI + "/\\d+/update/?";
+    public static final String POST_DELETE_PERIODICALS_REQUEST_PATTERN =
+            "POST:" + PERIODICAL_LIST_URI + "/discarded/?";
     public static final String GET_SIGN_OUT_REQUEST_PATTERN = "GET:" + SIGN_OUT_URI + "/?";
     public static final String POST_SIGN_UP_REQUEST_PATTERN = "POST:" + SIGN_UP_URI + "/?";
     public static final String GET_SIGN_UP_REQUEST_PATTERN = "GET:" + SIGN_UP_URI + "/?";

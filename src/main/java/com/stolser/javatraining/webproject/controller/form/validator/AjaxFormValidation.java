@@ -20,7 +20,6 @@ import java.util.ResourceBundle;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
-
 /**
  * Validates a parameter from the request and sends a json with the validation result.
  * Can be used for ajax validation of input field values.
@@ -53,19 +52,18 @@ public class AjaxFormValidation implements RequestProcessor {
         removeMessagesForCurrentParam(session, paramName);
         customizeResponse(response);
 
-        JSONObject jsonResponse = new JSONObject();
         try {
+            JSONObject jsonResponse = new JSONObject();
             ValidationResult result = ValidatorFactory.newValidator(paramName).validate(paramValue, request);
             jsonResponse.put(STATUS_CODE_JSON_RESPONSE, result.getStatusCode());
             jsonResponse.put(VALIDATION_MESSAGE_JSON_RESPONSE, getLocalizedMessage(session, result));
+
+            writeJsonIntoResponse(response, jsonResponse);
+            return Optional.empty();
+
         } catch (JSONException e) {
             LOGGER.error(EXCEPTION_DURING_PUTTING_VALUES_INTO_JSON_OBJECT, e);
             throw new ValidationProcessorException(EXCEPTION_DURING_PUTTING_VALUES_INTO_JSON_OBJECT, e);
-        }
-
-        try {
-            writeJsonIntoResponse(response, jsonResponse);
-            return Optional.empty();
         } catch (IOException e) {
             throw new ValidationProcessorException(EXCEPTION_DURING_VALIDATION, e);
         }
