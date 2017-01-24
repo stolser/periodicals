@@ -1,7 +1,8 @@
-package com.stolser.javatraining.webproject.controller.request.processor;
+package com.stolser.javatraining.webproject.controller.request.processor.sign;
 
 import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontMessageFactory;
 import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
@@ -41,13 +42,13 @@ public final class SignIn implements RequestProcessor {
         HttpSession session = request.getSession();
         String redirectUri = LOGIN_PAGE;
         String username = request.getParameter(SIGN_IN_USERNAME_PARAM_NAME);
-        String password = request.getParameter(PASSWORD_PARAM_NAME);
+        String password = request.getParameter(USER_PASSWORD_PARAM_NAME);
         Credential credential = userService.findOneCredentialByUserName(username);
 
         if ((credential == null) || !isPasswordCorrect(password, credential)) {
             messages.put(SIGN_IN_USERNAME_PARAM_NAME,
                     messageFactory.getError(MSG_CREDENTIALS_ARE_NOT_CORRECT));
-            messages.put(PASSWORD_PARAM_NAME, messageFactory.getError(MSG_CREDENTIALS_ARE_NOT_CORRECT));
+            messages.put(USER_PASSWORD_PARAM_NAME, messageFactory.getError(MSG_CREDENTIALS_ARE_NOT_CORRECT));
 
         } else {
             User currentUser = userService.findOneUserByUserName(username);

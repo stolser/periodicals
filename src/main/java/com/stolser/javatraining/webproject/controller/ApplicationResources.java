@@ -11,6 +11,8 @@ public class ApplicationResources {
     public static final String PERIODICAL_CATEGORIES_ATTR_NAME = "periodicalCategories";
     public static final String ORIGINAL_URI_ATTR_NAME = "originalUri";
     public static final String USERNAME_ATTR_NAME = "username";
+    public static final String USER_ROLE_ATTR_NAME = "userRole";
+    public static final String USER_EMAIL_ATTR_NAME = "userEmail";
     public static final String ALL_PERIODICALS_ATTR_NAME = "allPeriodicals";
     public static final String ALL_USERS_ATTR_NAME = "allUsers";
     public static final String LANGUAGE_ATTR_NAME = "language";
@@ -21,8 +23,8 @@ public class ApplicationResources {
     public static final String PARAM_VALUE = "paramValue";
     public static final String SIGN_IN_USERNAME_PARAM_NAME = "signInUsername";
     public static final String SIGN_UP_USERNAME_PARAM_NAME = "signUpUsername";
-    public static final String PASSWORD_PARAM_NAME = "password";
-    public static final String REPEAT_PASSWORD_PARAM_NAME = "repeatPassword";
+    public static final String USER_PASSWORD_PARAM_NAME = "password";
+    public static final String USER_REPEAT_PASSWORD_PARAM_NAME = "repeatPassword";
     public static final String PERIODICAL_ID_PARAM_NAME = "periodicalId";
     public static final String PERIODICAL_NAME_PARAM_NAME = "periodicalName";
     public static final String PERIODICAL_CATEGORY_PARAM_NAME = "periodicalCategory";
@@ -35,6 +37,9 @@ public class ApplicationResources {
     public static final String USER_SUBSCRIPTIONS_PARAM_NAME = "userSubscriptions";
     public static final String PERIODICAL_DESCRIPTION_PARAM_NAME = "periodicalDescription";
     public static final String PERIODICAL_STATUS_PARAM_NAME = "periodicalStatus";
+    public static final String USER_ROLE_PARAM_NAME = "userRole";
+    public static final String USER_EMAIL_PARAM_NAME = "userEmail";
+
 
     public static final String VALIDATION_BUNDLE_PATH = "webProject/i18n/validation";
 
@@ -45,14 +50,15 @@ public class ApplicationResources {
     public static final String USER_LIST_VIEW_NAME = "users/userList";
     public static final String ONE_USER_INFO_VIEW_NAME = "users/userAccount";
     public static final String BACKEND_MAIN_PAGE_VIEW_NAME = "home";
+    public static final String SIGN_UP_PAGE_VIEW_NAME = "signUp";
 
     public static final String ADMIN_PANEL_URI = "/backend/adminPanel";
     public static final String PERIODICAL_LIST_URI = "/backend/periodicals";
     public static final String LOGIN_PAGE = "/login.jsp";
-    public static final String SIGN_UP_PAGE = "/signUp.jsp";
+//    public static final String SIGN_UP_PAGE = "/backend/signUp";
     public static final String SIGN_IN_URI = "/backend/signIn";
     public static final String SIGN_OUT_URI = "/backend/signOut";
-    public static final String SIGN_UP_URI = "/signUp";
+    public static final String SIGN_UP_URI = "/backend/signUp";
     public static final String ACCESS_DENIED_URI = "/accessDenied.jsp";
     public static final String USERS_LIST_URI = "/backend/users";
     public static final String CURRENT_USER_ACCOUNT_URI = "/backend/users/currentUser";
@@ -66,6 +72,9 @@ public class ApplicationResources {
     public static final String PERIODICAL_NAME_PATTERN_REGEX = "[а-яА-ЯіІїЇєЄёЁ\\w\\s!&?$#@'\"-]{2,45}";
     public static final String PERIODICAL_PUBLISHER_PATTERN_REGEX = "[а-яА-ЯіІїЇєЄёЁ\\w\\s-]{2,45}";
     public static final String PERIODICAL_COST_PATTERN_REGEX = "0|[1-9]{1}\\d{0,8}";
+    public static final String USER_EMAIL_PATTERN_REGEX =
+            "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
+    public static final String USER_PASSWORD_PATTERN_REGEX = "[\\w]{6,12}";
 
     public static final String MSG_KEY_CATEGORY_NEWS = "category.news";
     public static final String MSG_KEY_CATEGORY_NATURE = "category.nature";
@@ -78,6 +87,7 @@ public class ApplicationResources {
     public static final String MSG_SUCCESS = "validation.ok";
     public static final String MSG_CREDENTIALS_ARE_NOT_CORRECT = "validation.credentialsAreNotCorrect";
     public static final String USERNAME_IS_NOT_UNIQUE_TRY_ANOTHER_ONE = "validation.usernameIsNotUnique";
+    public static final String USER_EMAIL_IS_NOT_UNIQUE_TRY_ANOTHER_ONE = "validation.userEmailIsNotUnique";
     public static final String MSG_PERIODICAL_NAME_ERROR = "periodicalName.validationError";
     public static final String MSG_PERIODICAL_NAME_DUPLICATION = "periodicalName.duplicationError";
     public static final String MSG_PERIODICAL_PUBLISHER_ERROR = "periodicalPublisher.validationError";
@@ -110,4 +120,9 @@ public class ApplicationResources {
     public static final String MSG_PERIODICAL_UPDATED_SUCCESS = "periodicalUpdated.success";
     public static final String MSG_PERIODICAL_PERSISTING_ERROR = "periodicalPersisting.error";
     public static final String MSG_ERROR_USER_IS_BLOCKED = "error.userIsBlocked";
+    public static final String MSG_USER_EMAIL_ERROR = "validation.userEmailIsIncorrect";
+    public static final String MSG_USER_EMAIL_DUPLICATION_ERROR = "validation.userEmailIsNotUnique";
+    public static final String MSG_USER_PASSWORD_ERROR = "validation.userPasswordIsIncorrect";
+    public static final String MSG_NEW_USER_WAS_NOT_CREATED_ERROR = "userWasNotCreated.error";
+    public static final String MSG_VALIDATION_PASSWORDS_ARE_NOT_EQUAL = "validation.passwordsAreNotEqual";
 }

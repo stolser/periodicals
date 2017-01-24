@@ -14,5 +14,7 @@ public interface UserService {
 
     List<User> findAll();
 
-    void createNewUser(User user, Credential credential, String userRole);
+    boolean createNewUser(User user, Credential credential, User.Role userRole);
+
+    boolean emailExistsInDb(String email);
 }

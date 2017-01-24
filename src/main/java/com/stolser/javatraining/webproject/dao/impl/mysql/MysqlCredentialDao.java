@@ -50,8 +50,7 @@ class MysqlCredentialDao implements CredentialDao {
     }
 
     @Override
-    public void createNew(Credential credential) {
-
+    public boolean createNew(Credential credential) {
         String sqlStatement = "INSERT INTO credentials "
                 + "(user_name, password_hash, user_id) "
                 + "VALUES (?, ?, ?)";
@@ -59,9 +58,9 @@ class MysqlCredentialDao implements CredentialDao {
         try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
             st.setString(1, credential.getUserName());
             st.setString(2, credential.getPasswordHash());
-            st.setLong(3, credential.getId());
+            st.setLong(3, credential.getUserId());
 
-            st.executeUpdate();
+            return st.executeUpdate() > 0;
 
         } catch (SQLException e) {
             throw new DaoException(EXCEPTION_DURING_CREATING_CREDENTIAL, e);

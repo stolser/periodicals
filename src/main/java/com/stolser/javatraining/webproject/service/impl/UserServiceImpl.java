@@ -70,15 +70,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createNewUser(User user, Credential credential, String userRole) {
+    public boolean createNewUser(User user, Credential credential, User.Role userRole) {
         try (AbstractConnection conn = connectionPool.getConnection()) {
             conn.beginTransaction();
 
             long userId = factory.getUserDao(conn).createNew(user);
-//            factory.getRoleDao(conn).addRole(userId, userRole);
-//            factory.getCredentialDao(conn).createNew(credential);
+            credential.setUserId(userId);
+            boolean isNewCredentialCreated = factory.getCredentialDao(conn).createNew(credential);
 
+            if (!isNewCredentialCreated) {
+                conn.rollbackTransaction();
+                return false;
+            }
+
+            factory.getRoleDao(conn).addRole(userId, userRole);
             conn.commitTransaction();
+
+            return true;
+        }
+    }
+
+    @Override
+    public boolean emailExistsInDb(String email) {
+        try (AbstractConnection conn = connectionPool.getConnection()) {
+            return factory.getUserDao(conn).emailExistsInDb(email);
         }
     }
 }

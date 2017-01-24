@@ -23,6 +23,7 @@ class MysqlUserDao implements UserDao {
     private static final String EXCEPTION_DURING_FINDING_USER_BY_ID =
             "Exception during finding a user with id = %d.";
     private static final String EXCEPTION_DURING_CREATING_NEW_USER = "Exception during creating a new user: %s";
+    private static final String CREATING_USER_FAILED_NO_ROWS_AFFECTED = "Creating user (%s) failed, no rows affected.";
     private Connection conn;
 
     public MysqlUserDao(Connection conn) {
@@ -68,6 +69,23 @@ class MysqlUserDao implements UserDao {
     }
 
     @Override
+    public boolean emailExistsInDb(String email) {
+        String sqlStatement = "SELECT COUNT(id) FROM users " +
+                "WHERE users.email = ?";
+
+        try (PreparedStatement st = conn.prepareStatement(sqlStatement)) {
+            st.setString(1, email);
+
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
     public List<User> findAll() {
         String sqlStatement = "SELECT * FROM credentials " +
                 "RIGHT OUTER JOIN users ON (credentials.user_id = users.id) ";
@@ -93,7 +111,7 @@ class MysqlUserDao implements UserDao {
                 .setUserName(rs.getString(MysqlCredentialDao.DB_CREDENTIALS_USER_NAME))
                 .setFirstName(rs.getString(DB_USERS_FIRST_NAME))
                 .setLastName(rs.getString(DB_USERS_LAST_NAME))
-                .setBirthday(new Date(rs.getDate(DB_USERS_BIRTHDAY).getTime()))
+                .setBirthday(getBirthdayFromRs(rs))
                 .setEmail(rs.getString(DB_USERS_EMAIL))
                 .setAddress(rs.getString(DB_USERS_ADDRESS))
                 .setStatus(User.Status.valueOf(rs.getString(DB_USERS_STATUS).toUpperCase()));
@@ -101,9 +119,15 @@ class MysqlUserDao implements UserDao {
         return builder.build();
     }
 
+    private Date getBirthdayFromRs(ResultSet rs) throws SQLException {
+        java.sql.Date birthday = rs.getDate(DB_USERS_BIRTHDAY);
+        return (birthday != null) ? new Date(birthday.getTime()) : null;
+    }
+
     @Override
     public long createNew(User user) {
-
+        String errorMessage = String.format(EXCEPTION_DURING_CREATING_NEW_USER, user);
+        String errorMessageNoRows = String.format(CREATING_USER_FAILED_NO_ROWS_AFFECTED, user);
         String sqlStatement = "INSERT INTO users " +
                 "(first_name, last_name, birthday, email, address, status) " +
                 "VALUES (?, ?, ?, ?, ?, ?)";
@@ -111,20 +135,40 @@ class MysqlUserDao implements UserDao {
         try (PreparedStatement st = conn.prepareStatement(sqlStatement, Statement.RETURN_GENERATED_KEYS)) {
             st.setString(1, user.getFirstName());
             st.setString(2, user.getLastName());
-            st.setDate(3, new java.sql.Date(user.getBirthday().getTime()));
+            st.setDate(3, getBirthdayFromUser(user));
             st.setString(4, user.getEmail());
             st.setString(5, user.getAddress());
             st.setString(6, user.getStatus().name().toLowerCase());
 
-            st.executeUpdate();
+            tryExecuteUpdate(st, errorMessage);
 
-            ResultSet rs = st.getGeneratedKeys();
-            return rs.getLong("id");
+            return tryRetrieveId(st, errorMessageNoRows);
 
         } catch (SQLException e) {
-            String message = String.format(EXCEPTION_DURING_CREATING_NEW_USER, user);
-            throw new DaoException(message, e);
+            throw new DaoException(errorMessage, e);
         }
+    }
+
+    private void tryExecuteUpdate(PreparedStatement st, String errorMessage) throws SQLException {
+        int affectedRows = st.executeUpdate();
+        if (affectedRows == 0) {
+            throw new DaoException(errorMessage);
+        }
+    }
+
+    private long tryRetrieveId(PreparedStatement st, String errorMessageNoRows) throws SQLException {
+        try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                return generatedKeys.getLong(1);
+            } else {
+                throw new DaoException(errorMessageNoRows);
+            }
+        }
+    }
+
+    private java.sql.Date getBirthdayFromUser(User user) {
+        Date birthday = user.getBirthday();
+        return (birthday != null) ? new java.sql.Date(birthday.getTime()) : null;
     }
 
     @Override

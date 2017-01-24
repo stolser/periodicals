@@ -23,7 +23,7 @@ public interface GenericDao<E> {
      * If a passed entity has the 'id' field it is ignored.
      *
      * @param entity an object to be persisted
-     * @return a persisted entity
+     * @return a persisted entity's id
      * @throws IllegalArgumentException in case the given entity is null
      */
     long createNew(E entity);

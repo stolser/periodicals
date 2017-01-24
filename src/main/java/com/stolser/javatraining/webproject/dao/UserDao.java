@@ -4,4 +4,6 @@ import com.stolser.javatraining.webproject.model.entity.user.User;
 
 public interface UserDao extends GenericDao<User> {
     User findOneByUserName(String userName);
+
+    boolean emailExistsInDb(String email);
 }

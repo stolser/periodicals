@@ -1,5 +1,6 @@
-package com.stolser.javatraining.webproject.controller.request.processor;
+package com.stolser.javatraining.webproject.controller.request.processor.sign;
 
+import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 
 import javax.servlet.http.HttpServletRequest;

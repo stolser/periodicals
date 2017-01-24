@@ -2,7 +2,9 @@ package com.stolser.javatraining.webproject.controller.request.processor.user;
 
 import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontMessageFactory;
 import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.form.validator.user.UserPasswordValidator;
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import com.stolser.javatraining.webproject.service.UserService;
@@ -11,9 +13,7 @@ import com.stolser.javatraining.webproject.service.impl.UserServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
@@ -33,62 +33,64 @@ public class CreateUser implements RequestProcessor {
 
     @Override
     public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, FrontendMessage> messages = new HashMap<>();
+        Map<String, FrontendMessage> formMessages = new HashMap<>();
+        List<FrontendMessage> generalMessages = new ArrayList<>();
         HttpSession session = request.getSession();
-        String redirectUri;
+        String redirectUri = SIGN_UP_URI;
 
         String username = request.getParameter(SIGN_UP_USERNAME_PARAM_NAME);
-        String password = request.getParameter(PASSWORD_PARAM_NAME);
-        String repeatPassword = request.getParameter(REPEAT_PASSWORD_PARAM_NAME);
-        String userRole = request.getParameter("userRole");
+        String userEmail = request.getParameter(USER_EMAIL_PARAM_NAME);
+        String password = request.getParameter(USER_PASSWORD_PARAM_NAME);
+        String repeatPassword = request.getParameter(USER_REPEAT_PASSWORD_PARAM_NAME);
+        User.Role userRole = User.Role.valueOf(request.getParameter(USER_ROLE_PARAM_NAME).toUpperCase());
 
-        Credential credential = userService.findOneCredentialByUserName(username);
-
-        if (usernameExistsInDb(credential)) {
-            messages.put(SIGN_UP_USERNAME_PARAM_NAME,
+        if (!arePasswordsValidAndEqual(password, repeatPassword)) {
+            formMessages.put(USER_PASSWORD_PARAM_NAME,
+                    messageFactory.getError(MSG_VALIDATION_PASSWORDS_ARE_NOT_EQUAL));
+        } else if (usernameExistsInDb(username)) {
+            formMessages.put(SIGN_UP_USERNAME_PARAM_NAME,
                     messageFactory.getError(USERNAME_IS_NOT_UNIQUE_TRY_ANOTHER_ONE));
-
-            redirectUri = LOGIN_PAGE;
-        } else if (passwordsNotEqual(password, repeatPassword)) {
-            messages.put(PASSWORD_PARAM_NAME,
-                    messageFactory.getError("validation.passwordsAreNotEqual"));
-
-            redirectUri = LOGIN_PAGE;
         } else {
-            createUser(username, password, userRole);
-            redirectUri = selectRedirectUriByUserRole(userRole);
+            boolean isNewUserCreated = createUser(username, userEmail, password, userRole);
+            if (isNewUserCreated) {
+                redirectUri = LOGIN_PAGE;
+            } else {
+                generalMessages.add(messageFactory.getError(MSG_NEW_USER_WAS_NOT_CREATED_ERROR));
+            }
         }
 
+        if (SIGN_UP_URI.equals(redirectUri)) {
+            HttpUtils.addGeneralMessagesToSession(request, generalMessages);
+
+            session.setAttribute(USERNAME_ATTR_NAME, username);
+            session.setAttribute(USER_ROLE_ATTR_NAME, userRole);
+            session.setAttribute(USER_EMAIL_ATTR_NAME, userEmail);
+            session.setAttribute(MESSAGES_ATTR_NAME, formMessages);
+        }
+
+        HttpUtils.sendRedirect(request, response, redirectUri);
+
         return Optional.empty();
-
     }
 
-    private String selectRedirectUriByUserRole(String userRole) {
-
-        return null;
-    }
-
-    private void createUser(String username, String password, String userRole) {
+    private boolean createUser(String username, String userEmail, String password, User.Role userRole) {
         Credential.Builder credentialBuilder = new Credential.Builder();
         credentialBuilder.setUserName(username)
-                .setPasswordHash(getPasswordHash(password));
+                .setPasswordHash(HttpUtils.getPasswordHash(password));
 
         User.Builder userBuilder = new User.Builder();
         userBuilder.setStatus(User.Status.ACTIVE);
+        userBuilder.setEmail(userEmail);
 
-        userService.createNewUser(userBuilder.build(), credentialBuilder.build(), userRole);
-
+        return userService.createNewUser(userBuilder.build(), credentialBuilder.build(), userRole);
     }
 
-    private String getPasswordHash(String password) {
-        return password;
+    private boolean arePasswordsValidAndEqual(String password, String repeatPassword) {
+        int validationResult = new UserPasswordValidator().validate(password, null).getStatusCode();
+        return (validationResult == STATUS_CODE_SUCCESS) && password.equals(repeatPassword);
     }
 
-    private boolean passwordsNotEqual(String password, String repeatPassword) {
-        return !password.equals(repeatPassword);
-    }
-
-    private boolean usernameExistsInDb(Credential credential) {
-        return credential != null;
+    private boolean usernameExistsInDb(String username) {
+        return userService.findOneCredentialByUserName(username) != null;
     }
 }

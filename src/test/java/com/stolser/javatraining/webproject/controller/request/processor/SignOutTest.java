@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.controller.request.processor;
 
+import com.stolser.javatraining.webproject.controller.request.processor.sign.SignOut;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;

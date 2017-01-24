@@ -117,7 +117,6 @@ public class User implements Serializable {
     }
 
     public void setFirstName(String firstName) {
-        checkNotNull(firstName);
         this.firstName = firstName;
     }
 
@@ -126,17 +125,15 @@ public class User implements Serializable {
     }
 
     public void setLastName(String lastName) {
-        checkNotNull(lastName);
         this.lastName = lastName;
     }
 
     public Date getBirthday() {
-        return new Date(birthday.getTime());
+        return (birthday != null) ? new Date(birthday.getTime()) : null;
     }
 
     public void setBirthday(Date birthday) {
-        checkNotNull(birthday);
-        this.birthday = new Date(birthday.getTime());
+        this.birthday = (birthday != null) ? new Date(birthday.getTime()) : null;
     }
 
     public String getEmail() {
@@ -153,7 +150,6 @@ public class User implements Serializable {
     }
 
     public void setAddress(String address) {
-        checkNotNull(address);
         this.address = address;
     }
 

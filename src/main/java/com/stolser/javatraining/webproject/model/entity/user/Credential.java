@@ -6,6 +6,7 @@ public class Credential {
     private long id;
     private String userName;
     private String passwordHash;
+    private long userId;
 
     public static class Builder {
         private Credential credential;
@@ -26,6 +27,11 @@ public class Credential {
 
         public Builder setPasswordHash(String passwordHash) {
             credential.setPasswordHash(passwordHash);
+            return this;
+        }
+
+        public Builder setUserId(long userId) {
+            credential.setUserId(userId);
             return this;
         }
 
@@ -58,6 +64,14 @@ public class Credential {
     public void setPasswordHash(String passwordHash) {
         checkNotNull(passwordHash);
         this.passwordHash = passwordHash;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     @Override
