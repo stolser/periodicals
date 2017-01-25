@@ -1,9 +1,10 @@
 package com.stolser.javatraining.webproject.controller.form.validator.periodical;
 
+import com.stolser.javatraining.webproject.controller.form.validator.AbstractValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.ValidationResult;
-import com.stolser.javatraining.webproject.controller.form.validator.Validator;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
@@ -11,21 +12,30 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 /**
  * Checks whether a periodical publisher name contains only acceptable symbols.
  */
-public class PeriodicalPublisherValidator implements Validator {
+public class PeriodicalPublisherValidator extends AbstractValidator {
+    private static ValidationResult failedResult =
+            new ValidationResult(STATUS_CODE_VALIDATION_FAILED, MSG_PERIODICAL_PUBLISHER_ERROR);
+
+    private PeriodicalPublisherValidator() {}
+
+    private static class InstanceHolder {
+        private static final PeriodicalPublisherValidator INSTANCE = new PeriodicalPublisherValidator();
+    }
+
+    public static PeriodicalPublisherValidator getInstance() {
+        return InstanceHolder.INSTANCE;
+    }
 
     @Override
-    public ValidationResult validate(String paramValue, HttpServletRequest request) {
-        int statusCode;
-        String messageKey;
-
-        if (Pattern.matches(PERIODICAL_PUBLISHER_PATTERN_REGEX, paramValue)) {
-            statusCode = STATUS_CODE_SUCCESS;
-            messageKey = MSG_SUCCESS;
-        } else {
-            statusCode = STATUS_CODE_VALIDATION_FAILED;
-            messageKey = MSG_PERIODICAL_PUBLISHER_ERROR;
+    protected Optional<ValidationResult> checkParameter(String publisher, HttpServletRequest request) {
+        if (isPublisherCorrect(publisher)) {
+            return Optional.empty();
         }
 
-        return new ValidationResult(statusCode, messageKey);
+        return Optional.of(failedResult);
+    }
+
+    private boolean isPublisherCorrect(String publisher) {
+        return Pattern.matches(PERIODICAL_PUBLISHER_PATTERN_REGEX, publisher);
     }
 }

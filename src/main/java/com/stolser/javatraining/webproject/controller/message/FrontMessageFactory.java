@@ -1,4 +1,4 @@
-package com.stolser.javatraining.webproject.controller.form.validator.front.message;
+package com.stolser.javatraining.webproject.controller.message;
 
 import java.util.HashMap;
 import java.util.Map;

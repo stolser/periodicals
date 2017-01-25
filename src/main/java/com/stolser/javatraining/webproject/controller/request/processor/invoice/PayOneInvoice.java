@@ -1,9 +1,9 @@
 package com.stolser.javatraining.webproject.controller.request.processor.invoice;
 
 import com.stolser.javatraining.webproject.controller.form.validator.ValidationResult;
-import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontMessageFactory;
-import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontendMessage;
-import com.stolser.javatraining.webproject.controller.form.validator.user.RequestUserIdValidator;
+import com.stolser.javatraining.webproject.controller.form.validator.ValidatorFactory;
+import com.stolser.javatraining.webproject.controller.message.FrontMessageFactory;
+import com.stolser.javatraining.webproject.controller.message.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.invoice.Invoice;
@@ -68,7 +68,7 @@ public class PayOneInvoice implements RequestProcessor {
 
     private boolean isInvoiceValid(Invoice invoiceInDb, HttpServletRequest request,
                                    List<FrontendMessage> generalMessages) {
-        ValidationResult result = new RequestUserIdValidator().validate(null, request);
+        ValidationResult result = ValidatorFactory.getRequestUserIdValidator().validate(null, request);
 
         if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
             generalMessages.add(messageFactory.getError(result.getMessageKey()));

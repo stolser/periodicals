@@ -2,6 +2,7 @@ package com.stolser.javatraining.webproject.controller.form.validator.user;
 
 import com.stolser.javatraining.webproject.controller.TestResources;
 import com.stolser.javatraining.webproject.controller.form.validator.ValidationResult;
+import com.stolser.javatraining.webproject.controller.form.validator.ValidatorFactory;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,7 +35,7 @@ public class RequestUserIdValidatorTest {
 
     @Test
     public void validate_ShouldValidateSuccessfullyForCorrectUser() throws Exception {
-        ValidationResult result = new RequestUserIdValidator().validate(null, request);
+        ValidationResult result = ValidatorFactory.getRequestUserIdValidator().validate(null, request);
 
         Assert.assertEquals(STATUS_CODE_SUCCESS, result.getStatusCode());
     }

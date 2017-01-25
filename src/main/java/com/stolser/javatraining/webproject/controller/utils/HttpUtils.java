@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.controller.utils;
 
-import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.message.FrontendMessage;
 import com.stolser.javatraining.webproject.dao.exception.DaoException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;

@@ -1,4 +1,4 @@
-package com.stolser.javatraining.webproject.controller.form.validator.exception;
+package com.stolser.javatraining.webproject.controller.form.validator;
 
 public class ValidationProcessorException extends RuntimeException {
     public ValidationProcessorException(String message) {

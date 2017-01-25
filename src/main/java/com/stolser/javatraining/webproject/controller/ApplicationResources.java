@@ -85,7 +85,7 @@ public class ApplicationResources {
     public static final String MSG_CREDENTIALS_ARE_NOT_CORRECT = "validation.credentialsAreNotCorrect";
     public static final String USERNAME_IS_NOT_UNIQUE_TRY_ANOTHER_ONE = "validation.usernameIsNotUnique";
     public static final String USER_EMAIL_IS_NOT_UNIQUE_TRY_ANOTHER_ONE = "validation.userEmailIsNotUnique";
-    public static final String MSG_PERIODICAL_NAME_ERROR = "periodicalName.validationError";
+    public static final String MSG_PERIODICAL_NAME_INCORRECT = "periodicalName.validationError";
     public static final String MSG_PERIODICAL_NAME_DUPLICATION = "periodicalName.duplicationError";
     public static final String MSG_PERIODICAL_PUBLISHER_ERROR = "periodicalPublisher.validationError";
     public static final String MSG_PERIODICAL_CATEGORY_ERROR = "periodicalCategory.validationError";
@@ -117,7 +117,7 @@ public class ApplicationResources {
     public static final String MSG_PERIODICAL_UPDATED_SUCCESS = "periodicalUpdated.success";
     public static final String MSG_PERIODICAL_PERSISTING_ERROR = "periodicalPersisting.error";
     public static final String MSG_ERROR_USER_IS_BLOCKED = "error.userIsBlocked";
-    public static final String MSG_USER_EMAIL_ERROR = "validation.userEmailIsIncorrect";
+    public static final String MSG_USER_EMAIL_REGEX_ERROR = "validation.userEmailIsIncorrect";
     public static final String MSG_USER_EMAIL_DUPLICATION_ERROR = "validation.userEmailIsNotUnique";
     public static final String MSG_USER_PASSWORD_ERROR = "validation.userPasswordIsIncorrect";
     public static final String MSG_NEW_USER_WAS_NOT_CREATED_ERROR = "userWasNotCreated.error";

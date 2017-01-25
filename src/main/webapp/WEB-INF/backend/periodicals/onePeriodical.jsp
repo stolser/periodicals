@@ -58,7 +58,9 @@
             <label class="col-sm-3 control-label">
                 <fmt:message key="status.label" bundle="${langPeriodical}"/></label>
             <div class="col-sm-9">
-                <p class="form-control-static">${periodical.status}</p>
+                <p class="form-control-static">
+                    <fmt:message key="${periodical.status}" bundle="${langPeriodical}"/>
+                </p>
             </div>
         </div>
 

@@ -1,8 +1,8 @@
 package com.stolser.javatraining.webproject.controller.request.processor.user;
 
-import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontMessageFactory;
-import com.stolser.javatraining.webproject.controller.form.validator.front.message.FrontendMessage;
-import com.stolser.javatraining.webproject.controller.form.validator.user.UserPasswordValidator;
+import com.stolser.javatraining.webproject.controller.form.validator.ValidatorFactory;
+import com.stolser.javatraining.webproject.controller.message.FrontMessageFactory;
+import com.stolser.javatraining.webproject.controller.message.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.user.Credential;
@@ -86,7 +86,7 @@ public class CreateUser implements RequestProcessor {
     }
 
     private boolean arePasswordsValidAndEqual(String password, String repeatPassword) {
-        int validationResult = new UserPasswordValidator().validate(password, null).getStatusCode();
+        int validationResult = ValidatorFactory.getUserPasswordValidator().validate(password, null).getStatusCode();
         return (validationResult == STATUS_CODE_SUCCESS) && password.equals(repeatPassword);
     }
 

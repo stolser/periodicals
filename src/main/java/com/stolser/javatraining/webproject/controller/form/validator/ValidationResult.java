@@ -1,6 +1,6 @@
 package com.stolser.javatraining.webproject.controller.form.validator;
 
-public class ValidationResult {
+public final class ValidationResult {
     /**
      * If equals to {@code STATUS_CODE_SUCCESS}, it means that validation has been passed successfully.
      * Otherwise - validation failed.

@@ -1,10 +1,10 @@
 package com.stolser.javatraining.webproject.controller.form.validator;
 
-import com.stolser.javatraining.webproject.controller.form.validator.exception.ValidationProcessorException;
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalCategoryValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalCostValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalNameValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalPublisherValidator;
+import com.stolser.javatraining.webproject.controller.form.validator.user.RequestUserIdValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.user.UserEmailValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.user.UserPasswordValidator;
 
@@ -18,19 +18,27 @@ public class ValidatorFactory {
             "There is no validator for such a parameter!";
 
     public static Validator getPeriodicalNameValidator() {
-        return new PeriodicalNameValidator();
+        return PeriodicalNameValidator.getInstance();
     }
 
     public static Validator getPeriodicalCategoryValidator() {
-        return new PeriodicalCategoryValidator();
+        return PeriodicalCategoryValidator.getInstance();
     }
 
     public static Validator getPeriodicalPublisherValidator() {
-        return new PeriodicalPublisherValidator();
+        return PeriodicalPublisherValidator.getInstance();
     }
 
     public static Validator getPeriodicalCostValidator() {
-        return new PeriodicalCostValidator();
+        return PeriodicalCostValidator.getInstance();
+    }
+
+    public static Validator getRequestUserIdValidator() {
+        return RequestUserIdValidator.getInstance();
+    }
+
+    public static Validator getUserPasswordValidator() {
+        return UserPasswordValidator.getInstance();
     }
 
     /**
@@ -41,22 +49,22 @@ public class ValidatorFactory {
     public static Validator newValidator(String paramName) {
         switch (paramName) {
             case PERIODICAL_NAME_PARAM_NAME:
-                return new PeriodicalNameValidator();
+                return PeriodicalNameValidator.getInstance();
 
             case PERIODICAL_CATEGORY_PARAM_NAME:
-                return new PeriodicalCategoryValidator();
+                return PeriodicalCategoryValidator.getInstance();
 
             case PERIODICAL_PUBLISHER_PARAM_NAME:
-                return new PeriodicalPublisherValidator();
+                return PeriodicalPublisherValidator.getInstance();
 
             case PERIODICAL_COST_PARAM_NAME:
-                return new PeriodicalCostValidator();
+                return PeriodicalCostValidator.getInstance();
 
             case USER_EMAIL_PARAM_NAME:
-                return new UserEmailValidator();
+                return UserEmailValidator.getInstance();
 
             case USER_PASSWORD_PARAM_NAME:
-                return new UserPasswordValidator();
+                return UserPasswordValidator.getInstance();
 
             default:
                 throw new ValidationProcessorException(THERE_IS_NO_VALIDATOR_FOR_SUCH_PARAM);

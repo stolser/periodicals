@@ -1,6 +1,5 @@
 package com.stolser.javatraining.webproject.controller.form.validator;
 
-import com.stolser.javatraining.webproject.controller.form.validator.exception.ValidationProcessorException;
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
 import com.stolser.javatraining.webproject.view.SystemLocale;
 import org.json.JSONException;
