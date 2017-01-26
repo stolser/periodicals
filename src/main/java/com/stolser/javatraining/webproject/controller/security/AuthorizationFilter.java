@@ -1,6 +1,7 @@
 package com.stolser.javatraining.webproject.controller.security;
 
 import com.stolser.javatraining.webproject.model.entity.user.User;
+import com.stolser.javatraining.webproject.view.JspViewResolver;
 import com.stolser.javatraining.webproject.view.ViewResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import static com.stolser.javatraining.webproject.controller.ApplicationResource
 public class AuthorizationFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorizationFilter.class);
     private static final String ACCESS_DENIED_FOR_USER = "Access denied for user '%s' to '%s'!!!%n";
+    private ViewResolver viewResolver = JspViewResolver.getInstance();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -40,7 +42,7 @@ public class AuthorizationFilter implements Filter {
 
         } else {
             logAccessDeniedMessage(request);
-            response.sendRedirect(ViewResolver.resolvePublicViewName(ACCESS_DENIED_PAGE_VIEW_NAME));
+            response.sendRedirect(viewResolver.resolvePublicViewName(ACCESS_DENIED_PAGE_VIEW_NAME));
         }
     }
 

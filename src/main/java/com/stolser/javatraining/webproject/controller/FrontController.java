@@ -4,6 +4,8 @@ import com.stolser.javatraining.webproject.controller.request.processor.Dispatch
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProvider;
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProviderImpl;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
+import com.stolser.javatraining.webproject.view.JspViewResolver;
+import com.stolser.javatraining.webproject.view.ViewResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,9 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.stolser.javatraining.webproject.view.ViewResolver.resolvePrivateViewName;
-import static com.stolser.javatraining.webproject.view.ViewResolver.resolvePublicViewName;
-
 /**
  * Implementation of the Front Controller pattern.
  */
@@ -24,7 +23,8 @@ public class FrontController extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(FrontController.class);
     private static final String USER_ID_REQUEST_URI = "User id = {}. requestURI = {}";
     private static final String DISPATCHING_TO_THE_VIEW_NAME = "Dispatching to the viewName = '%s'.";
-    private final RequestProvider requestProvider = RequestProviderImpl.getInstance();
+    private RequestProvider requestProvider = RequestProviderImpl.getInstance();
+    private ViewResolver viewResolver = JspViewResolver.getInstance();
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -53,7 +53,8 @@ public class FrontController extends HttpServlet {
 
     private void dispatch(String viewName, HttpServletRequest request, HttpServletResponse response) {
         try {
-            RequestDispatcher dispatcher = request.getRequestDispatcher(resolvePrivateViewName(viewName));
+            RequestDispatcher dispatcher = request.getRequestDispatcher(
+                    viewResolver.resolvePrivateViewName(viewName));
             dispatcher.forward(request, response);
 
         } catch (ServletException | IOException e) {
@@ -67,6 +68,6 @@ public class FrontController extends HttpServlet {
                 HttpUtils.getUserIdFromSession(request), request.getRequestURI(), e);
 
         HttpUtils.sendRedirect(request, response,
-                resolvePublicViewName(HttpUtils.getErrorViewName(e)));
+                viewResolver.resolvePublicViewName(HttpUtils.getErrorViewName(e)));
     }
 }
