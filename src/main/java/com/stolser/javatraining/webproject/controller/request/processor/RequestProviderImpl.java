@@ -13,10 +13,14 @@ import com.stolser.javatraining.webproject.controller.request.processor.user.Dis
 import com.stolser.javatraining.webproject.controller.request.processor.user.DisplayCurrentUser;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static com.stolser.javatraining.webproject.controller.utils.HttpUtils.filterRequestByHttpMethod;
+import static com.stolser.javatraining.webproject.controller.utils.HttpUtils.filterRequestByUri;
 
 /**
  * Provides mapping request uri to classes that will perform actual request processing.
@@ -27,7 +31,8 @@ public final class RequestProviderImpl implements RequestProvider {
     public static final String GET_ALL_USERS_REQUEST_PATTERN = "GET:" + USERS_LIST_URI + "/?";
     public static final String GET_CURRENT_USER_REQUEST_PATTERN = "GET:" + CURRENT_USER_ACCOUNT_URI + "/?";
     public static final String POST_SIGN_IN_REQUEST_PATTERN = "POST:" + SIGN_IN_URI + "/?";
-    public static final String POST_PERSIST_INVOICE_REQUEST_PATTERN = "POST:" + USERS_LIST_URI + "/\\d+/invoices/?";
+    public static final String POST_PERSIST_INVOICE_REQUEST_PATTERN =
+            "POST:" + USERS_LIST_URI + "/\\d+/invoices/?";
     public static final String POST_PAY_INVOICE_REQUEST_PATTERN =
             "POST:" + USERS_LIST_URI + "/\\d+/invoices/\\d+/pay/?";
     public static final String GET_ONE_PERIODICAL_REQUEST_PATTERN = "GET:" + PERIODICAL_LIST_URI + "/\\d+";
@@ -85,34 +90,18 @@ public final class RequestProviderImpl implements RequestProvider {
      */
     @Override
     public RequestProcessor getRequestProcessor(HttpServletRequest request) {
-        Optional<Map.Entry<String, RequestProcessor>> currentMapping = requestMapping.entrySet()
+        Optional<Map.Entry<String, RequestProcessor>> currentMapping =
+                requestMapping.entrySet()
                 .stream()
-                .filter(entry -> byHttpMethod(request, entry))
-                .filter(entry -> byRequestUri(request, entry))
+                .filter(entry -> filterRequestByHttpMethod(request, entry.getKey()))
+                .filter(entry -> filterRequestByUri(request, entry.getKey()))
                 .findFirst();
 
         if (currentMapping.isPresent()) {
             return currentMapping.get().getValue();
-        } else {
-            throw new NoSuchElementException(
-                    String.format(NO_MAPPING_FOR_SUCH_REQUEST, request.getRequestURI()));
         }
-    }
 
-    private boolean byHttpMethod(HttpServletRequest request,
-                                 Map.Entry<String, RequestProcessor> mappingEntry) {
-        String methodPattern = mappingEntry.getKey().split(METHODS_URI_SEPARATOR)[0];
-        String[] methods = methodPattern.split(METHOD_METHOD_SEPARATOR);
-        String requestMethod = request.getMethod().toUpperCase();
-
-        return Arrays.asList(methods).contains(requestMethod);
-    }
-
-    private boolean byRequestUri(HttpServletRequest request,
-                                 Map.Entry<String, RequestProcessor> mappingEntry) {
-        String urlPattern = mappingEntry.getKey().split(METHODS_URI_SEPARATOR)[1];
-        String requestUri = request.getRequestURI();
-
-        return Pattern.matches(urlPattern, requestUri);
+        throw new NoSuchElementException(
+                String.format(NO_MAPPING_FOR_SUCH_REQUEST, request.getRequestURI()));
     }
 }

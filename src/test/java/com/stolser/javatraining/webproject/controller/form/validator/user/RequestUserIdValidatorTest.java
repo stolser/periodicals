@@ -1,18 +1,13 @@
 package com.stolser.javatraining.webproject.controller.form.validator.user;
 
 import com.stolser.javatraining.webproject.controller.TestResources;
-import com.stolser.javatraining.webproject.controller.form.validator.ValidationResult;
-import com.stolser.javatraining.webproject.controller.form.validator.ValidatorFactory;
 import com.stolser.javatraining.webproject.model.entity.user.User;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ATTR_NAME;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.STATUS_CODE_SUCCESS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -31,12 +26,5 @@ public class RequestUserIdValidatorTest {
 
         when(request.getSession()).thenReturn(session);
         when(request.getRequestURI()).thenReturn(TestResources.USER_2_INVOICE_10_PAYMENT);
-    }
-
-    @Test
-    public void validate_ShouldValidateSuccessfullyForCorrectUser() throws Exception {
-        ValidationResult result = ValidatorFactory.getRequestUserIdValidator().validate(null, request);
-
-        Assert.assertEquals(STATUS_CODE_SUCCESS, result.getStatusCode());
     }
 }

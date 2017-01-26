@@ -1,6 +1,7 @@
 package com.stolser.javatraining.webproject.controller.security;
 
 import com.stolser.javatraining.webproject.model.entity.user.User;
+import com.stolser.javatraining.webproject.view.ViewResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.ACCESS_DENIED_URI;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.ACCESS_DENIED_PAGE_VIEW_NAME;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ATTR_NAME;
 
 /**
@@ -39,7 +40,7 @@ public class AuthorizationFilter implements Filter {
 
         } else {
             logAccessDeniedMessage(request);
-            response.sendRedirect(ACCESS_DENIED_URI);
+            response.sendRedirect(ViewResolver.resolvePublicViewName(ACCESS_DENIED_PAGE_VIEW_NAME));
         }
     }
 

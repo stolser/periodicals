@@ -1,6 +1,7 @@
 package com.stolser.javatraining.webproject.controller.utils;
 
 import com.stolser.javatraining.webproject.controller.message.FrontendMessage;
+import com.stolser.javatraining.webproject.controller.security.AccessDeniedException;
 import com.stolser.javatraining.webproject.dao.exception.DaoException;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
@@ -15,10 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,9 +32,7 @@ public final class HttpUtils {
     private static final String URI_MUST_CONTAIN_ID_TEXT = "Uri (%s) must contain id.";
     private static final String EXCEPTION_DURING_REDIRECTION_TEXT =
             "User id = %d. Exception during redirection to '%s'.";
-    private static final String PAGE_404_VIEW_NAME = "errors/page-404";
-    private static final String STORAGE_EXCEPTION_PAGE_VIEW_NAME = "errors/storage-error-page";
-    private static final String GENERAL_ERROR_PAGE_VIEW_NAME = "errors/error-page";
+    private static final String NUMBER_REGEX = "\\d+";
     private static UserService userService = UserServiceImpl.getInstance();
 
     private HttpUtils() {}
@@ -86,7 +82,7 @@ public final class HttpUtils {
      * Tries to find the first number in the uri.
      */
     public static int getFirstIdFromUri(String uri) {
-        Matcher matcher = Pattern.compile("\\d+").matcher(uri);
+        Matcher matcher = Pattern.compile(NUMBER_REGEX).matcher(uri);
 
         if (!matcher.find()) {
             throw new IllegalArgumentException(String.format(URI_MUST_CONTAIN_ID_TEXT, uri));
@@ -133,17 +129,19 @@ public final class HttpUtils {
      * Returns an appropriate view name for this exception.
      */
     public static String getErrorViewName(Throwable exception) {
-        String viewName = GENERAL_ERROR_PAGE_VIEW_NAME;
-
         if (exception instanceof DaoException) {
-            viewName = STORAGE_EXCEPTION_PAGE_VIEW_NAME;
+            return STORAGE_EXCEPTION_PAGE_VIEW_NAME;
         }
 
         if (exception instanceof NoSuchElementException) {
-            viewName = PAGE_404_VIEW_NAME;
+            return PAGE_404_VIEW_NAME;
         }
 
-        return viewName;
+        if (exception instanceof AccessDeniedException) {
+            return ACCESS_DENIED_PAGE_VIEW_NAME;
+        }
+
+        return GENERAL_ERROR_PAGE_VIEW_NAME;
     }
 
     /**
@@ -172,5 +170,20 @@ public final class HttpUtils {
         }
 
         return builder.toString();
+    }
+
+    public static boolean filterRequestByHttpMethod(HttpServletRequest request, String mapping) {
+        String methodPattern = mapping.split(METHODS_URI_SEPARATOR)[0];
+        String[] methods = methodPattern.split(METHOD_METHOD_SEPARATOR);
+        String requestMethod = request.getMethod().toUpperCase();
+
+        return Arrays.asList(methods).contains(requestMethod);
+    }
+
+    public static boolean filterRequestByUri(HttpServletRequest request, String mapping) {
+        String urlPattern = mapping.split(METHODS_URI_SEPARATOR)[1];
+        String requestUri = request.getRequestURI();
+
+        return Pattern.matches(urlPattern, requestUri);
     }
 }

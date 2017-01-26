@@ -1,7 +1,5 @@
 package com.stolser.javatraining.webproject.controller.request.processor.invoice;
 
-import com.stolser.javatraining.webproject.controller.form.validator.ValidationResult;
-import com.stolser.javatraining.webproject.controller.form.validator.ValidatorFactory;
 import com.stolser.javatraining.webproject.controller.message.FrontMessageFactory;
 import com.stolser.javatraining.webproject.controller.message.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
@@ -109,13 +107,6 @@ public class PersistOneInvoice implements RequestProcessor {
 
     private boolean isPeriodicalValid(Periodical periodicalInDb, HttpServletRequest request,
                                       List<FrontendMessage> generalMessages) {
-        ValidationResult result = ValidatorFactory.getRequestUserIdValidator().validate(null, request);
-
-        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
-            generalMessages.add(messageFactory.getError(result.getMessageKey()));
-            return false;
-        }
-
         return periodicalExistsInDb(periodicalInDb, generalMessages)
                 && isPeriodicalVisible(periodicalInDb, generalMessages)
                 && isSubscriptionPeriodValid(request, generalMessages);

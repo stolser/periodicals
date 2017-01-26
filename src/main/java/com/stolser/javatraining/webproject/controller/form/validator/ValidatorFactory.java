@@ -4,7 +4,6 @@ import com.stolser.javatraining.webproject.controller.form.validator.periodical.
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalCostValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalNameValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.periodical.PeriodicalPublisherValidator;
-import com.stolser.javatraining.webproject.controller.form.validator.user.RequestUserIdValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.user.UserEmailValidator;
 import com.stolser.javatraining.webproject.controller.form.validator.user.UserPasswordValidator;
 
@@ -31,10 +30,6 @@ public class ValidatorFactory {
 
     public static Validator getPeriodicalCostValidator() {
         return PeriodicalCostValidator.getInstance();
-    }
-
-    public static Validator getRequestUserIdValidator() {
-        return RequestUserIdValidator.getInstance();
     }
 
     public static Validator getUserPasswordValidator() {

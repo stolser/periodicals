@@ -50,6 +50,10 @@ public class ApplicationResources {
     public static final String ONE_USER_INFO_VIEW_NAME = "users/userAccount";
     public static final String BACKEND_MAIN_PAGE_VIEW_NAME = "home";
     public static final String SIGN_UP_PAGE_VIEW_NAME = "signUp";
+    public static final String PAGE_404_VIEW_NAME = "errors/page-404";
+    public static final String STORAGE_EXCEPTION_PAGE_VIEW_NAME = "errors/storage-error-page";
+    public static final String GENERAL_ERROR_PAGE_VIEW_NAME = "errors/error-page";
+    public static final String ACCESS_DENIED_PAGE_VIEW_NAME = "errors/accessDenied";
 
     public static final String ADMIN_PANEL_URI = "/backend/adminPanel";
     public static final String PERIODICAL_LIST_URI = "/backend/periodicals";
@@ -57,7 +61,6 @@ public class ApplicationResources {
     public static final String SIGN_IN_URI = "/backend/signIn";
     public static final String SIGN_OUT_URI = "/backend/signOut";
     public static final String SIGN_UP_URI = "/backend/signUp";
-    public static final String ACCESS_DENIED_URI = "/accessDenied.jsp";
     public static final String USERS_LIST_URI = "/backend/users";
     public static final String CURRENT_USER_ACCOUNT_URI = "/backend/users/currentUser";
     public static final String PERIODICAL_CREATE_NEW_URI = "/backend/periodicals/createNew";
@@ -125,4 +128,5 @@ public class ApplicationResources {
 
     public static final String METHODS_URI_SEPARATOR = ":";
     public static final String METHOD_METHOD_SEPARATOR = "\\|";
+
 }

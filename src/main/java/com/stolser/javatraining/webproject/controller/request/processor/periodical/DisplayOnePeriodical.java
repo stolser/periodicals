@@ -1,6 +1,7 @@
 package com.stolser.javatraining.webproject.controller.request.processor.periodical;
 
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
+import com.stolser.javatraining.webproject.controller.security.AccessDeniedException;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.user.User;
@@ -12,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.ONE_PERIODICAL_VIEW_NAME;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.PERIODICAL_ATTR_NAME;
 import static java.util.Objects.isNull;
 
 /**
@@ -20,6 +22,7 @@ import static java.util.Objects.isNull;
  */
 public final class DisplayOnePeriodical implements RequestProcessor {
     private static final String NO_PERIODICAL_WITH_ID_IN_DB = "There is no periodical with id %d in the db.";
+    private static final String ACCESS_DENIED_TO = "Access denied to '%s'";
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
     private DisplayOnePeriodical() {}
@@ -41,9 +44,7 @@ public final class DisplayOnePeriodical implements RequestProcessor {
         checkPeriodicalExists(periodicalId, periodicalInDb);
 
         if (hasUserNotEnoughPermissions(currentUser, periodicalInDb)) {
-            // todo: throw new AccessDeniedException();
-            HttpUtils.sendRedirect(request, response, ACCESS_DENIED_URI);
-            return Optional.empty();
+            throw new AccessDeniedException(String.format(ACCESS_DENIED_TO, request.getRequestURI()));
         }
 
         request.setAttribute(PERIODICAL_ATTR_NAME, periodicalInDb);
