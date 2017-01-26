@@ -28,23 +28,22 @@ public class UserEmailValidator extends AbstractValidator {
 
     @Override
     protected Optional<ValidationResult> checkParameter(String userEmail, HttpServletRequest request) {
-        // todo: remove returns;
-        if (emailMatchesRegex(userEmail)) {
-            if (emailDoesNotExistInDb(userEmail)) {
-                return Optional.empty();
-            }
+        if (!emailMatchesRegex((userEmail))) {
+            return Optional.of(regexFailedResult);
+        }
 
+        if (emailExistsInDb(userEmail)) {
             return Optional.of(duplicationFailedResult);
         }
 
-        return Optional.of(regexFailedResult);
+        return Optional.empty();
     }
 
     private boolean emailMatchesRegex(String userEmail) {
         return Pattern.matches(USER_EMAIL_PATTERN_REGEX, userEmail);
     }
 
-    private boolean emailDoesNotExistInDb(String userEmail) {
-        return !UserServiceImpl.getInstance().emailExistsInDb(userEmail);
+    private boolean emailExistsInDb(String userEmail) {
+        return UserServiceImpl.getInstance().emailExistsInDb(userEmail);
     }
 }

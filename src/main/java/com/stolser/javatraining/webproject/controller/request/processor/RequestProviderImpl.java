@@ -14,7 +14,6 @@ import com.stolser.javatraining.webproject.controller.request.processor.user.Dis
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
@@ -86,32 +85,34 @@ public final class RequestProviderImpl implements RequestProvider {
      */
     @Override
     public RequestProcessor getRequestProcessor(HttpServletRequest request) {
-        // todo: bi-predicate
-        String requestUri = request.getRequestURI();
-        Predicate<Map.Entry<String, RequestProcessor>> mappingContainsRequestMethod = entry -> {
-            String methodPattern = entry.getKey().split(":")[0];
-            String[] methods = methodPattern.split("\\|");
-            String requestMethod = request.getMethod().toUpperCase();
-
-            return Arrays.asList(methods).contains(requestMethod);
-        };
-
-        Predicate<Map.Entry<String, RequestProcessor>> mappingMatchesRequestUri = entry -> {
-            String urlPattern = entry.getKey().split(":")[1];
-            return Pattern.matches(urlPattern, requestUri);
-        };
-
         Optional<Map.Entry<String, RequestProcessor>> currentMapping = requestMapping.entrySet()
                 .stream()
-                .filter(mappingContainsRequestMethod)
-                .filter(mappingMatchesRequestUri)
+                .filter(entry -> byHttpMethod(request, entry))
+                .filter(entry -> byRequestUri(request, entry))
                 .findFirst();
 
         if (currentMapping.isPresent()) {
             return currentMapping.get().getValue();
         } else {
             throw new NoSuchElementException(
-                    String.format(NO_MAPPING_FOR_SUCH_REQUEST, requestUri));
+                    String.format(NO_MAPPING_FOR_SUCH_REQUEST, request.getRequestURI()));
         }
+    }
+
+    private boolean byHttpMethod(HttpServletRequest request,
+                                 Map.Entry<String, RequestProcessor> mappingEntry) {
+        String methodPattern = mappingEntry.getKey().split(METHODS_URI_SEPARATOR)[0];
+        String[] methods = methodPattern.split(METHOD_METHOD_SEPARATOR);
+        String requestMethod = request.getMethod().toUpperCase();
+
+        return Arrays.asList(methods).contains(requestMethod);
+    }
+
+    private boolean byRequestUri(HttpServletRequest request,
+                                 Map.Entry<String, RequestProcessor> mappingEntry) {
+        String urlPattern = mappingEntry.getKey().split(METHODS_URI_SEPARATOR)[1];
+        String requestUri = request.getRequestURI();
+
+        return Pattern.matches(urlPattern, requestUri);
     }
 }

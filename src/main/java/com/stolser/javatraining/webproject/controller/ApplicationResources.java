@@ -122,4 +122,7 @@ public class ApplicationResources {
     public static final String MSG_USER_PASSWORD_ERROR = "validation.userPasswordIsIncorrect";
     public static final String MSG_NEW_USER_WAS_NOT_CREATED_ERROR = "userWasNotCreated.error";
     public static final String MSG_VALIDATION_PASSWORDS_ARE_NOT_EQUAL = "validation.passwordsAreNotEqual";
+
+    public static final String METHODS_URI_SEPARATOR = ":";
+    public static final String METHOD_METHOD_SEPARATOR = "\\|";
 }

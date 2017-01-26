@@ -1,12 +1,13 @@
 package com.stolser.javatraining.webproject.controller.security;
 
-import com.stolser.javatraining.webproject.controller.ApplicationResources;
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProviderImpl;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.regex.Pattern;
+
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
 /**
  * Encapsulates information about resource access permissions of each type of roles.
@@ -62,15 +63,15 @@ final class Authorization {
                     return Arrays.asList(methods).contains(requestMethod);
                 })
                 .filter(entry -> {
-                    String urlPattern = entry.getKey().split(":")[1];
+                    String urlPattern = entry.getKey().split(METHODS_URI_SEPARATOR)[1];
                     return Pattern.matches(urlPattern, requestUri);
                 })
                 .findFirst();
     }
 
     private String[] extractHttpMethodsFromMapping(Map.Entry<String, Set<User.Role>> entry) {
-        String methodPattern = entry.getKey().split(":")[0];
-        return methodPattern.split("\\|");
+        String methodPattern = entry.getKey().split(METHODS_URI_SEPARATOR)[0];
+        return methodPattern.split(METHOD_METHOD_SEPARATOR);
     }
 
     private boolean isPermissionGranted(Optional<Map.Entry<String, Set<User.Role>>> thisPermissionMapping,
@@ -87,7 +88,7 @@ final class Authorization {
     }
 
     private User getUserFromSession(HttpServletRequest request) {
-        return (User) request.getSession().getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
+        return (User) request.getSession().getAttribute(CURRENT_USER_ATTR_NAME);
     }
 
     private boolean hasUserLegitRole(Set<User.Role> userRoles, Set<User.Role> legitRoles) {

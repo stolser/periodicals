@@ -1,5 +1,6 @@
 package com.stolser.javatraining.webproject.controller;
 
+import com.stolser.javatraining.webproject.controller.request.processor.DispatchException;
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProvider;
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProviderImpl;
 import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
@@ -22,6 +23,7 @@ import static com.stolser.javatraining.webproject.view.ViewResolver.resolvePubli
 public class FrontController extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(FrontController.class);
     private static final String USER_ID_REQUEST_URI = "User id = {}. requestURI = {}";
+    private static final String DISPATCHING_TO_THE_VIEW_NAME = "Dispatching to the viewName = '%s'.";
     private final RequestProvider requestProvider = RequestProviderImpl.getInstance();
 
     @Override
@@ -45,23 +47,26 @@ public class FrontController extends HttpServlet {
                     .ifPresent(viewName -> dispatch(viewName, request, response));
 
         } catch (RuntimeException e) {
-            LOGGER.error(USER_ID_REQUEST_URI,
-                    HttpUtils.getUserIdFromSession(request), request.getRequestURI(), e);
-
-            HttpUtils.sendRedirect(request, response,
-                    resolvePublicViewName(HttpUtils.getErrorViewName(e)));
+            logExceptionAndRedirectToErrorPage(request, response, e);
         }
     }
 
     private void dispatch(String viewName, HttpServletRequest request, HttpServletResponse response) {
-        // todo: throw new ForwardExcrption
         try {
             RequestDispatcher dispatcher = request.getRequestDispatcher(resolvePrivateViewName(viewName));
             dispatcher.forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        } catch (ServletException | IOException e) {
+            throw new DispatchException(String.format(DISPATCHING_TO_THE_VIEW_NAME, viewName), e);
         }
+    }
+
+    private void logExceptionAndRedirectToErrorPage(HttpServletRequest request, HttpServletResponse response,
+                                                    RuntimeException e) {
+        LOGGER.error(USER_ID_REQUEST_URI,
+                HttpUtils.getUserIdFromSession(request), request.getRequestURI(), e);
+
+        HttpUtils.sendRedirect(request, response,
+                resolvePublicViewName(HttpUtils.getErrorViewName(e)));
     }
 }

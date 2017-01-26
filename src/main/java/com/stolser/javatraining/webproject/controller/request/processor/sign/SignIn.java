@@ -81,8 +81,7 @@ public final class SignIn implements RequestProcessor {
             redirectUri = signInUserAndGetRedirectUri(request, currentUser);
         } else {
             redirectUri = LOGIN_PAGE;
-            messages.put(SIGN_IN_USERNAME_PARAM_NAME,
-                    messageFactory.getError(MSG_ERROR_USER_IS_BLOCKED));
+            messages.put(SIGN_IN_USERNAME_PARAM_NAME, messageFactory.getError(MSG_ERROR_USER_IS_BLOCKED));
         }
 
         return redirectUri;
