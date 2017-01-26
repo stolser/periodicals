@@ -13,6 +13,9 @@ import java.time.Instant;
 import java.time.temporal.Temporal;
 import java.util.Date;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 /**
  * Displays formatted date.
  */
@@ -50,8 +53,8 @@ public class FormatDatetimeTag extends TagSupport {
 
         String formatted;
 
-        if (value == null) {
-            if (var != null) {
+        if (isNull(value)) {
+            if (nonNull(var)) {
                 pageContext.removeAttribute(var, scope);
             }
 
@@ -61,7 +64,7 @@ public class FormatDatetimeTag extends TagSupport {
         Instant instant = Instant.from(value);
         formatted = new SimpleDateFormat(pattern).format(Date.from(instant));
 
-        if (var != null) {
+        if (nonNull(var)) {
             pageContext.setAttribute(var, formatted, scope);
         } else {
             try {

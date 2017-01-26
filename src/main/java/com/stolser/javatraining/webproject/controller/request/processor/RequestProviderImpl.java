@@ -49,7 +49,7 @@ public final class RequestProviderImpl implements RequestProvider {
 
     static {
         requestMapping.put(POST_SIGN_IN_REQUEST_PATTERN, SignIn.getInstance());
-        requestMapping.put(GET_BACKEND_REQUEST_PATTERN, BackendHomePage.getInstance());
+        requestMapping.put(GET_BACKEND_REQUEST_PATTERN, DisplayBackendHomePage.getInstance());
         requestMapping.put(GET_ADMIN_PANEL_REQUEST_PATTERN, DisplayAdminPanel.getInstance());
         requestMapping.put(GET_ALL_USERS_REQUEST_PATTERN, DisplayAllUsers.getInstance());
         requestMapping.put(GET_CURRENT_USER_REQUEST_PATTERN, DisplayCurrentUser.getInstance());
@@ -58,8 +58,8 @@ public final class RequestProviderImpl implements RequestProvider {
         requestMapping.put(GET_ONE_PERIODICAL_REQUEST_PATTERN, DisplayOnePeriodical.getInstance());
         requestMapping.put(GET_ALL_PERIODICALS_REQUEST_PATTERN, DisplayAllPeriodicals.getInstance());
         requestMapping.put(POST_PERSIST_PERIODICAL_REQUEST_PATTERN, PersistOnePeriodical.getInstance());
-        requestMapping.put(GET_CREATE_PERIODICAL_REQUEST_PATTERN, CreateNewPeriodical.getInstance());
-        requestMapping.put(GET_UPDATE_PERIODICAL_REQUEST_PATTERN, UpdatePeriodical.getInstance());
+        requestMapping.put(GET_CREATE_PERIODICAL_REQUEST_PATTERN, DisplayNewPeriodicalPage.getInstance());
+        requestMapping.put(GET_UPDATE_PERIODICAL_REQUEST_PATTERN, DisplayUpdatePeriodicalPage.getInstance());
         requestMapping.put(POST_DELETE_PERIODICALS_REQUEST_PATTERN, DeleteDiscardedPeriodicals.getInstance());
         requestMapping.put(GET_SIGN_OUT_REQUEST_PATTERN, SignOut.getInstance());
         requestMapping.put(POST_SIGN_UP_REQUEST_PATTERN, CreateUser.getInstance());
@@ -67,8 +67,7 @@ public final class RequestProviderImpl implements RequestProvider {
         requestMapping.put(POST_AJAX_FORM_VALIDATOR_REQUEST_PATTERN, AjaxFormValidation.getInstance());
     }
 
-    private RequestProviderImpl() {
-    }
+    private RequestProviderImpl() {}
 
     private static class InstanceHolder {
         private static final RequestProviderImpl INSTANCE = new RequestProviderImpl();
@@ -87,6 +86,7 @@ public final class RequestProviderImpl implements RequestProvider {
      */
     @Override
     public RequestProcessor getRequestProcessor(HttpServletRequest request) {
+        // todo: bi-predicate
         String requestUri = request.getRequestURI();
         Predicate<Map.Entry<String, RequestProcessor>> mappingContainsRequestMethod = entry -> {
             String methodPattern = entry.getKey().split(":")[0];

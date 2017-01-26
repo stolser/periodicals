@@ -7,24 +7,24 @@ import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCat
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static java.util.Objects.nonNull;
 
 /**
  * Processes a GET request to a page where admin can create a new periodical.
  */
-public class CreateNewPeriodical implements RequestProcessor {
+public class DisplayNewPeriodicalPage implements RequestProcessor {
 
-    private CreateNewPeriodical() {}
+    private DisplayNewPeriodicalPage() {}
 
     private static class InstanceHolder {
-        private static final CreateNewPeriodical INSTANCE = new CreateNewPeriodical();
+        private static final DisplayNewPeriodicalPage INSTANCE = new DisplayNewPeriodicalPage();
     }
 
-    public static CreateNewPeriodical getInstance() {
+    public static DisplayNewPeriodicalPage getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
@@ -37,21 +37,23 @@ public class CreateNewPeriodical implements RequestProcessor {
     }
 
     private void setRequestAttributes(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Periodical periodicalFromSession = (Periodical) session.getAttribute(PERIODICAL_ATTR_NAME);
-        Periodical periodicalToForward = (periodicalFromSession != null)
-                ? periodicalFromSession
-                : new Periodical();
+        Periodical periodicalFromSession = getPeriodicalFromSession(request);
+        Periodical periodicalToForward = nonNull(periodicalFromSession) ? periodicalFromSession : new Periodical();
 
-        @SuppressWarnings("unchecked")
-        Map<String, FrontendMessage> messages = (Map<String, FrontendMessage>) session
-                .getAttribute(MESSAGES_ATTR_NAME);
-
-        request.setAttribute(MESSAGES_ATTR_NAME, messages);
+        request.setAttribute(MESSAGES_ATTR_NAME, getMessagesFromSession(request));
         request.setAttribute(PERIODICAL_ATTR_NAME, periodicalToForward);
         request.setAttribute(PERIODICAL_STATUSES_ATTR_NAME, Periodical.Status.values());
         request.setAttribute(PERIODICAL_CATEGORIES_ATTR_NAME, PeriodicalCategory.values());
         request.setAttribute(PERIODICAL_OPERATION_TYPE_PARAM_ATTR_NAME,
                 Periodical.OperationType.CREATE.name().toLowerCase());
+    }
+
+    private Periodical getPeriodicalFromSession(HttpServletRequest request) {
+        return (Periodical) request.getSession().getAttribute(PERIODICAL_ATTR_NAME);
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, FrontendMessage> getMessagesFromSession(HttpServletRequest request) {
+        return (Map<String, FrontendMessage>) request.getSession().getAttribute(MESSAGES_ATTR_NAME);
     }
 }

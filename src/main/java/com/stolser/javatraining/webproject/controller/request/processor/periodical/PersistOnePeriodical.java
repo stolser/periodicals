@@ -18,6 +18,7 @@ import java.util.*;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 import static com.stolser.javatraining.webproject.model.entity.periodical.Periodical.Status.*;
+import static java.util.Objects.nonNull;
 
 /**
  * Processes a POST request to persist one periodical. It handles both {@code create} and
@@ -223,7 +224,7 @@ public class PersistOnePeriodical implements RequestProcessor {
         static PeriodicalStatusChange getInstance(Periodical periodicalToSave) {
             Periodical periodicalInDb =
                     PeriodicalServiceImpl.getInstance().findOneById(periodicalToSave.getId());
-            Periodical.Status oldStatus = (periodicalInDb != null) ? periodicalInDb.getStatus() : null;
+            Periodical.Status oldStatus = nonNull(periodicalInDb) ? periodicalInDb.getStatus() : null;
             Periodical.Status newStatus = periodicalToSave.getStatus();
             String cacheKey = getCacheKey(oldStatus, newStatus);
 
@@ -235,8 +236,8 @@ public class PersistOnePeriodical implements RequestProcessor {
         }
 
         private static String getCacheKey(Periodical.Status oldStatus, Periodical.Status newStatus) {
-            return ((oldStatus != null) ? oldStatus.name() : "null")
-                    + ((newStatus != null) ? newStatus.name() : "null");
+            return (nonNull(oldStatus) ? oldStatus.name() : "null")
+                    + (nonNull(newStatus) ? newStatus.name() : "null");
         }
 
         Periodical.Status getOldStatus() {

@@ -10,6 +10,8 @@ import com.stolser.javatraining.webproject.service.UserService;
 
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 public class UserServiceImpl implements UserService {
     private DaoFactory factory = DaoFactory.getMysqlDaoFactory();
     private ConnectionPool connectionPool = ConnectionPoolProvider.getPool();
@@ -36,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void setUserRoles(User user, AbstractConnection conn) {
-        if (user != null) {
+        if (nonNull(user)) {
             user.setRoles(factory.getRoleDao(conn).findRolesByUserName(user.getUserName()));
         }
     }

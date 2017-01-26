@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 /**
  * Processes a POST request to create a new invoice.
@@ -66,21 +68,21 @@ public class PersistOneInvoice implements RequestProcessor {
     }
 
     private boolean periodicalExistsInDb(Periodical periodicalInDb, List<FrontendMessage> generalMessages) {
-        if (periodicalInDb != null) {
-            return true;
-        } else {
+        if (isNull(periodicalInDb)) {
             generalMessages.add(messageFactory.getError(MSG_VALIDATION_PERIODICAL_IS_NULL));
-            return false;
         }
+
+        return nonNull(periodicalInDb);
     }
 
     private boolean isPeriodicalVisible(Periodical periodicalInDb, List<FrontendMessage> generalMessages) {
-        if (Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())) {
-            return true;
-        } else {
+        boolean isVisible = Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus());
+
+        if (!isVisible) {
             generalMessages.add(messageFactory.getError(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE));
-            return false;
         }
+
+        return isVisible;
     }
 
     private boolean isSubscriptionPeriodValid(HttpServletRequest request,
@@ -89,17 +91,20 @@ public class PersistOneInvoice implements RequestProcessor {
 
         try {
             int subscriptionPeriod = Integer.parseInt(request.getParameter(SUBSCRIPTION_PERIOD_PARAM_NAME));
-
-            if ((subscriptionPeriod >= 1) && (subscriptionPeriod <= 12)) {
-                return true;
-            } else {
+            if (!isPeriodValid(subscriptionPeriod)) {
                 generalMessages.add(message);
-                return false;
             }
+
+            return isPeriodValid(subscriptionPeriod);
+
         } catch (NumberFormatException e) {
             generalMessages.add(message);
             return false;
         }
+    }
+
+    private boolean isPeriodValid(int subscriptionPeriod) {
+        return (subscriptionPeriod >= 1) && (subscriptionPeriod <= 12);
     }
 
     private boolean isPeriodicalValid(Periodical periodicalInDb, HttpServletRequest request,

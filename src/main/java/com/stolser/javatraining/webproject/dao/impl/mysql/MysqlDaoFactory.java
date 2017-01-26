@@ -5,6 +5,8 @@ import com.stolser.javatraining.webproject.dao.exception.DaoException;
 
 import java.sql.Connection;
 
+import static java.util.Objects.isNull;
+
 public class MysqlDaoFactory extends DaoFactory {
     private static final String SQL_CONNECTION_CAN_NOT_BE_NULL =
             "SQL connection can not be null. Datasource returned no connection.";
@@ -59,7 +61,7 @@ public class MysqlDaoFactory extends DaoFactory {
     }
 
     private void checkConnection(AbstractConnection conn) {
-        if (conn == null) {
+        if (isNull(conn)) {
             throw new DaoException(CONNECTION_CAN_NOT_BE_NULL);
         }
 

@@ -12,10 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 
-import static com.stolser.javatraining.webproject.view.ViewResolver.getPrivateResourceByViewName;
-import static com.stolser.javatraining.webproject.view.ViewResolver.getPublicResourceByViewName;
+import static com.stolser.javatraining.webproject.view.ViewResolver.resolvePrivateViewName;
+import static com.stolser.javatraining.webproject.view.ViewResolver.resolvePublicViewName;
 
 /**
  * Implementation of the Front Controller pattern.
@@ -40,23 +39,29 @@ public class FrontController extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            Optional<String> viewName = requestProvider.getRequestProcessor(request).process(request, response);
-            if (viewName.isPresent()) {
-                dispatch(viewName.get(), request, response);
-            }
+            requestProvider
+                    .getRequestProcessor(request)
+                    .process(request, response)
+                    .ifPresent(viewName -> dispatch(viewName, request, response));
 
         } catch (RuntimeException e) {
             LOGGER.error(USER_ID_REQUEST_URI,
                     HttpUtils.getUserIdFromSession(request), request.getRequestURI(), e);
 
             HttpUtils.sendRedirect(request, response,
-                    getPublicResourceByViewName(HttpUtils.getErrorViewName(e)));
+                    resolvePublicViewName(HttpUtils.getErrorViewName(e)));
         }
     }
 
-    private void dispatch(String viewName, HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher(getPrivateResourceByViewName(viewName));
-        dispatcher.forward(request, response);
+    private void dispatch(String viewName, HttpServletRequest request, HttpServletResponse response) {
+        // todo: throw new ForwardExcrption
+        try {
+            RequestDispatcher dispatcher = request.getRequestDispatcher(resolvePrivateViewName(viewName));
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

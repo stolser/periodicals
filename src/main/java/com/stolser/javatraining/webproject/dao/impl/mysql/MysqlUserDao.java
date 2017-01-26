@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 class MysqlUserDao implements UserDao {
     private static final String DB_USERS_ID = "users.id";
     private static final String DB_USERS_FIRST_NAME = "users.first_name";
@@ -121,7 +123,7 @@ class MysqlUserDao implements UserDao {
 
     private Date getBirthdayFromRs(ResultSet rs) throws SQLException {
         java.sql.Date birthday = rs.getDate(DB_USERS_BIRTHDAY);
-        return (birthday != null) ? new Date(birthday.getTime()) : null;
+        return nonNull(birthday) ? new Date(birthday.getTime()) : null;
     }
 
     @Override
@@ -168,7 +170,7 @@ class MysqlUserDao implements UserDao {
 
     private java.sql.Date getBirthdayFromUser(User user) {
         Date birthday = user.getBirthday();
-        return (birthday != null) ? new java.sql.Date(birthday.getTime()) : null;
+        return nonNull(birthday) ? new java.sql.Date(birthday.getTime()) : null;
     }
 
     @Override

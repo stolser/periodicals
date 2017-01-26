@@ -15,14 +15,14 @@ import java.util.NoSuchElementException;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class UpdatePeriodicalTest {
+public class DisplayUpdatePeriodicalPageTest {
     private HttpSession session = mock(HttpSession.class);
     private HttpServletRequest request = mock(HttpServletRequest.class);
     private HttpServletResponse response = mock(HttpServletResponse.class);
     private PeriodicalService periodicalService = mock(PeriodicalService.class);
 
     @InjectMocks
-    private UpdatePeriodical updatePeriodical;
+    private DisplayUpdatePeriodicalPage displayUpdatePeriodicalPage;
 
     @Before
     public void setUp() throws Exception {
@@ -37,7 +37,7 @@ public class UpdatePeriodicalTest {
     public void process_Should_ThrowException() throws Exception {
         when(periodicalService.findOneById(2)).thenReturn(null);
 
-        updatePeriodical.process(request, response);
+        displayUpdatePeriodicalPage.process(request, response);
     }
 
 }

@@ -19,6 +19,8 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 public class InvoiceServiceImpl implements InvoiceService {
     private DaoFactory factory = DaoFactory.getMysqlDaoFactory();
     private ConnectionPool connectionPool = ConnectionPoolProvider.getPool();
@@ -70,17 +72,17 @@ public class InvoiceServiceImpl implements InvoiceService {
             invoiceToPay.setStatus(Invoice.Status.PAID);
             invoiceToPay.setPaymentDate(Instant.now());
 
+            conn.beginTransaction();
             User userFromDb = factory.getUserDao(conn).findOneById(invoiceToPay.getUser().getId());
             Periodical periodical = invoiceToPay.getPeriodical();
 
             Subscription existingSubscription = subscriptionDao
                     .findOneByUserIdAndPeriodicalId(userFromDb.getId(), periodical.getId());
 
-            conn.beginTransaction();
             factory.getInvoiceDao(conn).update(invoiceToPay);
 
             int subscriptionPeriod = invoiceToPay.getSubscriptionPeriod();
-            if (existingSubscription == null) {
+            if (isNull(existingSubscription)) {
                 createAndPersistNewSubscription(userFromDb, periodical, subscriptionPeriod, subscriptionDao);
 
             } else {

@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import java.sql.SQLException;
 
+import static java.util.Objects.nonNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -73,7 +74,7 @@ public class MysqlUserDaoTest {
 
     @AfterClass
     public static void tearDown() throws SQLException {
-        if (conn != null) {
+        if (nonNull(conn)) {
             conn.close();
         }
     }

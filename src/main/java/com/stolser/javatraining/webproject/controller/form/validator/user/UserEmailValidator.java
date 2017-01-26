@@ -28,6 +28,7 @@ public class UserEmailValidator extends AbstractValidator {
 
     @Override
     protected Optional<ValidationResult> checkParameter(String userEmail, HttpServletRequest request) {
+        // todo: remove returns;
         if (emailMatchesRegex(userEmail)) {
             if (emailDoesNotExistInDb(userEmail)) {
                 return Optional.empty();

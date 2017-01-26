@@ -11,6 +11,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.nonNull;
+
 class MysqlInvoiceDao implements InvoiceDao {
     private static final String DB_INVOICES_ID = "invoices.id";
     private static final String DB_INVOICES_USER_ID = "invoices.user_id";
@@ -213,8 +215,7 @@ class MysqlInvoiceDao implements InvoiceDao {
 
     private Instant getPaymentDateFromResults(ResultSet rs) throws SQLException {
         Timestamp timestamp = rs.getTimestamp(DB_INVOICES_PAYMENT_DATE);
-
-        return (timestamp != null) ? Instant.ofEpochMilli(timestamp.getTime()) : null;
+        return nonNull(timestamp) ? Instant.ofEpochMilli(timestamp.getTime()) : null;
     }
 
     private void setCreateUpdateStatementFromInvoice(PreparedStatement st, Invoice invoice) throws SQLException {
@@ -229,8 +230,7 @@ class MysqlInvoiceDao implements InvoiceDao {
 
     private Timestamp getPaymentDate(Invoice invoice) {
         Instant paymentDate = invoice.getPaymentDate();
-
-        return (paymentDate != null) ? new Timestamp(paymentDate.toEpochMilli()) : null;
+        return nonNull(paymentDate) ? new Timestamp(paymentDate.toEpochMilli()) : null;
     }
 
     @Override

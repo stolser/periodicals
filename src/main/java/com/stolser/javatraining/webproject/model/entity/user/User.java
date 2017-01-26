@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.nonNull;
 
 public class User implements Serializable {
     private static final long serialVersionUID = -888L;
@@ -129,11 +130,11 @@ public class User implements Serializable {
     }
 
     public Date getBirthday() {
-        return (birthday != null) ? new Date(birthday.getTime()) : null;
+        return nonNull(birthday) ? new Date(birthday.getTime()) : null;
     }
 
     public void setBirthday(Date birthday) {
-        this.birthday = (birthday != null) ? new Date(birthday.getTime()) : null;
+        this.birthday = nonNull(birthday) ? new Date(birthday.getTime()) : null;
     }
 
     public String getEmail() {

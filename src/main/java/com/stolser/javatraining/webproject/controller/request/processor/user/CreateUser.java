@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.util.*;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static java.util.Objects.nonNull;
 
 public class CreateUser implements RequestProcessor {
     private UserService userService = UserServiceImpl.getInstance();
@@ -91,6 +92,6 @@ public class CreateUser implements RequestProcessor {
     }
 
     private boolean usernameExistsInDb(String username) {
-        return userService.findOneCredentialByUserName(username) != null;
+        return nonNull(userService.findOneCredentialByUserName(username));
     }
 }

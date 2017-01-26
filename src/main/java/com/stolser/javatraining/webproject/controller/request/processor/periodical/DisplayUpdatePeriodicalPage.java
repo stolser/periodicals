@@ -13,21 +13,22 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static java.util.Objects.isNull;
 
 /**
  * Processes a GET request to a page where admin can update information of one periodical.
  */
-public class UpdatePeriodical implements RequestProcessor {
+public class DisplayUpdatePeriodicalPage implements RequestProcessor {
     private static final String NO_PERIODICAL_WITH_ID_IN_DB = "There is no periodical with id %d in the db.";
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
 
-    private UpdatePeriodical() {}
+    private DisplayUpdatePeriodicalPage() {}
 
     private static class InstanceHolder {
-        private static final UpdatePeriodical INSTANCE = new UpdatePeriodical();
+        private static final DisplayUpdatePeriodicalPage INSTANCE = new DisplayUpdatePeriodicalPage();
     }
 
-    public static UpdatePeriodical getInstance() {
+    public static DisplayUpdatePeriodicalPage getInstance() {
         return InstanceHolder.INSTANCE;
     }
 
@@ -36,7 +37,7 @@ public class UpdatePeriodical implements RequestProcessor {
         long periodicalId = HttpUtils.getFirstIdFromUri(request.getRequestURI());
         Periodical periodical = periodicalService.findOneById(periodicalId);
 
-        if (periodical == null) {
+        if (isNull(periodical)) {
             throw new NoSuchElementException(String.format(NO_PERIODICAL_WITH_ID_IN_DB, periodicalId));
         }
 

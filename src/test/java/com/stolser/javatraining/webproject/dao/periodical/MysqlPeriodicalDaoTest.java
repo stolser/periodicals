@@ -119,22 +119,4 @@ public class MysqlPeriodicalDaoTest {
 
         assertPeriodicalData(newPeriodical, periodicalFromDb);
     }
-
-    @Ignore(value = "change the status of the db")
-    @Test
-    public void update() throws Exception {
-        Periodical.Builder periodicalBuilder = new Periodical.Builder();
-        periodicalBuilder.setId(PERIODICAL_TO_UPDATE_ID)
-                .setName(NEW_PERIODICAL_NAME)
-                .setCategory(PeriodicalCategory.BUSINESS)
-                .setPublisher(NEW_PUBLISHER_NAME)
-                .setOneMonthCost(ONE_MONTH_COST + 10)
-                .setStatus(Periodical.Status.INACTIVE);
-        Periodical periodicalToUpdate = periodicalBuilder.build();
-
-        periodicalDao.update(periodicalToUpdate);
-
-        assertPeriodicalData(periodicalToUpdate, periodicalDao.findOneByName(NEW_PERIODICAL_NAME));
-
-    }
 }

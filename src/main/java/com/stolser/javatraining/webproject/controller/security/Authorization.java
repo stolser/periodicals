@@ -44,23 +44,28 @@ final class Authorization {
      *      and {@code false} otherwise
      */
     boolean checkPermissions(HttpServletRequest request) {
+//        checkUserId();
+// put here code from RequestUserIdValidator,
+// check it only for uri pattern '/backend/users/\d+/'
+
+        return isPermissionGranted(getPermissionMapping(request), request);
+    }
+
+    private Optional<Map.Entry<String, Set<User.Role>>> getPermissionMapping(HttpServletRequest request) {
         String requestMethod = request.getMethod().toUpperCase();
         String requestUri = request.getRequestURI();
 
-        Optional<Map.Entry<String, Set<User.Role>>> thisPermissionMapping =
-                permissionMapping.entrySet()
-                        .stream()
-                        .filter(entry -> {
-                            String[] methods = extractHttpMethodsFromMapping(entry);
-                            return Arrays.asList(methods).contains(requestMethod);
-                        })
-                        .filter(entry -> {
-                            String urlPattern = entry.getKey().split(":")[1];
-                            return Pattern.matches(urlPattern, requestUri);
-                        })
-                        .findFirst();
-
-        return isPermissionGranted(thisPermissionMapping, request);
+        return permissionMapping.entrySet()
+                .stream()
+                .filter(entry -> {
+                    String[] methods = extractHttpMethodsFromMapping(entry);
+                    return Arrays.asList(methods).contains(requestMethod);
+                })
+                .filter(entry -> {
+                    String urlPattern = entry.getKey().split(":")[1];
+                    return Pattern.matches(urlPattern, requestUri);
+                })
+                .findFirst();
     }
 
     private String[] extractHttpMethodsFromMapping(Map.Entry<String, Set<User.Role>> entry) {
@@ -72,14 +77,17 @@ final class Authorization {
                                         HttpServletRequest request) {
         boolean permissionGranted = true;
         if (thisPermissionMapping.isPresent()) {
-            User user = (User) request.getSession().getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
-            Set<User.Role> userRoles = user.getRoles();
+            Set<User.Role> userRoles = getUserFromSession(request).getRoles();
             Set<User.Role> legitRoles = thisPermissionMapping.get().getValue();
 
             permissionGranted = hasUserLegitRole(userRoles, legitRoles);
         }
 
         return permissionGranted;
+    }
+
+    private User getUserFromSession(HttpServletRequest request) {
+        return (User) request.getSession().getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
     }
 
     private boolean hasUserLegitRole(Set<User.Role> userRoles, Set<User.Role> legitRoles) {

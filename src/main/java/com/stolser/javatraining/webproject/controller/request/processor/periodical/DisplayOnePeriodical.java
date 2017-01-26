@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static java.util.Objects.isNull;
 
 /**
  * Processes a GET request to page with the information of the selected individual periodical.
@@ -40,6 +41,7 @@ public final class DisplayOnePeriodical implements RequestProcessor {
         checkPeriodicalExists(periodicalId, periodicalInDb);
 
         if (hasUserNotEnoughPermissions(currentUser, periodicalInDb)) {
+            // todo: throw new AccessDeniedException();
             HttpUtils.sendRedirect(request, response, ACCESS_DENIED_URI);
             return Optional.empty();
         }
@@ -50,7 +52,7 @@ public final class DisplayOnePeriodical implements RequestProcessor {
     }
 
     private void checkPeriodicalExists(long periodicalId, Periodical periodicalInDb) {
-        if (periodicalInDb == null) {
+        if (isNull(periodicalInDb)) {
             throw new NoSuchElementException(String.format(NO_PERIODICAL_WITH_ID_IN_DB, periodicalId));
         }
     }

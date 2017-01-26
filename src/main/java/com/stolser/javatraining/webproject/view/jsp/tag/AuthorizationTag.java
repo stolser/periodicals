@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.nonNull;
+
 /**
  * Allows specifying two sets of roles that a user must have and must not have in order to
  * see the content of this tag.
@@ -23,10 +25,9 @@ public class AuthorizationTag extends TagSupport {
 
     @Override
     public int doStartTag() throws JspException {
-        user = (User) pageContext.getSession()
-                .getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
+        user = getUserFromSession();
 
-        if ((user != null)
+        if (nonNull(user)
                 && hasUserLegitRoles()
                 && hasUserNoProhibitedRoles()) {
 
@@ -34,6 +35,11 @@ public class AuthorizationTag extends TagSupport {
         }
 
         return Tag.SKIP_BODY;
+    }
+
+    private User getUserFromSession() {
+        return (User) pageContext.getSession()
+                .getAttribute(ApplicationResources.CURRENT_USER_ATTR_NAME);
     }
 
     private boolean hasUserLegitRoles() {
@@ -53,7 +59,7 @@ public class AuthorizationTag extends TagSupport {
     private Set<User.Role> parseLegitRoles() {
         Set<User.Role> legitRoles = new HashSet<>();
 
-        if (mustHaveRoles != null) {
+        if (nonNull(mustHaveRoles)) {
             legitRoles.addAll(Arrays.asList(mustHaveRoles.split(" "))
                     .stream()
                     .map(roleStr -> User.Role.valueOf(roleStr.toUpperCase()))
@@ -79,7 +85,7 @@ public class AuthorizationTag extends TagSupport {
     private Set<User.Role> parseProhibitedRoles() {
         Set<User.Role> prohibitedRoles = new HashSet<>();
 
-        if (mustNotHaveRoles != null) {
+        if (nonNull(mustNotHaveRoles)) {
             prohibitedRoles.addAll(Arrays.asList(mustNotHaveRoles.split(" "))
                     .stream()
                     .map(roleStr -> User.Role.valueOf(roleStr.toUpperCase()))

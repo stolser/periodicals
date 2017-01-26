@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.PERIODICAL_ATTR_NAME;
 import static org.mockito.Mockito.*;
 
-public class CreateNewPeriodicalTest {
+public class DisplayNewPeriodicalPageTest {
     private HttpSession session = mock(HttpSession.class);
     private HttpServletRequest request = mock(HttpServletRequest.class);
     private HttpServletResponse response = mock(HttpServletResponse.class);
@@ -25,14 +25,14 @@ public class CreateNewPeriodicalTest {
 
     @Test
     public void process_Should_RemovePeriodicalFromSession() throws Exception {
-        CreateNewPeriodical.getInstance().process(request, response);
+        DisplayNewPeriodicalPage.getInstance().process(request, response);
 
         verify(session, times(1)).removeAttribute(PERIODICAL_ATTR_NAME);
     }
 
     @Test
     public void process_Should_CallSetAttributeOnRequestFiveTimes() throws Exception {
-        CreateNewPeriodical.getInstance().process(request, response);
+        DisplayNewPeriodicalPage.getInstance().process(request, response);
 
         verify(request, times(5)).setAttribute(anyString(), any());
     }

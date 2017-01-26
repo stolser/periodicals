@@ -23,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static java.util.Objects.nonNull;
 
 public final class HttpUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtils.class);
@@ -46,8 +47,7 @@ public final class HttpUtils {
      */
     public static long getUserIdFromSession(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(CURRENT_USER_ATTR_NAME);
-
-        return (user != null) ? user.getId() : 0;
+        return nonNull(user) ? user.getId() : 0;
     }
 
     /**

@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static java.util.Objects.nonNull;
 
 /**
  * Validates a parameter from the request and sends a json with the validation result.
@@ -78,7 +79,7 @@ public class AjaxFormValidation implements RequestProcessor {
     private void removeMessagesForCurrentParam(HttpSession session, String paramName) {
         Map frontEndMessages = (Map)session.getAttribute(MESSAGES_ATTR_NAME);
 
-        if (frontEndMessages != null) {
+        if (nonNull(frontEndMessages)) {
             frontEndMessages.remove(paramName);
         }
     }

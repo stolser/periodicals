@@ -66,7 +66,7 @@ public class PeriodicalServiceImpl implements PeriodicalService {
         if (periodical.getId() == 0) {
             createNewPeriodical(periodical);
         } else {
-            tryToUpdatePeriodical(periodical);
+            updatePeriodical(periodical);
         }
 
         return getPeriodicalFromDbByName(periodical.getName());
@@ -84,25 +84,14 @@ public class PeriodicalServiceImpl implements PeriodicalService {
         }
     }
 
-    private void tryToUpdatePeriodical(Periodical periodical) {
-        Periodical periodicalInDb = getPeriodicalFromDbById(periodical.getId());
-        if (periodicalInDb == null) {
-            throw new NoSuchElementException(
-                    String.format(NO_PERIODICAL_WITH_ID_MESSAGE, periodical.getId()));
-        }
-
-        updatePeriodical(periodical);
-    }
-
-    private Periodical getPeriodicalFromDbById(long id) {
-        try (AbstractConnection conn = connectionPool.getConnection()) {
-            return factory.getPeriodicalDao(conn).findOneById(id);
-        }
-    }
-
     private void updatePeriodical(Periodical periodical) {
         try (AbstractConnection conn = connectionPool.getConnection()) {
-            factory.getPeriodicalDao(conn).update(periodical);
+            int affectedRows = factory.getPeriodicalDao(conn).update(periodical);
+
+            if (affectedRows == 0) {
+                throw new NoSuchElementException(
+                        String.format(NO_PERIODICAL_WITH_ID_MESSAGE, periodical.getId()));
+            }
         }
     }
 

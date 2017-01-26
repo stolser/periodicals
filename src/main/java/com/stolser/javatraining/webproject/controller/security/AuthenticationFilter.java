@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static java.util.Objects.isNull;
 
 /**
  * Makes sure that this request comes from a signed in user and the session has not expired.
@@ -37,11 +38,11 @@ public class AuthenticationFilter implements Filter {
         String requestUri = request.getRequestURI();
         User currentUser = HttpUtils.getCurrentUserFromFromDb(request);
 
-        if (currentUser == null) {
+        if (isNull(currentUser)) {
             request.getSession().setAttribute(ORIGINAL_URI_ATTR_NAME, requestUri);
             response.sendRedirect(LOGIN_PAGE);
 
-        } else if (!User.Status.ACTIVE.equals(currentUser.getStatus())) {
+        } else if (isUserActive(currentUser)) {
             response.sendRedirect(SIGN_OUT_URI);
 
         } else {
@@ -51,6 +52,10 @@ public class AuthenticationFilter implements Filter {
 
     private boolean requestNotRequiresAuthentication(HttpServletRequest request) {
         return unProtectedUris.contains(request.getRequestURI());
+    }
+
+    private boolean isUserActive(User currentUser) {
+        return !User.Status.ACTIVE.equals(currentUser.getStatus());
     }
 
     @Override

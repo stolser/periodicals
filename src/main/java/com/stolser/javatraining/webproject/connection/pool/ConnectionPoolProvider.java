@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import static java.util.Objects.isNull;
+
 /**
  * Reads database configuration data and creates a connection pool.
  */
@@ -68,7 +70,7 @@ public class ConnectionPoolProvider {
      * @return a connection pool for using in tests.
      */
     public static ConnectionPool getTestPool() {
-        if (TEST_INSTANCE == null) {
+        if (isNull(TEST_INSTANCE)) {
             try {
                 InputStream input = ConnectionPoolProvider.class.getClassLoader()
                         .getResourceAsStream(TEST_DB_CONFIG_FILENAME);

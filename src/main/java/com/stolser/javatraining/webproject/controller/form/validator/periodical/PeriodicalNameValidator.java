@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static java.util.Objects.nonNull;
 
 /**
  * Checks whether a periodical name is acceptable for depending the operation ('create' or 'update').
@@ -61,7 +62,7 @@ public class PeriodicalNameValidator extends AbstractValidator {
          * if this is 'update' --> we exclude this periodical from validation;
          * Sorry for comments!
          */
-        return periodicalNameExists(periodicalWithSuchNameInDb)
+        return nonNull(periodicalWithSuchNameInDb)
                 && (isOperationCreate(operationType)
                 || (isOperationUpdate(operationType) &&
                 (periodicalId != periodicalWithSuchNameInDb.getId())));
@@ -69,10 +70,6 @@ public class PeriodicalNameValidator extends AbstractValidator {
 
     private boolean isOperationUpdate(Periodical.OperationType periodicalOperationType) {
         return Periodical.OperationType.UPDATE.equals(periodicalOperationType);
-    }
-
-    private boolean periodicalNameExists(Periodical periodicalWithSuchNameInDb) {
-        return periodicalWithSuchNameInDb != null;
     }
 
     private boolean isOperationCreate(Periodical.OperationType periodicalOperationType) {

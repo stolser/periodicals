@@ -1,7 +1,5 @@
 package com.stolser.javatraining.webproject.controller.request.processor.invoice;
 
-import com.stolser.javatraining.webproject.controller.form.validator.ValidationResult;
-import com.stolser.javatraining.webproject.controller.form.validator.ValidatorFactory;
 import com.stolser.javatraining.webproject.controller.message.FrontMessageFactory;
 import com.stolser.javatraining.webproject.controller.message.FrontendMessage;
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
@@ -22,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 /**
  * Processes a POST request to pay one invoice. In one transaction the status of the invoice is changed
@@ -36,7 +36,8 @@ public class PayOneInvoice implements RequestProcessor {
     private PeriodicalService periodicalService = PeriodicalServiceImpl.getInstance();
     private FrontMessageFactory messageFactory = FrontMessageFactory.getInstance();
 
-    private PayOneInvoice() {}
+    private PayOneInvoice() {
+    }
 
     private static class InstanceHolder {
         private static final PayOneInvoice INSTANCE = new PayOneInvoice();
@@ -68,12 +69,12 @@ public class PayOneInvoice implements RequestProcessor {
 
     private boolean isInvoiceValid(Invoice invoiceInDb, HttpServletRequest request,
                                    List<FrontendMessage> generalMessages) {
-        ValidationResult result = ValidatorFactory.getRequestUserIdValidator().validate(null, request);
-
-        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
-            generalMessages.add(messageFactory.getError(result.getMessageKey()));
-            return false;
-        }
+//        ValidationResult result = ValidatorFactory.getRequestUserIdValidator().validate(null, request);
+//
+//        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
+//            generalMessages.add(messageFactory.getError(result.getMessageKey()));
+//            return false;
+//        }
 
         return invoiceExistsInDb(invoiceInDb, generalMessages)
                 && isInvoiceNew(invoiceInDb, generalMessages)
@@ -81,34 +82,41 @@ public class PayOneInvoice implements RequestProcessor {
     }
 
     private boolean invoiceExistsInDb(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
-        if (invoiceInDb != null) {
-            return true;
-        } else {
+        if (isNull(invoiceInDb)) {
             generalMessages.add(messageFactory.getError(MSG_VALIDATION_NO_SUCH_INVOICE));
-            return false;
         }
+
+        return nonNull(invoiceInDb);
     }
 
     private boolean isInvoiceNew(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
-        if (Invoice.Status.NEW.equals(invoiceInDb.getStatus())) {
-            return true;
-        } else {
+        boolean isNew = Invoice.Status.NEW.equals(invoiceInDb.getStatus());
+
+        if (!isNew) {
             generalMessages.add(messageFactory.getError(MSG_VALIDATION_INVOICE_IS_NOT_NEW));
-            return false;
         }
+
+        return isNew;
+    }
+
+    private boolean isPeriodicalVisible(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
+        boolean isPeriodicalInDbActive = isPeriodicalInDbActive(invoiceInDb);
+
+        if (!isPeriodicalInDbActive) {
+            generalMessages.add(messageFactory.getError(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE));
+        }
+
+        return isPeriodicalInDbActive;
     }
 
     private void tryToPayInvoice(Invoice invoiceInDb, HttpServletRequest request,
                                  List<FrontendMessage> generalMessages) {
-        generalMessages.add(messageFactory.getInfo(MSG_VALIDATION_PASSED_SUCCESS));
-
         try {
-            if (invoiceService.payInvoice(invoiceInDb)) {
-                generalMessages.add(messageFactory.getSuccess(MSG_INVOICE_PAYMENT_SUCCESS));
-            } else {
-                generalMessages.add(messageFactory.getError(MSG_INVOICE_PAYMENT_ERROR));
-            }
+            generalMessages.add(messageFactory.getInfo(MSG_VALIDATION_PASSED_SUCCESS));
+            boolean isInvoicePaid = invoiceService.payInvoice(invoiceInDb);
+            String resultMessage = isInvoicePaid ? MSG_INVOICE_PAYMENT_SUCCESS : MSG_INVOICE_PAYMENT_ERROR;
 
+            generalMessages.add(messageFactory.getSuccess(resultMessage));
         } catch (RuntimeException e) {
             LOGGER.error(EXCEPTION_DURING_PAYING_THE_INVOICE_WITH_ID,
                     HttpUtils.getUserIdFromSession(request), invoiceInDb, e);
@@ -117,15 +125,12 @@ public class PayOneInvoice implements RequestProcessor {
         }
     }
 
-    private boolean isPeriodicalVisible(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
-        long periodicalId = invoiceInDb.getPeriodical().getId();
-        Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
+    private boolean isPeriodicalInDbActive(Invoice invoiceInDb) {
+        Periodical periodicalInDb = periodicalService.findOneById(getPeriodicalIdFromInvoice(invoiceInDb));
+        return Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus());
+    }
 
-        if (Periodical.Status.ACTIVE.equals(periodicalInDb.getStatus())) {
-            return true;
-        } else {
-            generalMessages.add(messageFactory.getError(MSG_VALIDATION_PERIODICAL_IS_NOT_VISIBLE));
-            return false;
-        }
+    private long getPeriodicalIdFromInvoice(Invoice invoiceInDb) {
+        return invoiceInDb.getPeriodical().getId();
     }
 }
