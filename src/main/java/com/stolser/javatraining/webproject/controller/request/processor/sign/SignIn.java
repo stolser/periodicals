@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 import static java.util.Objects.nonNull;
@@ -38,7 +37,7 @@ public final class SignIn implements RequestProcessor {
     }
 
     @Override
-    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         Map<String, FrontendMessage> messages = new HashMap<>();
         String redirectUri;
 
@@ -50,9 +49,8 @@ public final class SignIn implements RequestProcessor {
         }
 
         setSessionAttributes(request, messages);
-        HttpUtils.sendRedirect(request, response, redirectUri);
 
-        return Optional.empty();
+        return REDIRECT + redirectUri;
     }
 
     private boolean isCredentialCorrect(HttpServletRequest request) {

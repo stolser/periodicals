@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 import static java.util.Objects.isNull;
@@ -48,18 +47,17 @@ public class PayOneInvoice implements RequestProcessor {
     }
 
     @Override
-    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         List<FrontendMessage> generalMessages = new ArrayList<>();
         Invoice invoiceInDb = invoiceService.findOneById((long) getInvoiceIdFromRequest(request));
 
-        if (isInvoiceValid(invoiceInDb, request, generalMessages)) {
+        if (isInvoiceValid(invoiceInDb, generalMessages)) {
             tryToPayInvoice(invoiceInDb, request, generalMessages);
         }
 
         HttpUtils.addGeneralMessagesToSession(request, generalMessages);
-        HttpUtils.sendRedirect(request, response, CURRENT_USER_ACCOUNT_URI);
 
-        return Optional.empty();
+        return REDIRECT + CURRENT_USER_ACCOUNT_URI;
     }
 
     private int getInvoiceIdFromRequest(HttpServletRequest request) {
@@ -67,15 +65,7 @@ public class PayOneInvoice implements RequestProcessor {
                 .replaceFirst("/backend/users/\\d+/", ""));
     }
 
-    private boolean isInvoiceValid(Invoice invoiceInDb, HttpServletRequest request,
-                                   List<FrontendMessage> generalMessages) {
-//        ValidationResult result = ValidatorFactory.getRequestUserIdValidator().validate(null, request);
-//
-//        if (result.getStatusCode() != STATUS_CODE_SUCCESS) {
-//            generalMessages.add(messageFactory.getError(result.getMessageKey()));
-//            return false;
-//        }
-
+    private boolean isInvoiceValid(Invoice invoiceInDb, List<FrontendMessage> generalMessages) {
         return invoiceExistsInDb(invoiceInDb, generalMessages)
                 && isInvoiceNew(invoiceInDb, generalMessages)
                 && isPeriodicalVisible(invoiceInDb, generalMessages);

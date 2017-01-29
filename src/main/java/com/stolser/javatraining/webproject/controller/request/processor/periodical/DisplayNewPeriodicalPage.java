@@ -8,7 +8,6 @@ import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCat
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
-import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 import static java.util.Objects.nonNull;
@@ -29,11 +28,11 @@ public class DisplayNewPeriodicalPage implements RequestProcessor {
     }
 
     @Override
-    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().removeAttribute(PERIODICAL_ATTR_NAME);
         setRequestAttributes(request);
 
-        return Optional.of(CREATE_EDIT_PERIODICAL_VIEW_NAME);
+        return FORWARD + CREATE_EDIT_PERIODICAL_VIEW_NAME;
     }
 
     private void setRequestAttributes(HttpServletRequest request) {

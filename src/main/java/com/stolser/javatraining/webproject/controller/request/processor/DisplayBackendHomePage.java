@@ -2,7 +2,6 @@ package com.stolser.javatraining.webproject.controller.request.processor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.BACKEND_MAIN_PAGE_VIEW_NAME;
 
@@ -21,7 +20,7 @@ public class DisplayBackendHomePage implements RequestProcessor {
     }
 
     @Override
-    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
-        return Optional.of(BACKEND_MAIN_PAGE_VIEW_NAME);
+    public String process(HttpServletRequest request, HttpServletResponse response) {
+        return FORWARD + BACKEND_MAIN_PAGE_VIEW_NAME;
     }
 }

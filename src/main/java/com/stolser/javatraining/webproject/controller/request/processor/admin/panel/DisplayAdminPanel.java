@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 
@@ -35,11 +34,11 @@ public class DisplayAdminPanel implements RequestProcessor {
     }
 
     @Override
-    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         addPeriodicalStatsIntoRequest(request);
         addFinStatsIntoRequest(request);
 
-        return Optional.of(ADMIN_PANEL_VIEW_NAME);
+        return FORWARD + ADMIN_PANEL_VIEW_NAME;
     }
 
     private void addPeriodicalStatsIntoRequest(HttpServletRequest request) {

@@ -1,11 +1,9 @@
 package com.stolser.javatraining.webproject.controller.request.processor.sign;
 
 import com.stolser.javatraining.webproject.controller.request.processor.RequestProcessor;
-import com.stolser.javatraining.webproject.controller.utils.HttpUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ATTR_NAME;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.LOGIN_PAGE;
@@ -26,12 +24,10 @@ public class SignOut implements RequestProcessor {
     }
 
     @Override
-    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().removeAttribute(CURRENT_USER_ATTR_NAME);
         request.getSession().invalidate();
 
-        HttpUtils.sendRedirect(request, response, LOGIN_PAGE);
-
-        return Optional.empty();
+        return REDIRECT + LOGIN_PAGE;
     }
 }

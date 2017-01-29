@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
@@ -44,7 +43,7 @@ public class AjaxFormValidation implements RequestProcessor {
     }
 
     @Override
-    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         String paramName = request.getParameter(PARAM_NAME);
         String paramValue = request.getParameter(PARAM_VALUE);
@@ -59,7 +58,7 @@ public class AjaxFormValidation implements RequestProcessor {
             jsonResponse.put(VALIDATION_MESSAGE_JSON_RESPONSE, getLocalizedMessage(session, result));
 
             writeJsonIntoResponse(response, jsonResponse);
-            return Optional.empty();
+            return NO_ACTION;
 
         } catch (JSONException e) {
             LOGGER.error(EXCEPTION_DURING_PUTTING_VALUES_INTO_JSON_OBJECT, e);

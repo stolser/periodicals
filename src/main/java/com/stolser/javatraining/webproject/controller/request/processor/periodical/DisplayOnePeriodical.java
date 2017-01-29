@@ -11,7 +11,6 @@ import com.stolser.javatraining.webproject.service.impl.PeriodicalServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.ONE_PERIODICAL_VIEW_NAME;
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.PERIODICAL_ATTR_NAME;
@@ -36,7 +35,7 @@ public final class DisplayOnePeriodical implements RequestProcessor {
     }
 
     @Override
-    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         User currentUser = HttpUtils.getCurrentUserFromFromDb(request);
         long periodicalId = HttpUtils.getFirstIdFromUri(request.getRequestURI());
         Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
@@ -49,7 +48,7 @@ public final class DisplayOnePeriodical implements RequestProcessor {
 
         request.setAttribute(PERIODICAL_ATTR_NAME, periodicalInDb);
 
-        return Optional.of(ONE_PERIODICAL_VIEW_NAME);
+        return FORWARD + ONE_PERIODICAL_VIEW_NAME;
     }
 
     private void checkPeriodicalExists(long periodicalId, Periodical periodicalInDb) {

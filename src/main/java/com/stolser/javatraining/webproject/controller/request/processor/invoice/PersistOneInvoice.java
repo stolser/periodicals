@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 import static java.util.Objects.isNull;
@@ -46,7 +45,7 @@ public class PersistOneInvoice implements RequestProcessor {
     }
 
     @Override
-    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         List<FrontendMessage> generalMessages = new ArrayList<>();
         long periodicalId = Long.parseLong(request.getParameter(PERIODICAL_ID_PARAM_NAME));
         Periodical periodicalInDb = periodicalService.findOneById(periodicalId);
@@ -56,9 +55,8 @@ public class PersistOneInvoice implements RequestProcessor {
         }
 
         HttpUtils.addGeneralMessagesToSession(request, generalMessages);
-        HttpUtils.sendRedirect(request, response, getRedirectUri(periodicalId));
 
-        return Optional.empty();
+        return REDIRECT + getRedirectUri(periodicalId);
     }
 
     private String getRedirectUri(long periodicalId) {

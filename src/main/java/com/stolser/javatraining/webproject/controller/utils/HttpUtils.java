@@ -54,13 +54,6 @@ public final class HttpUtils {
     }
 
     /**
-     * Creates and returns a formatted message.
-     */
-    public static String getRedirectionExceptionMessage(HttpServletRequest request, String destination) {
-        return String.format(REDIRECTION_FROM_TO_TEXT, request.getRequestURI(), destination);
-    }
-
-    /**
      * Creates a new periodical using the data from the request.
      */
     public static Periodical getPeriodicalFromRequest(HttpServletRequest request) {

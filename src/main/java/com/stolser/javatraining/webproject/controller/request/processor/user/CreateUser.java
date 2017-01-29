@@ -13,7 +13,10 @@ import com.stolser.javatraining.webproject.service.impl.UserServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 import static java.util.Objects.nonNull;
@@ -33,7 +36,7 @@ public class CreateUser implements RequestProcessor {
     }
 
     @Override
-    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         Map<String, FrontendMessage> formMessages = new HashMap<>();
         List<FrontendMessage> generalMessages = new ArrayList<>();
         HttpSession session = request.getSession();
@@ -69,9 +72,7 @@ public class CreateUser implements RequestProcessor {
             session.setAttribute(MESSAGES_ATTR_NAME, formMessages);
         }
 
-        HttpUtils.sendRedirect(request, response, redirectUri);
-
-        return Optional.empty();
+        return REDIRECT + redirectUri;
     }
 
     private boolean createUser(String username, String userEmail, String password, User.Role userRole) {

@@ -23,6 +23,8 @@ public class FrontController extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(FrontController.class);
     private static final String USER_ID_REQUEST_URI = "User id = {}. requestURI = {}";
     private static final String DISPATCHING_TO_THE_VIEW_NAME = "Dispatching to the viewName = '%s'.";
+    private static final String INCORRECT_THE_DISPATCH_TYPE =
+            "Incorrect the dispatch type of the abstractViewName: %s";
     private RequestProvider requestProvider = RequestProviderImpl.getInstance();
     private ViewResolver viewResolver = JspViewResolver.getInstance();
 
@@ -41,17 +43,35 @@ public class FrontController extends HttpServlet {
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            requestProvider
-                    .getRequestProcessor(request)
-                    .process(request, response)
-                    .ifPresent(viewName -> dispatch(viewName, request, response));
+            String abstractViewName = requestProvider.getRequestProcessor(request).process(request, response);
+            dispatch(abstractViewName, request, response);
 
         } catch (RuntimeException e) {
             logExceptionAndRedirectToErrorPage(request, response, e);
         }
     }
 
-    private void dispatch(String viewName, HttpServletRequest request, HttpServletResponse response) {
+    private void dispatch(String abstractViewName, HttpServletRequest request, HttpServletResponse response) {
+        String[] viewNameParts = abstractViewName.split(":");
+        String dispatchType = viewNameParts[0];
+        String viewName = viewNameParts[1];
+
+        switch (dispatchType) {
+            case "forward":
+                performForward(viewName, request, response);
+                break;
+            case "redirect":
+                performRedirect(viewName, request, response);
+                break;
+            case "noAction":
+                break;
+            default:
+                throw new IllegalArgumentException(
+                        String.format(INCORRECT_THE_DISPATCH_TYPE, abstractViewName));
+        }
+    }
+
+    private void performForward(String viewName, HttpServletRequest request, HttpServletResponse response) {
         try {
             RequestDispatcher dispatcher = request.getRequestDispatcher(
                     viewResolver.resolvePrivateViewName(viewName));
@@ -60,6 +80,10 @@ public class FrontController extends HttpServlet {
         } catch (ServletException | IOException e) {
             throw new DispatchException(String.format(DISPATCHING_TO_THE_VIEW_NAME, viewName), e);
         }
+    }
+
+    private void performRedirect(String viewName, HttpServletRequest request, HttpServletResponse response) {
+        HttpUtils.sendRedirect(request, response, viewName);
     }
 
     private void logExceptionAndRedirectToErrorPage(HttpServletRequest request, HttpServletResponse response,

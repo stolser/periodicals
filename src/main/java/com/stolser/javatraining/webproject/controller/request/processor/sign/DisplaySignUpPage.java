@@ -5,7 +5,6 @@ import com.stolser.javatraining.webproject.model.entity.user.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.SIGN_UP_PAGE_VIEW_NAME;
 
@@ -21,8 +20,8 @@ public class DisplaySignUpPage implements RequestProcessor {
     }
 
     @Override
-    public Optional<String> process(HttpServletRequest request, HttpServletResponse response) {
+    public String process(HttpServletRequest request, HttpServletResponse response) {
         request.setAttribute("roles", User.Role.values());
-        return Optional.of(SIGN_UP_PAGE_VIEW_NAME);
+        return FORWARD + SIGN_UP_PAGE_VIEW_NAME;
     }
 }
