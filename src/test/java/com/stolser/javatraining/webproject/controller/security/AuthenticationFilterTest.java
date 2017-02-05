@@ -3,7 +3,6 @@ package com.stolser.javatraining.webproject.controller.security;
 import com.stolser.javatraining.webproject.controller.TestResources;
 import com.stolser.javatraining.webproject.model.entity.user.User;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 
@@ -12,9 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ATTR_NAME;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.ORIGINAL_URI_ATTR_NAME;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.LOGIN_PAGE;
+import static com.stolser.javatraining.webproject.controller.ApplicationResources.*;
 import static org.mockito.Mockito.*;
 
 public class AuthenticationFilterTest {
@@ -35,7 +32,6 @@ public class AuthenticationFilterTest {
         when(request.getSession()).thenReturn(session);
     }
 
-    @Ignore
     @Test
     public void doFilter_IfUserInSessionIsNull() throws Exception {
         String requestURI = TestResources.USER_2_INVOICE_10_PAYMENT;
@@ -43,7 +39,6 @@ public class AuthenticationFilterTest {
 
         new AuthenticationFilter().doFilter(request, response, chain);
 
-        verify(request, times(1)).getRequestURI();
         verify(session, times(1)).setAttribute(ORIGINAL_URI_ATTR_NAME, requestURI);
         verify(response, times(1)).sendRedirect(LOGIN_PAGE);
 

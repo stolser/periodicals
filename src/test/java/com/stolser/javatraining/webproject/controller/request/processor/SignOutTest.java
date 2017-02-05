@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import static com.stolser.javatraining.webproject.controller.ApplicationResources.CURRENT_USER_ATTR_NAME;
-import static com.stolser.javatraining.webproject.controller.ApplicationResources.LOGIN_PAGE;
 import static org.mockito.Mockito.*;
 
 public class SignOutTest {
@@ -34,6 +33,5 @@ public class SignOutTest {
 
         verify(session, times(1)).removeAttribute(CURRENT_USER_ATTR_NAME);
         verify(session, times(1)).invalidate();
-        verify(response, times(1)).sendRedirect(LOGIN_PAGE);
     }
 }

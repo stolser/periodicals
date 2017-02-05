@@ -7,7 +7,6 @@ import com.stolser.javatraining.webproject.dao.PeriodicalDao;
 import com.stolser.javatraining.webproject.model.entity.periodical.Periodical;
 import com.stolser.javatraining.webproject.model.entity.periodical.PeriodicalCategory;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -97,26 +96,4 @@ public class MysqlPeriodicalDaoTest {
         assertEquals("discardedNews periodicals", discardedNewsExpectedNumber, discardedNewsActualNumber);
     }
 
-    @Ignore(value = "change the status of the db")
-    @Test
-    public void createNew_Should_IncreaseNumberOfPeriodicalsInDb_ByOne() throws Exception {
-        int numberBefore = periodicalDao.findAll().size();
-
-        Periodical.Builder periodicalBuilder = new Periodical.Builder();
-        periodicalBuilder.setName(NEW_PERIODICAL_NAME)
-                .setCategory(PeriodicalCategory.NEWS)
-                .setPublisher(NEW_PUBLISHER_NAME)
-                .setOneMonthCost(ONE_MONTH_COST)
-                .setStatus(Periodical.Status.ACTIVE);
-        Periodical newPeriodical = periodicalBuilder.build();
-
-        periodicalDao.createNew(newPeriodical);
-
-        int numberAfter = periodicalDao.findAll().size();
-        assertEquals(numberBefore, numberAfter - 1);
-
-        Periodical periodicalFromDb = periodicalDao.findOneByName(NEW_PERIODICAL_NAME);
-
-        assertPeriodicalData(newPeriodical, periodicalFromDb);
-    }
 }

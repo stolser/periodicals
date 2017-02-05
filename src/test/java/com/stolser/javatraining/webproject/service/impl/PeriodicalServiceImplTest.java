@@ -61,18 +61,6 @@ public class PeriodicalServiceImplTest {
 
     }
 
-    @Test
-    public void save_Should_UpdateExistingInDbPeriodical() {
-        periodical.setId(PERIODICAL_ID);
-        when(periodicalDao.findOneById(PERIODICAL_ID)).thenReturn(periodical);
-        when(periodicalDao.findOneByName(TEST_NAME)).thenReturn(periodical);
-
-        assertEquals(PERIODICAL_ID, periodicalService.save(periodical).getId());
-
-        verify(periodicalDao).update(periodical);
-
-    }
-
     @Test(expected = NoSuchElementException.class)
     public void save_Should_ThrowExceptionIfIdIsNotZero_AndPeriodicalDoesNotExist() {
         periodical.setId(PERIODICAL_ID);
