@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="custom" uri="http://stolser.com/javaee/jsp-tags-0.1" %>
-<fmt:setBundle basename="webProject.i18n.backend.general" var="langGeneral"/>
+<fmt:setBundle basename="webproject.i18n.backend.general" var="langGeneral"/>
 <%@ page import="com.stolser.javatraining.webproject.controller.ApplicationResources" %>
 
 <c:set var="language"

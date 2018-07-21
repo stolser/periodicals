@@ -14,8 +14,8 @@ import static java.util.Objects.isNull;
  * Reads database configuration data and creates a connection pool.
  */
 public class ConnectionPoolProvider {
-    private static final String DB_CONFIG_FILENAME = "webProject/config/dbConfig.properties";
-    private static final String TEST_DB_CONFIG_FILENAME = "webProject/config/testDbConfig.properties";
+    private static final String DB_CONFIG_FILENAME = "webproject/config/dbConfig.properties";
+    private static final String TEST_DB_CONFIG_FILENAME = "webproject/config/testDbConfig.properties";
     private static final String DB_CONFIG_PARAM_URL = "database.url";
     private static final String DB_CONFIG_PARAM_DB_NAME = "database.dbName";
     private static final String DB_CONFIG_PARAM_USER_NAME = "database.userName";

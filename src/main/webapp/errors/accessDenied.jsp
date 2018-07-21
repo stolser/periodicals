@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/includes/header.jsp" %>
-<fmt:setBundle basename="webProject.i18n.backend.general" var="general"/>
+<fmt:setBundle basename="webproject.i18n.backend.general" var="general"/>
 
 <div class="row">
     <h1><fmt:message key="accessDenied" bundle="${general}"/></h1>

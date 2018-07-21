@@ -1,4 +1,4 @@
-<fmt:setBundle basename="webProject.i18n.backend.general" var="langGeneral"/>
+<fmt:setBundle basename="webproject.i18n.backend.general" var="langGeneral"/>
 
 <p class="text-right"><span class="userFullName">${currentUser.lastName} ${currentUser.firstName}</span>
     <a href="<c:url value="${ApplicationResources.CURRENT_USER_ACCOUNT_URI}"/>"

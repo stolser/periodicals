@@ -1,0 +1,9 @@
+1) NullPointerException com.mysql.jdbc.ConnectionImpl.getServerCharset
+Update MySql driver in pom.xml
+
+2) The server time zone value 'EEST' is unrecognized or represents more than one time zone...
+sudo gedit /etc/mysql/my.cnf
+add the following to the file:
+[mysqld]
+
+default-time-zone='+03:00'

@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/includes/header.jsp" %>
-<fmt:setBundle basename="webProject.i18n.backend.general" var="general"/>
-<fmt:setBundle basename="webProject.i18n.backend.adminPanel" var="langAdminPanel"/>
-<fmt:setBundle basename="webProject.i18n.backend.periodical" var="langPeriodical"/>
+<fmt:setBundle basename="webproject.i18n.backend.general" var="general"/>
+<fmt:setBundle basename="webproject.i18n.backend.adminPanel" var="langAdminPanel"/>
+<fmt:setBundle basename="webproject.i18n.backend.periodical" var="langPeriodical"/>
 
 <div class="row">
     <div class="col-md-12">

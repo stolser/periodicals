@@ -1,8 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `webproject` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `webproject`;
+CREATE DATABASE  IF NOT EXISTS `periodicals` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `periodicals`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win32 (AMD64)
 --
--- Host: localhost    Database: webproject
+-- Host: localhost    Database: periodicals
 -- ------------------------------------------------------
 -- Server version	5.7.16-log
 

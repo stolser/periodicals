@@ -40,7 +40,7 @@ public class ApplicationResources {
     public static final String USER_ROLE_PARAM_NAME = "userRole";
     public static final String USER_EMAIL_PARAM_NAME = "userEmail";
 
-    public static final String VALIDATION_BUNDLE_PATH = "webProject/i18n/validation";
+    public static final String VALIDATION_BUNDLE_PATH = "webproject/i18n/validation";
 
     public static final String ADMIN_PANEL_VIEW_NAME = "adminPanel";
     public static final String PERIODICAL_LIST_VIEW_NAME = "periodicals/periodicalList";

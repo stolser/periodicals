@@ -1,4 +1,4 @@
-<fmt:setBundle basename="webProject.i18n.validation" var="langValidation"/>
+<fmt:setBundle basename="webproject.i18n.validation" var="langValidation"/>
 
 <div class="row">
     <div class="col-md-12">

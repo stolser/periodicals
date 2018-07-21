@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/includes/header.jsp" %>
-<fmt:setBundle basename="webProject.i18n.frontend.general" var="frontGeneral"/>
+<fmt:setBundle basename="webproject.i18n.frontend.general" var="frontGeneral"/>
 
 <div class="row">
     <h1><fmt:message key="home.topMessage" bundle="${frontGeneral}"/></h1>

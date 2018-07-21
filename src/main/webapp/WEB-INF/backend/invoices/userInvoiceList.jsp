@@ -1,4 +1,4 @@
-<fmt:setBundle basename="webProject.i18n.backend.periodical" var="langPeriodical"/>
+<fmt:setBundle basename="webproject.i18n.backend.periodical" var="langPeriodical"/>
 
 <div id="userInvoiceList" class="col-md-12 table-responsive">
     <h2><fmt:message key="userInvoiceList.sub-title" bundle="${langInvoice}"/></h2>
